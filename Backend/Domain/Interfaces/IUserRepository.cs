@@ -8,6 +8,8 @@ namespace Backend.Domain.Interfaces
 
         Task<bool> ExistsByCIAsync(int ci, string? complement);
 
+        Task<int?> GetRoleIdByNameAsync(string roleName);
+
         Task<int> CreateAsync(User user);
     }
 }
