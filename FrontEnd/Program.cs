@@ -7,6 +7,7 @@ builder.Services.AddRazorPages();
 
 // Servicio que consume el Backend
 builder.Services.AddHttpClient<LoanService>();
+builder.Services.AddHttpClient<UserService>();
 
 var app = builder.Build();
 
