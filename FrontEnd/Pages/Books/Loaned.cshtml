@@ -7,7 +7,9 @@
 
 <h1>Libros prestados</h1>
 
-<p>Listado de libros que actualmente no se encuentran disponibles.</p>
+<p>
+    Listado de libros que actualmente no se encuentran disponibles.
+</p>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
@@ -23,7 +25,7 @@ else if (Model.LoanedBooks.Count == 0)
 }
 else
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Título</th>
@@ -37,8 +39,16 @@ else
             {
                 <tr>
                     <td>@book.Title</td>
-                    <td>@book.InternalCode</td>
-                    <td>Prestado</td>
+
+                    <td>
+                        @book.InternalCode
+                    </td>
+
+                    <td>
+                        @(book.Status == "Loaned"
+                            ? "Prestado"
+                            : book.Status)
+                    </td>
                 </tr>
             }
         </tbody>
