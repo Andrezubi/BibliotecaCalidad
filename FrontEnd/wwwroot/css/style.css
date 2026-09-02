@@ -1,0 +1,73 @@
+﻿.page-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 25px;
+}
+
+.card-custom {
+    background: var(--surface);
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 25px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+    .btn-primary:hover {
+        background: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+
+.btn-danger {
+    border-radius: 8px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 .2rem rgba(108,92,231,.2);
+    }
+
+.table {
+    margin-top: 15px;
+}
+
+    .table thead {
+        background: var(--primary);
+        color: white;
+    }
+
+    .table th {
+        font-weight: 600;
+        vertical-align: middle;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.badge-active {
+    background: #D4F8E8;
+    color: #1E8449;
+}
+
+.badge-inactive {
+    background: #FADBD8;
+    color: #C0392B;
+}

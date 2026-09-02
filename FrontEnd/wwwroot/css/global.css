@@ -1,0 +1,43 @@
+﻿:root {
+    --primary: #6C5CE7;
+    --primary-dark: #5848D6;
+    --primary-light: #F3F1FF;
+    --success: #2ECC71;
+    --danger: #E74C3C;
+    --background: #F7F8FC;
+    --surface: #FFFFFF;
+    --text: #2D3436;
+    --text-secondary: #636E72;
+    --border: #E4E7EC;
+    --radius: 10px;
+    --shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: var(--text);
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
