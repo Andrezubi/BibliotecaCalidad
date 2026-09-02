@@ -27,7 +27,8 @@ namespace Backend.Infrastructure.Repositories
                 );
             }
 
-            using var connection = new MySqlConnection(connectionString);
+            await using var connection =
+                new MySqlConnection(connectionString);
 
             await connection.OpenAsync();
 
@@ -46,19 +47,35 @@ namespace Backend.Infrastructure.Repositories
                     AND b.IsActive = TRUE;
             ";
 
-            using var command = new MySqlCommand(query, connection);
+            await using var command =
+                new MySqlCommand(query, connection);
 
-            using var reader = await command.ExecuteReaderAsync();
+            await using var reader =
+                await command.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
                 loanedBooks.Add(new LoanedBook
                 {
-                    CopyId = reader.GetInt32("CopyId"),
-                    BookId = reader.GetInt32("BookId"),
-                    Title = reader.GetString("Title"),
-                    InternalCode = reader.GetString("InternalCode"),
-                    Status = reader.GetString("Status")
+                    CopyId = reader.GetInt32(
+                        reader.GetOrdinal("CopyId")
+                    ),
+
+                    BookId = reader.GetInt32(
+                        reader.GetOrdinal("BookId")
+                    ),
+
+                    Title = reader.GetString(
+                        reader.GetOrdinal("Title")
+                    ),
+
+                    InternalCode = reader.GetString(
+                        reader.GetOrdinal("InternalCode")
+                    ),
+
+                    Status = reader.GetString(
+                        reader.GetOrdinal("Status")
+                    )
                 });
             }
 
