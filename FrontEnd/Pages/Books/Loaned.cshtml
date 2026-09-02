@@ -1,0 +1,46 @@
+﻿@page
+@model FrontEnd.Pages.Books.LoanedModel
+
+@{
+    ViewData["Title"] = "Libros prestados";
+}
+
+<h1>Libros prestados</h1>
+
+<p>Listado de libros que actualmente no se encuentran disponibles.</p>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+else if (Model.LoanedBooks.Count == 0)
+{
+    <div class="alert alert-info">
+        No existen libros prestados actualmente.
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Código interno</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var book in Model.LoanedBooks)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.InternalCode</td>
+                    <td>Prestado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
