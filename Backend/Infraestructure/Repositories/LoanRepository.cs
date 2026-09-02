@@ -1,85 +1,39 @@
-﻿using Backend.Domain.Interfaces;
+﻿
+using Backend.Domain.Interfaces;
 using Backend.Domain.Models;
-using MySqlConnector;
+using Backend.Infraestructure.Persistence;
+using Backend.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Repositories
 {
-    public class LoanRepository : ILoanRepository
+    public class LoanRepository : BaseRepository<Loan>
     {
-        private readonly IConfiguration _configuration;
+        private readonly LibraryDbContext _context;
 
-        public LoanRepository(IConfiguration configuration)
+        public LoanRepository(LibraryDbContext context) : base(context)
         {
-            _configuration = configuration;
+            _context = context;
         }
 
         public async Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync()
         {
-            var loanedBooks = new List<LoanedBook>();
-
-            var connectionString =
-                _configuration.GetConnectionString("LibraryDatabase");
-
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new InvalidOperationException(
-                    "La conexión a la base de datos no está configurada."
-                );
-            }
-
-            await using var connection =
-                new MySqlConnection(connectionString);
-
-            await connection.OpenAsync();
-
-            const string query = @"
-                SELECT
-                    c.Id AS CopyId,
-                    b.Id AS BookId,
-                    b.Title,
-                    c.InternalCode,
-                    c.Status
-                FROM Copy c
-                INNER JOIN Book b
-                    ON b.Id = c.BookId
-                WHERE c.Status = 'Loaned'
-                    AND c.IsActive = TRUE
-                    AND b.IsActive = TRUE;
-            ";
-
-            await using var command =
-                new MySqlCommand(query, connection);
-
-            await using var reader =
-                await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                loanedBooks.Add(new LoanedBook
+            return await _context.Copies
+                .Where(c =>
+                    c.Status == "Loaned" &&
+                    c.IsActive &&
+                    c.Book.IsActive
+                )
+                .Select(c => new LoanedBook
                 {
-                    CopyId = reader.GetInt32(
-                        reader.GetOrdinal("CopyId")
-                    ),
-
-                    BookId = reader.GetInt32(
-                        reader.GetOrdinal("BookId")
-                    ),
-
-                    Title = reader.GetString(
-                        reader.GetOrdinal("Title")
-                    ),
-
-                    InternalCode = reader.GetString(
-                        reader.GetOrdinal("InternalCode")
-                    ),
-
-                    Status = reader.GetString(
-                        reader.GetOrdinal("Status")
-                    )
-                });
-            }
-
-            return loanedBooks;
+                    CopyId = c.Id,
+                    BookId = c.Book.Id,
+                    Title = c.Book.Title,
+                    InternalCode = c.InternalCode,
+                    Status = c.Status
+                })
+                .ToListAsync();
         }
     }
 }
+
