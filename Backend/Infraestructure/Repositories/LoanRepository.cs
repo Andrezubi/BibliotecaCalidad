@@ -21,8 +21,8 @@ namespace Backend.Infrastructure.Repositories
             return await _context.Copies
                 .Where(c =>
                     c.Status == "Loaned" &&
-                    c.IsActive &&
-                    c.Book.IsActive
+                    c.IsActive == true &&
+                    c.Book.IsActive == true
                 )
                 .Select(c => new LoanedBook
                 {
