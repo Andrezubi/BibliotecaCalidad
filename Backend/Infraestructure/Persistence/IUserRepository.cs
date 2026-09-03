@@ -13,4 +13,6 @@ public interface IUserRepository
     Task<Role?> GetRoleByNameAsync(string roleName);
 
     Task AddAsync(User user);
+
+    Task SaveChangesAsync();
 }
