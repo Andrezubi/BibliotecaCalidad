@@ -1,6 +1,6 @@
-namespace Backend.Domain.Models;
+﻿namespace Backend.Application.DTOs;
 
-public class Book
+public class BookDto
 {
     public int Id { get; set; }
 
@@ -25,16 +25,4 @@ public class Book
     public DateTime? UpdatedAt { get; set; }
 
     public int? UserId { get; set; }
-
-    // Relaciones
-    public virtual User? User { get; set; }
-
-    public virtual ICollection<Bookauthor> Bookauthors { get; set; }
-        = new List<Bookauthor>();
-
-    public virtual ICollection<Bookcategory> Bookcategories { get; set; }
-        = new List<Bookcategory>();
-
-    public virtual ICollection<Copy> Copies { get; set; }
-        = new List<Copy>();
 }

@@ -1,0 +1,206 @@
+﻿@page
+@model FrontEnd.Pages.Books.CreateModel
+
+@{
+    ViewData["Title"] = "Registrar Libro";
+}
+
+<div class="container content-wrapper">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card-custom">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <h2 class="page-title mb-0">
+
+                        <i class="bi bi-plus-circle me-2"></i>
+
+                        Registrar Libro
+
+                    </h2>
+
+                    <a asp-page="Index"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+
+                        Volver
+
+                    </a>
+
+                </div>
+
+                <form method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="Book.Title"
+                               class="form-label">
+                            Título
+                        </label>
+
+                        <input asp-for="Book.Title"
+                               class="form-control"
+                               placeholder="Ingrese el título del libro" />
+
+                        <span asp-validation-for="Book.Title"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.EditionNumber"
+                                   class="form-label">
+                                Número de edición
+                            </label>
+
+                            <input asp-for="Book.EditionNumber"
+                                   type="number"
+                                   min="1"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Book.EditionNumber"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.ISBN"
+                                   class="form-label">
+                                ISBN
+                            </label>
+
+                            <input asp-for="Book.ISBN"
+                                   class="form-control"
+                                   maxlength="20"
+                                   placeholder="Ingrese el ISBN" />
+
+                            <span asp-validation-for="Book.ISBN"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.PublicationYear"
+                                   class="form-label">
+                                Año de publicación
+                            </label>
+
+                            <input asp-for="Book.PublicationYear"
+                                   type="number"
+                                   min="1000"
+                                   max="2100"
+                                   class="form-control"
+                                   placeholder="Ej. 2024" />
+
+                            <span asp-validation-for="Book.PublicationYear"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.Publisher"
+                                   class="form-label">
+                                Editorial
+                            </label>
+
+                            <input asp-for="Book.Publisher"
+                                   class="form-control"
+                                   maxlength="150"
+                                   placeholder="Ingrese la editorial" />
+
+                            <span asp-validation-for="Book.Publisher"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="Book.PageCount"
+                               class="form-label">
+                            Cantidad de páginas
+                        </label>
+
+                        <input asp-for="Book.PageCount"
+                               type="number"
+                               min="1"
+                               class="form-control"
+                               placeholder="Ingrese la cantidad de páginas" />
+
+                        <span asp-validation-for="Book.PageCount"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label asp-for="Book.Description"
+                               class="form-label">
+                            Descripción
+                        </label>
+
+                        <textarea asp-for="Book.Description"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Ingrese una descripción del libro"></textarea>
+
+                        <span asp-validation-for="Book.Description"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="text-end">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+
+                            <i class="bi bi-floppy me-2"></i>
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

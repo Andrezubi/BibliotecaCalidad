@@ -11,7 +11,7 @@ public partial class Author
 
     public string LastName { get; set; } = null!;
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

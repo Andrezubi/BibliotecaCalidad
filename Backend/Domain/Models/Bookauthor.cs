@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Backend.Domain.Models;
 
 public partial class Bookauthor
@@ -9,7 +8,7 @@ public partial class Bookauthor
 
     public int AuthorId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

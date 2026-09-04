@@ -1,7 +1,6 @@
 ﻿using Backend.Domain.Interfaces;
 using Backend.Domain.Models;
 using Backend.Infraestructure.Persistence;
-using Backend.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Repositories;

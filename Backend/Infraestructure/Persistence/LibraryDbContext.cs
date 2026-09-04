@@ -43,7 +43,7 @@ public partial class LibraryDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;database=librarydb;uid=root;pwd=yosoydios", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.46-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;database=librarydb;uid=root;pwd=1234", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.46-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -82,7 +82,7 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "FK_Book_User");
 
-            entity.HasIndex(e => e.Isbn, "ISBN").IsUnique();
+            entity.HasIndex(e => e.ISBN, "ISBN").IsUnique();
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -91,7 +91,7 @@ public partial class LibraryDbContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
-            entity.Property(e => e.Isbn)
+            entity.Property(e => e.ISBN)
                 .HasMaxLength(20)
                 .HasColumnName("ISBN");
             entity.Property(e => e.Publisher).HasMaxLength(150);

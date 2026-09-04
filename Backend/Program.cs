@@ -1,21 +1,15 @@
 using Backend.Application.Interfaces;
 using Backend.Application.Services;
 using Backend.Domain.Interfaces;
-
 using Backend.Infraestructure.Persistence;
-using Backend.Infrastructure.Persistence;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Security;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Text;
 
-
 var builder = WebApplication.CreateBuilder(args);
-
 
 // ======================================================
 // CONTROLLERS
@@ -23,9 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-
 // ======================================================
-// DATABASE - MYSQL
+// DATABASE
 // ======================================================
 
 var connectionString =
@@ -45,9 +38,8 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
     )
 );
 
-
 // ======================================================
-// GENERIC REPOSITORY
+// BASE REPOSITORY
 // ======================================================
 
 builder.Services.AddScoped(
@@ -55,37 +47,37 @@ builder.Services.AddScoped(
     typeof(BaseRepository<>)
 );
 
+// ======================================================
+// BOOK
+// ======================================================
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 // ======================================================
-// LOANS
+// LOAN
 // ======================================================
 
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
-
 // ======================================================
-// USERS - REGISTER
+// USER
 // ======================================================
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IPasswordService, PasswordService>();
-
 builder.Services.AddScoped<IUserService, UserService>();
 
-
 // ======================================================
-// AUTHENTICATION - JWT
+// AUTHENTICATION
 // ======================================================
-
-builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 // ======================================================
-// JWT CONFIGURATION
+// JWT
 // ======================================================
 
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -93,58 +85,47 @@ var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrWhiteSpace(jwtKey))
 {
     throw new InvalidOperationException(
-        "La configuración 'Jwt:Key' no fue encontrada."
+        "La clave Jwt:Key no está configurada."
     );
 }
 
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-
 var jwtAudience = builder.Configuration["Jwt:Audience"];
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
 
-builder.Services
-    .AddAuthentication(options =>
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.DefaultAuthenticateScheme =
-            JwtBearerDefaults.AuthenticationScheme;
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
 
-        options.DefaultChallengeScheme =
-            JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters =
-            new TokenValidationParameters
-            {
-                ValidateIssuer = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
 
-                ValidateAudience = true,
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtKey)
+            ),
 
-                ValidateLifetime = true,
-
-                ValidateIssuerSigningKey = true,
-
-                ValidIssuer = jwtIssuer,
-
-                ValidAudience = jwtAudience,
-
-                IssuerSigningKey =
-                    new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtKey)
-                    )
-            };
-    });
-
-
-builder.Services.AddAuthorization();
-
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 // ======================================================
-// BUILD APP
+// BUILD
 // ======================================================
 
 var app = builder.Build();
-
 
 // ======================================================
 // HTTP PIPELINE
@@ -152,15 +133,9 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-
-// Primero autenticamos
 app.UseAuthentication();
-
-// Después comprobamos permisos
 app.UseAuthorization();
 
-
 app.MapControllers();
-
 
 app.Run();
