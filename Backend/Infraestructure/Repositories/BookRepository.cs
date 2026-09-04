@@ -5,50 +5,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Repositories;
 
-public class BookRepository : IBookRepository
+public class BookRepository
+    : BaseRepository<Book>, IBookRepository
 {
-    private readonly LibraryDbContext _context;
-
     public BookRepository(LibraryDbContext context)
+        : base(context)
     {
-        _context = context;
     }
 
     public async Task<IEnumerable<Book>> GetAllAsync()
     {
-        return await _context.Books
+        return await _dbSet
             .AsNoTracking()
             .Where(book => book.IsActive)
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
 
-    public async Task<Book?> GetByIdAsync(int id)
-    {
-        return await _context.Books
-            .FirstOrDefaultAsync(book => book.Id == id);
-    }
-
     public async Task<bool> ExistsByIsbnAsync(string isbn)
     {
-        return await _context.Books
+        return await _dbSet
             .AnyAsync(book =>
                 book.ISBN == isbn &&
                 book.IsActive);
-    }
-
-    public async Task AddAsync(Book book)
-    {
-        await _context.Books.AddAsync(book);
-
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Book book)
-    {
-        _context.Books.Update(book);
-
-        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Book book)
@@ -56,8 +35,6 @@ public class BookRepository : IBookRepository
         book.IsActive = false;
         book.UpdatedAt = DateTime.Now;
 
-        _context.Books.Update(book);
-
-        await _context.SaveChangesAsync();
+        await UpdateAsync(book);
     }
 }

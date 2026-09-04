@@ -2,17 +2,7 @@
 
 namespace Backend.Domain.Interfaces;
 
-public interface IBookRepository
+public interface IBookRepository : IBaseRepository<Book>
 {
-    Task<IEnumerable<Book>> GetAllAsync();
-
-    Task<Book?> GetByIdAsync(int id);
-
     Task<bool> ExistsByIsbnAsync(string isbn);
-
-    Task AddAsync(Book book);
-
-    Task UpdateAsync(Book book);
-
-    Task DeleteAsync(Book book);
 }

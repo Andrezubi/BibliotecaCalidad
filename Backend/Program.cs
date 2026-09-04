@@ -55,7 +55,7 @@ builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
 // ============================================
-// BUILD APP
+// APPLICATION
 // ============================================
 
 var app = builder.Build();

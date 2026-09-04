@@ -1,6 +1,8 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Entities;
+using Backend.Domain.Interfaces;
+using Backend.Domain.Validators;
 
 namespace Backend.Application.Services;
 
@@ -17,49 +19,33 @@ public class BookService : IBookService
     {
         var books = await _bookRepository.GetAllAsync();
 
-        return books.Select(book => new BookDto
-        {
-            Id = book.Id,
-            Title = book.Title,
-            EditionNumber = book.EditionNumber,
-            ISBN = book.ISBN,
-            PublicationYear = book.PublicationYear,
-            Publisher = book.Publisher,
-            PageCount = book.PageCount,
-            Description = book.Description,
-            IsActive = book.IsActive,
-            CreatedAt = book.CreatedAt,
-            UpdatedAt = book.UpdatedAt,
-            UserId = book.UserId
-        });
+        return books.Select(MapToDto);
     }
 
     public async Task<BookDto?> GetByIdAsync(int id)
     {
         var book = await _bookRepository.GetByIdAsync(id);
 
-        if (book == null)
+        if (book == null || !book.IsActive)
             return null;
 
-        return new BookDto
-        {
-            Id = book.Id,
-            Title = book.Title,
-            EditionNumber = book.EditionNumber,
-            ISBN = book.ISBN,
-            PublicationYear = book.PublicationYear,
-            Publisher = book.Publisher,
-            PageCount = book.PageCount,
-            Description = book.Description,
-            IsActive = book.IsActive,
-            CreatedAt = book.CreatedAt,
-            UpdatedAt = book.UpdatedAt,
-            UserId = book.UserId
-        };
+        return MapToDto(book);
     }
 
     public async Task<BookDto> CreateAsync(CreateBookDto dto)
     {
+        if (!string.IsNullOrWhiteSpace(dto.ISBN))
+        {
+            var isbnExists =
+                await _bookRepository.ExistsByIsbnAsync(dto.ISBN);
+
+            if (isbnExists)
+            {
+                throw new InvalidOperationException(
+                    "Ya existe un libro activo con ese ISBN.");
+            }
+        }
+
         var book = new Book
         {
             Title = dto.Title,
@@ -74,31 +60,34 @@ public class BookService : IBookService
             CreatedAt = DateTime.Now
         };
 
+        BookValidator.Validate(book);
+
         await _bookRepository.AddAsync(book);
 
-        return new BookDto
-        {
-            Id = book.Id,
-            Title = book.Title,
-            EditionNumber = book.EditionNumber,
-            ISBN = book.ISBN,
-            PublicationYear = book.PublicationYear,
-            Publisher = book.Publisher,
-            PageCount = book.PageCount,
-            Description = book.Description,
-            IsActive = book.IsActive,
-            CreatedAt = book.CreatedAt,
-            UpdatedAt = book.UpdatedAt,
-            UserId = book.UserId
-        };
+        return MapToDto(book);
     }
 
-    public async Task<BookDto?> UpdateAsync(int id, UpdateBookDto dto)
+    public async Task<BookDto?> UpdateAsync(
+        int id,
+        UpdateBookDto dto)
     {
         var book = await _bookRepository.GetByIdAsync(id);
 
-        if (book == null)
+        if (book == null || !book.IsActive)
             return null;
+
+        if (!string.IsNullOrWhiteSpace(dto.ISBN) &&
+            dto.ISBN != book.ISBN)
+        {
+            var isbnExists =
+                await _bookRepository.ExistsByIsbnAsync(dto.ISBN);
+
+            if (isbnExists)
+            {
+                throw new InvalidOperationException(
+                    "Ya existe un libro activo con ese ISBN.");
+            }
+        }
 
         book.Title = dto.Title;
         book.EditionNumber = dto.EditionNumber;
@@ -110,8 +99,27 @@ public class BookService : IBookService
         book.UserId = dto.UserId;
         book.UpdatedAt = DateTime.Now;
 
+        BookValidator.Validate(book);
+
         await _bookRepository.UpdateAsync(book);
 
+        return MapToDto(book);
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var book = await _bookRepository.GetByIdAsync(id);
+
+        if (book == null || !book.IsActive)
+            return false;
+
+        await _bookRepository.DeleteAsync(book);
+
+        return true;
+    }
+
+    private static BookDto MapToDto(Book book)
+    {
         return new BookDto
         {
             Id = book.Id,
@@ -127,20 +135,5 @@ public class BookService : IBookService
             UpdatedAt = book.UpdatedAt,
             UserId = book.UserId
         };
-    }
-
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var book = await _bookRepository.GetByIdAsync(id);
-
-        if (book == null)
-            return false;
-
-        book.IsActive = false;
-        book.UpdatedAt = DateTime.Now;
-
-        await _bookRepository.UpdateAsync(book);
-
-        return true;
     }
 }
