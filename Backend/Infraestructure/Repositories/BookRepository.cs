@@ -1,12 +1,11 @@
-﻿using Backend.Domain.Entities;
+﻿using Backend.Domain.Models;
 using Backend.Domain.Interfaces;
-using Backend.Infrastructure.Persistence;
+using Backend.Infraestructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infrastructure.Repositories;
 
-public class BookRepository
-    : BaseRepository<Book>, IBookRepository
+public class BookRepository : BaseRepository<Book>, IBookRepository
 {
     public BookRepository(LibraryDbContext context)
         : base(context)

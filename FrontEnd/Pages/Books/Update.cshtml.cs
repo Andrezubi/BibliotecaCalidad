@@ -1,15 +1,15 @@
-using Backend.Application.DTOs;
-using Backend.Application.Interfaces;
+using FrontEnd.DTOs;
+using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace LibraryBookCrud.Pages.Books;
+namespace FrontEnd.Pages.Books;
 
 public class UpdateModel : PageModel
 {
-    private readonly IBookService _bookService;
+    private readonly BookService _bookService;
 
-    public UpdateModel(IBookService bookService)
+    public UpdateModel(BookService bookService)
     {
         _bookService = bookService;
     }
@@ -25,7 +25,9 @@ public class UpdateModel : PageModel
         var book = await _bookService.GetByIdAsync(Id);
 
         if (book == null)
+        {
             return NotFound();
+        }
 
         Book = new UpdateBookDto
         {
@@ -45,24 +47,37 @@ public class UpdateModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
+        {
             return Page();
-
-        try
-        {
-            var result = await _bookService.UpdateAsync(Id, Book);
-
-            if (result == null)
-                return NotFound();
-
-            TempData["Success"] = "Libro actualizado correctamente.";
-
-            return RedirectToPage("Index");
         }
-        catch (InvalidOperationException ex)
+
+        var userId = HttpContext.Session.GetInt32("UserId");
+
+        if (!userId.HasValue)
         {
-            ModelState.AddModelError(string.Empty, ex.Message);
+            ModelState.AddModelError(
+                string.Empty,
+                "No se encontró el usuario autenticado.");
 
             return Page();
         }
+
+        Book.UserId = userId.Value;
+
+        var result = await _bookService.UpdateAsync(Id, Book);
+
+        if (!result)
+        {
+            ModelState.AddModelError(
+                string.Empty,
+                "No se pudo actualizar el libro.");
+
+            return Page();
+        }
+
+        TempData["Success"] =
+            "Libro actualizado correctamente.";
+
+        return RedirectToPage("Index");
     }
 }

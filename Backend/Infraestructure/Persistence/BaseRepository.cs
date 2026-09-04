@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Backend.Infrastructure.Persistence;
+namespace Backend.Infraestructure.Persistence;
 
 public class BaseRepository<T> : IBaseRepository<T>
     where T : class

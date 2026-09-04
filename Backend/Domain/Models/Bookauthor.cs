@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Backend.Domain.Models;
 
 public partial class Bookauthor

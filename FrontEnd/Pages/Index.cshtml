@@ -254,7 +254,7 @@
                         funcionalidades personalizadas de la biblioteca.
                     </p>
 
-                    @if (Context.Session.GetString("AuthToken") != null)
+                    @if (HttpContext.Session.GetString("AuthToken") == null)
                     {
                         <a asp-page="/Books/Loaned">
 
@@ -482,8 +482,7 @@
 <!-- =========================================
      REGISTRO / LOGIN
 ========================================= -->
-
-@if (Context.Session.GetString("AuthToken") == null)
+@if (HttpContext.Session.GetString("AuthToken") == null)
 {
     <section class="cta-section">
 

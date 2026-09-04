@@ -1,15 +1,15 @@
-using Backend.Application.DTOs;
-using Backend.Application.Interfaces;
+using FrontEnd.DTOs;
+using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace LibraryBookCrud.Pages.Books;
+namespace FrontEnd.Pages.Books;
 
 public class IndexModel : PageModel
 {
-    private readonly IBookService _bookService;
+    private readonly BookService _bookService;
 
-    public IndexModel(IBookService bookService)
+    public IndexModel(BookService bookService)
     {
         _bookService = bookService;
     }
@@ -18,9 +18,7 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var books = await _bookService.GetAllAsync();
-
-        Books = books.ToList();
+        Books = await _bookService.GetAllAsync();
     }
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
@@ -29,12 +27,14 @@ public class IndexModel : PageModel
 
         if (!result)
         {
-            TempData["Error"] = "No se encontró el libro.";
+            TempData["Error"] =
+                "No se pudo eliminar el libro.";
 
             return RedirectToPage();
         }
 
-        TempData["Success"] = "Libro eliminado correctamente.";
+        TempData["Success"] =
+            "Libro eliminado correctamente.";
 
         return RedirectToPage();
     }

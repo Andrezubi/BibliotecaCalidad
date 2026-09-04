@@ -5,226 +5,232 @@
     ViewData["Title"] = "Libros";
 }
 
-<div class="card-custom">
+<div class="container content-wrapper">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="card-custom">
 
-        <h2 class="page-title mb-0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-            <i class="bi bi-book me-2"></i>
+            <h2 class="page-title mb-0">
+                <i class="bi bi-book me-2"></i>
+                Lista de Libros
+            </h2>
 
-            Lista de Libros
+            <a asp-page="Create"
+               class="btn btn-primary">
 
-        </h2>
+                <i class="bi bi-plus-circle me-2"></i>
+                Nuevo Libro
 
-        <a asp-page="Create"
-           class="btn btn-primary">
-
-            <i class="bi bi-plus-circle me-2"></i>
-
-            Nuevo Libro
-
-        </a>
-
-    </div>
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show">
-
-            @TempData["Success"]
-
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-            </button>
+            </a>
 
         </div>
-    }
 
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show">
 
-            @TempData["Error"]
+                <i class="bi bi-check-circle me-2"></i>
 
-            <button type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-            </button>
+                @TempData["Success"]
 
-        </div>
-    }
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
 
-    @if (Model.Books.Any())
-    {
-        <div class="table-responsive">
+            </div>
+        }
 
-            <table class="table table-hover align-middle">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show">
 
-                <thead>
+                <i class="bi bi-exclamation-triangle me-2"></i>
 
-                    <tr>
+                @TempData["Error"]
 
-                        <th>Título</th>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
 
-                        <th class="text-center">
-                            Edición
-                        </th>
+            </div>
+        }
 
-                        <th class="text-center">
-                            ISBN
-                        </th>
+        @if (Model.Books.Any())
+        {
+            <div class="table-responsive">
 
-                        <th class="text-center">
-                            Año
-                        </th>
+                <table class="table table-hover align-middle">
 
-                        <th>
-                            Editorial
-                        </th>
+                    <thead>
 
-                        <th class="text-center">
-                            Páginas
-                        </th>
-
-                        <th class="text-center">
-                            Estado
-                        </th>
-
-                        <th class="text-center">
-                            Acciones
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @foreach (var book in Model.Books)
-                    {
                         <tr>
 
-                            <td>
+                            <th>Título</th>
 
-                                <strong>
-                                    @book.Title
-                                </strong>
+                            <th class="text-center">
+                                Edición
+                            </th>
 
-                                @if (!string.IsNullOrWhiteSpace(book.Description))
-                                {
-                                    <br />
+                            <th class="text-center">
+                                ISBN
+                            </th>
 
-                                    <small class="text-muted">
-                                        @(book.Description.Length > 80
-                                                                    ? book.Description[..80] + "..."
-                                                                    : book.Description)
-                        </small>
-                                                }
+                            <th class="text-center">
+                                Año
+                            </th>
 
-                        </td>
+                            <th>
+                                Editorial
+                            </th>
 
-                        <td class="text-center">
-                            @book.EditionNumber
-                        </td>
+                            <th class="text-center">
+                                Páginas
+                            </th>
 
-                        <td class="text-center">
-                            @(string.IsNullOrWhiteSpace(book.ISBN)
-                                                    ? "-"
-                                                    : book.ISBN)
-                                                            </td>
+                            <th class="text-center">
+                                Estado
+                            </th>
 
-                        <td class="text-center">
-                            @(book.PublicationYear?.ToString() ?? "-")
-                        </td>
-
-                        <td>
-                            @(string.IsNullOrWhiteSpace(book.Publisher)
-                                                    ? "-"
-                                                    : book.Publisher)
-                    </td>
-
-                            <td class="text-center">
-                                @(book.PageCount?.ToString() ?? "-")
-                            </td>
-
-                            <td class="text-center">
-
-                        @if (book.IsActive)
-                                {
-                                    <span class="badge bg-success">
-                                        Activo
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">
-                                        Inactivo
-                                    </span>
-                                }
-
-                            </td>
-
-                            <td class="text-center">
-
-                                <a asp-page="Edit"
-                                   asp-route-id="@book.Id"
-                                   class="btn btn-warning btn-sm me-1">
-
-                                    <i class="bi bi-pencil"></i>
-
-                                </a>
-
-                                @if (book.IsActive)
-                                {
-                                    <form method="post"
-                                          asp-page-handler="Delete"
-                                          asp-route-id="@book.Id"
-                                          style="display:inline;">
-
-                                        <button type="submit"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('¿Desea eliminar este libro?');">
-
-                                            <i class="bi bi-trash"></i>
-
-                                        </button>
-
-                                    </form>
-                                }
-
-                            </td>
+                            <th class="text-center">
+                                Acciones
+                            </th>
 
                         </tr>
-                    }
 
-                </tbody>
+                    </thead>
 
-            </table>
+                    <tbody>
 
-        </div>
-    }
-    else
-    {
-        <div class="text-center py-5">
+                        @foreach (var book in Model.Books)
+                        {
+                            <tr>
 
-            <i class="bi bi-book display-1 text-secondary"></i>
+                                <td>
 
-            <h4 class="mt-3">
+                                    <strong>
+                                        @book.Title
+                                    </strong>
 
-                No existen libros registrados.
+                                    @if (!string.IsNullOrWhiteSpace(book.Description))
+                                    {
+                                        <br />
 
-            </h4>
+                                        <small class="text-muted">
 
-            <p class="text-muted">
+                                            @(book.Description.Length > 80
+                                                ? book.Description[..80] + "..."
+                                                : book.Description)
 
-                Presione <strong>Nuevo Libro</strong>
-                para registrar uno.
+                                        </small>
+                                    }
 
-            </p>
+                                </td>
 
-        </div>
-    }
+                                <td class="text-center">
+                                    @book.EditionNumber
+                                </td>
+
+                                <td class="text-center">
+                                    @(string.IsNullOrWhiteSpace(book.ISBN)
+                                        ? "-"
+                                        : book.ISBN)
+                                </td>
+
+                                <td class="text-center">
+                                    @(book.PublicationYear?.ToString() ?? "-")
+                                </td>
+
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(book.Publisher)
+                                        ? "-"
+                                        : book.Publisher)
+                                </td>
+
+                                <td class="text-center">
+                                    @(book.PageCount?.ToString() ?? "-")
+                                </td>
+
+                                <td class="text-center">
+
+                                    @if (book.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Activo
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Inactivo
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td class="text-center">
+
+                                    @if (book.IsActive)
+                                    {
+                                        <a asp-page="Update"
+                                           asp-route-id="@book.Id"
+                                           class="btn btn-warning btn-sm me-1"
+                                           title="Editar">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+                                        <form method="post"
+                                              asp-page-handler="Delete"
+                                              asp-route-id="@book.Id"
+                                              style="display:inline;">
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm"
+                                                    title="Eliminar"
+                                                    onclick="return confirm('¿Desea eliminar este libro?');">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+
+                <i class="bi bi-book display-1 text-secondary"></i>
+
+                <h4 class="mt-3">
+                    No existen libros registrados.
+                </h4>
+
+                <p class="text-muted">
+
+                    Presione <strong>Nuevo Libro</strong>
+                    para registrar uno.
+
+                </p>
+
+            </div>
+        }
+
+    </div>
 
 </div>

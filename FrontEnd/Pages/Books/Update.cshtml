@@ -5,181 +5,191 @@
     ViewData["Title"] = "Actualizar Libro";
 }
 
-<div class="row justify-content-center">
+<div class="container content-wrapper">
 
-    <div class="col-lg-8">
+    <div class="row justify-content-center">
 
-        <div class="card-custom">
+        <div class="col-lg-8">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="card-custom">
 
-                <h2 class="page-title mb-0">
+                <div class="d-flex justify-content-between align-items-center mb-4">
 
-                    <i class="bi bi-pencil-square me-2"></i>
+                    <h2 class="page-title mb-0">
 
-                    Actualizar Libro
+                        <i class="bi bi-pencil-square me-2"></i>
 
-                </h2>
+                        Actualizar Libro
 
-                <a asp-page="Index"
-                   class="btn btn-outline-secondary">
+                    </h2>
 
-                    <i class="bi bi-arrow-left me-1"></i>
+                    <a asp-page="Index"
+                       class="btn btn-outline-secondary">
 
-                    Volver
+                        <i class="bi bi-arrow-left me-1"></i>
 
-                </a>
+                        Volver
 
-            </div>
-
-            <form method="post">
-
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3">
-                </div>
-
-                <input type="hidden"
-                       asp-for="Id" />
-
-                <div class="mb-3">
-
-                    <label asp-for="Book.Title"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Book.Title"
-                           class="form-control"
-                           placeholder="Ingrese el título del libro" />
-
-                    <span asp-validation-for="Book.Title"
-                          class="text-danger">
-                    </span>
+                    </a>
 
                 </div>
 
-                <div class="row">
+                <form method="post">
 
-                    <div class="col-md-6 mb-3">
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3">
+                    </div>
 
-                        <label asp-for="Book.EditionNumber"
+                    <input type="hidden"
+                           asp-for="Id" />
+
+                    <div class="mb-3">
+
+                        <label asp-for="Book.Title"
                                class="form-label">
+                            Título
                         </label>
 
-                        <input asp-for="Book.EditionNumber"
+                        <input asp-for="Book.Title"
+                               class="form-control"
+                               placeholder="Ingrese el título del libro" />
+
+                        <span asp-validation-for="Book.Title"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.EditionNumber"
+                                   class="form-label">
+                                Número de edición
+                            </label>
+
+                            <input asp-for="Book.EditionNumber"
+                                   type="number"
+                                   min="1"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Book.EditionNumber"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.ISBN"
+                                   class="form-label">
+                                ISBN
+                            </label>
+
+                            <input asp-for="Book.ISBN"
+                                   class="form-control"
+                                   maxlength="20" />
+
+                            <span asp-validation-for="Book.ISBN"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.PublicationYear"
+                                   class="form-label">
+                                Año de publicación
+                            </label>
+
+                            <input asp-for="Book.PublicationYear"
+                                   type="number"
+                                   min="1000"
+                                   max="2100"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Book.PublicationYear"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Book.Publisher"
+                                   class="form-label">
+                                Editorial
+                            </label>
+
+                            <input asp-for="Book.Publisher"
+                                   class="form-control"
+                                   maxlength="150" />
+
+                            <span asp-validation-for="Book.Publisher"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="Book.PageCount"
+                               class="form-label">
+                            Cantidad de páginas
+                        </label>
+
+                        <input asp-for="Book.PageCount"
                                type="number"
                                min="1"
                                class="form-control" />
 
-                        <span asp-validation-for="Book.EditionNumber"
+                        <span asp-validation-for="Book.PageCount"
                               class="text-danger">
                         </span>
 
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-4">
 
-                        <label asp-for="Book.ISBN"
+                        <label asp-for="Book.Description"
                                class="form-label">
+                            Descripción
                         </label>
 
-                        <input asp-for="Book.ISBN"
-                               class="form-control"
-                               maxlength="20" />
+                        <textarea asp-for="Book.Description"
+                                  class="form-control"
+                                  rows="4"></textarea>
 
-                        <span asp-validation-for="Book.ISBN"
+                        <span asp-validation-for="Book.Description"
                               class="text-danger">
                         </span>
 
                     </div>
 
-                </div>
+                    <div class="text-end">
 
-                <div class="row">
+                        <button type="submit"
+                                class="btn btn-primary">
 
-                    <div class="col-md-6 mb-3">
+                            <i class="bi bi-floppy me-2"></i>
 
-                        <label asp-for="Book.PublicationYear"
-                               class="form-label">
-                        </label>
+                            Actualizar
 
-                        <input asp-for="Book.PublicationYear"
-                               type="number"
-                               min="1000"
-                               max="2100"
-                               class="form-control" />
-
-                        <span asp-validation-for="Book.PublicationYear"
-                              class="text-danger">
-                        </span>
+                        </button>
 
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                </form>
 
-                        <label asp-for="Book.Publisher"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="Book.Publisher"
-                               class="form-control"
-                               maxlength="150" />
-
-                        <span asp-validation-for="Book.Publisher"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label asp-for="Book.PageCount"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Book.PageCount"
-                           type="number"
-                           min="1"
-                           class="form-control" />
-
-                    <span asp-validation-for="Book.PageCount"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-                <div class="mb-4">
-
-                    <label asp-for="Book.Description"
-                           class="form-label">
-                    </label>
-
-                    <textarea asp-for="Book.Description"
-                              class="form-control"
-                              rows="4">
-                    </textarea>
-
-                    <span asp-validation-for="Book.Description"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-                <div class="text-end">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-
-                        <i class="bi bi-floppy me-2"></i>
-
-                        Actualizar
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 

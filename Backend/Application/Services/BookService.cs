@@ -1,6 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
-using Backend.Domain.Entities;
+using Backend.Domain.Models;
 using Backend.Domain.Interfaces;
 using Backend.Domain.Validators;
 

@@ -1,7 +1,7 @@
 using Backend.Application.Interfaces;
 using Backend.Application.Services;
 using Backend.Domain.Interfaces;
-using Backend.Infrastructure.Persistence;
+using Backend.Infraestructure.Persistence;
 using Backend.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
