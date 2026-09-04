@@ -1,4 +1,4 @@
-namespace LibraryBookCrud.Domain.Entities;
+namespace Backend.Domain.Entities;
 
 public class Book
 {

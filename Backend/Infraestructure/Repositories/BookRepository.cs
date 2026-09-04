@@ -1,9 +1,9 @@
 ﻿using Backend.Domain.Entities;
 using Backend.Domain.Interfaces;
 using Backend.Infrastructure.Persistence;
-using Backend.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace LibraryBookCrud.Infrastructure.Repositories;
+namespace Backend.Infrastructure.Repositories;
 
 public class BookRepository : IBookRepository
 {
