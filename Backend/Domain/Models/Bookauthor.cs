@@ -8,7 +8,7 @@ public partial class Bookauthor
 
     public int AuthorId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

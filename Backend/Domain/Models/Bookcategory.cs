@@ -9,7 +9,7 @@ public partial class Bookcategory
 
     public int CategoryId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

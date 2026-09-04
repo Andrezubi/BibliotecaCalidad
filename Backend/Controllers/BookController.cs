@@ -69,4 +69,23 @@ public class BookController : ControllerBase
 
         return NoContent();
     }
+
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<BookDto>>> Search(
+    [FromQuery] string? title = null,
+    [FromQuery] string? author = null,
+    [FromQuery] string? category = null,
+    [FromQuery] string? isbn = null,
+    [FromQuery] string? publisher = null)
+    {
+        var books = await _bookService.SearchAsync(
+            title,
+            author,
+            category,
+            isbn,
+            publisher);
+
+        return Ok(books);
+    }
 }

@@ -117,7 +117,22 @@ public class BookService : IBookService
 
         return true;
     }
+    public async Task<IEnumerable<BookDto>> SearchAsync(
+    string? title = null,
+    string? author = null,
+    string? category = null,
+    string? isbn = null,
+    string? publisher = null)
+    {
+        var books = await _bookRepository.SearchAsync(
+            title,
+            author,
+            category,
+            isbn,
+            publisher);
 
+        return books.Select(MapToDto);
+    }
     private static BookDto MapToDto(Book book)
     {
         return new BookDto

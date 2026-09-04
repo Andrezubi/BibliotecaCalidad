@@ -124,4 +124,40 @@ public class BookService
 
         return response.IsSuccessStatusCode;
     }
+
+    //Search book by params
+
+    public async Task<List<BookDto>> SearchAsync(
+    string? title = null,
+    string? author = null,
+    string? category = null,
+    string? isbn = null,
+    string? publisher = null)
+    {
+        var queryParams = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(title))
+            queryParams.Add($"title={Uri.EscapeDataString(title)}");
+
+        if (!string.IsNullOrWhiteSpace(author))
+            queryParams.Add($"author={Uri.EscapeDataString(author)}");
+
+        if (!string.IsNullOrWhiteSpace(category))
+            queryParams.Add($"category={Uri.EscapeDataString(category)}");
+
+        if (!string.IsNullOrWhiteSpace(isbn))
+            queryParams.Add($"isbn={Uri.EscapeDataString(isbn)}");
+
+        if (!string.IsNullOrWhiteSpace(publisher))
+            queryParams.Add($"publisher={Uri.EscapeDataString(publisher)}");
+
+        var url = "api/Book/search";
+
+        if (queryParams.Any())
+            url += "?" + string.Join("&", queryParams);
+
+        return await _httpClient.GetFromJsonAsync<List<BookDto>>(url)
+               ?? new List<BookDto>();
+    }
+
 }
