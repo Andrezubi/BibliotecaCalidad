@@ -21,6 +21,11 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
         var response =
             await _authService.LoginAsync(Login);
 

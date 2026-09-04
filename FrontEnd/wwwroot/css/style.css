@@ -967,3 +967,376 @@
         font-size: 45px;
     }
 }
+/* =========================================
+   AUTHENTICATION
+========================================= */
+
+.auth-page {
+    min-height: calc(100vh - 82px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: linear-gradient( 135deg, var(--primary-light), var(--background) );
+}
+
+
+/* =========================================
+   AUTH CONTAINER
+========================================= */
+
+.auth-container {
+    width: 100%;
+    max-width: 1050px;
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+}
+
+
+/* =========================================
+   AUTH INFORMATION
+========================================= */
+
+.auth-info {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 55px;
+    color: white;
+    background: linear-gradient( 145deg, var(--dark), var(--primary-dark) );
+    overflow: hidden;
+}
+
+
+    .auth-info::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        top: -100px;
+        right: -100px;
+        border: 35px solid rgba(46, 204, 113, .12);
+        border-radius: 50%;
+    }
+
+
+    .auth-info::after {
+        content: "";
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        left: -100px;
+        bottom: -100px;
+        border: 30px solid rgba(255, 255, 255, .06);
+        border-radius: 50%;
+    }
+
+
+.auth-info-content {
+    position: relative;
+    z-index: 1;
+    max-width: 430px;
+}
+
+
+.auth-brand-icon {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    color: var(--dark);
+    background: var(--secondary);
+    border-radius: 15px;
+    font-size: 29px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+
+.auth-label {
+    display: block;
+    margin-bottom: 12px;
+    color: #A8F1C4;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+
+.auth-info h1 {
+    margin-bottom: 20px;
+    color: white;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+
+.auth-info p {
+    margin-bottom: 32px;
+    color: #D8D3E2;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   AUTH FEATURES
+========================================= */
+
+.auth-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, .15);
+}
+
+
+    .auth-features div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #E5E1EB;
+        font-size: 14px;
+    }
+
+
+    .auth-features i {
+        width: 24px;
+        color: var(--secondary);
+        font-size: 18px;
+        text-align: center;
+    }
+
+
+/* =========================================
+   AUTH FORM
+========================================= */
+
+.auth-form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 55px;
+}
+
+
+.auth-form {
+    width: 100%;
+    max-width: 430px;
+}
+
+
+.auth-form-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+
+.auth-mobile-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    color: var(--primary);
+    background: var(--primary-light);
+    border-radius: 50%;
+    font-size: 24px;
+}
+
+
+.auth-form-header h2 {
+    margin-bottom: 8px;
+    color: var(--dark);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+
+.auth-form-header p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+
+/* =========================================
+   AUTH FIELDS
+========================================= */
+
+.auth-field {
+    margin-bottom: 20px;
+}
+
+
+    .auth-field .form-label {
+        margin-bottom: 8px;
+        color: var(--dark);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+
+    .auth-field .input-group-text {
+        min-width: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        background: var(--primary-light);
+        border-color: var(--border);
+    }
+
+
+    .auth-field .form-control {
+        min-height: 45px;
+        border-color: var(--border);
+        color: var(--dark);
+        box-shadow: none;
+    }
+
+
+        .auth-field .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 .2rem rgba(108, 92, 231, .12);
+        }
+
+
+        .auth-field .form-control::placeholder {
+            color: #AAA4B7;
+        }
+
+
+/* =========================================
+   AUTH ALERT
+========================================= */
+
+.auth-alert {
+    margin-bottom: 25px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   AUTH BUTTONS
+========================================= */
+
+.auth-submit {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+
+.auth-register {
+    width: 100%;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   AUTH DIVIDER
+========================================= */
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 28px 0 18px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: center;
+}
+
+
+    .auth-divider::before,
+    .auth-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+    }
+
+
+/* =========================================
+   AUTH BACK
+========================================= */
+
+.auth-back {
+    margin-top: 25px;
+    text-align: center;
+}
+
+
+    .auth-back a {
+        color: var(--text-secondary);
+        font-size: 13px;
+        text-decoration: none;
+        transition: color .2s ease;
+    }
+
+
+        .auth-back a:hover {
+            color: var(--primary);
+        }
+
+
+/* =========================================
+   AUTH REGISTER
+========================================= */
+
+.auth-register-container {
+    max-width: 1100px;
+}
+
+
+/* =========================================
+   AUTH RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .auth-container {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+    }
+
+    .auth-info {
+        display: none;
+    }
+
+    .auth-form-container {
+        padding: 45px 35px;
+    }
+}
+
+
+@media (max-width: 575px) {
+
+    .auth-page {
+        padding: 30px 15px;
+    }
+
+    .auth-form-container {
+        padding: 35px 22px;
+    }
+
+    .auth-form-header h2 {
+        font-size: 26px;
+    }
+}

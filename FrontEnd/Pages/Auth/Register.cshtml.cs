@@ -21,13 +21,23 @@ public class RegisterModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var result = await _authService.RegisterAsync(User);
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        var result =
+            await _authService.RegisterAsync(User);
 
         if (!result.Success)
         {
             ErrorMessage = result.Message;
+
             return Page();
         }
+
+        TempData["Success"] =
+            "Cuenta creada correctamente. Ahora puedes iniciar sesión.";
 
         return RedirectToPage("/Auth/Login");
     }

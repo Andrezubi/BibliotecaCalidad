@@ -1,7 +1,18 @@
 ﻿@page
-@model IndexModel
+@using Microsoft.AspNetCore.Http
+
 @{
     ViewData["Title"] = "Inicio";
+
+    var authToken = HttpContext.Session.GetString("AuthToken");
+    var username = HttpContext.Session.GetString("Username");
+    var role = HttpContext.Session.GetString("Role");
+
+    var isAuthenticated = !string.IsNullOrEmpty(authToken);
+
+    var accountLabel = !string.IsNullOrEmpty(role)
+        ? role.ToUpper()
+        : "TU CUENTA";
 }
 
 <!-- =========================================
@@ -9,110 +20,82 @@
 ========================================= -->
 
 <section class="hero-section">
-
     <div class="container">
-
         <div class="row align-items-center min-vh-75">
 
             <div class="col-lg-7">
+                <div class="hero-content">
 
-                <span class="hero-badge">
-                    <i class="bi bi-book-half"></i>
-                    BIBLIOTECA VIRTUAL
-                </span>
+                    <span class="hero-label">
+                        <i class="bi bi-book-half me-2"></i>
+                        BIBLIOTECA VIRTUAL
+                    </span>
 
-                <h1 class="hero-title">
-                    Descubre historias
-                    que merecen ser
-                    <span>leídas.</span>
-                </h1>
+                    <h1 class="hero-title">
+                        Descubre historias que
+                        <span>merecen ser leídas.</span>
+                    </h1>
 
-                <p class="hero-description">
-                    Explora nuestra biblioteca virtual, encuentra nuevos
-                    libros, descubre autores y disfruta de tus lecturas
-                    favoritas desde cualquier lugar.
-                </p>
+                    <p class="hero-description">
+                        Explora nuestra colección de libros, descubre nuevos
+                        autores y encuentra tu próxima lectura favorita.
+                        Todo desde un solo lugar.
+                    </p>
 
-                <div class="hero-buttons">
+                    <div class="hero-buttons">
 
-                    <a asp-page="/Books/Index"
-                       class="btn btn-success btn-lg">
+                        <a asp-page="/Books/Index"
+                           class="btn btn-primary btn-lg">
+                            <i class="bi bi-book me-2"></i>
+                            Explorar libros
+                        </a>
 
-                        <i class="bi bi-search me-2"></i>
+                        <a asp-page="/Categories/Index"
+                           class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-grid-3x3-gap me-2"></i>
+                            Ver categorías
+                        </a>
 
-                        Explorar libros
-
-                    </a>
-
-
-                    <a asp-page="/Categories/Index"
-                       class="btn btn-outline-light btn-lg">
-
-                        <i class="bi bi-grid-3x3-gap me-2"></i>
-
-                        Ver categorías
-
-                    </a>
+                    </div>
 
                 </div>
+            </div>
 
+            <div class="col-lg-5 d-none d-lg-flex">
+                <div class="hero-illustration">
 
-                <div class="hero-features">
-
-                    <div>
-
+                    <div class="hero-book hero-book-one">
                         <i class="bi bi-book"></i>
-
-                        <span>
-                            Amplio catálogo
-                        </span>
-
                     </div>
 
-
-                    <div>
-
-                        <i class="bi bi-person-check"></i>
-
-                        <span>
-                            Autores y categorías
-                        </span>
-
+                    <div class="hero-book hero-book-two">
+                        <i class="bi bi-book-half"></i>
                     </div>
 
-
-                    <div>
-
-                        <i class="bi bi-laptop"></i>
-
-                        <span>
-                            Acceso virtual
-                        </span>
-
+                    <div class="hero-book hero-book-three">
+                        <i class="bi bi-journal-bookmark"></i>
                     </div>
+
+                    <div class="hero-circle"></div>
 
                 </div>
-
             </div>
 
         </div>
-
     </div>
-
 </section>
 
 
 <!-- =========================================
-     PRESENTACIÓN
+     FEATURES
 ========================================= -->
 
-<section class="features-section">
-
+<section class="section-padding">
     <div class="container">
 
-        <div class="section-heading">
+        <div class="section-heading text-center">
 
-            <span>
+            <span class="section-label">
                 TODO LO QUE NECESITAS
             </span>
 
@@ -121,15 +104,14 @@
             </h2>
 
             <p>
-                Encuentra, descubre y organiza tus lecturas
-                de una manera sencilla y cómoda.
+                Encuentra, explora y disfruta de tus libros
+                de una manera sencilla.
             </p>
 
         </div>
 
 
         <div class="row g-4">
-
 
             <!-- LIBROS -->
 
@@ -138,9 +120,7 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         <i class="bi bi-book"></i>
-
                     </div>
 
                     <h3>
@@ -148,16 +128,13 @@
                     </h3>
 
                     <p>
-                        Consulta nuestro catálogo y descubre
-                        libros de diferentes géneros y autores.
+                        Descubre nuestra colección de libros y
+                        encuentra nuevas historias para disfrutar.
                     </p>
 
                     <a asp-page="/Books/Index">
-
                         Ver libros
-
                         <i class="bi bi-arrow-right"></i>
-
                     </a>
 
                 </div>
@@ -172,9 +149,7 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         <i class="bi bi-grid-3x3-gap"></i>
-
                     </div>
 
                     <h3>
@@ -182,16 +157,13 @@
                     </h3>
 
                     <p>
-                        Encuentra tus lecturas favoritas
-                        organizadas por diferentes categorías.
+                        Explora diferentes categorías y encuentra
+                        libros de acuerdo con tus intereses.
                     </p>
 
                     <a asp-page="/Categories/Index">
-
                         Ver categorías
-
                         <i class="bi bi-arrow-right"></i>
-
                     </a>
 
                 </div>
@@ -206,9 +178,7 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         <i class="bi bi-person-lines-fill"></i>
-
                     </div>
 
                     <h3>
@@ -216,16 +186,13 @@
                     </h3>
 
                     <p>
-                        Descubre los autores detrás de las
+                        Descubre a los autores detrás de las
                         historias que forman nuestra biblioteca.
                     </p>
 
                     <a asp-page="/Authors/Index">
-
                         Ver autores
-
                         <i class="bi bi-arrow-right"></i>
-
                     </a>
 
                 </div>
@@ -240,38 +207,42 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         <i class="bi bi-person-circle"></i>
-
                     </div>
 
-                    <h3>
-                        Tu cuenta
-                    </h3>
-
-                    <p>
-                        Inicia sesión para acceder a las
-                        funcionalidades personalizadas de la biblioteca.
-                    </p>
-
-                    @if (HttpContext.Session.GetString("AuthToken") == null)
+                    @if (isAuthenticated)
                     {
+                        <h3>
+                            Tu cuenta
+                        </h3>
+
+                        <p>
+                            Bienvenido,
+                            <strong>@username</strong>.
+                            Consulta tus libros y continúa
+                            explorando nuestra biblioteca.
+                        </p>
+
                         <a asp-page="/Books/Loaned">
-
                             Mis libros
-
                             <i class="bi bi-arrow-right"></i>
-
                         </a>
                     }
                     else
                     {
+                        <h3>
+                            Tu cuenta
+                        </h3>
+
+                        <p>
+                            Inicia sesión o crea una cuenta para
+                            acceder a las funcionalidades
+                            personalizadas de la biblioteca.
+                        </p>
+
                         <a asp-page="/Auth/Login">
-
                             Iniciar sesión
-
                             <i class="bi bi-arrow-right"></i>
-
                         </a>
                     }
 
@@ -282,84 +253,81 @@
         </div>
 
     </div>
-
 </section>
 
 
 <!-- =========================================
-     SECCIÓN DE LECTURA
+     READING SECTION
 ========================================= -->
 
 <section class="reading-section">
 
     <div class="container">
 
-        <div class="row align-items-center g-5">
-
-
-            <!-- TEXTO -->
+        <div class="row align-items-center">
 
             <div class="col-lg-6">
 
-                <span class="section-label">
-                    EL PLACER DE LEER
-                </span>
+                <div class="reading-content">
 
-                <h2>
-                    Siempre hay una historia
-                    esperando por ti.
-                </h2>
+                    <span class="section-label">
+                        EL PLACER DE LEER
+                    </span>
 
-                <p>
-                    Una buena biblioteca no se trata solamente de
-                    almacenar libros. Se trata de crear un espacio
-                    donde cada persona pueda encontrar una historia,
-                    una idea o un conocimiento nuevo.
-                </p>
+                    <h2>
+                        Cada libro abre una
+                        nueva puerta.
+                    </h2>
 
-                <p>
-                    Explora nuestro catálogo y encuentra tu próxima
-                    lectura.
-                </p>
+                    <p>
+                        Leer nos permite conocer nuevos mundos,
+                        descubrir diferentes perspectivas y
+                        aprender algo nuevo con cada historia.
+                    </p>
 
-                <a asp-page="/Books/Index"
-                   class="btn btn-primary">
+                    <p>
+                        Nuestra biblioteca está pensada para que
+                        puedas encontrar fácilmente los libros
+                        que buscas y descubrir otros que quizás
+                        nunca habías considerado.
+                    </p>
 
-                    <i class="bi bi-book me-2"></i>
+                    <a asp-page="/Books/Index"
+                       class="btn btn-primary">
+                        <i class="bi bi-book me-2"></i>
+                        Explorar colección
+                    </a>
 
-                    Explorar biblioteca
-
-                </a>
+                </div>
 
             </div>
 
 
-            <!-- TARJETA VISUAL -->
-
             <div class="col-lg-6">
 
-                <div class="reading-card">
+                <div class="reading-visual">
 
-                    <div class="reading-card-icon">
-
-                        <i class="bi bi-book-half"></i>
-
+                    <div class="reading-card reading-card-back">
+                        <i class="bi bi-book"></i>
                     </div>
 
-                    <span>
-                        NUEVA LECTURA
-                    </span>
+                    <div class="reading-card reading-card-middle">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
 
-                    <h3>
-                        Abre un libro,
-                        abre un nuevo mundo.
-                    </h3>
+                    <div class="reading-card reading-card-front">
 
-                    <div class="reading-decoration">
+                        <div class="reading-card-icon">
+                            <i class="bi bi-book-half"></i>
+                        </div>
 
-                        <i class="bi bi-book"></i>
-                        <i class="bi bi-book"></i>
-                        <i class="bi bi-book"></i>
+                        <span>
+                            Tu próxima historia
+                        </span>
+
+                        <strong>
+                            comienza aquí.
+                        </strong>
 
                     </div>
 
@@ -375,98 +343,93 @@
 
 
 <!-- =========================================
-     ESTADÍSTICAS
+     STATISTICS
 ========================================= -->
 
 <section class="stats-section">
 
     <div class="container">
 
-        <div class="row align-items-center g-4">
+        <div class="row g-4 text-center">
 
+            <div class="col-6 col-md-3">
 
-            <!-- FRASE -->
+                <div class="stat-item">
 
-            <div class="col-lg-5">
+                    <div class="stat-icon">
+                        <i class="bi bi-book"></i>
+                    </div>
 
-                <div class="quote-icon">
+                    <div class="stat-number">
+                        <i class="bi bi-plus"></i>
+                    </div>
 
-                    <i class="bi bi-quote"></i>
+                    <p>
+                        Libros disponibles
+                    </p>
 
                 </div>
-
-                <blockquote>
-
-                    Un libro es un sueño que tienes
-                    en tus manos.
-
-                </blockquote>
-
-                <span class="quote-author">
-
-                    — Neil Gaiman
-
-                </span>
 
             </div>
 
 
-            <!-- ESTADÍSTICAS -->
+            <div class="col-6 col-md-3">
 
-            <div class="col-lg-7">
+                <div class="stat-item">
 
-                <div class="row g-4">
-
-
-                    <div class="col-4">
-
-                        <div class="stat-item">
-
-                            <strong>
-                                10K+
-                            </strong>
-
-                            <span>
-                                Libros
-                            </span>
-
-                        </div>
-
+                    <div class="stat-icon">
+                        <i class="bi bi-people"></i>
                     </div>
 
-
-                    <div class="col-4">
-
-                        <div class="stat-item">
-
-                            <strong>
-                                500+
-                            </strong>
-
-                            <span>
-                                Autores
-                            </span>
-
-                        </div>
-
+                    <div class="stat-number">
+                        <i class="bi bi-plus"></i>
                     </div>
 
+                    <p>
+                        Lectores registrados
+                    </p>
 
-                    <div class="col-4">
+                </div>
 
-                        <div class="stat-item">
+            </div>
 
-                            <strong>
-                                50+
-                            </strong>
 
-                            <span>
-                                Categorías
-                            </span>
+            <div class="col-6 col-md-3">
 
-                        </div>
+                <div class="stat-item">
 
+                    <div class="stat-icon">
+                        <i class="bi bi-person-lines-fill"></i>
                     </div>
+
+                    <div class="stat-number">
+                        <i class="bi bi-plus"></i>
+                    </div>
+
+                    <p>
+                        Autores
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-md-3">
+
+                <div class="stat-item">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                    </div>
+
+                    <div class="stat-number">
+                        <i class="bi bi-plus"></i>
+                    </div>
+
+                    <p>
+                        Categorías
+                    </p>
 
                 </div>
 
@@ -480,94 +443,96 @@
 
 
 <!-- =========================================
-     REGISTRO / LOGIN
+     CALL TO ACTION
 ========================================= -->
-@if (HttpContext.Session.GetString("AuthToken") == null)
-{
-    <section class="cta-section">
 
-        <div class="container">
+<section class="cta-section">
+
+    <div class="container">
+
+        <div class="cta-card">
 
             <div class="cta-content">
 
-                <span class="cta-label">
-                    ÚNETE A NOSOTROS
-                </span>
+                @if (isAuthenticated)
+                {
+                    <span class="section-label">
+                        @accountLabel
+                    </span>
 
-                <h2>
-                    Empieza tu próxima
-                    aventura literaria
-                </h2>
+                    <h2>
+                        ¡Hola, @username!
+                    </h2>
 
-                <p>
-                    Crea tu cuenta y disfruta de una experiencia
-                    más completa dentro de nuestra biblioteca virtual.
-                </p>
+                    <p>
+                        Continúa explorando nuestra biblioteca y
+                        descubre nuevas historias para disfrutar.
+                    </p>
+
+                    <div class="cta-buttons">
+
+                        <a asp-page="/Books/Index"
+                           class="btn btn-primary">
+                            <i class="bi bi-book me-2"></i>
+                            Ver libros
+                        </a>
+
+                        <a asp-page="/Books/Loaned"
+                           class="btn btn-outline-primary">
+                            <i class="bi bi-bookmark-check me-2"></i>
+                            Mis libros
+                        </a>
+
+                    </div>
+                }
+                else
+                {
+                    <span class="section-label">
+                        COMIENZA AHORA
+                    </span>
+
+                    <h2>
+                        Tu próxima gran lectura
+                        te está esperando.
+                    </h2>
+
+                    <p>
+                        Crea una cuenta y disfruta de todas las
+                        funcionalidades de nuestra biblioteca virtual.
+                    </p>
+
+                    <div class="cta-buttons">
+
+                        <a asp-page="/Auth/Register"
+                           class="btn btn-primary">
+                            <i class="bi bi-person-plus me-2"></i>
+                            Crear una cuenta
+                        </a>
+
+                        <a asp-page="/Auth/Login"
+                           class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Iniciar sesión
+                        </a>
+
+                    </div>
+                }
+
+            </div>
 
 
-                <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <div class="cta-decoration">
 
-                    <a asp-page="/Auth/Register"
-                       class="btn btn-success btn-lg">
-
-                        <i class="bi bi-person-plus me-2"></i>
-
-                        Crear una cuenta
-
-                    </a>
-
-
-                    <a asp-page="/Auth/Login"
-                       class="btn btn-primary btn-lg">
-
-                        <i class="bi bi-box-arrow-in-right me-2"></i>
-
-                        Iniciar sesión
-
-                    </a>
-
+                <div class="cta-book">
+                    <i class="bi bi-book-half"></i>
                 </div>
 
-            </div>
-
-        </div>
-
-    </section>
-}
-else
-{
-    <section class="cta-section">
-
-        <div class="container">
-
-            <div class="cta-content">
-
-                <span class="cta-label">
-                    BIENVENIDO DE NUEVO
-                </span>
-
-                <h2>
-                    Continúa con tu experiencia
-                    en la biblioteca
-                </h2>
-
-                <p>
-                    Consulta tus libros prestados y continúa
-                    explorando nuestro catálogo.
-                </p>
-
-                <a asp-page="/Books/Loaned"
-                   class="btn btn-success btn-lg">
-
-                    <i class="bi bi-book-half me-2"></i>
-
-                    Ver libros prestados
-
-                </a>
+                <div class="cta-circle"></div>
 
             </div>
 
         </div>
 
-    </section>
-}
+    </div>
+
+</section>

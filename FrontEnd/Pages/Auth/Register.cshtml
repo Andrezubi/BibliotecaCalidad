@@ -2,93 +2,358 @@
 @model FrontEnd.Pages.Auth.RegisterModel
 
 @{
-    ViewData["Title"] = "Registrarse";
+    ViewData["Title"] = "Crear cuenta";
 }
 
-<h1>Crear cuenta</h1>
+<div class="auth-page">
 
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">
-        @Model.ErrorMessage
+    <div class="auth-container auth-register-container">
+
+        <!-- PANEL IZQUIERDO -->
+        <div class="auth-info">
+
+            <div class="auth-info-content">
+
+                <div class="auth-brand-icon">
+                    <i class="bi bi-person-plus"></i>
+                </div>
+
+                <span class="auth-label">
+                    ÚNETE A NOSOTROS
+                </span>
+
+                <h1>
+                    Crea tu cuenta.
+                </h1>
+
+                <p>
+                    Regístrate en nuestra biblioteca virtual y disfruta
+                    de una experiencia completa para descubrir y gestionar
+                    tus lecturas.
+                </p>
+
+                <div class="auth-features">
+
+                    <div>
+                        <i class="bi bi-book"></i>
+                        <span>Explora libros y autores</span>
+                    </div>
+
+                    <div>
+                        <i class="bi bi-grid-3x3-gap"></i>
+                        <span>Descubre diferentes categorías</span>
+                    </div>
+
+                    <div>
+                        <i class="bi bi-person-check"></i>
+                        <span>Administra tu cuenta</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+        <div class="auth-form-container">
+
+            <div class="auth-form">
+
+                <div class="auth-form-header">
+
+                    <div class="auth-mobile-icon">
+                        <i class="bi bi-person-plus"></i>
+                    </div>
+
+                    <h2>
+                        Crear cuenta
+                    </h2>
+
+                    <p>
+                        Completa tus datos para registrarte.
+                    </p>
+
+                </div>
+
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger auth-alert">
+
+                        <i class="bi bi-exclamation-circle me-2"></i>
+
+                        @Model.ErrorMessage
+
+                    </div>
+                }
+
+
+                <form method="post">
+
+                    <!-- CI -->
+                    <div class="auth-field">
+
+                        <label asp-for="User.Ci"
+                               class="form-label">
+
+                            CI
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-card-text"></i>
+                            </span>
+
+                            <input asp-for="User.Ci"
+                                   class="form-control"
+                                   placeholder="Ingresa tu CI" />
+
+                        </div>
+
+                        <span asp-validation-for="User.Ci"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- COMPLEMENTO -->
+                    <div class="auth-field">
+
+                        <label asp-for="User.Complement"
+                               class="form-label">
+
+                            Complemento
+                            <span class="text-muted">
+                                (opcional)
+                            </span>
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-card-text"></i>
+                            </span>
+
+                            <input asp-for="User.Complement"
+                                   class="form-control"
+                                   maxlength="2"
+                                   placeholder="Ej. 1A" />
+
+                        </div>
+
+                        <span asp-validation-for="User.Complement"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <!-- NOMBRE -->
+                        <div class="col-md-6">
+
+                            <div class="auth-field">
+
+                                <label asp-for="User.FirstName"
+                                       class="form-label">
+
+                                    Nombre
+
+                                </label>
+
+                                <input asp-for="User.FirstName"
+                                       class="form-control"
+                                       placeholder="Nombre" />
+
+                                <span asp-validation-for="User.FirstName"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- APELLIDO -->
+                        <div class="col-md-6">
+
+                            <div class="auth-field">
+
+                                <label asp-for="User.LastName"
+                                       class="form-label">
+
+                                    Apellido
+
+                                </label>
+
+                                <input asp-for="User.LastName"
+                                       class="form-control"
+                                       placeholder="Apellido" />
+
+                                <span asp-validation-for="User.LastName"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TELÉFONO -->
+                    <div class="auth-field">
+
+                        <label asp-for="User.Phone"
+                               class="form-label">
+
+                            Teléfono
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-telephone"></i>
+                            </span>
+
+                            <input asp-for="User.Phone"
+                                   class="form-control"
+                                   placeholder="Ingresa tu teléfono" />
+
+                        </div>
+
+                        <span asp-validation-for="User.Phone"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- USUARIO -->
+                    <div class="auth-field">
+
+                        <label asp-for="User.Username"
+                               class="form-label">
+
+                            Nombre de usuario
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
+
+                            <input asp-for="User.Username"
+                                   class="form-control"
+                                   placeholder="Crea tu nombre de usuario"
+                                   autocomplete="username" />
+
+                        </div>
+
+                        <span asp-validation-for="User.Username"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- CONTRASEÑA -->
+                    <div class="auth-field">
+
+                        <label asp-for="User.Password"
+                               class="form-label">
+
+                            Contraseña
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+
+                            <input asp-for="User.Password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Crea una contraseña"
+                                   autocomplete="new-password" />
+
+                        </div>
+
+                        <span asp-validation-for="User.Password"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- REGISTRAR -->
+                    <button type="submit"
+                            class="btn btn-primary auth-submit">
+
+                        <i class="bi bi-person-plus me-2"></i>
+
+                        Registrarme
+
+                    </button>
+
+                </form>
+
+
+                <!-- LOGIN -->
+                <div class="auth-divider">
+
+                    <span>
+                        ¿Ya tienes una cuenta?
+                    </span>
+
+                </div>
+
+                <a asp-page="/Auth/Login"
+                   class="btn btn-outline-primary auth-register">
+
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                    Iniciar sesión
+
+                </a>
+
+
+                <!-- VOLVER -->
+                <div class="auth-back">
+
+                    <a asp-page="/Index">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+
+                        Volver al inicio
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
 }
-
-<form method="post">
-
-    <div class="mb-3">
-        <label asp-for="User.Ci" class="form-label">
-            CI
-        </label>
-
-        <input asp-for="User.Ci"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="User.Complement" class="form-label">
-            Complemento
-        </label>
-
-        <input asp-for="User.Complement"
-               class="form-control"
-               maxlength="2" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="User.FirstName" class="form-label">
-            Nombre
-        </label>
-
-        <input asp-for="User.FirstName"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="User.LastName" class="form-label">
-            Apellido
-        </label>
-
-        <input asp-for="User.LastName"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="User.Phone" class="form-label">
-            Teléfono
-        </label>
-
-        <input asp-for="User.Phone"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="User.Username" class="form-label">
-            Nombre de usuario
-        </label>
-
-        <input asp-for="User.Username"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="User.Password" class="form-label">
-            Contraseña
-        </label>
-
-        <input asp-for="User.Password"
-               type="password"
-               class="form-control" />
-    </div>
-
-    <button type="submit"
-            class="btn btn-primary">
-        Registrarme
-    </button>
-
-    <a asp-page="/Auth/Login"
-       class="btn btn-link">
-        Ya tengo una cuenta
-    </a>
-
-</form>

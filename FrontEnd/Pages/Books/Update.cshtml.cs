@@ -38,7 +38,7 @@ public class UpdateModel : PageModel
             Publisher = book.Publisher,
             PageCount = book.PageCount,
             Description = book.Description,
-            UserId = book.UserId
+            UserId = null
         };
 
         return Page();
