@@ -1,0 +1,94 @@
+﻿@page
+@model FrontEnd.Pages.Auth.RegisterModel
+
+@{
+    ViewData["Title"] = "Registrarse";
+}
+
+<h1>Crear cuenta</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+<form method="post">
+
+    <div class="mb-3">
+        <label asp-for="User.Ci" class="form-label">
+            CI
+        </label>
+
+        <input asp-for="User.Ci"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.Complement" class="form-label">
+            Complemento
+        </label>
+
+        <input asp-for="User.Complement"
+               class="form-control"
+               maxlength="2" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.FirstName" class="form-label">
+            Nombre
+        </label>
+
+        <input asp-for="User.FirstName"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.LastName" class="form-label">
+            Apellido
+        </label>
+
+        <input asp-for="User.LastName"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.Phone" class="form-label">
+            Teléfono
+        </label>
+
+        <input asp-for="User.Phone"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.Username" class="form-label">
+            Nombre de usuario
+        </label>
+
+        <input asp-for="User.Username"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.Password" class="form-label">
+            Contraseña
+        </label>
+
+        <input asp-for="User.Password"
+               type="password"
+               class="form-control" />
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Registrarme
+    </button>
+
+    <a asp-page="/Auth/Login"
+       class="btn btn-link">
+        Ya tengo una cuenta
+    </a>
+
+</form>
