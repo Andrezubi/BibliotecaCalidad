@@ -25,5 +25,5 @@ public class UpdateBookDto
 
     public string? Description { get; set; }
 
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 }

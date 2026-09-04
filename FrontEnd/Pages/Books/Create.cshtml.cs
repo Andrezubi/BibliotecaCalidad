@@ -24,26 +24,7 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
-        {
             return Page();
-        }
-
-        var username = HttpContext.Session
-            .GetString("Username");
-
-        var userId = HttpContext.Session
-            .GetInt32("UserId");
-
-        if (!userId.HasValue)
-        {
-            ModelState.AddModelError(
-                string.Empty,
-                "No se encontró el usuario autenticado.");
-
-            return Page();
-        }
-
-        Book.UserId = userId.Value;
 
         var result = await _bookService.CreateAsync(Book);
 
@@ -51,13 +32,13 @@ public class CreateModel : PageModel
         {
             ModelState.AddModelError(
                 string.Empty,
-                "No se pudo registrar el libro.");
+                "No se pudo registrar el libro."
+            );
 
             return Page();
         }
 
-        TempData["Success"] =
-            "Libro registrado correctamente.";
+        TempData["Success"] = "Libro registrado correctamente.";
 
         return RedirectToPage("Index");
     }

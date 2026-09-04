@@ -96,7 +96,7 @@ public class BookService : IBookService
         book.Publisher = dto.Publisher;
         book.PageCount = dto.PageCount;
         book.Description = dto.Description;
-        book.UserId = dto.UserId;
+        book.UserId = null;
         book.UpdatedAt = DateTime.Now;
 
         BookValidator.Validate(book);
@@ -133,7 +133,7 @@ public class BookService : IBookService
             IsActive = book.IsActive,
             CreatedAt = book.CreatedAt,
             UpdatedAt = book.UpdatedAt,
-            UserId = book.UserId
+            UserId = null
         };
     }
 }

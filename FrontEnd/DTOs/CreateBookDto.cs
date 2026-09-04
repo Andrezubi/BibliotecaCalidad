@@ -24,6 +24,4 @@ public class CreateBookDto
     public int? PageCount { get; set; }
 
     public string? Description { get; set; }
-
-    public int UserId { get; set; }
 }

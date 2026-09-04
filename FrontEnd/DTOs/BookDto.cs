@@ -20,5 +20,5 @@ public class BookDto
 
     public bool IsActive { get; set; }
 
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 }
