@@ -22,7 +22,8 @@ public class UpdateModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var book = await _bookService.GetByIdAsync(Id);
+        var book =
+            await _bookService.GetByIdAsync(Id);
 
         if (book == null)
         {
@@ -51,26 +52,12 @@ public class UpdateModel : PageModel
             return Page();
         }
 
-        var userId = HttpContext.Session.GetInt32("UserId");
+        var result =
+            await _bookService.UpdateAsync(Id, Book);
 
-        if (!userId.HasValue)
+        if (!result.Success)
         {
-            ModelState.AddModelError(
-                string.Empty,
-                "No se encontró el usuario autenticado.");
-
-            return Page();
-        }
-
-        Book.UserId = userId.Value;
-
-        var result = await _bookService.UpdateAsync(Id, Book);
-
-        if (!result)
-        {
-            ModelState.AddModelError(
-                string.Empty,
-                "No se pudo actualizar el libro.");
+            AddErrorsToModelState(result.Errors);
 
             return Page();
         }
@@ -79,5 +66,33 @@ public class UpdateModel : PageModel
             "Libro actualizado correctamente.";
 
         return RedirectToPage("Index");
+    }
+
+    private void AddErrorsToModelState(
+        Dictionary<string, string[]> errors)
+    {
+        foreach (var error in errors)
+        {
+            var key = error.Key;
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                foreach (var message in error.Value)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        message);
+                }
+
+                continue;
+            }
+
+            foreach (var message in error.Value)
+            {
+                ModelState.AddModelError(
+                    $"Book.{key}",
+                    message);
+            }
+        }
     }
 }

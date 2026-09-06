@@ -30,7 +30,9 @@ public class BookService
         if (!string.IsNullOrWhiteSpace(token))
         {
             _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    token);
         }
     }
 
@@ -63,7 +65,8 @@ public class BookService
     {
         AddAuthorizationHeader();
 
-        var response = await _httpClient.GetAsync($"api/Book/{id}");
+        var response = await _httpClient.GetAsync(
+            $"api/Book/{id}");
 
         if (response.StatusCode == HttpStatusCode.NotFound)
         {
@@ -83,7 +86,8 @@ public class BookService
     // CREATE
     // ======================================================
 
-    public async Task<bool> CreateAsync(CreateBookDto book)
+    public async Task<(bool Success, Dictionary<string, string[]> Errors)>
+        CreateAsync(CreateBookDto book)
     {
         AddAuthorizationHeader();
 
@@ -91,16 +95,27 @@ public class BookService
             "api/Book",
             book);
 
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode)
+        {
+            return (
+                true,
+                new Dictionary<string, string[]>()
+            );
+        }
+
+        var errors = await ReadValidationErrorsAsync(response);
+
+        return (false, errors);
     }
 
     // ======================================================
     // UPDATE
     // ======================================================
 
-    public async Task<bool> UpdateAsync(
-        int id,
-        UpdateBookDto book)
+    public async Task<(bool Success, Dictionary<string, string[]> Errors)>
+        UpdateAsync(
+            int id,
+            UpdateBookDto book)
     {
         AddAuthorizationHeader();
 
@@ -108,7 +123,17 @@ public class BookService
             $"api/Book/{id}",
             book);
 
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode)
+        {
+            return (
+                true,
+                new Dictionary<string, string[]>()
+            );
+        }
+
+        var errors = await ReadValidationErrorsAsync(response);
+
+        return (false, errors);
     }
 
     // ======================================================
@@ -125,39 +150,119 @@ public class BookService
         return response.IsSuccessStatusCode;
     }
 
-    //Search book by params
+    // ======================================================
+    // SEARCH
+    // ======================================================
 
     public async Task<List<BookDto>> SearchAsync(
-    string? title = null,
-    string? author = null,
-    string? category = null,
-    string? isbn = null,
-    string? publisher = null)
+        string? title = null,
+        string? author = null,
+        string? category = null,
+        string? isbn = null,
+        string? publisher = null)
     {
+        AddAuthorizationHeader();
+
         var queryParams = new List<string>();
 
         if (!string.IsNullOrWhiteSpace(title))
-            queryParams.Add($"title={Uri.EscapeDataString(title)}");
+        {
+            queryParams.Add(
+                $"title={Uri.EscapeDataString(title)}");
+        }
 
         if (!string.IsNullOrWhiteSpace(author))
-            queryParams.Add($"author={Uri.EscapeDataString(author)}");
+        {
+            queryParams.Add(
+                $"author={Uri.EscapeDataString(author)}");
+        }
 
         if (!string.IsNullOrWhiteSpace(category))
-            queryParams.Add($"category={Uri.EscapeDataString(category)}");
+        {
+            queryParams.Add(
+                $"category={Uri.EscapeDataString(category)}");
+        }
 
         if (!string.IsNullOrWhiteSpace(isbn))
-            queryParams.Add($"isbn={Uri.EscapeDataString(isbn)}");
+        {
+            queryParams.Add(
+                $"isbn={Uri.EscapeDataString(isbn)}");
+        }
 
         if (!string.IsNullOrWhiteSpace(publisher))
-            queryParams.Add($"publisher={Uri.EscapeDataString(publisher)}");
+        {
+            queryParams.Add(
+                $"publisher={Uri.EscapeDataString(publisher)}");
+        }
 
         var url = "api/Book/search";
 
         if (queryParams.Any())
+        {
             url += "?" + string.Join("&", queryParams);
+        }
 
-        return await _httpClient.GetFromJsonAsync<List<BookDto>>(url)
+        return await _httpClient
+                   .GetFromJsonAsync<List<BookDto>>(url)
                ?? new List<BookDto>();
     }
 
+    // ======================================================
+    // READ VALIDATION ERRORS
+    // ======================================================
+
+    private async Task<Dictionary<string, string[]>>
+        ReadValidationErrorsAsync(
+            HttpResponseMessage response)
+    {
+        try
+        {
+            var validation =
+                await response.Content
+                    .ReadFromJsonAsync<ValidationResponse>();
+
+            if (validation?.Errors != null)
+            {
+                return validation.Errors;
+            }
+
+            if (!string.IsNullOrWhiteSpace(
+                    validation?.Message))
+            {
+                return new Dictionary<string, string[]>
+                {
+                    {
+                        string.Empty,
+                        new[] { validation.Message }
+                    }
+                };
+            }
+        }
+        catch
+        {
+            // Si la respuesta no tiene el formato esperado,
+            // devolvemos un mensaje genérico.
+        }
+
+        return new Dictionary<string, string[]>
+        {
+            {
+                string.Empty,
+                new[] { "No se pudo procesar la solicitud." }
+            }
+        };
+    }
+
+    private class ValidationResponse
+    {
+        public string? Title { get; set; }
+
+        public int? Status { get; set; }
+
+        public string? Detail { get; set; }
+
+        public string? Message { get; set; }
+
+        public Dictionary<string, string[]>? Errors { get; set; }
+    }
 }

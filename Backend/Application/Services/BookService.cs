@@ -139,7 +139,7 @@ public class BookService : IBookService
         {
             Id = book.Id,
             Title = book.Title,
-            EditionNumber = book.EditionNumber,
+            EditionNumber = book.EditionNumber ?? 0,
             ISBN = book.ISBN,
             PublicationYear = book.PublicationYear,
             Publisher = book.Publisher,

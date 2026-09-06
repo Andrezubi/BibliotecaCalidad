@@ -24,22 +24,51 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
-            return Page();
-
-        var result = await _bookService.CreateAsync(Book);
-
-        if (!result)
         {
-            ModelState.AddModelError(
-                string.Empty,
-                "No se pudo registrar el libro."
-            );
+            return Page();
+        }
+
+        var result =
+            await _bookService.CreateAsync(Book);
+
+        if (!result.Success)
+        {
+            AddErrorsToModelState(result.Errors);
 
             return Page();
         }
 
-        TempData["Success"] = "Libro registrado correctamente.";
+        TempData["Success"] =
+            "Libro registrado correctamente.";
 
         return RedirectToPage("Index");
+    }
+
+    private void AddErrorsToModelState(
+        Dictionary<string, string[]> errors)
+    {
+        foreach (var error in errors)
+        {
+            var key = error.Key;
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                foreach (var message in error.Value)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        message);
+                }
+
+                continue;
+            }
+
+            foreach (var message in error.Value)
+            {
+                ModelState.AddModelError(
+                    $"Book.{key}",
+                    message);
+            }
+        }
     }
 }

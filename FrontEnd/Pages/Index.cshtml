@@ -15,19 +15,23 @@
         : "TU CUENTA";
 }
 
-<!-- =========================================
+
+<!-- =========================================================
      HERO
-========================================= -->
+========================================================= -->
 
 <section class="hero-section">
+
     <div class="container">
+
         <div class="row align-items-center min-vh-75">
 
             <div class="col-lg-7">
+
                 <div class="hero-content">
 
                     <span class="hero-label">
-                        <i class="bi bi-book-half me-2"></i>
+                        <i class="bi bi-book-half"></i>
                         BIBLIOTECA VIRTUAL
                     </span>
 
@@ -46,54 +50,75 @@
 
                         <a asp-page="/Books/Index"
                            class="btn btn-primary btn-lg">
+
                             <i class="bi bi-book me-2"></i>
+
                             Explorar libros
+
                         </a>
 
                         <a asp-page="/Categories/Index"
                            class="btn btn-outline-primary btn-lg">
+
                             <i class="bi bi-grid-3x3-gap me-2"></i>
+
                             Ver categorías
+
                         </a>
 
                     </div>
 
                 </div>
+
             </div>
 
+
+            <!-- ILUSTRACIÓN -->
+
             <div class="col-lg-5 d-none d-lg-flex">
+
                 <div class="hero-illustration">
-
-                    <div class="hero-book hero-book-one">
-                        <i class="bi bi-book"></i>
-                    </div>
-
-                    <div class="hero-book hero-book-two">
-                        <i class="bi bi-book-half"></i>
-                    </div>
-
-                    <div class="hero-book hero-book-three">
-                        <i class="bi bi-journal-bookmark"></i>
-                    </div>
 
                     <div class="hero-circle"></div>
 
+                    <div class="hero-book hero-book-one">
+
+                        <i class="bi bi-book"></i>
+
+                    </div>
+
+                    <div class="hero-book hero-book-two">
+
+                        <i class="bi bi-book-half"></i>
+
+                    </div>
+
+                    <div class="hero-book hero-book-three">
+
+                        <i class="bi bi-journal-bookmark"></i>
+
+                    </div>
+
                 </div>
+
             </div>
 
         </div>
+
     </div>
+
 </section>
 
 
-<!-- =========================================
+<!-- =========================================================
      FEATURES
-========================================= -->
+========================================================= -->
 
 <section class="section-padding">
+
     <div class="container">
 
-        <div class="section-heading text-center">
+        <div class="section-heading">
 
             <span class="section-label">
                 TODO LO QUE NECESITAS
@@ -113,6 +138,7 @@
 
         <div class="row g-4">
 
+
             <!-- LIBROS -->
 
             <div class="col-md-6 col-lg-3">
@@ -120,7 +146,9 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
+
                         <i class="bi bi-book"></i>
+
                     </div>
 
                     <h3>
@@ -133,8 +161,11 @@
                     </p>
 
                     <a asp-page="/Books/Index">
+
                         Ver libros
+
                         <i class="bi bi-arrow-right"></i>
+
                     </a>
 
                 </div>
@@ -149,7 +180,9 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
+
                         <i class="bi bi-grid-3x3-gap"></i>
+
                     </div>
 
                     <h3>
@@ -162,8 +195,11 @@
                     </p>
 
                     <a asp-page="/Categories/Index">
+
                         Ver categorías
+
                         <i class="bi bi-arrow-right"></i>
+
                     </a>
 
                 </div>
@@ -178,7 +214,9 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
+
                         <i class="bi bi-person-lines-fill"></i>
+
                     </div>
 
                     <h3>
@@ -191,8 +229,11 @@
                     </p>
 
                     <a asp-page="/Authors/Index">
+
                         Ver autores
+
                         <i class="bi bi-arrow-right"></i>
+
                     </a>
 
                 </div>
@@ -207,8 +248,11 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
+
                         <i class="bi bi-person-circle"></i>
+
                     </div>
+
 
                     @if (isAuthenticated)
                     {
@@ -224,8 +268,11 @@
                         </p>
 
                         <a asp-page="/Books/Loaned">
+
                             Mis libros
+
                             <i class="bi bi-arrow-right"></i>
+
                         </a>
                     }
                     else
@@ -241,8 +288,11 @@
                         </p>
 
                         <a asp-page="/Auth/Login">
+
                             Iniciar sesión
+
                             <i class="bi bi-arrow-right"></i>
+
                         </a>
                     }
 
@@ -253,18 +303,22 @@
         </div>
 
     </div>
+
 </section>
 
 
-<!-- =========================================
+<!-- =========================================================
      READING SECTION
-========================================= -->
+========================================================= -->
 
 <section class="reading-section">
 
     <div class="container">
 
         <div class="row align-items-center">
+
+
+            <!-- TEXTO -->
 
             <div class="col-lg-6">
 
@@ -294,8 +348,11 @@
 
                     <a asp-page="/Books/Index"
                        class="btn btn-primary">
+
                         <i class="bi bi-book me-2"></i>
+
                         Explorar colección
+
                     </a>
 
                 </div>
@@ -303,22 +360,30 @@
             </div>
 
 
+            <!-- VISUAL -->
+
             <div class="col-lg-6">
 
                 <div class="reading-visual">
 
                     <div class="reading-card reading-card-back">
+
                         <i class="bi bi-book"></i>
+
                     </div>
 
                     <div class="reading-card reading-card-middle">
+
                         <i class="bi bi-journal-text"></i>
+
                     </div>
 
                     <div class="reading-card reading-card-front">
 
                         <div class="reading-card-icon">
+
                             <i class="bi bi-book-half"></i>
+
                         </div>
 
                         <span>
@@ -342,9 +407,9 @@
 </section>
 
 
-<!-- =========================================
+<!-- =========================================================
      STATISTICS
-========================================= -->
+========================================================= -->
 
 <section class="stats-section">
 
@@ -352,16 +417,23 @@
 
         <div class="row g-4 text-center">
 
+
+            <!-- LIBROS -->
+
             <div class="col-6 col-md-3">
 
                 <div class="stat-item">
 
                     <div class="stat-icon">
+
                         <i class="bi bi-book"></i>
+
                     </div>
 
                     <div class="stat-number">
+
                         <i class="bi bi-plus"></i>
+
                     </div>
 
                     <p>
@@ -373,16 +445,22 @@
             </div>
 
 
+            <!-- LECTORES -->
+
             <div class="col-6 col-md-3">
 
                 <div class="stat-item">
 
                     <div class="stat-icon">
+
                         <i class="bi bi-people"></i>
+
                     </div>
 
                     <div class="stat-number">
+
                         <i class="bi bi-plus"></i>
+
                     </div>
 
                     <p>
@@ -394,16 +472,22 @@
             </div>
 
 
+            <!-- AUTORES -->
+
             <div class="col-6 col-md-3">
 
                 <div class="stat-item">
 
                     <div class="stat-icon">
+
                         <i class="bi bi-person-lines-fill"></i>
+
                     </div>
 
                     <div class="stat-number">
+
                         <i class="bi bi-plus"></i>
+
                     </div>
 
                     <p>
@@ -415,16 +499,22 @@
             </div>
 
 
+            <!-- CATEGORÍAS -->
+
             <div class="col-6 col-md-3">
 
                 <div class="stat-item">
 
                     <div class="stat-icon">
+
                         <i class="bi bi-grid-3x3-gap"></i>
+
                     </div>
 
                     <div class="stat-number">
+
                         <i class="bi bi-plus"></i>
+
                     </div>
 
                     <p>
@@ -442,15 +532,18 @@
 </section>
 
 
-<!-- =========================================
-     CALL TO ACTION
-========================================= -->
+<!-- =========================================================
+     CTA
+========================================================= -->
 
 <section class="cta-section">
 
     <div class="container">
 
         <div class="cta-card">
+
+
+            <!-- CONTENIDO -->
 
             <div class="cta-content">
 
@@ -473,14 +566,20 @@
 
                         <a asp-page="/Books/Index"
                            class="btn btn-primary">
+
                             <i class="bi bi-book me-2"></i>
+
                             Ver libros
+
                         </a>
 
                         <a asp-page="/Books/Loaned"
                            class="btn btn-outline-primary">
+
                             <i class="bi bi-bookmark-check me-2"></i>
+
                             Mis libros
+
                         </a>
 
                     </div>
@@ -505,14 +604,20 @@
 
                         <a asp-page="/Auth/Register"
                            class="btn btn-primary">
+
                             <i class="bi bi-person-plus me-2"></i>
+
                             Crear una cuenta
+
                         </a>
 
                         <a asp-page="/Auth/Login"
                            class="btn btn-outline-primary">
+
                             <i class="bi bi-box-arrow-in-right me-2"></i>
+
                             Iniciar sesión
+
                         </a>
 
                     </div>
@@ -521,13 +626,17 @@
             </div>
 
 
+            <!-- DECORACIÓN -->
+
             <div class="cta-decoration">
 
-                <div class="cta-book">
-                    <i class="bi bi-book-half"></i>
-                </div>
-
                 <div class="cta-circle"></div>
+
+                <div class="cta-book">
+
+                    <i class="bi bi-book-half"></i>
+
+                </div>
 
             </div>
 

@@ -4,23 +4,16 @@ namespace Backend.Application.DTOs;
 
 public class CreateBookDto
 {
-    [Required]
-    [StringLength(255)]
     public string Title { get; set; } = string.Empty;
 
-    [Range(1, int.MaxValue)]
-    public int EditionNumber { get; set; }
+    public int? EditionNumber { get; set; }
 
-    [StringLength(20)]
-    public string? ISBN { get; set; }
+    public string ISBN { get; set; } = string.Empty;
 
-    [Range(1000, 2100)]
     public int? PublicationYear { get; set; }
 
-    [StringLength(150)]
-    public string? Publisher { get; set; }
+    public string Publisher { get; set; } = string.Empty;
 
-    [Range(1, int.MaxValue)]
     public int? PageCount { get; set; }
 
     public string? Description { get; set; }

@@ -9,7 +9,7 @@ public class UpdateBookDto
     public string Title { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue, ErrorMessage = "La edición debe ser mayor a 0.")]
-    public int EditionNumber { get; set; }
+    public int? EditionNumber { get; set; }
 
     [StringLength(20, ErrorMessage = "El ISBN no puede superar los 20 caracteres.")]
     public string? ISBN { get; set; }

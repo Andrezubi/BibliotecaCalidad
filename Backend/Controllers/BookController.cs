@@ -1,7 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
+using Backend.Domain.Validators;
 using Microsoft.AspNetCore.Mvc;
-
 namespace Backend.Presentation.Controllers;
 
 [ApiController]
@@ -15,6 +15,10 @@ public class BookController : ControllerBase
         _bookService = bookService;
     }
 
+    // ============================================================
+    // GET ALL
+    // ============================================================
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
     {
@@ -23,41 +27,108 @@ public class BookController : ControllerBase
         return Ok(books);
     }
 
+    // ============================================================
+    // GET BY ID
+    // ============================================================
+
     [HttpGet("{id}")]
     public async Task<ActionResult<BookDto>> GetById(int id)
     {
         var book = await _bookService.GetByIdAsync(id);
 
         if (book == null)
+        {
             return NotFound();
+        }
 
         return Ok(book);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<BookDto>> Create(CreateBookDto dto)
-    {
-        var book = await _bookService.CreateAsync(dto);
+    // ============================================================
+    // CREATE
+    // ============================================================
 
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = book.Id },
-            book
-        );
+    [HttpPost]
+    public async Task<ActionResult<BookDto>> Create(
+     CreateBookDto dto)
+    {
+        try
+        {
+            var book = await _bookService.CreateAsync(dto);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = book.Id },
+                book);
+        }
+        catch (BookValidationException ex)
+        {
+            foreach (var error in ex.Errors)
+            {
+                foreach (var message in error.Value)
+                {
+                    ModelState.AddModelError(
+                        error.Key,
+                        message);
+                }
+            }
+
+            return ValidationProblem(ModelState);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new
+            {
+                message = ex.Message
+            });
+        }
     }
+
+    // ============================================================
+    // UPDATE
+    // ============================================================
 
     [HttpPut("{id}")]
     public async Task<ActionResult<BookDto>> Update(
-        int id,
-        UpdateBookDto dto)
+    int id,
+    UpdateBookDto dto)
     {
-        var book = await _bookService.UpdateAsync(id, dto);
+        try
+        {
+            var book = await _bookService.UpdateAsync(id, dto);
 
-        if (book == null)
-            return NotFound();
+            if (book == null)
+            {
+                return NotFound();
+            }
 
-        return Ok(book);
+            return Ok(book);
+        }
+        catch (BookValidationException ex)
+        {
+            foreach (var error in ex.Errors)
+            {
+                foreach (var message in error.Value)
+                {
+                    ModelState.AddModelError(
+                        error.Key,
+                        message);
+                }
+            }
+
+            return ValidationProblem(ModelState);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new
+            {
+                message = ex.Message
+            });
+        }
     }
+    // ============================================================
+    // DELETE LÓGICO
+    // ============================================================
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
@@ -65,19 +136,24 @@ public class BookController : ControllerBase
         var deleted = await _bookService.DeleteAsync(id);
 
         if (!deleted)
+        {
             return NotFound();
+        }
 
         return NoContent();
     }
 
+    // ============================================================
+    // SEARCH
+    // ============================================================
 
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<BookDto>>> Search(
-    [FromQuery] string? title = null,
-    [FromQuery] string? author = null,
-    [FromQuery] string? category = null,
-    [FromQuery] string? isbn = null,
-    [FromQuery] string? publisher = null)
+        [FromQuery] string? title = null,
+        [FromQuery] string? author = null,
+        [FromQuery] string? category = null,
+        [FromQuery] string? isbn = null,
+        [FromQuery] string? publisher = null)
     {
         var books = await _bookService.SearchAsync(
             title,

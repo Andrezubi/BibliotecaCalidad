@@ -9,7 +9,7 @@ public class UpdateBookDto
     public string Title { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue)]
-    public int EditionNumber { get; set; }
+    public int? EditionNumber { get; set; }
 
     [StringLength(20)]
     public string? ISBN { get; set; }
