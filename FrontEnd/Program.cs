@@ -5,21 +5,34 @@ var builder = WebApplication.CreateBuilder(args);
 // ======================================================
 // SERVICES
 // ======================================================
-
 builder.Services.AddRazorPages();
-
-builder.Services.AddHttpClient<LoanService>();
-builder.Services.AddHttpClient<AuthApiService>();
-
 builder.Services.AddSession();
 
-var app = builder.Build();
+var baseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7118/";
 
+builder.Services.AddHttpClient<LoanService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddHttpClient<AuthApiService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddHttpClient<BookService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+// ======================================================
+// BUILD APP (siempre después de registrar todos los servicios)
+// ======================================================
+var app = builder.Build();
 
 // ======================================================
 // HTTP PIPELINE
 // ======================================================
-
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -27,16 +40,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseSession();
-
 
 // ======================================================
 // PROTECCIÓN DE PÁGINAS
 // ======================================================
-
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path;
@@ -60,11 +69,8 @@ app.Use(async (context, next) =>
     await next();
 });
 
-
 app.UseAuthorization();
-
 app.MapStaticAssets();
-
 app.MapRazorPages()
     .WithStaticAssets();
 
