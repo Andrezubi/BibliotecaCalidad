@@ -3,6 +3,7 @@ using Backend.Application.Services;
 using Backend.Domain.Interfaces;
 
 using Backend.Infraestructure.Persistence;
+using Backend.Infraestructure.Repositories;
 using Backend.Infrastructure.Persistence;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Security;
@@ -82,6 +83,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+builder.Services.AddScoped<IBookService, BookService>();
 
 
 // ======================================================
