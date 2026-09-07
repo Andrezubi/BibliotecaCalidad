@@ -22,4 +22,8 @@ public class LoanService : ILoanService
     {
         return await _loanRepository.ReturnLoanAsync(loanId);
     }
+    public async Task<bool> LoanBookAsync(int bookId)
+    {
+        return await _loanRepository.LoanBookAsync(bookId);
+    }
 }

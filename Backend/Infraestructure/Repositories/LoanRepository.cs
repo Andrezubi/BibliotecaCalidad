@@ -59,4 +59,21 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
         await _context.SaveChangesAsync();
         return true;
     }
+    public async Task<bool> LoanBookAsync(int bookId)
+    {
+        // Buscar la primera copia disponible asociada a ese libro
+        var copy = await _context.Copies
+            .FirstOrDefaultAsync(c => c.BookId == bookId && c.Status == "Available" && c.IsActive);
+
+        if (copy == null)
+        {
+            return false;
+        }
+
+        // Cambiar estado a Loaned
+        copy.Status = "Loaned";
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

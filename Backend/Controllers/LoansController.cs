@@ -32,5 +32,17 @@ namespace Backend.Controllers
 
             return Ok(new { message = "Libro devuelto exitosamente." });
         }
+    
+    [HttpPost("book/{bookId}/loan")]
+        public async Task<IActionResult> LoanBook(int bookId)
+        {
+            var result = await _loanService.LoanBookAsync(bookId);
+            if (!result)
+            {
+                return BadRequest(new { message = "No hay copias disponibles para prestar." });
+            }
+
+            return Ok(new { message = "Libro marcado como prestado exitosamente." });
+        }
     }
 }

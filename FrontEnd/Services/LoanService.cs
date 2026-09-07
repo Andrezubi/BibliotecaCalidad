@@ -23,4 +23,10 @@ public class LoanService
         var response = await _httpClient.PostAsync($"api/Loans/{copyId}/return", null);
         return response.IsSuccessStatusCode;
     }
+
+    public async Task<bool> LoanBookAsync(int bookId)
+    {
+        var response = await _httpClient.PostAsync($"api/Loans/book/{bookId}/loan", null);
+        return response.IsSuccessStatusCode;
+    }
 }

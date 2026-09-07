@@ -10,7 +10,23 @@
         <p class="text-muted">Consulta y gestiona los libros de la biblioteca.</p>
     </div>
 
-    <!-- Filtro de la Historia de Usuario -->
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            <strong>✓</strong> @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+            <strong>⚠</strong> @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Filtro -->
     <form method="get" class="row justify-content-center mb-4">
         <div class="col-auto">
             <div class="form-check form-switch fs-5">
@@ -22,7 +38,7 @@
         </div>
     </form>
 
-    <!-- Tabla de resultados -->
+    <!-- Tabla -->
     @if (Model.Books == null || !Model.Books.Any())
     {
         <div class="alert alert-info text-center" role="alert">
@@ -38,6 +54,7 @@
                         <th>Título</th>
                         <th>ISBN</th>
                         <th>Estado</th>
+                        <th class="text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +71,24 @@
                                 else
                                 {
                                     <span class="badge bg-secondary">No disponible</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (book.IsAvailable)
+                                {
+                                    <form method="post" asp-page-handler="Loan" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="bookId" value="@book.Id" />
+                                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                                            Prestar
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-secondary btn-sm" disabled>
+                                        No disponible
+                                    </button>
                                 }
                             </td>
                         </tr>
