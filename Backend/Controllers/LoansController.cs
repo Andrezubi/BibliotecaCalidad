@@ -18,8 +18,19 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetLoanedBooks()
         {
             var books = await _loanService.GetLoanedBooksAsync();
-
             return Ok(books);
+        }
+
+        [HttpPost("{copyId}/return")]
+        public async Task<IActionResult> ReturnBook(int copyId)
+        {
+            var result = await _loanService.ReturnLoanAsync(copyId);
+            if (!result)
+            {
+                return BadRequest(new { message = "No se pudo registrar la devolución del libro." });
+            }
+
+            return Ok(new { message = "Libro devuelto exitosamente." });
         }
     }
 }

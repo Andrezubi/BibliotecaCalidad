@@ -1,56 +1,71 @@
 ﻿@page
 @model FrontEnd.Pages.Books.LoanedModel
-
 @{
-    ViewData["Title"] = "Libros prestados";
+    ViewData["Title"] = "Libros Prestados";
 }
 
-<h1>Libros prestados</h1>
-
-<p>
-    Listado de libros que actualmente no se encuentran disponibles.
-</p>
-
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">
-        @Model.ErrorMessage
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h1 class="display-5">Libros Prestados</h1>
+        <p class="text-muted">Listado de libros que actualmente no se encuentran disponibles.</p>
     </div>
-}
-else if (Model.LoanedBooks.Count == 0)
-{
-    <div class="alert alert-info">
-        No existen libros prestados actualmente.
-    </div>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Código interno</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            @foreach (var book in Model.LoanedBooks)
-            {
-                <tr>
-                    <td>@book.Title</td>
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            <strong>✓</strong> @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-                    <td>
-                        @book.InternalCode
-                    </td>
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+            <strong>⚠</strong> @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-                    <td>
-                        @(book.Status == "Loaned"
-                            ? "Prestado"
-                            : book.Status)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    @if (Model.LoanedBooks == null || !Model.LoanedBooks.Any())
+    {
+        <div class="alert alert-info text-center" role="alert">
+            No hay libros prestados actualmente.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Código Copia</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model.LoanedBooks)
+                    {
+                        <tr>
+                            <td class="fw-bold">@book.Title</td>
+                            <td>@book.InternalCode</td>
+                            <td>
+                                <span class="badge bg-warning text-dark">@book.Status</span>
+                            </td>
+                            <td class="text-center">
+                                <form method="post" asp-page-handler="Return">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="copyId" value="@book.CopyId" />
+                                    <button type="submit" class="btn btn-outline-success btn-sm">
+                                        Marcar como disponible
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

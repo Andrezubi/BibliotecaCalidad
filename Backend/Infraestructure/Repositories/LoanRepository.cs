@@ -31,4 +31,32 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
             })
             .ToListAsync();
     }
+
+    public async Task<bool> ReturnLoanAsync(int copyId)
+    {
+        // 1. Buscar la copia física
+        var copy = await _context.Copies.FindAsync(copyId);
+        if (copy == null)
+        {
+            return false;
+        }
+
+        // 2. Marcar la copia como disponible
+        copy.Status = "Available";
+
+        // 3. Si tiene un préstamo activo asociado en la tabla Loan, cerrarlo
+        var loan = await _context.Loans
+            .Where(l => l.CopyId == copyId && l.Status == "Active")
+            .OrderByDescending(l => l.LoanDate)
+            .FirstOrDefaultAsync();
+
+        if (loan != null)
+        {
+            loan.Status = "Returned";
+            loan.ReturnedAt = DateTime.UtcNow;
+        }
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

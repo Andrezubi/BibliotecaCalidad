@@ -1,37 +1,26 @@
 ﻿using FrontEnd.DTOs;
+using System.Net.Http.Json;
 
-namespace FrontEnd.Services
+namespace FrontEnd.Services;
+
+public class LoanService
 {
-    public class LoanService
+    private readonly HttpClient _httpClient;
+
+    public LoanService(HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        _httpClient = httpClient;
+    }
 
-        public LoanService(
-            HttpClient httpClient,
-            IConfiguration configuration)
-        {
-            _httpClient = httpClient;
-            _configuration = configuration;
-        }
+    public async Task<List<LoanedBookDto>> GetLoanedBooksAsync()
+    {
+        var response = await _httpClient.GetFromJsonAsync<List<LoanedBookDto>>("api/Loans/loaned-books");
+        return response ?? new List<LoanedBookDto>();
+    }
 
-        public async Task<List<LoanedBookDto>> GetLoanedBooksAsync()
-        {
-            var backendUrl = _configuration["BackendUrl"];
-
-            if (string.IsNullOrEmpty(backendUrl))
-            {
-                throw new InvalidOperationException(
-                    "La URL del backend no está configurada."
-                );
-            }
-
-            var url = $"{backendUrl}/api/loans/loaned-books";
-
-            var books =
-                await _httpClient.GetFromJsonAsync<List<LoanedBookDto>>(url);
-
-            return books ?? new List<LoanedBookDto>();
-        }
+    public async Task<bool> ReturnBookAsync(int copyId)
+    {
+        var response = await _httpClient.PostAsync($"api/Loans/{copyId}/return", null);
+        return response.IsSuccessStatusCode;
     }
 }

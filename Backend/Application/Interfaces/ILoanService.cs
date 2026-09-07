@@ -1,9 +1,9 @@
 ﻿using Backend.Domain.Models;
 
-namespace Backend.Application.Interfaces
+namespace Backend.Application.Interfaces;
+
+public interface ILoanService
 {
-    public interface ILoanService
-    {
-        Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync();
-    }
+    Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync();
+    Task<bool> ReturnLoanAsync(int copyId);
 }
