@@ -26,7 +26,8 @@ public class BookService : IBookService
         {
             Id = b.Id,
             Title = b.Title,
-            Isbn = b.Isbn
+            Isbn = b.Isbn,
+            IsAvailable = b.Copies != null && b.Copies.Any(c => c.Status == "Disponible")
         });
     }
 
@@ -44,7 +45,8 @@ public class BookService : IBookService
         {
             Id = book.Id,
             Title = book.Title,
-            Isbn = book.Isbn
+            Isbn = book.Isbn,
+            IsAvailable = book.Copies != null && book.Copies.Any(c => c.Status == "Disponible")
         };
     }
 }

@@ -47,7 +47,14 @@
                             <td class="fw-bold">@book.Title</td>
                             <td>@book.Isbn</td>
                             <td>
-                                <span class="badge bg-success">Disponible</span>
+                                @if (book.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Disponible</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">No disponible</span>
+                                }
                             </td>
                         </tr>
                     }

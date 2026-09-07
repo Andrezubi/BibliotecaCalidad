@@ -17,7 +17,7 @@ public class IndexModel : PageModel
     public List<BookDto> Books { get; set; } = new();
 
     [BindProperty(SupportsGet = true)]
-    public bool OnlyAvailable { get; set; }
+    public bool OnlyAvailable { get; set; } = true;
 
     public async Task OnGetAsync()
     {
