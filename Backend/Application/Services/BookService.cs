@@ -171,19 +171,10 @@ public class BookService : IBookService
     // ======================================================
 
     public async Task<IEnumerable<BookDto>> SearchAsync(
-        string? title = null,
-        string? author = null,
-        string? category = null,
-        string? isbn = null,
-        string? publisher = null)
+        string? phrase = null)
     {
         var books =
-            await _bookRepository.SearchAsync(
-                title,
-                author,
-                category,
-                isbn,
-                publisher);
+            await _bookRepository.SearchAsync(phrase);
 
         return books.Select(MapToDto);
     }
@@ -309,10 +300,5 @@ public class BookService : IBookService
             UpdatedAt = book.UpdatedAt,
             UserId = null
         };
-    }
-    public async Task<IEnumerable<BookDto>> GetAvailableAsync()
-    {
-        var books = await _bookRepository.GetAvailableAsync();
-        return books.Select(MapToDto);
     }
 }

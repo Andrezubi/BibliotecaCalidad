@@ -392,11 +392,7 @@ public class BookService
     // ======================================================
 
     public async Task<List<BookDto>> SearchAsync(
-        string? title = null,
-        string? author = null,
-        string? category = null,
-        string? isbn = null,
-        string? publisher = null)
+        string? phrase = null)
     {
         AddAuthorizationHeader();
 
@@ -404,38 +400,10 @@ public class BookService
             new List<string>();
 
 
-        if (!string.IsNullOrWhiteSpace(title))
+        if (!string.IsNullOrWhiteSpace(phrase))
         {
             queryParams.Add(
-                $"title={Uri.EscapeDataString(title)}");
-        }
-
-
-        if (!string.IsNullOrWhiteSpace(author))
-        {
-            queryParams.Add(
-                $"author={Uri.EscapeDataString(author)}");
-        }
-
-
-        if (!string.IsNullOrWhiteSpace(category))
-        {
-            queryParams.Add(
-                $"category={Uri.EscapeDataString(category)}");
-        }
-
-
-        if (!string.IsNullOrWhiteSpace(isbn))
-        {
-            queryParams.Add(
-                $"isbn={Uri.EscapeDataString(isbn)}");
-        }
-
-
-        if (!string.IsNullOrWhiteSpace(publisher))
-        {
-            queryParams.Add(
-                $"publisher={Uri.EscapeDataString(publisher)}");
+                $"phrase={Uri.EscapeDataString(phrase)}");
         }
 
 
@@ -472,22 +440,6 @@ public class BookService
 
 
         return books;
-    }
-    public async Task<List<BookDto>> GetAvailableAsync()
-    {
-        AddAuthorizationHeader();
-
-        var response = await _httpClient.GetAsync("api/Book/available");
-
-        if (!response.IsSuccessStatusCode)
-        {
-            return new List<BookDto>();
-        }
-
-        var books = await response.Content
-            .ReadFromJsonAsync<List<BookDto>>();
-
-        return books ?? new List<BookDto>();
     }
 
 

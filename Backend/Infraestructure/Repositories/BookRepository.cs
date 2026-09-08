@@ -36,77 +36,57 @@ public class BookRepository : BaseRepository<Book>, IBookRepository
 
         await UpdateAsync(book);
     }
-    public async Task<IEnumerable<Book>> SearchAsync(
-        string? title = null,
-        string? author = null,
-        string? category = null,
-        string? isbn = null,
-        string? publisher = null)
+    public async Task<IEnumerable<Book>> SearchAsync(string search)
     {
-        var query = _dbSet
-            .AsNoTracking()
-            .Where(book => book.IsActive);
-
-        if (!string.IsNullOrWhiteSpace(title))
+        if (string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(book =>
-                EF.Functions.Like(book.Title, $"%{title}%"));
+            return await GetAllAsync();
         }
 
-        if (!string.IsNullOrWhiteSpace(isbn))
-        {
-            query = query.Where(book =>
-                book.ISBN != null &&
-                EF.Functions.Like(book.ISBN, $"%{isbn}%"));
-        }
+        search = search.Trim();
 
-        if (!string.IsNullOrWhiteSpace(publisher))
-        {
-            query = query.Where(book =>
-                book.Publisher != null &&
-                EF.Functions.Like(book.Publisher, $"%{publisher}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(author))
-        {
-            query = query.Where(book =>
-                
-                book.Bookauthors.Any(ba =>
-                    ba.IsActive &&
-                    ba.Author.IsActive &&
-                    (
-                        EF.Functions.Like(ba.Author.FirstName, $"%{author}%") ||
-                        EF.Functions.Like(ba.Author.LastName, $"%{author}%") ||
-                        EF.Functions.Like(
-                            ba.Author.FirstName + " " + ba.Author.LastName,
-                            $"%{author}%")
-                    )));
-        }
-
-        if (!string.IsNullOrWhiteSpace(category))
-        {
-            query = query.Where(book =>
-                book.Bookcategories.Any(bc =>
-                    bc.IsActive &&
-                    bc.Category.IsActive &&
-                    EF.Functions.Like(
-                        bc.Category.Name,
-                        $"%{category}%")));
-        }
-
-        return await query
-            .OrderBy(book => book.Title)
-            .ToListAsync();
-    }
-    public async Task<IEnumerable<Book>> GetAvailableAsync()
-    {
         return await _dbSet
             .AsNoTracking()
             .Where(book =>
                 book.IsActive &&
-                book.Copies.Any(copy =>
-                    copy.IsActive &&
-                    copy.Status == "Available"))
+                (
+                    EF.Functions.Like(book.Title, $"%{search}%") ||
+
+                    (book.ISBN != null &&
+                     EF.Functions.Like(book.ISBN, $"%{search}%")) ||
+
+                    (book.Description != null &&
+                     EF.Functions.Like(book.Description, $"%{search}%")) ||
+
+                    (book.Publisher != null &&
+                     EF.Functions.Like(book.Publisher, $"%{search}%")) ||
+
+                    book.Bookauthors.Any(ba =>
+                        ba.IsActive &&
+                        ba.Author.IsActive &&
+                        (
+                            EF.Functions.Like(
+                                ba.Author.FirstName,
+                                $"%{search}%"
+                            ) ||
+
+                            EF.Functions.Like(
+                                ba.Author.LastName,
+                                $"%{search}%"
+                            )
+                        )
+                    ) ||
+
+                    book.Bookcategories.Any(bc =>
+                        bc.IsActive &&
+                        bc.Category.IsActive &&
+                        EF.Functions.Like(
+                            bc.Category.Name,
+                            $"%{search}%"
+                        )
+                    )
+                )
+            )
             .OrderBy(book => book.Title)
             .ToListAsync();
     }

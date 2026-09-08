@@ -84,88 +84,18 @@
 
                 <div class="row g-3">
 
-                    <!-- TÍTULO -->
+                    <!-- FRASE -->
                     <div class="col-md-6">
 
-                        <label asp-for="Title"
+                        <label asp-for="Phrase"
                                class="form-label">
-                            Título
+                            Buscar por:
                         </label>
 
-                        <input asp-for="Title"
+                        <input asp-for="Phrase"
                                class="form-control"
-                               placeholder="Buscar por título..." />
+                               placeholder="Buscar por frase..." />
 
-                    </div>
-
-
-                    <!-- AUTOR -->
-                    <div class="col-md-6">
-
-                        <label asp-for="Author"
-                               class="form-label">
-                            Autor
-                        </label>
-
-                        <input asp-for="Author"
-                               class="form-control"
-                               placeholder="Buscar por autor..." />
-
-                    </div>
-
-
-                    <!-- CATEGORÍA -->
-                    <div class="col-md-4">
-
-                        <label asp-for="Category"
-                               class="form-label">
-                            Categoría
-                        </label>
-
-                        <input asp-for="Category"
-                               class="form-control"
-                               placeholder="Buscar por categoría..." />
-
-                    </div>
-
-
-                    <!-- ISBN -->
-                    <div class="col-md-4">
-
-                        <label asp-for="ISBN"
-                               class="form-label">
-                            ISBN
-                        </label>
-
-                        <input asp-for="ISBN"
-                               class="form-control"
-                               placeholder="Buscar por ISBN..." />
-
-                    </div>
-
-
-                    <!-- EDITORIAL -->
-                    <div class="col-md-4">
-
-                        <label asp-for="Publisher"
-                               class="form-label">
-                            Editorial
-                        </label>
-
-                        <input asp-for="Publisher"
-                               class="form-control"
-                               placeholder="Buscar por editorial..." />
-
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox"
-                                   id="OnlyAvailable" name="OnlyAvailable" value="true"
-                            @(Model.OnlyAvailable ? "checked" : "") />
-                            <label class="form-check-label" for="OnlyAvailable">
-                                Mostrar solo libros disponibles
-                            </label>
-                        </div>
                     </div>
 
                 </div>
@@ -419,22 +349,6 @@
                                 <!-- ================================================= -->
 
                                 <td class="text-center">
-                                    <form method="post"
-                                          asp-page-handler="Loan"
-                                          asp-route-bookId="@book.Id"
-                                          style="display:inline;">
-
-                                        <button type="button"
-                                                class="btn btn-primary btn-sm me-1"
-                                                title="Prestar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#loanModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
-                                            <i class="bi bi-box-arrow-up"></i>
-                                        </button>
-
-                                    </form>
 
                                     @if (book.IsActive)
                                     {
@@ -450,15 +364,17 @@
                                         </a>
 
 
-                                            <button type="button"
-                                                    class="btn btn-danger btn-sm"
-                                                    title="Eliminar"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal"
-                                                    data-book-id="@book.Id"
-                                                    data-book-title="@book.Title">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                        <!-- ELIMINAR -->
+
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                title="Eliminar"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
+                                                data-book-id="@book.Id"
+                                                data-book-title="@book.Title">
+
+                                            <i class="bi bi-trash"></i>
 
                                         </button>
                                     }
@@ -488,11 +404,7 @@
                     No existen libros registrados.
                 </h4>
 
-                @if (!string.IsNullOrWhiteSpace(Model.Title) ||
-                     !string.IsNullOrWhiteSpace(Model.Author) ||
-                     !string.IsNullOrWhiteSpace(Model.Category) ||
-                     !string.IsNullOrWhiteSpace(Model.ISBN) ||
-                     !string.IsNullOrWhiteSpace(Model.Publisher))
+                @if (!string.IsNullOrWhiteSpace(Model.Phrase) )
                 {
                     <p class="text-muted">
                         No se encontraron libros que coincidan
@@ -528,100 +440,6 @@
             </div>
         }
 
-    </div>
-    <!-- Modal confirmar préstamo -->
-    <div class="modal fade" id="loanModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="bi bi-box-arrow-up me-2"></i>
-                        Confirmar préstamo
-                    </h5>
-                    <button type="button" class="btn-close"
-                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-
-                <div class="modal-body">
-                    ¿Deseas marcar como <strong>prestado</strong> el libro
-                    <strong id="loanBookTitle"></strong>?
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Cancelar
-                    </button>
-
-                    <form method="post" asp-page-handler="Loan" style="display:inline;">
-                        <input type="hidden" name="bookId" id="loanBookId" />
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-circle me-1"></i>
-                            Confirmar préstamo
-                        </button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    @section Scripts {
-        <script>
-                    const loanModal = document.getElementById('loanModal');
-
-                loanModal.addEventListener('show.bs.modal', function (event) {
-                    const button = event.relatedTarget;
-                    document.getElementById('loanBookId').value = button.getAttribute('data-book-id');
-                    document.getElementById('loanBookTitle').textContent = button.getAttribute('data-book-title');
-                });
-                      const deleteModal = document.getElementById('deleteModal');
-
-                deleteModal.addEventListener('show.bs.modal', function (event) {
-                    const button = event.relatedTarget;
-                    document.getElementById('deleteBookId').value = button.getAttribute('data-book-id');
-                    document.getElementById('deleteBookTitle').textContent = button.getAttribute('data-book-title');
-                });
-        </script>
-    }
-    <!-- Modal confirmar eliminación -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        Eliminar libro
-                    </h5>
-                    <button type="button" class="btn-close"
-                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-
-                <div class="modal-body">
-                    ¿Deseas eliminar el libro
-                    <strong id="deleteBookTitle"></strong>?
-                    Esta acción no se puede deshacer.
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Cancelar
-                    </button>
-
-                    <form method="post" asp-page-handler="Delete" style="display:inline;">
-                        <input type="hidden" name="id" id="deleteBookId" />
-                        <button type="submit" class="btn btn-danger">
-                            <i class="bi bi-trash me-1"></i>
-                            Eliminar
-                        </button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
     </div>
 
 </div>
