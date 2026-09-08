@@ -10,14 +10,15 @@ public class IndexModel : PageModel
     private readonly BookService _bookService;
     private readonly LoanService _loanService;
 
-    public IndexModel(BookService bookService, LoanService loanService)
+    public IndexModel(
+        BookService bookService,
+        LoanService loanService)
     {
         _bookService = bookService;
         _loanService = loanService;
     }
 
     public List<BookDto> Books { get; set; } = new();
-
 
     // =====================================================
     // FILTROS DE BÚSQUEDA
@@ -38,6 +39,8 @@ public class IndexModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string? Publisher { get; set; }
 
+    [BindProperty(SupportsGet = true)]
+    public bool OnlyAvailable { get; set; }
 
     // =====================================================
     // GET
@@ -45,21 +48,16 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        // Si no se ingresó ningún filtro,
-        // obtenemos todos los libros.
-
-    [BindProperty(SupportsGet = true)]
-    public bool OnlyAvailable { get; set; }
-
-    public async Task OnGetAsync()
-    {
+        // Solo libros disponibles
         if (OnlyAvailable)
         {
-            Books = await _bookService.GetAvailableAsync();
+            Books = (await _bookService.GetAvailableAsync())
+                .ToList();
+
             return;
         }
 
-        // Si no hay parámetros de búsqueda, trae todos.
+        // Sin filtros
         if (string.IsNullOrWhiteSpace(Title) &&
             string.IsNullOrWhiteSpace(Author) &&
             string.IsNullOrWhiteSpace(Category) &&
@@ -72,10 +70,7 @@ public class IndexModel : PageModel
             return;
         }
 
-
-        // Si existe al menos un filtro,
-        // realizamos la búsqueda.
-
+        // Con filtros
         Books = (await _bookService.SearchAsync(
             Title,
             Author,
@@ -85,16 +80,13 @@ public class IndexModel : PageModel
             .ToList();
     }
 
-
     // =====================================================
     // ELIMINAR LIBRO
     // =====================================================
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var result =
-            await _bookService.DeleteAsync(id);
-
+        var result = await _bookService.DeleteAsync(id);
 
         if (!result)
         {
@@ -104,21 +96,30 @@ public class IndexModel : PageModel
             return RedirectToPage();
         }
 
-
         TempData["Success"] =
             "Libro eliminado correctamente.";
 
         return RedirectToPage();
     }
 
+    // =====================================================
+    // PRESTAR LIBRO
+    // =====================================================
+
     public async Task<IActionResult> OnPostLoanAsync(int bookId)
     {
         var ok = await _loanService.RegisterLoanAsync(bookId);
 
         if (ok)
-            TempData["Success"] = "Préstamo registrado. El libro ahora está prestado.";
+        {
+            TempData["Success"] =
+                "Préstamo registrado. El libro ahora está prestado.";
+        }
         else
-            TempData["Error"] = "No se pudo registrar el préstamo. El libro no tiene copias disponibles.";
+        {
+            TempData["Error"] =
+                "No se pudo registrar el préstamo. El libro no tiene copias disponibles.";
+        }
 
         return RedirectToPage();
     }
