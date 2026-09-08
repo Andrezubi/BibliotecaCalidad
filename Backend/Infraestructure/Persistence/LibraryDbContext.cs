@@ -84,7 +84,12 @@ public partial class LibraryDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Description)
+                .HasColumnType("text");
+
+            entity.Property(e => e.CoverImage)
+                .HasMaxLength(500);
+
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");

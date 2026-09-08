@@ -17,6 +17,8 @@ public class Book
     public int? PageCount { get; set; }
 
     public string? Description { get; set; }
+    // Ruta de la imagen de portada
+    public string? CoverImage { get; set; }
 
     public bool IsActive { get; set; }
 

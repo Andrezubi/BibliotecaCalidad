@@ -19,4 +19,6 @@ public class CreateBookDto
     public string? Description { get; set; }
 
     public int? UserId { get; set; }
+    // Ruta de la imagen de portada
+    public IFormFile? CoverImage { get; set; }
 }

@@ -20,6 +20,8 @@ public class UpdateModel : PageModel
     [BindProperty(SupportsGet = true)]
     public int Id { get; set; }
 
+    public string? CurrentCoverImage { get; set; }
+
     public async Task<IActionResult> OnGetAsync()
     {
         var book =
@@ -42,6 +44,9 @@ public class UpdateModel : PageModel
             UserId = null
         };
 
+        CurrentCoverImage =
+            book.CoverImage;
+
         return Page();
     }
 
@@ -49,15 +54,21 @@ public class UpdateModel : PageModel
     {
         if (!ModelState.IsValid)
         {
+            await LoadCurrentCoverImageAsync();
+
             return Page();
         }
 
         var result =
-            await _bookService.UpdateAsync(Id, Book);
+            await _bookService.UpdateAsync(
+                Id,
+                Book);
 
         if (!result.Success)
         {
             AddErrorsToModelState(result.Errors);
+
+            await LoadCurrentCoverImageAsync();
 
             return Page();
         }
@@ -66,6 +77,15 @@ public class UpdateModel : PageModel
             "Libro actualizado correctamente.";
 
         return RedirectToPage("Index");
+    }
+
+    private async Task LoadCurrentCoverImageAsync()
+    {
+        var book =
+            await _bookService.GetByIdAsync(Id);
+
+        CurrentCoverImage =
+            book?.CoverImage;
     }
 
     private void AddErrorsToModelState(

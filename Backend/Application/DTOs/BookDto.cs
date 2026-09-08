@@ -17,7 +17,8 @@ public class BookDto
     public int? PageCount { get; set; }
 
     public string? Description { get; set; }
-
+    // Ruta de la imagen de portada
+    public string? CoverImage { get; set; }
     public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }

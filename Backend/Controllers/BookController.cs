@@ -2,6 +2,7 @@
 using Backend.Application.Interfaces;
 using Backend.Domain.Validators;
 using Microsoft.AspNetCore.Mvc;
+
 namespace Backend.Presentation.Controllers;
 
 [ApiController]
@@ -37,9 +38,7 @@ public class BookController : ControllerBase
         var book = await _bookService.GetByIdAsync(id);
 
         if (book == null)
-        {
             return NotFound();
-        }
 
         return Ok(book);
     }
@@ -50,11 +49,12 @@ public class BookController : ControllerBase
 
     [HttpPost]
     public async Task<ActionResult<BookDto>> Create(
-     CreateBookDto dto)
+        [FromForm] CreateBookDto dto)
     {
         try
         {
-            var book = await _bookService.CreateAsync(dto);
+            var book =
+                await _bookService.CreateAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -75,6 +75,14 @@ public class BookController : ControllerBase
 
             return ValidationProblem(ModelState);
         }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(
+                string.Empty,
+                ex.Message);
+
+            return ValidationProblem(ModelState);
+        }
         catch (InvalidOperationException ex)
         {
             return Conflict(new
@@ -90,17 +98,16 @@ public class BookController : ControllerBase
 
     [HttpPut("{id}")]
     public async Task<ActionResult<BookDto>> Update(
-    int id,
-    UpdateBookDto dto)
+        int id,
+        [FromForm] UpdateBookDto dto)
     {
         try
         {
-            var book = await _bookService.UpdateAsync(id, dto);
+            var book =
+                await _bookService.UpdateAsync(id, dto);
 
             if (book == null)
-            {
                 return NotFound();
-            }
 
             return Ok(book);
         }
@@ -118,6 +125,14 @@ public class BookController : ControllerBase
 
             return ValidationProblem(ModelState);
         }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(
+                string.Empty,
+                ex.Message);
+
+            return ValidationProblem(ModelState);
+        }
         catch (InvalidOperationException ex)
         {
             return Conflict(new
@@ -126,19 +141,19 @@ public class BookController : ControllerBase
             });
         }
     }
+
     // ============================================================
-    // DELETE LÓGICO
+    // DELETE
     // ============================================================
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _bookService.DeleteAsync(id);
+        var deleted =
+            await _bookService.DeleteAsync(id);
 
         if (!deleted)
-        {
             return NotFound();
-        }
 
         return NoContent();
     }
@@ -155,12 +170,13 @@ public class BookController : ControllerBase
         [FromQuery] string? isbn = null,
         [FromQuery] string? publisher = null)
     {
-        var books = await _bookService.SearchAsync(
-            title,
-            author,
-            category,
-            isbn,
-            publisher);
+        var books =
+            await _bookService.SearchAsync(
+                title,
+                author,
+                category,
+                isbn,
+                publisher);
 
         return Ok(books);
     }

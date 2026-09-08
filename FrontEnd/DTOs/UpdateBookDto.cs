@@ -26,4 +26,5 @@ public class UpdateBookDto
     public string? Description { get; set; }
 
     public int? UserId { get; set; }
+    public IFormFile? CoverImage { get; set; }
 }

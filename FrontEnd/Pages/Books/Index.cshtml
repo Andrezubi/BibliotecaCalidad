@@ -7,220 +7,46 @@
 
 <div class="container content-wrapper">
 
-    <div class="card-custom">
-
-        <!-- ENCABEZADO -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-
-            <h2 class="page-title mb-0">
-                <i class="bi bi-book me-2"></i>
-                Lista de Libros
-            </h2>
-
-            <a asp-page="Create"
-               class="btn btn-primary">
-
-                <i class="bi bi-plus-circle me-2"></i>
-                Nuevo Libro
-
-            </a>
-
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">Libros</h1>
+            <p class="text-muted mb-0">
+                Administración de libros registrados
+            </p>
         </div>
 
+        <a asp-page="Create" class="btn btn-primary">
+            Registrar libro
+        </a>
+    </div>
 
-        <!-- MENSAJE DE ÉXITO -->
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-
-                <i class="bi bi-check-circle me-2"></i>
-
-                @TempData["Success"]
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert">
-                </button>
-
-            </div>
-        }
-
-
-        <!-- MENSAJE DE ERROR -->
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-
-                <i class="bi bi-exclamation-triangle me-2"></i>
-
-                @TempData["Error"]
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert">
-                </button>
-
-            </div>
-        }
-
-
-        <!-- FILTROS DE BÚSQUEDA -->
-        <div class="card mb-4 p-3">
-
-            <form method="get">
-
-                <div class="row g-3">
-
-                    <!-- TÍTULO -->
-                    <div class="col-md-6">
-
-                        <label asp-for="Title"
-                               class="form-label">
-                            Título
-                        </label>
-
-                        <input asp-for="Title"
-                               class="form-control"
-                               placeholder="Buscar por título..." />
-
-                    </div>
-
-
-                    <!-- AUTOR -->
-                    <div class="col-md-6">
-
-                        <label asp-for="Author"
-                               class="form-label">
-                            Autor
-                        </label>
-
-                        <input asp-for="Author"
-                               class="form-control"
-                               placeholder="Buscar por autor..." />
-
-                    </div>
-
-
-                    <!-- CATEGORÍA -->
-                    <div class="col-md-4">
-
-                        <label asp-for="Category"
-                               class="form-label">
-                            Categoría
-                        </label>
-
-                        <input asp-for="Category"
-                               class="form-control"
-                               placeholder="Buscar por categoría..." />
-
-                    </div>
-
-
-                    <!-- ISBN -->
-                    <div class="col-md-4">
-
-                        <label asp-for="ISBN"
-                               class="form-label">
-                            ISBN
-                        </label>
-
-                        <input asp-for="ISBN"
-                               class="form-control"
-                               placeholder="Buscar por ISBN..." />
-
-                    </div>
-
-
-                    <!-- EDITORIAL -->
-                    <div class="col-md-4">
-
-                        <label asp-for="Publisher"
-                               class="form-label">
-                            Editorial
-                        </label>
-
-                        <input asp-for="Publisher"
-                               class="form-control"
-                               placeholder="Buscar por editorial..." />
-
-                    </div>
-
-                </div>
-
-
-                <!-- BOTONES DE BÚSQUEDA -->
-                <div class="d-flex justify-content-end gap-2 mt-3">
-
-                    <a asp-page="./Index"
-                       class="btn btn-secondary">
-
-                        <i class="bi bi-x-circle me-2"></i>
-                        Limpiar
-
-                    </a>
-
-                    <button type="submit"
-                            class="btn btn-primary">
-
-                        <i class="bi bi-search me-2"></i>
-                        Buscar
-
-                    </button>
-
-                </div>
-
-            </form>
-
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
         </div>
+    }
 
+    @if (Model.Books != null && Model.Books.Any())
+    {
+        <div class="card-custom">
 
-        <!-- LISTA DE LIBROS -->
-        @if (Model.Books.Any())
-        {
             <div class="table-responsive">
 
-                <table class="table table-hover align-middle">
+                <table class="table align-middle">
 
                     <thead>
-
                         <tr>
-
-                            <th>
-                                Título
-                            </th>
-
-                            <th class="text-center">
-                                Edición
-                            </th>
-
-                            <th class="text-center">
-                                ISBN
-                            </th>
-
-                            <th class="text-center">
-                                Año
-                            </th>
-
-                            <th>
-                                Editorial
-                            </th>
-
-                            <th class="text-center">
-                                Páginas
-                            </th>
-
-                            <th class="text-center">
-                                Estado
-                            </th>
-
-                            <th class="text-center">
-                                Acciones
-                            </th>
-
+                            <th>Portada</th>
+                            <th>Título</th>
+                            <th>ISBN</th>
+                            <th>Edición</th>
+                            <th>Año</th>
+                            <th>Editorial</th>
+                            <th>Páginas</th>
+                            <th>Acciones</th>
                         </tr>
-
                     </thead>
-
 
                     <tbody>
 
@@ -228,120 +54,82 @@
                         {
                             <tr>
 
-                                <!-- TÍTULO -->
                                 <td>
-
-                                    <strong>
-                                        @book.Title
-                                    </strong>
-
-                                    @if (!string.IsNullOrWhiteSpace(book.Description))
+                                    @if (!string.IsNullOrWhiteSpace(book.CoverImage))
                                     {
-                                        <br />
-
-                                        <small class="text-muted">
-
-                                            @(book.Description.Length > 80
-                                                ? book.Description[..80] + "..."
-                                                : book.Description)
-
-                                        </small>
-                                    }
-
-                                </td>
-
-
-                                <!-- EDICIÓN -->
-                                <td class="text-center">
-                                    @book.EditionNumber
-                                </td>
-
-
-                                <!-- ISBN -->
-                                <td class="text-center">
-
-                                    @(string.IsNullOrWhiteSpace(book.ISBN)
-                                        ? "-"
-                                        : book.ISBN)
-
-                                </td>
-
-
-                                <!-- AÑO -->
-                                <td class="text-center">
-
-                                    @(book.PublicationYear?.ToString() ?? "-")
-
-                                </td>
-
-
-                                <!-- EDITORIAL -->
-                                <td>
-
-                                    @(string.IsNullOrWhiteSpace(book.Publisher)
-                                        ? "-"
-                                        : book.Publisher)
-
-                                </td>
-
-
-                                <!-- PÁGINAS -->
-                                <td class="text-center">
-
-                                    @(book.PageCount?.ToString() ?? "-")
-
-                                </td>
-
-
-                                <!-- ESTADO -->
-                                <td class="text-center">
-
-                                    @if (book.IsActive)
-                                    {
-                                        <span class="badge bg-success">
-                                            Activo
-                                        </span>
+                                        <img src="@book.CoverImage"
+                                             alt="Portada de @book.Title"
+                                             style="
+                                        width: 60px;
+                                        height: 85px;
+                                        object-fit: cover;
+                                        border-radius: 6px;
+                                        " />
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary">
-                                            Inactivo
+                                        <span class="text-muted">
+                                            Sin portada
                                         </span>
                                     }
-
                                 </td>
 
+                                <td>
+                                    <strong>@book.Title</strong>
+                                </td>
 
-                                <!-- ACCIONES -->
-                                <td class="text-center">
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(book.ISBN)
+                                        ? "-"
+                                        : book.ISBN)
+                                </td>
 
-                                    @if (book.IsActive)
-                                    {
-                                        <!-- EDITAR -->
+                                <td>
+                                    @(book.EditionNumber.HasValue
+                                        ? book.EditionNumber.ToString()
+                                        : "-")
+                                </td>
+
+                                <td>
+                                    @(book.PublicationYear.HasValue
+                                        ? book.PublicationYear.ToString()
+                                        : "-")
+                                </td>
+
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(book.Publisher)
+                                        ? "-"
+                                        : book.Publisher)
+                                </td>
+
+                                <td>
+                                    @(book.PageCount.HasValue
+                                        ? book.PageCount.ToString()
+                                        : "-")
+                                </td>
+
+                                <td>
+                                    <div class="d-flex gap-2">
+
                                         <a asp-page="Update"
                                            asp-route-id="@book.Id"
-                                           class="btn btn-warning btn-sm me-1"
-                                           title="Editar">
-
-                                            <i class="bi bi-pencil"></i>
-
+                                           class="btn btn-sm btn-outline-primary">
+                                            Editar
                                         </a>
 
+                                        <form method="post"
+                                              asp-page-handler="Delete"
+                                              asp-route-id="@book.Id"
+                                              onsubmit="return confirm('¿Está seguro de eliminar este libro?');">
 
-                                        <!-- ELIMINAR -->
-                                        <button type="button"
-                                                class="btn btn-danger btn-sm"
-                                                title="Eliminar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger">
+                                                Eliminar
+                                            </button>
 
-                                            <i class="bi bi-trash"></i>
+                                        </form>
 
-                                        </button>
-                                    }
-
+                                    </div>
                                 </td>
 
                             </tr>
@@ -352,168 +140,25 @@
                 </table>
 
             </div>
-        }
-        else
-        {
-            <!-- SIN LIBROS -->
-            <div class="text-center py-5">
-
-                <i class="bi bi-book display-1 text-secondary"></i>
-
-                <h4 class="mt-3">
-                    No existen libros registrados.
-                </h4>
-
-                <p class="text-muted">
-
-                    Presione <strong>Nuevo Libro</strong>
-                    para registrar uno.
-
-                </p>
-
-            </div>
-        }
-
-    </div>
-
-</div>
-
-
-<!-- ===================================================== -->
-<!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
-<!-- ===================================================== -->
-
-<div class="modal fade"
-     id="deleteModal"
-     tabindex="-1"
-     aria-labelledby="deleteModalLabel"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-
-        <div class="modal-content">
-
-            <!-- HEADER -->
-            <div class="modal-header">
-
-                <h5 class="modal-title"
-                    id="deleteModalLabel">
-
-                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
-
-                    Confirmar eliminación
-
-                </h5>
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                </button>
-
-            </div>
-
-
-            <!-- BODY -->
-            <div class="modal-body">
-
-                <p class="mb-2">
-                    ¿Está seguro de que desea eliminar este libro?
-                </p>
-
-                <p class="fw-bold mb-2"
-                   id="deleteBookTitle">
-                </p>
-
-                <small class="text-muted">
-                    El libro será marcado como inactivo.
-                </small>
-
-            </div>
-
-
-            <!-- FOOTER -->
-            <div class="modal-footer">
-
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-
-                    Cancelar
-
-                </button>
-
-
-                <form method="post"
-                      id="deleteBookForm">
-
-                    <button type="submit"
-                            class="btn btn-danger">
-
-                        <i class="bi bi-trash me-1"></i>
-
-                        Eliminar
-
-                    </button>
-
-                </form>
-
-            </div>
 
         </div>
+    }
+    else
+    {
+        <div class="card-custom text-center py-5">
 
-    </div>
+            <h4>No hay libros registrados</h4>
+
+            <p class="text-muted">
+                Todavía no se ha registrado ningún libro.
+            </p>
+
+            <a asp-page="Create"
+               class="btn btn-primary">
+                Registrar primer libro
+            </a>
+
+        </div>
+    }
 
 </div>
-
-
-<!-- ===================================================== -->
-<!-- JAVASCRIPT DEL MODAL -->
-<!-- ===================================================== -->
-@section Scripts {
-
-    <script>
-
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const deleteModal =
-                document.getElementById("deleteModal");
-
-            const deleteForm =
-                document.getElementById("deleteBookForm");
-
-            const deleteBookTitle =
-                document.getElementById("deleteBookTitle");
-
-
-            deleteModal.addEventListener(
-                "show.bs.modal",
-                function(event) {
-
-                    const button =
-                        event.relatedTarget;
-
-                    const bookId =
-                        button.getAttribute("data-book-id");
-
-                    const bookTitle =
-                        button.getAttribute("data-book-title");
-
-
-                    // Mostrar nombre del libro
-                    deleteBookTitle.textContent =
-                        bookTitle;
-
-
-                    // Configurar el formulario
-                    deleteForm.action =
-                        `?handler=Delete&id=${bookId}`;
-
-                }
-            );
-
-        });
-
-    </script>
-
-}

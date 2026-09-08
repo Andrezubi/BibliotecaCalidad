@@ -132,6 +132,8 @@ var app = builder.Build();
 // ======================================================
 
 app.UseHttpsRedirection();
+// para imagenes 
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
