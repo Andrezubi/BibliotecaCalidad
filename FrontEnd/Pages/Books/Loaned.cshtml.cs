@@ -1,6 +1,7 @@
 ﻿using FrontEnd.DTOs;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FrontEnd.Pages.Books
 {
@@ -28,6 +29,17 @@ namespace FrontEnd.Pages.Books
                 ErrorMessage =
                     "No se pudieron cargar los libros prestados.";
             }
+        }
+        public async Task<IActionResult> OnPostReturnAsync(int copyId)
+        {
+            var ok = await _loanService.RegisterReturnAsync(copyId);
+
+            if (ok)
+                TempData["Success"] = "Devolución registrada. El libro ahora está disponible.";
+            else
+                TempData["Error"] = "No se pudo registrar la devolución.";
+
+            return RedirectToPage();
         }
     }
 }

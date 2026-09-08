@@ -8,14 +8,15 @@ namespace FrontEnd.Pages.Books;
 public class IndexModel : PageModel
 {
     private readonly BookService _bookService;
+    private readonly LoanService _loanService;
 
-    public IndexModel(BookService bookService)
+    public IndexModel(BookService bookService, LoanService loanService)
     {
         _bookService = bookService;
+        _loanService = loanService;
     }
 
     public List<BookDto> Books { get; set; } = new();
-
 
     [BindProperty(SupportsGet = true)]
     public string? Title { get; set; }
@@ -32,10 +33,18 @@ public class IndexModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string? Publisher { get; set; }
 
+    [BindProperty(SupportsGet = true)]
+    public bool OnlyAvailable { get; set; }
+
     public async Task OnGetAsync()
     {
-        // If there are no search parameters,
-        // retrieve all books.
+        if (OnlyAvailable)
+        {
+            Books = await _bookService.GetAvailableAsync();
+            return;
+        }
+
+        // Si no hay parámetros de búsqueda, trae todos.
         if (string.IsNullOrWhiteSpace(Title) &&
             string.IsNullOrWhiteSpace(Author) &&
             string.IsNullOrWhiteSpace(Category) &&
@@ -68,6 +77,18 @@ public class IndexModel : PageModel
 
         TempData["Success"] =
             "Libro eliminado correctamente.";
+
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostLoanAsync(int bookId)
+    {
+        var ok = await _loanService.RegisterLoanAsync(bookId);
+
+        if (ok)
+            TempData["Success"] = "Préstamo registrado. El libro ahora está prestado.";
+        else
+            TempData["Error"] = "No se pudo registrar el préstamo. El libro no tiene copias disponibles.";
 
         return RedirectToPage();
     }
