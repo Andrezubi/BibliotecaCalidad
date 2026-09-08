@@ -18,6 +18,10 @@ public class BookService
         _httpContextAccessor = httpContextAccessor;
     }
 
+    // ======================================================
+    // AUTORIZACIÓN
+    // ======================================================
+
     private void AddAuthorizationHeader()
     {
         var token = _httpContextAccessor
@@ -36,6 +40,41 @@ public class BookService
         }
     }
 
+
+    // ======================================================
+    // CONVERTIR RUTA DE PORTADA EN URL DEL BACKEND
+    // ======================================================
+
+    private string? BuildCoverImageUrl(string? coverImage)
+    {
+        if (string.IsNullOrWhiteSpace(coverImage))
+        {
+            return null;
+        }
+
+        // Si ya es una URL completa, no la modificamos.
+        if (Uri.TryCreate(
+                coverImage,
+                UriKind.Absolute,
+                out _))
+        {
+            return coverImage;
+        }
+
+        var backendUrl =
+            _httpClient.BaseAddress?
+                .ToString()
+                .TrimEnd('/');
+
+        if (string.IsNullOrWhiteSpace(backendUrl))
+        {
+            return coverImage;
+        }
+
+        return $"{backendUrl}/{coverImage.TrimStart('/')}";
+    }
+
+
     // ======================================================
     // GET ALL
     // ======================================================
@@ -44,18 +83,30 @@ public class BookService
     {
         AddAuthorizationHeader();
 
-        var response = await _httpClient.GetAsync("api/Book");
+        var response =
+            await _httpClient.GetAsync("api/Book");
 
         if (!response.IsSuccessStatusCode)
         {
             return new List<BookDto>();
         }
 
-        var books = await response.Content
-            .ReadFromJsonAsync<List<BookDto>>();
+        var books =
+            await response.Content
+                .ReadFromJsonAsync<List<BookDto>>()
+            ?? new List<BookDto>();
 
-        return books ?? new List<BookDto>();
+
+        // Convertir las rutas de las portadas
+        foreach (var book in books)
+        {
+            book.CoverImage =
+                BuildCoverImageUrl(book.CoverImage);
+        }
+
+        return books;
     }
+
 
     // ======================================================
     // GET BY ID
@@ -65,10 +116,12 @@ public class BookService
     {
         AddAuthorizationHeader();
 
-        var response = await _httpClient.GetAsync(
-            $"api/Book/{id}");
+        var response =
+            await _httpClient.GetAsync(
+                $"api/Book/{id}");
 
-        if (response.StatusCode == HttpStatusCode.NotFound)
+        if (response.StatusCode ==
+            HttpStatusCode.NotFound)
         {
             return null;
         }
@@ -78,56 +131,94 @@ public class BookService
             return null;
         }
 
-        return await response.Content
-            .ReadFromJsonAsync<BookDto>();
+        var book =
+            await response.Content
+                .ReadFromJsonAsync<BookDto>();
+
+        if (book == null)
+        {
+            return null;
+        }
+
+        book.CoverImage =
+            BuildCoverImageUrl(book.CoverImage);
+
+        return book;
     }
+
 
     // ======================================================
     // CREATE
     // ======================================================
 
-    public async Task<(bool Success, Dictionary<string, string[]> Errors)>
-     CreateAsync(CreateBookDto book)
+    public async Task<(
+        bool Success,
+        Dictionary<string, string[]> Errors)>
+        CreateAsync(CreateBookDto book)
     {
         AddAuthorizationHeader();
 
-        using var content = new MultipartFormDataContent();
+        using var content =
+            new MultipartFormDataContent();
+
 
         content.Add(
-            new StringContent(book.Title ?? string.Empty),
+            new StringContent(
+                book.Title ?? string.Empty),
             "Title");
 
+
         content.Add(
             new StringContent(
-                book.EditionNumber?.ToString() ?? string.Empty),
+                book.EditionNumber?.ToString()
+                ?? string.Empty),
             "EditionNumber");
 
+
         content.Add(
-            new StringContent(book.ISBN ?? string.Empty),
+            new StringContent(
+                book.ISBN ?? string.Empty),
             "ISBN");
 
+
         content.Add(
             new StringContent(
-                book.PublicationYear?.ToString() ?? string.Empty),
+                book.PublicationYear?.ToString()
+                ?? string.Empty),
             "PublicationYear");
 
-        content.Add(
-            new StringContent(book.Publisher ?? string.Empty),
-            "Publisher");
 
         content.Add(
             new StringContent(
-                book.PageCount?.ToString() ?? string.Empty),
-            "PageCount");
+                book.Publisher ?? string.Empty),
+            "Publisher");
+
 
         content.Add(
-            new StringContent(book.Description ?? string.Empty),
+            new StringContent(
+                book.PageCount?.ToString()
+                ?? string.Empty),
+            "PageCount");
+
+
+        content.Add(
+            new StringContent(
+                book.Description ?? string.Empty),
             "Description");
 
-        if (book.CoverImage != null)
+
+        // ==================================================
+        // PORTADA
+        // ==================================================
+
+        if (book.CoverImage != null &&
+            book.CoverImage.Length > 0)
         {
+            var stream =
+                book.CoverImage.OpenReadStream();
+
             var streamContent =
-                new StreamContent(book.CoverImage.OpenReadStream());
+                new StreamContent(stream);
 
             streamContent.Headers.ContentType =
                 new MediaTypeHeaderValue(
@@ -136,14 +227,17 @@ public class BookService
             content.Add(
                 streamContent,
                 "CoverImage",
-                book.CoverImage.FileName);
+                Path.GetFileName(
+                    book.CoverImage.FileName));
         }
+
 
         var response =
             await _httpClient.PostAsync(
                 "api/Book",
                 content);
 
+
         if (response.IsSuccessStatusCode)
         {
             return (
@@ -152,59 +246,92 @@ public class BookService
             );
         }
 
-        var errors =
-            await ReadValidationErrorsAsync(response);
 
-        return (false, errors);
+        var errors =
+            await ReadValidationErrorsAsync(
+                response);
+
+        return (
+            false,
+            errors
+        );
     }
+
+
     // ======================================================
     // UPDATE
     // ======================================================
 
-    public async Task<(bool Success, Dictionary<string, string[]> Errors)>
-     UpdateAsync(
-         int id,
-         UpdateBookDto book)
+    public async Task<(
+        bool Success,
+        Dictionary<string, string[]> Errors)>
+        UpdateAsync(
+            int id,
+            UpdateBookDto book)
     {
         AddAuthorizationHeader();
 
-        using var content = new MultipartFormDataContent();
+        using var content =
+            new MultipartFormDataContent();
+
 
         content.Add(
-            new StringContent(book.Title ?? string.Empty),
+            new StringContent(
+                book.Title ?? string.Empty),
             "Title");
 
+
         content.Add(
             new StringContent(
-                book.EditionNumber?.ToString() ?? string.Empty),
+                book.EditionNumber?.ToString()
+                ?? string.Empty),
             "EditionNumber");
 
+
         content.Add(
-            new StringContent(book.ISBN ?? string.Empty),
+            new StringContent(
+                book.ISBN ?? string.Empty),
             "ISBN");
 
+
         content.Add(
             new StringContent(
-                book.PublicationYear?.ToString() ?? string.Empty),
+                book.PublicationYear?.ToString()
+                ?? string.Empty),
             "PublicationYear");
 
-        content.Add(
-            new StringContent(book.Publisher ?? string.Empty),
-            "Publisher");
 
         content.Add(
             new StringContent(
-                book.PageCount?.ToString() ?? string.Empty),
-            "PageCount");
+                book.Publisher ?? string.Empty),
+            "Publisher");
+
 
         content.Add(
-            new StringContent(book.Description ?? string.Empty),
+            new StringContent(
+                book.PageCount?.ToString()
+                ?? string.Empty),
+            "PageCount");
+
+
+        content.Add(
+            new StringContent(
+                book.Description ?? string.Empty),
             "Description");
 
-        if (book.CoverImage != null)
+
+        // ==================================================
+        // NUEVA PORTADA
+        // ==================================================
+
+        if (book.CoverImage != null &&
+            book.CoverImage.Length > 0)
         {
+            var stream =
+                book.CoverImage.OpenReadStream();
+
             var streamContent =
-                new StreamContent(book.CoverImage.OpenReadStream());
+                new StreamContent(stream);
 
             streamContent.Headers.ContentType =
                 new MediaTypeHeaderValue(
@@ -213,13 +340,16 @@ public class BookService
             content.Add(
                 streamContent,
                 "CoverImage",
-                book.CoverImage.FileName);
+                Path.GetFileName(
+                    book.CoverImage.FileName));
         }
+
 
         var response =
             await _httpClient.PutAsync(
                 $"api/Book/{id}",
                 content);
+
 
         if (response.IsSuccessStatusCode)
         {
@@ -229,11 +359,18 @@ public class BookService
             );
         }
 
-        var errors =
-            await ReadValidationErrorsAsync(response);
 
-        return (false, errors);
+        var errors =
+            await ReadValidationErrorsAsync(
+                response);
+
+        return (
+            false,
+            errors
+        );
     }
+
+
     // ======================================================
     // DELETE LÓGICO
     // ======================================================
@@ -242,11 +379,13 @@ public class BookService
     {
         AddAuthorizationHeader();
 
-        var response = await _httpClient.DeleteAsync(
-            $"api/Book/{id}");
+        var response =
+            await _httpClient.DeleteAsync(
+                $"api/Book/{id}");
 
         return response.IsSuccessStatusCode;
     }
+
 
     // ======================================================
     // SEARCH
@@ -261,7 +400,9 @@ public class BookService
     {
         AddAuthorizationHeader();
 
-        var queryParams = new List<string>();
+        var queryParams =
+            new List<string>();
+
 
         if (!string.IsNullOrWhiteSpace(title))
         {
@@ -269,11 +410,13 @@ public class BookService
                 $"title={Uri.EscapeDataString(title)}");
         }
 
+
         if (!string.IsNullOrWhiteSpace(author))
         {
             queryParams.Add(
                 $"author={Uri.EscapeDataString(author)}");
         }
+
 
         if (!string.IsNullOrWhiteSpace(category))
         {
@@ -281,11 +424,13 @@ public class BookService
                 $"category={Uri.EscapeDataString(category)}");
         }
 
+
         if (!string.IsNullOrWhiteSpace(isbn))
         {
             queryParams.Add(
                 $"isbn={Uri.EscapeDataString(isbn)}");
         }
+
 
         if (!string.IsNullOrWhiteSpace(publisher))
         {
@@ -293,23 +438,49 @@ public class BookService
                 $"publisher={Uri.EscapeDataString(publisher)}");
         }
 
-        var url = "api/Book/search";
+
+        var url =
+            "api/Book/search";
+
 
         if (queryParams.Any())
         {
-            url += "?" + string.Join("&", queryParams);
+            url += "?" +
+                   string.Join(
+                       "&",
+                       queryParams);
         }
 
-        return await _httpClient
-                   .GetFromJsonAsync<List<BookDto>>(url)
-               ?? new List<BookDto>();
+
+        var books =
+            await _httpClient
+                .GetFromJsonAsync<List<BookDto>>(
+                    url)
+            ?? new List<BookDto>();
+
+
+        // IMPORTANTE:
+        // también convertir las portadas
+        // cuando usamos búsqueda.
+
+        foreach (var book in books)
+        {
+            book.CoverImage =
+                BuildCoverImageUrl(
+                    book.CoverImage);
+        }
+
+
+        return books;
     }
+
 
     // ======================================================
     // READ VALIDATION ERRORS
     // ======================================================
 
-    private async Task<Dictionary<string, string[]>>
+    private async Task<
+        Dictionary<string, string[]>>
         ReadValidationErrorsAsync(
             HttpResponseMessage response)
     {
@@ -317,39 +488,58 @@ public class BookService
         {
             var validation =
                 await response.Content
-                    .ReadFromJsonAsync<ValidationResponse>();
+                    .ReadFromJsonAsync<
+                        ValidationResponse>();
+
 
             if (validation?.Errors != null)
             {
                 return validation.Errors;
             }
 
+
             if (!string.IsNullOrWhiteSpace(
                     validation?.Message))
             {
-                return new Dictionary<string, string[]>
+                return new Dictionary<
+                    string,
+                    string[]>
                 {
                     {
                         string.Empty,
-                        new[] { validation.Message }
+                        new[]
+                        {
+                            validation.Message
+                        }
                     }
                 };
             }
         }
         catch
         {
-            // Si la respuesta no tiene el formato esperado,
-            // devolvemos un mensaje genérico.
+            // La respuesta no tiene
+            // el formato esperado.
         }
 
-        return new Dictionary<string, string[]>
+
+        return new Dictionary<
+            string,
+            string[]>
         {
             {
                 string.Empty,
-                new[] { "No se pudo procesar la solicitud." }
+                new[]
+                {
+                    "No se pudo procesar la solicitud."
+                }
             }
         };
     }
+
+
+    // ======================================================
+    // VALIDATION RESPONSE
+    // ======================================================
 
     private class ValidationResponse
     {
@@ -361,6 +551,9 @@ public class BookService
 
         public string? Message { get; set; }
 
-        public Dictionary<string, string[]>? Errors { get; set; }
+        public Dictionary<
+            string,
+            string[]>? Errors
+        { get; set; }
     }
 }
