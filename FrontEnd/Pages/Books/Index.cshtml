@@ -295,13 +295,14 @@
                                               asp-route-id="@book.Id"
                                               style="display:inline;">
 
-                                            <button type="submit"
+                                            <button type="button"
                                                     class="btn btn-danger btn-sm"
                                                     title="Eliminar"
-                                                    onclick="return confirm('¿Desea eliminar este libro?');">
-
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    data-book-id="@book.Id"
+                                                    data-book-title="@book.Title">
                                                 <i class="bi bi-trash"></i>
-
                                             </button>
 
                                         </form>
@@ -386,7 +387,52 @@
                     document.getElementById('loanBookId').value = button.getAttribute('data-book-id');
                     document.getElementById('loanBookTitle').textContent = button.getAttribute('data-book-title');
                 });
+                      const deleteModal = document.getElementById('deleteModal');
+
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    document.getElementById('deleteBookId').value = button.getAttribute('data-book-id');
+                    document.getElementById('deleteBookTitle').textContent = button.getAttribute('data-book-title');
+                });
         </script>
     }
+    <!-- Modal confirmar eliminación -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Eliminar libro
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    ¿Deseas eliminar el libro
+                    <strong id="deleteBookTitle"></strong>?
+                    Esta acción no se puede deshacer.
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <form method="post" asp-page-handler="Delete" style="display:inline;">
+                        <input type="hidden" name="id" id="deleteBookId" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </div>
