@@ -11,4 +11,5 @@ public interface IBookRepository : IBaseRepository<Book>
         string? category = null,
         string? isbn = null,
         string? publisher = null);
+    Task<IEnumerable<Book>> GetAvailableAsync();
 }
