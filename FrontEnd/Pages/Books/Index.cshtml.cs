@@ -16,7 +16,6 @@ public class IndexModel : PageModel
 
     public List<BookDto> Books { get; set; } = new();
 
-
     [BindProperty(SupportsGet = true)]
     public string? Title { get; set; }
 
@@ -32,10 +31,18 @@ public class IndexModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string? Publisher { get; set; }
 
+    [BindProperty(SupportsGet = true)]
+    public bool OnlyAvailable { get; set; }
+
     public async Task OnGetAsync()
     {
-        // If there are no search parameters,
-        // retrieve all books.
+        if (OnlyAvailable)
+        {
+            Books = await _bookService.GetAvailableAsync();
+            return;
+        }
+
+        // Si no hay parámetros de búsqueda, trae todos.
         if (string.IsNullOrWhiteSpace(Title) &&
             string.IsNullOrWhiteSpace(Author) &&
             string.IsNullOrWhiteSpace(Category) &&
