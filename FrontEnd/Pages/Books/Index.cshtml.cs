@@ -14,17 +14,73 @@ public class IndexModel : PageModel
         _bookService = bookService;
     }
 
-    public IEnumerable<BookDto> Books { get; set; }
-        = new List<BookDto>();
+    public List<BookDto> Books { get; set; } = new();
+
+
+    // =====================================================
+    // FILTROS DE BÚSQUEDA
+    // =====================================================
+
+    [BindProperty(SupportsGet = true)]
+    public string? Title { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? Author { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? Category { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? ISBN { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string? Publisher { get; set; }
+
+
+    // =====================================================
+    // GET
+    // =====================================================
 
     public async Task OnGetAsync()
     {
-        Books = await _bookService.GetAllAsync();
+        // Si no se ingresó ningún filtro,
+        // obtenemos todos los libros.
+
+        if (string.IsNullOrWhiteSpace(Title) &&
+            string.IsNullOrWhiteSpace(Author) &&
+            string.IsNullOrWhiteSpace(Category) &&
+            string.IsNullOrWhiteSpace(ISBN) &&
+            string.IsNullOrWhiteSpace(Publisher))
+        {
+            Books = (await _bookService.GetAllAsync())
+                .ToList();
+
+            return;
+        }
+
+
+        // Si existe al menos un filtro,
+        // realizamos la búsqueda.
+
+        Books = (await _bookService.SearchAsync(
+            Title,
+            Author,
+            Category,
+            ISBN,
+            Publisher))
+            .ToList();
     }
+
+
+    // =====================================================
+    // ELIMINAR LIBRO
+    // =====================================================
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var result = await _bookService.DeleteAsync(id);
+        var result =
+            await _bookService.DeleteAsync(id);
+
 
         if (!result)
         {
@@ -33,6 +89,7 @@ public class IndexModel : PageModel
 
             return RedirectToPage();
         }
+
 
         TempData["Success"] =
             "Libro eliminado correctamente.";
