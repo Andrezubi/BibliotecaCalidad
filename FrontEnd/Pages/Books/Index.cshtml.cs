@@ -9,13 +9,14 @@ public class IndexModel : PageModel
 {
     private readonly BookService _bookService;
 
-    public IndexModel(BookService bookService)
+    public IndexModel(
+        BookService bookService,
+        LoanService loanService)
     {
         _bookService = bookService;
     }
 
     public List<BookDto> Books { get; set; } = new();
-
 
     // =====================================================
     // FILTROS DE BÚSQUEDA
@@ -41,15 +42,11 @@ public class IndexModel : PageModel
             return;
         }
 
-
-        // Si existe al menos un filtro,
-        // realizamos la búsqueda.
-
+        // Con filtros
         Books = (await _bookService.SearchAsync(
             Phrase))
             .ToList();
     }
-
 
     // =====================================================
     // ELIMINAR LIBRO
@@ -57,9 +54,7 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var result =
-            await _bookService.DeleteAsync(id);
-
+        var result = await _bookService.DeleteAsync(id);
 
         if (!result)
         {
@@ -69,9 +64,30 @@ public class IndexModel : PageModel
             return RedirectToPage();
         }
 
-
         TempData["Success"] =
             "Libro eliminado correctamente.";
+
+        return RedirectToPage();
+    }
+
+    // =====================================================
+    // PRESTAR LIBRO
+    // =====================================================
+
+    public async Task<IActionResult> OnPostLoanAsync(int bookId)
+    {
+        var ok = await _loanService.RegisterLoanAsync(bookId);
+
+        if (ok)
+        {
+            TempData["Success"] =
+                "Préstamo registrado. El libro ahora está prestado.";
+        }
+        else
+        {
+            TempData["Error"] =
+                "No se pudo registrar el préstamo. El libro no tiene copias disponibles.";
+        }
 
         return RedirectToPage();
     }

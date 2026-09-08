@@ -9,7 +9,10 @@
 
     <div class="card-custom">
 
+        <!-- ===================================================== -->
         <!-- ENCABEZADO -->
+        <!-- ===================================================== -->
+
         <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
@@ -39,7 +42,8 @@
         <!-- ===================================================== -->
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success alert-dismissible fade show">
+            <div class="alert alert-success alert-dismissible fade show"
+                 role="alert">
 
                 <i class="bi bi-check-circle me-2"></i>
 
@@ -47,7 +51,8 @@
 
                 <button type="button"
                         class="btn-close"
-                        data-bs-dismiss="alert">
+                        data-bs-dismiss="alert"
+                        aria-label="Cerrar">
                 </button>
 
             </div>
@@ -59,7 +64,8 @@
         <!-- ===================================================== -->
         @if (TempData["Error"] != null)
         {
-            <div class="alert alert-danger alert-dismissible fade show">
+            <div class="alert alert-danger alert-dismissible fade show"
+                 role="alert">
 
                 <i class="bi bi-exclamation-triangle me-2"></i>
 
@@ -67,7 +73,8 @@
 
                 <button type="button"
                         class="btn-close"
-                        data-bs-dismiss="alert">
+                        data-bs-dismiss="alert"
+                        aria-label="Cerrar">
                 </button>
 
             </div>
@@ -102,6 +109,7 @@
 
 
                 <!-- BOTONES -->
+
                 <div class="d-flex justify-content-end gap-2 mt-3">
 
                     <a asp-page="./Index"
@@ -140,47 +148,38 @@
 
                         <tr>
 
-                            <!-- PORTADA -->
                             <th class="text-center">
                                 Portada
                             </th>
 
-                            <!-- TÍTULO -->
                             <th>
                                 Título
                             </th>
 
-                            <!-- EDICIÓN -->
                             <th class="text-center">
                                 Edición
                             </th>
 
-                            <!-- ISBN -->
                             <th class="text-center">
                                 ISBN
                             </th>
 
-                            <!-- AÑO -->
                             <th class="text-center">
                                 Año
                             </th>
 
-                            <!-- EDITORIAL -->
                             <th>
                                 Editorial
                             </th>
 
-                            <!-- PÁGINAS -->
                             <th class="text-center">
                                 Páginas
                             </th>
 
-                            <!-- ESTADO -->
                             <th class="text-center">
                                 Estado
                             </th>
 
-                            <!-- ACCIONES -->
                             <th class="text-center">
                                 Acciones
                             </th>
@@ -196,9 +195,7 @@
                         {
                             <tr>
 
-                                <!-- ================================================= -->
                                 <!-- PORTADA -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
 
@@ -208,11 +205,11 @@
                                              alt="Portada de @book.Title"
                                              title="@book.Title"
                                              style="
-                                        width: 55px;
-                                        height: 80px;
-                                        object-fit: cover;
-                                        border-radius: 6px;
-                                        border: 1px solid #ddd;
+                                        width:55px;
+                                        height:80px;
+                                        object-fit:cover;
+                                        border-radius:6px;
+                                        border:1px solid #ddd;
                                         " />
                                     }
                                     else
@@ -237,9 +234,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
-                                <!-- TÍTULO + DESCRIPCIÓN -->
-                                <!-- ================================================= -->
+                                <!-- TÍTULO -->
 
                                 <td>
 
@@ -263,9 +258,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- EDICIÓN -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
 
@@ -274,9 +267,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- ISBN -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
 
@@ -287,9 +278,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- AÑO -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
 
@@ -298,9 +287,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- EDITORIAL -->
-                                <!-- ================================================= -->
 
                                 <td>
 
@@ -311,9 +298,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- PÁGINAS -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
 
@@ -322,9 +307,7 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- ESTADO -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
 
@@ -344,14 +327,29 @@
                                 </td>
 
 
-                                <!-- ================================================= -->
                                 <!-- ACCIONES -->
-                                <!-- ================================================= -->
 
                                 <td class="text-center">
+<<<<<<< HEAD
+=======
 
+                                    <!-- PRESTAR -->
                                     @if (book.IsActive)
                                     {
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm me-1"
+                                                title="Prestar"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#loanModal"
+                                                data-book-id="@book.Id"
+                                                data-book-title="@book.Title">
+
+                                            <i class="bi bi-box-arrow-up"></i>
+
+                                        </button>
+
+>>>>>>> 7874c172e486028e2f8509fca080f33f5d77c168
+
                                         <!-- EDITAR -->
 
                                         <a asp-page="Update"
@@ -407,8 +405,10 @@
                 @if (!string.IsNullOrWhiteSpace(Model.Phrase) )
                 {
                     <p class="text-muted">
+
                         No se encontraron libros que coincidan
                         con los criterios de búsqueda.
+
                     </p>
 
                     <a asp-page="./Index"
@@ -446,29 +446,26 @@
 
 
 <!-- ===================================================== -->
-<!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+<!-- MODAL PRÉSTAMO -->
 <!-- ===================================================== -->
 
 <div class="modal fade"
-     id="deleteModal"
+     id="loanModal"
      tabindex="-1"
-     aria-labelledby="deleteModalLabel"
+     aria-labelledby="loanModalLabel"
      aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content">
 
-            <!-- HEADER -->
-
             <div class="modal-header">
 
                 <h5 class="modal-title"
-                    id="deleteModalLabel">
+                    id="loanModalLabel">
 
-                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
-
-                    Confirmar eliminación
+                    <i class="bi bi-box-arrow-up me-2"></i>
+                    Confirmar préstamo
 
                 </h5>
 
@@ -481,26 +478,20 @@
             </div>
 
 
-            <!-- BODY -->
-
             <div class="modal-body">
 
-                <p class="mb-2">
-                    ¿Está seguro de que desea eliminar este libro?
-                </p>
+                <p class="mb-0">
 
-                <p class="fw-bold mb-2"
-                   id="deleteBookTitle">
-                </p>
+                    ¿Deseas marcar como
+                    <strong>prestado</strong>
+                    el libro
 
-                <small class="text-muted">
-                    El libro será marcado como inactivo.
-                </small>
+                    <strong id="loanBookTitle"></strong>?
+
+                </p>
 
             </div>
 
-
-            <!-- FOOTER -->
 
             <div class="modal-footer">
 
@@ -514,13 +505,107 @@
 
 
                 <form method="post"
-                      id="deleteBookForm">
+                      asp-page-handler="Loan">
+
+                    <input type="hidden"
+                           name="bookId"
+                           id="loanBookId" />
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Confirmar préstamo
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL ELIMINACIÓN -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="deleteModalLabel">
+
+                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                    Confirmar eliminación
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <p class="mb-2">
+
+                    ¿Está seguro de que desea eliminar este libro?
+
+                </p>
+
+                <p class="fw-bold mb-2"
+                   id="deleteBookTitle">
+                </p>
+
+                <small class="text-muted">
+
+                    El libro será marcado como inactivo.
+
+                </small>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+
+                <form method="post"
+                      asp-page-handler="Delete">
+
+                    <input type="hidden"
+                           name="id"
+                           id="deleteBookId" />
 
                     <button type="submit"
                             class="btn btn-danger">
 
                         <i class="bi bi-trash me-1"></i>
-
                         Eliminar
 
                     </button>
@@ -545,15 +630,46 @@
 
         document.addEventListener("DOMContentLoaded", function() {
 
+            // =================================================
+            // MODAL PRÉSTAMO
+            // =================================================
+
+            const loanModal =
+                document.getElementById("loanModal");
+
+            if (loanModal) {
+
+                loanModal.addEventListener(
+                    "show.bs.modal",
+                    function(event) {
+
+                        const button =
+                            event.relatedTarget;
+
+                        const bookId =
+                            button.getAttribute("data-book-id");
+
+                        const bookTitle =
+                            button.getAttribute("data-book-title");
+
+                        document.getElementById(
+                            "loanBookId"
+                        ).value = bookId;
+
+                        document.getElementById(
+                            "loanBookTitle"
+                        ).textContent = bookTitle;
+                    }
+                );
+            }
+
+
+            // =================================================
+            // MODAL ELIMINACIÓN
+            // =================================================
+
             const deleteModal =
                 document.getElementById("deleteModal");
-
-            const deleteForm =
-                document.getElementById("deleteBookForm");
-
-            const deleteBookTitle =
-                document.getElementById("deleteBookTitle");
-
 
             if (deleteModal) {
 
@@ -565,26 +681,20 @@
                             event.relatedTarget;
 
                         const bookId =
-                            button.getAttribute(
-                                "data-book-id"
-                            );
+                            button.getAttribute("data-book-id");
 
                         const bookTitle =
-                            button.getAttribute(
-                                "data-book-title"
-                            );
+                            button.getAttribute("data-book-title");
 
+                        document.getElementById(
+                            "deleteBookId"
+                        ).value = bookId;
 
-                        deleteBookTitle.textContent =
-                            bookTitle;
-
-
-                        deleteForm.action =
-                            `?handler=Delete&id=${bookId}`;
-
+                        document.getElementById(
+                            "deleteBookTitle"
+                        ).textContent = bookTitle;
                     }
                 );
-
             }
 
         });
