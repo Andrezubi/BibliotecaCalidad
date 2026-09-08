@@ -88,4 +88,11 @@ public class BookController : ControllerBase
 
         return Ok(books);
     }
+
+    [HttpGet("available")]
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetAvailable()
+    {
+        var books = await _bookService.GetAvailableAsync();
+        return Ok(books);
+    }
 }
