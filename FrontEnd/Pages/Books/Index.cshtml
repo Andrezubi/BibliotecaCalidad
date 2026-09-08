@@ -262,6 +262,19 @@
                                 </td>
 
                                 <td class="text-center">
+                                    <form method="post"
+                                          asp-page-handler="Loan"
+                                          asp-route-bookId="@book.Id"
+                                          style="display:inline;">
+
+                                        <button type="submit"
+                                                class="btn btn-primary btn-sm me-1"
+                                                title="Prestar"
+                                                onclick="return confirm('¿Marcar este libro como prestado?');">
+                                            <i class="bi bi-box-arrow-up"></i>
+                                        </button>
+
+                                    </form>
 
                                     @if (book.IsActive)
                                     {
