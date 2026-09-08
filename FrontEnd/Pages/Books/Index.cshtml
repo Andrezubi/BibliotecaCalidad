@@ -267,10 +267,13 @@
                                           asp-route-bookId="@book.Id"
                                           style="display:inline;">
 
-                                        <button type="submit"
+                                        <button type="button"
                                                 class="btn btn-primary btn-sm me-1"
                                                 title="Prestar"
-                                                onclick="return confirm('¿Marcar este libro como prestado?');">
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#loanModal"
+                                                data-book-id="@book.Id"
+                                                data-book-title="@book.Title">
                                             <i class="bi bi-box-arrow-up"></i>
                                         </button>
 
@@ -336,5 +339,54 @@
         }
 
     </div>
+    <!-- Modal confirmar préstamo -->
+    <div class="modal fade" id="loanModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-box-arrow-up me-2"></i>
+                        Confirmar préstamo
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    ¿Deseas marcar como <strong>prestado</strong> el libro
+                    <strong id="loanBookTitle"></strong>?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <form method="post" asp-page-handler="Loan" style="display:inline;">
+                        <input type="hidden" name="bookId" id="loanBookId" />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Confirmar préstamo
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+                    const loanModal = document.getElementById('loanModal');
+
+                loanModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    document.getElementById('loanBookId').value = button.getAttribute('data-book-id');
+                    document.getElementById('loanBookTitle').textContent = button.getAttribute('data-book-title');
+                });
+        </script>
+    }
 
 </div>
