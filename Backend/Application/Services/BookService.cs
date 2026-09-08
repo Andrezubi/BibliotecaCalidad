@@ -310,4 +310,9 @@ public class BookService : IBookService
             UserId = null
         };
     }
+    public async Task<IEnumerable<BookDto>> GetAvailableAsync()
+    {
+        var books = await _bookRepository.GetAvailableAsync();
+        return books.Select(MapToDto);
+    }
 }

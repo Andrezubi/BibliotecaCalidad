@@ -13,6 +13,7 @@ public interface IBookService
     Task<BookDto?> UpdateAsync(int id, UpdateBookDto dto);
 
     Task<bool> DeleteAsync(int id);
+    Task<IEnumerable<BookDto>> GetAvailableAsync();
 
     Task<IEnumerable<BookDto>> SearchAsync(
             string? title = null,

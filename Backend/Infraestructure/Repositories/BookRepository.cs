@@ -98,5 +98,17 @@ public class BookRepository : BaseRepository<Book>, IBookRepository
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
+    public async Task<IEnumerable<Book>> GetAvailableAsync()
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Where(book =>
+                book.IsActive &&
+                book.Copies.Any(copy =>
+                    copy.IsActive &&
+                    copy.Status == "Available"))
+            .OrderBy(book => book.Title)
+            .ToListAsync();
+    }
 
 }

@@ -473,6 +473,22 @@ public class BookService
 
         return books;
     }
+    public async Task<List<BookDto>> GetAvailableAsync()
+    {
+        AddAuthorizationHeader();
+
+        var response = await _httpClient.GetAsync("api/Book/available");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return new List<BookDto>();
+        }
+
+        var books = await response.Content
+            .ReadFromJsonAsync<List<BookDto>>();
+
+        return books ?? new List<BookDto>();
+    }
 
 
     // ======================================================
