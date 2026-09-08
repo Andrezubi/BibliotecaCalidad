@@ -33,5 +33,21 @@ namespace FrontEnd.Services
 
             return books ?? new List<LoanedBookDto>();
         }
+        public async Task<bool> RegisterReturnAsync(int copyId)
+        {
+            var backendUrl = _configuration["BackendUrl"];
+
+            if (string.IsNullOrEmpty(backendUrl))
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            var url = $"{backendUrl}/api/loans/return/{copyId}";
+
+            var response = await _httpClient.PostAsync(url, null);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }
