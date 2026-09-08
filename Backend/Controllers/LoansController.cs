@@ -40,6 +40,25 @@ namespace Backend.Controllers
                 message = "Devolución registrada. El libro ahora está disponible."
             });
         }
+        [HttpPost("loan-book/{bookId}")]
+        public async Task<IActionResult> RegisterLoan(int bookId)
+        {
+            var result = await _loanService.RegisterLoanAsync(bookId);
+
+            if (!result)
+            {
+                return BadRequest(new
+                {
+                    message = "No se pudo registrar el préstamo. " +
+                              "El libro no tiene copias disponibles."
+                });
+            }
+
+            return Ok(new
+            {
+                message = "Préstamo registrado. El libro ahora está prestado."
+            });
+        }
     }
 
 }

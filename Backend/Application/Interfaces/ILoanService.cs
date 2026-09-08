@@ -6,5 +6,6 @@ namespace Backend.Application.Interfaces
     {
         Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync();
         Task<bool> RegisterReturnAsync(int copyId);
+        Task<bool> RegisterLoanAsync(int bookId);
     }
 }

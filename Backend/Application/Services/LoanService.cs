@@ -46,6 +46,22 @@ namespace Backend.Application.Services
                 await _loanRepository.SaveChangesAsync();
 
                 return true;
-            }
+        }
+        public async Task<bool> RegisterLoanAsync(int bookId)
+        {
+            var copy = await _loanRepository.GetFirstAvailableCopyByBookIdAsync(bookId);
+
+            // El libro no tiene ninguna copia disponible.
+            if (copy == null)
+                return false;
+
+            // Cambiar el estado de la copia a Prestado.
+            copy.Status = "Loaned";
+            copy.UpdatedAt = DateTime.Now;
+
+            await _loanRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

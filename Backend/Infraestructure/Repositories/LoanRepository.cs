@@ -48,4 +48,14 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
     {
         await _context.SaveChangesAsync();
     }
+    public async Task<Copy?> GetFirstAvailableCopyByBookIdAsync(int bookId)
+    {
+        return await _context.Copies
+            .Where(c =>
+                c.BookId == bookId &&
+                c.Status == "Available" &&
+                c.IsActive == true)
+            .OrderBy(c => c.Id)
+            .FirstOrDefaultAsync();
+    }
 }
