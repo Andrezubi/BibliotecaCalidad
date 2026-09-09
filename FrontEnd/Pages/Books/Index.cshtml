@@ -264,6 +264,10 @@
                             </th>
 
                             <th class="text-center">
+                                Copias disp.
+                             </th>
+
+                            <th class="text-center">
                                 Estado
                             </th>
 
@@ -393,6 +397,12 @@
 
                                 </td>
 
+                                <td class="text-center">
+                                    <span class="badge @(book.AvailableCopies > 0 ? "bg-success" : "bg-secondary")">
+                                        @book.AvailableCopies
+                                    </span>
+                                </td>
+
 
                                 <!-- ESTADO -->
 
@@ -417,59 +427,54 @@
                                 <!-- ACCIONES -->
 
                                 <td class="text-center">
-
-                                    <!-- PRESTAR -->
                                     @if (book.IsActive)
                                     {
-                                        <button type="button"
-                                                class="btn btn-primary btn-sm me-1"
-                                                title="Prestar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#loanModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
+                                        <div class="d-inline-grid gap-1"
+                                             style="grid-template-columns: repeat(2, auto);">
 
-                                            <i class="bi bi-box-arrow-up"></i>
+                                            <!-- PRESTAR -->
+                                            <button type="button"
+                                                    class="btn btn-primary btn-sm"
+                                                    title="Prestar"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#loanModal"
+                                                    data-book-id="@book.Id"
+                                                    data-book-title="@book.Title">
+                                                <i class="bi bi-box-arrow-up"></i>
+                                            </button>
 
-                                        </button>
-                                        <button type="button"
-                                                class="btn btn-info btn-sm text-white"
-                                                title="Agregar copia"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#addCopyModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
-                                            <i class="bi bi-plus-square"></i>
-                                        </button>
+                                            <!-- AGREGAR COPIA -->
+                                            <button type="button"
+                                                    class="btn btn-info btn-sm text-white"
+                                                    title="Agregar copia"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#addCopyModal"
+                                                    data-book-id="@book.Id"
+                                                    data-book-title="@book.Title">
+                                                <i class="bi bi-plus-square"></i>
+                                            </button>
 
+                                            <!-- EDITAR -->
+                                            <a asp-page="Update"
+                                               asp-route-id="@book.Id"
+                                               class="btn btn-warning btn-sm"
+                                               title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
 
-                                        <!-- EDITAR -->
+                                            <!-- ELIMINAR -->
+                                            <button type="button"
+                                                    class="btn btn-danger btn-sm"
+                                                    title="Eliminar"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    data-book-id="@book.Id"
+                                                    data-book-title="@book.Title">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
 
-                                        <a asp-page="Update"
-                                           asp-route-id="@book.Id"
-                                           class="btn btn-warning btn-sm me-1"
-                                           title="Editar">
-
-                                            <i class="bi bi-pencil"></i>
-
-                                        </a>
-
-
-                                        <!-- ELIMINAR -->
-
-                                        <button type="button"
-                                                class="btn btn-danger btn-sm"
-                                                title="Eliminar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
-
-                                            <i class="bi bi-trash"></i>
-
-                                        </button>
+                                        </div>
                                     }
-
                                 </td>
 
                             </tr>
