@@ -110,5 +110,16 @@ public class BookRepository : BaseRepository<Book>, IBookRepository
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
+    public async Task<bool> InternalCodeExistsAsync(string internalCode)
+    {
+        return await _context.Copies
+            .AnyAsync(c => c.InternalCode == internalCode);
+    }
+
+    public async Task AddCopyAsync(Copy copy)
+    {
+        await _context.Copies.AddAsync(copy);
+        await _context.SaveChangesAsync();
+    }
 
 }
