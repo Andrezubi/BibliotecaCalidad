@@ -18,8 +18,11 @@ public class BookService
         _httpClient = httpClient;
         _httpContextAccessor = httpContextAccessor;
     }
-
-    // ============================================================
+    public class ApiMessage
+    {
+        public string? Message { get; set; }
+    }
+    // ======================================================
     // AUTORIZACIÓN
     // ============================================================
 
@@ -1027,5 +1030,23 @@ public class ServiceResult
             Success = false,
             Errors = errors
         };
+    }
+    public async Task<(bool Success, string Message)> AddCopyAsync(int bookId, string internalCode)
+    {
+        AddAuthorizationHeader();
+
+        var response = await _httpClient.PostAsJsonAsync(
+            $"api/Book/{bookId}/copies",
+            new { InternalCode = internalCode });
+
+        var result = await response.Content
+            .ReadFromJsonAsync<ApiMessage>();
+
+        var message = result?.Message
+            ?? (response.IsSuccessStatusCode
+                ? "Copia agregada correctamente."
+                : "No se pudo agregar la copia.");
+
+        return (response.IsSuccessStatusCode, message);
     }
 }

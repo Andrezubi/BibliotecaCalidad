@@ -1,4 +1,6 @@
 ﻿using Backend.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Backend.Domain.Interfaces;
 
@@ -22,4 +24,13 @@ public interface IBookRepository : IBaseRepository<Book>
         int bookId,
         IEnumerable<int> categoryIds,
         int? userId);
+
+
+    Task<IEnumerable<Book>> GetAvailableAsync();
+
+    Task<int> CountAvailableCopiesAsync(int bookId);
+
+    Task<bool> InternalCodeExistsAsync(string internalCode);
+
+    Task AddCopyAsync(Copy copy);
 }

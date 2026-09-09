@@ -31,4 +31,6 @@ public class BookDto
     public List<int> AuthorIds { get; set; } = new();
 
     public List<int> CategoryIds { get; set; } = new();
+    // Número de copias disponibles
+    public int AvailableCopies { get; set; }
 }

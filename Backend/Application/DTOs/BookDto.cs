@@ -19,7 +19,8 @@ public class BookDto
     public string? Description { get; set; }
 
     public string? CoverImage { get; set; }
-
+    // Número de copias disponibles
+    public int AvailableCopies { get; set; }
     public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }

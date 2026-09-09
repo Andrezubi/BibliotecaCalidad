@@ -153,6 +153,37 @@ public class BookRepository
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
+    public async Task<IEnumerable<Book>> GetAvailableAsync()
+    {
+        return await _dbSet
+            .AsNoTracking()
+            .Where(book =>
+                book.IsActive &&
+                book.Copies.Any(copy =>
+                    copy.IsActive &&
+                    copy.Status == "Available"))
+            .OrderBy(book => book.Title)
+            .ToListAsync();
+    }
+    public async Task<bool> InternalCodeExistsAsync(string internalCode)
+    {
+        return await _context.Copies
+            .AnyAsync(c => c.InternalCode == internalCode);
+    }
+
+    public async Task AddCopyAsync(Copy copy)
+    {
+        await _context.Copies.AddAsync(copy);
+        await _context.SaveChangesAsync();
+    }
+    public async Task<int> CountAvailableCopiesAsync(int bookId)
+    {
+        return await _context.Copies
+            .CountAsync(c =>
+                c.BookId == bookId &&
+                c.IsActive &&
+                c.Status == "Available");
+    }
 
     // ============================================================
     // OBTENER AUTORES ACTIVOS DEL LIBRO
