@@ -21,4 +21,17 @@ public class CreateBookDto
     public int? UserId { get; set; }
     // Ruta de la imagen de portada
     public IFormFile? CoverImage { get; set; }
+
+
+    // Existing authors
+    public List<int> AuthorIds { get; set; } = new();
+
+    // Existing categories
+    public List<int> CategoryIds { get; set; } = new();
+
+    // Authors created while creating the book
+    public List<CreateAuthorDto> NewAuthors { get; set; } = new();
+
+    // Categories created while creating the book
+    public List<CreateCategoryDto> NewCategories { get; set; } = new();
 }

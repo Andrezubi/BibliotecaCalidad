@@ -7,5 +7,6 @@ namespace Backend.Domain.Interfaces
         Task<bool> ExistsAsync(string name);
         Task<IEnumerable<Category>> GetAllAsync();
         Task DeleteAsync(Category category);
+        Task AddBookCategoryAsync(Bookcategory bookCategory);
     }
 }

@@ -10,6 +10,8 @@ namespace Backend.Application.Services;
 public class BookService : IBookService
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IAuthorRepository _authorRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IWebHostEnvironment _environment;
 
     private static readonly string[] AllowedExtensions =
@@ -24,9 +26,13 @@ public class BookService : IBookService
 
     public BookService(
         IBookRepository bookRepository,
+        IAuthorRepository authorRepository,
+        ICategoryRepository categoryRepository,
         IWebHostEnvironment environment)
     {
         _bookRepository = bookRepository;
+        _authorRepository = authorRepository;
+        _categoryRepository = categoryRepository;
         _environment = environment;
     }
 
@@ -89,6 +95,103 @@ public class BookService : IBookService
         }
 
         await _bookRepository.AddAsync(book);
+
+        // ==========================================
+        // EXISTING AUTHORS
+        // ==========================================
+
+        foreach (var authorId in dto.AuthorIds.Distinct())
+        {
+            var bookAuthor = new Bookauthor
+            {
+                BookId = book.Id,
+                AuthorId = authorId,
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                UserId = dto.UserId
+            };
+
+            await _authorRepository.AddBookAuthorAsync(bookAuthor);
+        }
+
+        // ==========================================
+        // NEW AUTHORS
+        // ==========================================
+
+        foreach (var newAuthor in dto.NewAuthors)
+        {
+            var author = new Author
+            {
+                FirstName = newAuthor.FirstName,
+                LastName = newAuthor.LastName,
+                UserId = dto.UserId,
+                IsActive = true,
+                CreatedAt = DateTime.Now
+            };
+
+            await _authorRepository.AddAsync(author);
+
+            var bookAuthor = new Bookauthor
+            {
+                BookId = book.Id,
+                AuthorId = author.Id,
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                UserId = dto.UserId
+            };
+
+            await _authorRepository.AddBookAuthorAsync(bookAuthor);
+        }
+
+        // ==========================================
+        // EXISTING CATEGORIES
+        // ==========================================
+
+        foreach (var categoryId in dto.CategoryIds.Distinct())
+        {
+            var bookCategory = new Bookcategory
+            {
+                BookId = book.Id,
+                CategoryId = categoryId,
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                UserId = dto.UserId
+            };
+
+            await _categoryRepository.AddBookCategoryAsync(bookCategory);
+        }
+
+        // ==========================================
+        // NEW CATEGORIES
+        // ==========================================
+
+        foreach (var newCategory in dto.NewCategories)
+        {
+            var category = new Category
+            {
+                Name = newCategory.Name,
+                Description = newCategory.Description,
+                UserId = dto.UserId,
+                IsActive = true,
+                CreatedAt = DateTime.Now
+            };
+
+            await _categoryRepository.AddAsync(category);
+
+            var bookCategory = new Bookcategory
+            {
+                BookId = book.Id,
+                CategoryId = category.Id,
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                UserId = dto.UserId
+            };
+
+            await _categoryRepository.AddBookCategoryAsync(bookCategory);
+        }
+
+
+
 
         return MapToDto(book);
     }

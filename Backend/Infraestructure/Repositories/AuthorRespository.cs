@@ -39,5 +39,9 @@ namespace Backend.Infraestructure.Repositories
 
             await UpdateAsync(author);
         }
+        public async Task AddBookAuthorAsync(Bookauthor bookauthor)
+        {
+            await _context.Bookauthors.AddAsync(bookauthor);
+        }
     }
 }

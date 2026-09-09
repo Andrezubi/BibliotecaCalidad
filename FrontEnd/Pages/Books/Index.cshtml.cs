@@ -8,12 +8,14 @@ namespace FrontEnd.Pages.Books;
 public class IndexModel : PageModel
 {
     private readonly BookService _bookService;
+    private readonly LoanService _loanService;
 
     public IndexModel(
         BookService bookService,
         LoanService loanService)
     {
         _bookService = bookService;
+        _loanService = loanService;
     }
 
     public List<BookDto> Books { get; set; } = new();

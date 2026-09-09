@@ -7,6 +7,7 @@ namespace Backend.Domain.Interfaces
         Task<bool> ExistsAsync(string firstName, string lastName);
         Task<IEnumerable<Author>> GetAllAsync();
         Task DeleteAsync(Author author);
+        Task AddBookAuthorAsync(Bookauthor bookAuthor);
 
     }
 }

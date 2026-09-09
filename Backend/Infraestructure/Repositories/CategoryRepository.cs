@@ -37,5 +37,9 @@ namespace Backend.Infraestructure.Repositories
 
             await UpdateAsync(category);
         }
+        public async Task AddBookCategoryAsync(Bookcategory bookcategory)
+        {
+            await _context.Bookcategories.AddAsync(bookcategory);
+        }
     }
 }

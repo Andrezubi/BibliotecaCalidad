@@ -2,6 +2,7 @@ using Backend.Application.Interfaces;
 using Backend.Application.Services;
 using Backend.Domain.Interfaces;
 using Backend.Infraestructure.Persistence;
+using Backend.Infraestructure.Repositories;
 using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -67,6 +68,23 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+
+// ======================================================
+// AUTHOR
+// ======================================================
+
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+
+// ======================================================
+// CATEGORY
+// ======================================================
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
 
 // ======================================================
 // AUTHENTICATION
