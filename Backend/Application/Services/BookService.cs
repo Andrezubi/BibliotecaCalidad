@@ -904,7 +904,7 @@ public class BookService : IBookService
 
         foreach (var book in books)
         {
-            var dto = MapToDto(book);
+            var dto = await MapToDtoAsync(book);
 
             dto.AvailableCopies =
                 await _bookRepository.CountAvailableCopiesAsync(book.Id);

@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using static FrontEnd.Services.BookService;
 
 namespace FrontEnd.Services;
 
@@ -25,7 +26,24 @@ public class BookService
     // ======================================================
     // AUTORIZACIÓN
     // ============================================================
+    public async Task<(bool Success, string Message)> AddCopyAsync(int bookId, string internalCode)
+    {
+        AddAuthorizationHeader();
 
+        var response = await _httpClient.PostAsJsonAsync(
+            $"api/Book/{bookId}/copies",
+            new { InternalCode = internalCode });
+
+        var result = await response.Content
+            .ReadFromJsonAsync<ApiMessage>();
+
+        var message = result?.Message
+            ?? (response.IsSuccessStatusCode
+                ? "Copia agregada correctamente."
+                : "No se pudo agregar la copia.");
+
+        return (response.IsSuccessStatusCode, message);
+    }
     private void AddAuthorizationHeader()
     {
         var token =
@@ -1031,22 +1049,5 @@ public class ServiceResult
             Errors = errors
         };
     }
-    public async Task<(bool Success, string Message)> AddCopyAsync(int bookId, string internalCode)
-    {
-        AddAuthorizationHeader();
-
-        var response = await _httpClient.PostAsJsonAsync(
-            $"api/Book/{bookId}/copies",
-            new { InternalCode = internalCode });
-
-        var result = await response.Content
-            .ReadFromJsonAsync<ApiMessage>();
-
-        var message = result?.Message
-            ?? (response.IsSuccessStatusCode
-                ? "Copia agregada correctamente."
-                : "No se pudo agregar la copia.");
-
-        return (response.IsSuccessStatusCode, message);
-    }
+    
 }
