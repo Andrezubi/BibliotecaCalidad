@@ -33,9 +33,10 @@ public class BookService : IBookService
     public async Task<IEnumerable<BookDto>> GetAllAsync()
     {
         var books = await _bookRepository.GetAllAsync();
-
-        return books.Select(MapToDto);
+        return await MapWithAvailabilityAsync(books);
     }
+
+
 
     public async Task<BookDto?> GetByIdAsync(int id)
     {
@@ -171,21 +172,16 @@ public class BookService : IBookService
     // ======================================================
 
     public async Task<IEnumerable<BookDto>> SearchAsync(
-        string? title = null,
-        string? author = null,
-        string? category = null,
-        string? isbn = null,
-        string? publisher = null)
+    string? title = null,
+    string? author = null,
+    string? category = null,
+    string? isbn = null,
+    string? publisher = null)
     {
-        var books =
-            await _bookRepository.SearchAsync(
-                title,
-                author,
-                category,
-                isbn,
-                publisher);
+        var books = await _bookRepository.SearchAsync(
+            title, author, category, isbn, publisher);
 
-        return books.Select(MapToDto);
+        return await MapWithAvailabilityAsync(books);
     }
 
     // ======================================================
@@ -310,6 +306,27 @@ public class BookService : IBookService
             UserId = null
         };
     }
+    // ======================================================
+    // MAP CON CONTEO DE COPIAS DISPONIBLES
+    // ======================================================
+
+    private async Task<List<BookDto>> MapWithAvailabilityAsync(
+        IEnumerable<Book> books)
+    {
+        var result = new List<BookDto>();
+
+        foreach (var book in books)
+        {
+            var dto = MapToDto(book);
+
+            dto.AvailableCopies =
+                await _bookRepository.CountAvailableCopiesAsync(book.Id);
+
+            result.Add(dto);
+        }
+
+        return result;
+    }
     public async Task<IEnumerable<BookDto>> GetAvailableAsync()
     {
         var books = await _bookRepository.GetAvailableAsync();
@@ -346,4 +363,5 @@ public class BookService : IBookService
 
         return null; // éxito
     }
+
 }

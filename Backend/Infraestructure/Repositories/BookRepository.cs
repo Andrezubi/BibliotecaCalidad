@@ -121,5 +121,13 @@ public class BookRepository : BaseRepository<Book>, IBookRepository
         await _context.Copies.AddAsync(copy);
         await _context.SaveChangesAsync();
     }
+    public async Task<int> CountAvailableCopiesAsync(int bookId)
+    {
+        return await _context.Copies
+            .CountAsync(c =>
+                c.BookId == bookId &&
+                c.IsActive &&
+                c.Status == "Available");
+    }
 
 }

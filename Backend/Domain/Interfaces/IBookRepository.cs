@@ -14,4 +14,5 @@ public interface IBookRepository : IBaseRepository<Book>
     Task<IEnumerable<Book>> GetAvailableAsync();
     Task<bool> InternalCodeExistsAsync(string internalCode);
     Task AddCopyAsync(Copy copy);
+    Task<int> CountAvailableCopiesAsync(int bookId);
 }
