@@ -1,11 +1,12 @@
 using FrontEnd.DTOs;
+using FrontEnd.Pages.Shared;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FrontEnd.Pages.Books;
 
-public class IndexModel : PageModel
+public class IndexModel : AuthorizedPageModel
 {
     private readonly BookService _bookService;
     private readonly LoanService _loanService;

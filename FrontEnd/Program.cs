@@ -57,10 +57,7 @@ builder.Services.AddHttpClient<LoanService>();
 
 builder.Services.AddHttpClient<AuthApiService>();
 
-
-// ======================================================
-// BUILD
-// ======================================================
+builder.Services.AddScoped<AuthSessionService>();
 
 var app = builder.Build();
 

@@ -1,9 +1,12 @@
-﻿@page
+﻿
+@page
 @model FrontEnd.Pages.Books.IndexModel
 
 @{
     ViewData["Title"] = "Libros";
 }
+@using FrontEnd.Services
+@inject AuthSessionService AuthSession
 
 @using FrontEnd.Services
 @inject AuthSessionService AuthSession
@@ -208,14 +211,12 @@
                             <th class="text-center">
                                 Estado
                             </th>
-
                             @if (AuthSession.HasAnyRole("Admin", "Librarian"))
                             {
                                 <th class="text-center">
                                     Acciones
                                 </th>
                             }
-
                         </tr>
 
                     </thead>

@@ -2,10 +2,11 @@ using FrontEnd.DTOs;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using FrontEnd.Pages.Shared;
 
 namespace FrontEnd.Pages.Books;
 
-public class CreateModel : PageModel
+public class CreateModel : AuthorizedPageModel
 {
     private readonly BookService _bookService;
 
@@ -37,9 +38,15 @@ public class CreateModel : PageModel
     // GET
     // =====================================================
 
-    public async Task OnGetAsync()
+    public IActionResult OnGet()
     {
+        if (!IsInAnyRole("Admin", "Librarian"))
+        {
+            return RedirectToPage("/AccessDenied");
+        }
         await LoadAuthorsAndCategoriesAsync();
+
+        return Page();
     }
 
     // =====================================================
@@ -69,6 +76,11 @@ public class CreateModel : PageModel
         // =================================================
         // VALIDAR MODELO
         // =================================================
+        if (!IsInAnyRole("Admin", "Librarian"))
+        {
+            return RedirectToPage("/AccessDenied");
+        }
+
 
         if (!ModelState.IsValid)
         {
