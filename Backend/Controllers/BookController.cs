@@ -164,27 +164,11 @@ public class BookController : ControllerBase
 
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<BookDto>>> Search(
-        [FromQuery] string? title = null,
-        [FromQuery] string? author = null,
-        [FromQuery] string? category = null,
-        [FromQuery] string? isbn = null,
-        [FromQuery] string? publisher = null)
+        [FromQuery] string? phrase = null)
     {
         var books =
-            await _bookService.SearchAsync(
-                title,
-                author,
-                category,
-                isbn,
-                publisher);
+            await _bookService.SearchAsync(phrase);
 
-        return Ok(books);
-    }
-
-    [HttpGet("available")]
-    public async Task<ActionResult<IEnumerable<BookDto>>> GetAvailable()
-    {
-        var books = await _bookService.GetAvailableAsync();
         return Ok(books);
     }
 }

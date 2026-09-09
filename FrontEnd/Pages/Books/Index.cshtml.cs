@@ -1,11 +1,12 @@
 using FrontEnd.DTOs;
+using FrontEnd.Pages.Shared;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FrontEnd.Pages.Books;
 
-public class IndexModel : PageModel
+public class IndexModel : AuthorizedPageModel
 {
     private readonly BookService _bookService;
     private readonly LoanService _loanService;
@@ -25,22 +26,7 @@ public class IndexModel : PageModel
     // =====================================================
 
     [BindProperty(SupportsGet = true)]
-    public string? Title { get; set; }
-
-    [BindProperty(SupportsGet = true)]
-    public string? Author { get; set; }
-
-    [BindProperty(SupportsGet = true)]
-    public string? Category { get; set; }
-
-    [BindProperty(SupportsGet = true)]
-    public string? ISBN { get; set; }
-
-    [BindProperty(SupportsGet = true)]
-    public string? Publisher { get; set; }
-
-    [BindProperty(SupportsGet = true)]
-    public bool OnlyAvailable { get; set; }
+    public string? Phrase { get; set; }
 
     // =====================================================
     // GET
@@ -48,21 +34,10 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        // Solo libros disponibles
-        if (OnlyAvailable)
-        {
-            Books = (await _bookService.GetAvailableAsync())
-                .ToList();
+        // Si no se ingresó ningún filtro,
+        // obtenemos todos los libros.
 
-            return;
-        }
-
-        // Sin filtros
-        if (string.IsNullOrWhiteSpace(Title) &&
-            string.IsNullOrWhiteSpace(Author) &&
-            string.IsNullOrWhiteSpace(Category) &&
-            string.IsNullOrWhiteSpace(ISBN) &&
-            string.IsNullOrWhiteSpace(Publisher))
+        if (string.IsNullOrWhiteSpace(Phrase))
         {
             Books = (await _bookService.GetAllAsync())
                 .ToList();
@@ -72,11 +47,7 @@ public class IndexModel : PageModel
 
         // Con filtros
         Books = (await _bookService.SearchAsync(
-            Title,
-            Author,
-            Category,
-            ISBN,
-            Publisher))
+            Phrase))
             .ToList();
     }
 

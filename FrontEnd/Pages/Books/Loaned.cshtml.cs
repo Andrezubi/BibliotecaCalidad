@@ -2,10 +2,11 @@
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
+using FrontEnd.Pages.Shared;
 
 namespace FrontEnd.Pages.Books
 {
-    public class LoanedModel : PageModel
+    public class LoanedModel : AuthorizedPageModel
     {
         private readonly LoanService _loanService;
 
@@ -18,20 +19,33 @@ namespace FrontEnd.Pages.Books
 
         public string? ErrorMessage { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (!IsInAnyRole("Admin", "Librarian"))
+            {
+                return RedirectToPage("/AccessDenied");
+            }
+    
             try
             {
+
                 LoanedBooks = await _loanService.GetLoanedBooksAsync();
+                return Page();
             }
             catch
             {
                 ErrorMessage =
                     "No se pudieron cargar los libros prestados.";
+                return Page();
             }
         }
         public async Task<IActionResult> OnPostReturnAsync(int copyId)
         {
+            if (!IsInAnyRole("Admin", "Librarian"))
+            {
+                return RedirectToPage("/AccessDenied");
+            }
+
             var ok = await _loanService.RegisterReturnAsync(copyId);
 
             if (ok)
