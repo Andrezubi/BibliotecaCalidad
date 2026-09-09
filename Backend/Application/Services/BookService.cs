@@ -1,9 +1,14 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
-using Backend.Domain.Models;
 using Backend.Domain.Interfaces;
+using Backend.Domain.Models;
 using Backend.Domain.Validators;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Backend.Application.Services;
 
@@ -39,8 +44,13 @@ public class BookService : IBookService
     public async Task<IEnumerable<BookDto>> GetAllAsync()
     {
         var books = await _bookRepository.GetAllAsync();
+        return await MapWithAvailabilityAsync(books);
+    }
 
-        return books.Select(MapToDto);
+    public async Task<IEnumerable<BookDto>> GetAvailableAsync()
+    {
+        var books = await _bookRepository.GetAvailableAsync();
+        return await MapWithAvailabilityAsync(books);
     }
 
     public async Task<BookDto?> GetByIdAsync(int id)
@@ -190,9 +200,6 @@ public class BookService : IBookService
             await _categoryRepository.AddBookCategoryAsync(bookCategory);
         }
 
-
-
-
         return MapToDto(book);
     }
 
@@ -279,7 +286,43 @@ public class BookService : IBookService
         var books =
             await _bookRepository.SearchAsync(phrase);
 
-        return books.Select(MapToDto);
+        return await MapWithAvailabilityAsync(books);
+    }
+
+    // ======================================================
+    // ADD COPY
+    // ======================================================
+
+    public async Task<string?> AddCopyAsync(int bookId, string internalCode)
+    {
+        if (string.IsNullOrWhiteSpace(internalCode))
+            return "El código interno es obligatorio.";
+
+        internalCode = internalCode.Trim();
+
+        if (internalCode.Length > 50)
+            return "El código interno no puede superar los 50 caracteres.";
+
+        var book = await _bookRepository.GetByIdAsync(bookId);
+
+        if (book == null || !book.IsActive)
+            return "El libro no existe.";
+
+        if (await _bookRepository.InternalCodeExistsAsync(internalCode))
+            return "Ya existe una copia con ese código interno.";
+
+        var copy = new Copy
+        {
+            BookId = bookId,
+            InternalCode = internalCode,
+            Status = "Available",
+            IsActive = true,
+            CreatedAt = DateTime.Now
+        };
+
+        await _bookRepository.AddCopyAsync(copy);
+
+        return null; // éxito
     }
 
     // ======================================================
@@ -327,8 +370,7 @@ public class BookService : IBookService
                 "wwwroot");
         }
 
-        // Crear:
-        // Backend/wwwroot/uploads/books
+        // Crear: Backend/wwwroot/uploads/books
         var uploadsPath =
             Path.Combine(
                 webRootPath,
@@ -337,7 +379,6 @@ public class BookService : IBookService
 
         Directory.CreateDirectory(uploadsPath);
 
-        // Generar un nombre único para evitar conflictos
         var fileName =
             $"{Guid.NewGuid():N}{extension}";
 
@@ -353,9 +394,9 @@ public class BookService : IBookService
 
         await file.CopyToAsync(stream);
 
-        // Esto es lo único que se guarda en MySQL
         return $"/uploads/books/{fileName}";
     }
+
     // ======================================================
     // DELETE OLD IMAGE
     // ======================================================
@@ -403,5 +444,27 @@ public class BookService : IBookService
             UpdatedAt = book.UpdatedAt,
             UserId = null
         };
+    }
+
+    // ======================================================
+    // MAP CON CONTEO DE COPIAS DISPONIBLES
+    // ======================================================
+
+    private async Task<List<BookDto>> MapWithAvailabilityAsync(
+        IEnumerable<Book> books)
+    {
+        var result = new List<BookDto>();
+
+        foreach (var book in books)
+        {
+            var dto = MapToDto(book);
+
+            dto.AvailableCopies =
+                await _bookRepository.CountAvailableCopiesAsync(book.Id);
+
+            result.Add(dto);
+        }
+
+        return result;
     }
 }

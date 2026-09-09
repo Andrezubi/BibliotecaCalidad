@@ -2,6 +2,8 @@
 using Backend.Application.Interfaces;
 using Backend.Domain.Validators;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Backend.Presentation.Controllers;
 
@@ -170,5 +172,25 @@ public class BookController : ControllerBase
             await _bookService.SearchAsync(phrase);
 
         return Ok(books);
+    }
+
+    [HttpGet("available")]
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetAvailable()
+    {
+        var books = await _bookService.GetAvailableAsync();
+        return Ok(books);
+    }
+
+    public record AddCopyRequest(string InternalCode);
+
+    [HttpPost("{id}/copies")]
+    public async Task<IActionResult> AddCopy(int id, [FromBody] AddCopyRequest request)
+    {
+        var error = await _bookService.AddCopyAsync(id, request.InternalCode);
+
+        if (error != null)
+            return BadRequest(new { message = error });
+
+        return Ok(new { message = "Copia agregada correctamente." });
     }
 }

@@ -23,4 +23,6 @@ public class BookDto
     public bool IsActive { get; set; }
 
     public int? UserId { get; set; }
+    // Número de copias disponibles
+    public int AvailableCopies { get; set; }
 }
