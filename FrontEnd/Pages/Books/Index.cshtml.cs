@@ -123,4 +123,15 @@ public class IndexModel : PageModel
 
         return RedirectToPage();
     }
+    public async Task<IActionResult> OnPostAddCopyAsync(int bookId, string internalCode)
+    {
+        var (ok, message) = await _bookService.AddCopyAsync(bookId, internalCode);
+
+        if (ok)
+            TempData["Success"] = message;
+        else
+            TempData["Error"] = message;
+
+        return RedirectToPage();
+    }
 }

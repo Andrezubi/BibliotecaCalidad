@@ -187,4 +187,16 @@ public class BookController : ControllerBase
         var books = await _bookService.GetAvailableAsync();
         return Ok(books);
     }
+    public record AddCopyRequest(string InternalCode);
+
+    [HttpPost("{id}/copies")]
+    public async Task<IActionResult> AddCopy(int id, [FromBody] AddCopyRequest request)
+    {
+        var error = await _bookService.AddCopyAsync(id, request.InternalCode);
+
+        if (error != null)
+            return BadRequest(new { message = error });
+
+        return Ok(new { message = "Copia agregada correctamente." });
+    }
 }

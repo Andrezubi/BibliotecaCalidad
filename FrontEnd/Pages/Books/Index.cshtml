@@ -432,6 +432,15 @@
                                             <i class="bi bi-box-arrow-up"></i>
 
                                         </button>
+                                        <button type="button"
+                                                class="btn btn-info btn-sm text-white"
+                                                title="Agregar copia"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addCopyModal"
+                                                data-book-id="@book.Id"
+                                                data-book-title="@book.Title">
+                                            <i class="bi bi-plus-square"></i>
+                                        </button>
 
 
                                         <!-- EDITAR -->
@@ -709,85 +718,133 @@
 
 </div>
 
+< !--Modal agregar copia-- >
+    <div class="modal fade" id="addCopyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="AddCopy">
 
-<!-- ===================================================== -->
-<!-- JAVASCRIPT -->
-<!-- ===================================================== -->
-@section Scripts {
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-plus-square me-2"></i>
+                            Agregar copia
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
-    <script>
+                    <div class="modal-body">
+                        <p class="mb-3">
+                            Nueva copia de <strong id="copyBookTitle"></strong>.
+                        </p>
 
-        document.addEventListener("DOMContentLoaded", function() {
+                        <input type="hidden" name="bookId" id="copyBookId" />
 
-            // =================================================
-            // MODAL PRÉSTAMO
-            // =================================================
+                        <label for="internalCode" class="form-label">Código interno</label>
+                        <input type="text" name="internalCode" id="internalCode"
+                               class="form-control" maxlength="50" required
+                               placeholder="Ej: COPY-XXX-001" />
+                        <div class="form-text">Debe ser único. Máximo 50 caracteres.</div>
+                    </div>
 
-            const loanModal =
-                document.getElementById("loanModal");
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Agregar copia
+                        </button>
+                    </div>
 
-            if (loanModal) {
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- MODAL AGREGAR COPIA -->
+    <!-- ===================================================== -->
+    <div class="modal fade" id="addCopyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="AddCopy">
 
-                loanModal.addEventListener(
-                    "show.bs.modal",
-                    function(event) {
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-plus-square me-2"></i>
+                            Agregar copia
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
-                        const button =
-                            event.relatedTarget;
+                    <div class="modal-body">
+                        <p class="mb-3">Nueva copia de <strong id="copyBookTitle"></strong>.</p>
+                        <input type="hidden" name="bookId" id="copyBookId" />
+                        <label for="internalCode" class="form-label">Código interno</label>
+                        <input type="text" name="internalCode" id="internalCode"
+                               class="form-control" maxlength="50" required
+                               placeholder="Ej: COPY-XXX-001" />
+                        <div class="form-text">Debe ser único. Máximo 50 caracteres.</div>
+                    </div>
 
-                        const bookId =
-                            button.getAttribute("data-book-id");
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Agregar copia
+                        </button>
+                    </div>
 
-                        const bookTitle =
-                            button.getAttribute("data-book-title");
-
-                        document.getElementById(
-                            "loanBookId"
-                        ).value = bookId;
-
-                        document.getElementById(
-                            "loanBookTitle"
-                        ).textContent = bookTitle;
-                    }
-                );
-            }
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-            // =================================================
-            // MODAL ELIMINACIÓN
-            // =================================================
+    <!-- ===================================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ===================================================== -->
+    @section Scripts {
 
-            const deleteModal =
-                document.getElementById("deleteModal");
+        <script>
 
-            if (deleteModal) {
+            document.addEventListener("DOMContentLoaded", function() {
 
-                deleteModal.addEventListener(
-                    "show.bs.modal",
-                    function(event) {
+                const loanModal = document.getElementById("loanModal");
+                if (loanModal) {
+                    loanModal.addEventListener("show.bs.modal", function(event) {
+                        const button = event.relatedTarget;
+                        document.getElementById("loanBookId").value = button.getAttribute("data-book-id");
+                        document.getElementById("loanBookTitle").textContent = button.getAttribute("data-book-title");
+                    });
+                }
 
-                        const button =
-                            event.relatedTarget;
+                const addCopyModal = document.getElementById("addCopyModal");
+                if (addCopyModal) {
+                    addCopyModal.addEventListener("show.bs.modal", function(event) {
+                        const button = event.relatedTarget;
+                        document.getElementById("copyBookId").value = button.getAttribute("data-book-id");
+                        document.getElementById("copyBookTitle").textContent = button.getAttribute("data-book-title");
+                        document.getElementById("internalCode").value = "";
+                    });
+                }
 
-                        const bookId =
-                            button.getAttribute("data-book-id");
+                const deleteModal = document.getElementById("deleteModal");
+                if (deleteModal) {
+                    deleteModal.addEventListener("show.bs.modal", function(event) {
+                        const button = event.relatedTarget;
+                        document.getElementById("deleteBookId").value = button.getAttribute("data-book-id");
+                        document.getElementById("deleteBookTitle").textContent = button.getAttribute("data-book-title");
+                    });
+                }
 
-                        const bookTitle =
-                            button.getAttribute("data-book-title");
+            });
 
-                        document.getElementById(
-                            "deleteBookId"
-                        ).value = bookId;
+        </script>
 
-                        document.getElementById(
-                            "deleteBookTitle"
-                        ).textContent = bookTitle;
-                    }
-                );
-            }
+    }
 
-        });
+      
+    }
+    );
 
-    </script>
-
-}
+    }

@@ -315,4 +315,35 @@ public class BookService : IBookService
         var books = await _bookRepository.GetAvailableAsync();
         return books.Select(MapToDto);
     }
+    public async Task<string?> AddCopyAsync(int bookId, string internalCode)
+    {
+        if (string.IsNullOrWhiteSpace(internalCode))
+            return "El código interno es obligatorio.";
+
+        internalCode = internalCode.Trim();
+
+        if (internalCode.Length > 50)
+            return "El código interno no puede superar los 50 caracteres.";
+
+        var book = await _bookRepository.GetByIdAsync(bookId);
+
+        if (book == null || !book.IsActive)
+            return "El libro no existe.";
+
+        if (await _bookRepository.InternalCodeExistsAsync(internalCode))
+            return "Ya existe una copia con ese código interno.";
+
+        var copy = new Copy
+        {
+            BookId = bookId,
+            InternalCode = internalCode,
+            Status = "Available",
+            IsActive = true,
+            CreatedAt = DateTime.Now
+        };
+
+        await _bookRepository.AddCopyAsync(copy);
+
+        return null; // éxito
+    }
 }
