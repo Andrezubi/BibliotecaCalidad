@@ -8,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
+// ======================================================
+// SESSION
+// ======================================================
+
 // Cache necesaria para Session
 builder.Services.AddDistributedMemoryCache();
 
@@ -17,23 +21,49 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddHttpContextAccessor(); 
+
+// Permite acceder a HttpContext desde los Services
+builder.Services.AddHttpContextAccessor();
+
+
 // ======================================================
-// HTTP CLIENTS
+// HTTP CLIENT - BOOKS
 // ======================================================
 
 builder.Services.AddHttpClient<BookService>(client =>
 {
     var backendUrl = builder.Configuration["BackendUrl"];
 
-    client.BaseAddress = new Uri(backendUrl!);
+    if (string.IsNullOrWhiteSpace(backendUrl))
+    {
+        throw new InvalidOperationException(
+            "No se encontró 'BackendUrl' en appsettings.json.");
+    }
+
+    client.BaseAddress = new Uri(backendUrl);
 });
+
+
+// ======================================================
+// HTTP CLIENT - LOANS
+// ======================================================
 
 builder.Services.AddHttpClient<LoanService>();
 
+
+// ======================================================
+// HTTP CLIENT - AUTH
+// ======================================================
+
 builder.Services.AddHttpClient<AuthApiService>();
 
+
+// ======================================================
+// BUILD
+// ======================================================
+
 var app = builder.Build();
+
 
 // ======================================================
 // HTTP PIPELINE
@@ -51,7 +81,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
+// ======================================================
+// SESSION
+// ======================================================
+
 app.UseSession();
+
 
 // ======================================================
 // PROTECCIÓN DE PÁGINAS
@@ -60,6 +96,10 @@ app.UseSession();
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path;
+
+    // --------------------------------------------------
+    // PÁGINAS Y RECURSOS PÚBLICOS
+    // --------------------------------------------------
 
     var isPublicPage =
         path.StartsWithSegments("/Auth/Login") ||
@@ -70,7 +110,16 @@ app.Use(async (context, next) =>
         path.StartsWithSegments("/favicon.ico") ||
         path.StartsWithSegments("/Error");
 
-    var token = context.Session.GetString("AuthToken");
+    // --------------------------------------------------
+    // TOKEN DE AUTENTICACIÓN
+    // --------------------------------------------------
+
+    var token =
+        context.Session.GetString("AuthToken");
+
+    // --------------------------------------------------
+    // SI NO ESTÁ AUTENTICADO
+    // --------------------------------------------------
 
     if (string.IsNullOrEmpty(token) && !isPublicPage)
     {
@@ -81,8 +130,23 @@ app.Use(async (context, next) =>
     await next();
 });
 
+
+// ======================================================
+// AUTHORIZATION
+// ======================================================
+
 app.UseAuthorization();
 
+
+// ======================================================
+// RAZOR PAGES
+// ======================================================
+
 app.MapRazorPages();
+
+
+// ======================================================
+// RUN
+// ======================================================
 
 app.Run();

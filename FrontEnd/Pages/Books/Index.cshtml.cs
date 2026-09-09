@@ -9,33 +9,38 @@ public class IndexModel : PageModel
 {
     private readonly BookService _bookService;
     private readonly LoanService _loanService;
+    private readonly IConfiguration _configuration;
 
     public IndexModel(
         BookService bookService,
-        LoanService loanService)
+        LoanService loanService,
+        IConfiguration configuration)
     {
         _bookService = bookService;
         _loanService = loanService;
+        _configuration = configuration;
     }
 
     public List<BookDto> Books { get; set; } = new();
 
-    // =====================================================
-    // FILTROS DE BÚSQUEDA
-    // =====================================================
+    public List<AuthorDto> Authors { get; set; } = new();
+
+    public List<CategoryDto> Categories { get; set; } = new();
 
     [BindProperty(SupportsGet = true)]
     public string? Phrase { get; set; }
 
-    // =====================================================
+    // =========================================================
     // GET
-    // =====================================================
+    // =========================================================
 
     public async Task OnGetAsync()
     {
-        // Si no se ingresó ningún filtro,
-        // obtenemos todos los libros.
+        // Cargar autores y categorías
+        Authors = (await _bookService.GetAuthorsAsync()).ToList();
+        Categories = (await _bookService.GetCategoriesAsync()).ToList();
 
+        // Cargar libros
         if (string.IsNullOrWhiteSpace(Phrase))
         {
             Books = (await _bookService.GetAllAsync())
@@ -44,19 +49,18 @@ public class IndexModel : PageModel
             return;
         }
 
-        // Con filtros
-        Books = (await _bookService.SearchAsync(
-            Phrase))
+        Books = (await _bookService.SearchAsync(Phrase))
             .ToList();
     }
 
-    // =====================================================
-    // ELIMINAR LIBRO
-    // =====================================================
+    // =========================================================
+    // ELIMINAR
+    // =========================================================
 
     public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var result = await _bookService.DeleteAsync(id);
+        var result =
+            await _bookService.DeleteAsync(id);
 
         if (!result)
         {
@@ -72,13 +76,14 @@ public class IndexModel : PageModel
         return RedirectToPage();
     }
 
-    // =====================================================
-    // PRESTAR LIBRO
-    // =====================================================
+    // =========================================================
+    // PRESTAR
+    // =========================================================
 
     public async Task<IActionResult> OnPostLoanAsync(int bookId)
     {
-        var ok = await _loanService.RegisterLoanAsync(bookId);
+        var ok =
+            await _loanService.RegisterLoanAsync(bookId);
 
         if (ok)
         {
@@ -92,5 +97,97 @@ public class IndexModel : PageModel
         }
 
         return RedirectToPage();
+    }
+
+    // =========================================================
+    // NOMBRES DE AUTORES
+    // =========================================================
+
+    public string GetAuthorNames(BookDto book)
+    {
+        if (book.AuthorIds == null ||
+            !book.AuthorIds.Any())
+        {
+            return "Sin autor";
+        }
+
+        var names = book.AuthorIds
+            .Select(authorId =>
+                Authors.FirstOrDefault(
+                    author => author.Id == authorId))
+            .Where(author => author != null)
+            .Select(author =>
+                $"{author!.FirstName} {author.LastName}".Trim())
+            .Where(name =>
+                !string.IsNullOrWhiteSpace(name))
+            .ToList();
+
+        if (!names.Any())
+        {
+            return "Sin autor";
+        }
+
+        return string.Join(", ", names);
+    }
+
+    // =========================================================
+    // NOMBRES DE CATEGORÍAS
+    // =========================================================
+
+    public string GetCategoryNames(BookDto book)
+    {
+        if (book.CategoryIds == null ||
+            !book.CategoryIds.Any())
+        {
+            return "Sin categoría";
+        }
+
+        var names = book.CategoryIds
+            .Select(categoryId =>
+                Categories.FirstOrDefault(
+                    category => category.Id == categoryId))
+            .Where(category => category != null)
+            .Select(category => category!.Name)
+            .Where(name =>
+                !string.IsNullOrWhiteSpace(name))
+            .ToList();
+
+        if (!names.Any())
+        {
+            return "Sin categoría";
+        }
+
+        return string.Join(", ", names);
+    }
+
+    // =========================================================
+    // URL DE PORTADA
+    // =========================================================
+
+    public string GetCoverUrl(string? coverImage)
+    {
+        if (string.IsNullOrWhiteSpace(coverImage))
+        {
+            return string.Empty;
+        }
+
+        // Si ya es una URL completa
+        if (Uri.TryCreate(
+                coverImage,
+                UriKind.Absolute,
+                out var absoluteUri))
+        {
+            return absoluteUri.ToString();
+        }
+
+        var backendUrl =
+            _configuration["BackendUrl"]?.TrimEnd('/');
+
+        if (string.IsNullOrWhiteSpace(backendUrl))
+        {
+            return coverImage;
+        }
+
+        return $"{backendUrl}/{coverImage.TrimStart('/')}";
     }
 }

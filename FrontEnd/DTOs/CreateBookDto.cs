@@ -21,4 +21,11 @@ public class CreateBookDto
 
     public int? UserId { get; set; }
     public IFormFile? CoverImage { get; set; }
+    public List<int> AuthorIds { get; set; } = new();
+
+    public List<int> CategoryIds { get; set; } = new();
+
+    public List<CreateAuthorDto> NewAuthors { get; set; } = new();
+
+    public List<CreateCategoryDto> NewCategories { get; set; } = new();
 }

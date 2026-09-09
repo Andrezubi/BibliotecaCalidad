@@ -1,12 +1,16 @@
 ﻿using Backend.Domain.Models;
 
-namespace Backend.Domain.Interfaces
+namespace Backend.Domain.Interfaces;
+
+public interface ICategoryRepository : IBaseRepository<Category>
 {
-    public interface ICategoryRepository:IBaseRepository<Category>
-    {
-        Task<bool> ExistsAsync(string name);
-        Task<IEnumerable<Category>> GetAllAsync();
-        Task DeleteAsync(Category category);
-        Task AddBookCategoryAsync(Bookcategory bookCategory);
-    }
+    Task<bool> ExistsAsync(string name);
+
+    Task<IEnumerable<Category>> GetAllAsync();
+
+    Task DeleteAsync(Category category);
+
+    Task<bool> ExistsActiveByIdAsync(int id);
+
+    Task AddBookCategoryAsync(Bookcategory bookCategory);
 }

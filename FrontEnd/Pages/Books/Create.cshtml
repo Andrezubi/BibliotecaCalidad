@@ -13,35 +13,52 @@
 
             <div class="card-custom">
 
+                <!-- ================================================= -->
+                <!-- ENCABEZADO -->
+                <!-- ================================================= -->
+
                 <div class="d-flex justify-content-between align-items-center mb-4">
 
                     <div>
+
                         <h1 class="page-title mb-1">
+
+                            <i class="bi bi-book-plus me-2"></i>
                             Registrar Libro
+
                         </h1>
 
                         <p class="text-muted mb-0">
-                            Complete la información del libro
+                            Registre un nuevo libro en la biblioteca
                         </p>
+
                     </div>
 
                     <a asp-page="Index"
                        class="btn btn-outline-secondary">
+
                         Volver
+
                     </a>
 
                 </div>
 
+                <!-- ================================================= -->
+                <!-- FORMULARIO -->
+                <!-- ================================================= -->
 
                 <form method="post"
-                      enctype="multipart/form-data">
+                      enctype="multipart/form-data"
+                      id="createBookForm">
 
-                    <div asp-validation-summary="ModelOnly"
-                         class="text-danger mb-3">
+                    <div asp-validation-summary="All"
+                         class="alert alert-danger"
+                         style="@(ViewData.ModelState.IsValid ? "display:none;" : "")">
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- TÍTULO -->
+                    <!-- ================================================= -->
 
                     <div class="mb-3">
 
@@ -60,8 +77,9 @@
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- EDICIÓN -->
+                    <!-- ================================================= -->
 
                     <div class="mb-3">
 
@@ -74,7 +92,7 @@
                                class="form-control"
                                type="number"
                                min="1"
-                               placeholder="Ej. 1" />
+                               placeholder="Ej. 2" />
 
                         <span asp-validation-for="Book.EditionNumber"
                               class="text-danger">
@@ -82,8 +100,9 @@
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- ISBN -->
+                    <!-- ================================================= -->
 
                     <div class="mb-3">
 
@@ -94,7 +113,8 @@
 
                         <input asp-for="Book.ISBN"
                                class="form-control"
-                               placeholder="Ingrese el ISBN" />
+                               maxlength="20"
+                               placeholder="Ej. 9781234567890" />
 
                         <span asp-validation-for="Book.ISBN"
                               class="text-danger">
@@ -102,8 +122,9 @@
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- AÑO -->
+                    <!-- ================================================= -->
 
                     <div class="mb-3">
 
@@ -125,8 +146,9 @@
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- EDITORIAL -->
+                    <!-- ================================================= -->
 
                     <div class="mb-3">
 
@@ -137,6 +159,7 @@
 
                         <input asp-for="Book.Publisher"
                                class="form-control"
+                               maxlength="150"
                                placeholder="Ingrese la editorial" />
 
                         <span asp-validation-for="Book.Publisher"
@@ -145,8 +168,9 @@
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- PÁGINAS -->
+                    <!-- ================================================= -->
 
                     <div class="mb-3">
 
@@ -167,49 +191,202 @@
 
                     </div>
 
+                    <!-- ================================================= -->
+                    <!-- AUTORES -->
+                    <!-- ================================================= -->
 
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Autores
+                        </label>
+
+                        <div class="custom-selector">
+
+                            <button type="button"
+                                    class="form-select text-start custom-selector-button"
+                                    id="authorDropdownButton">
+
+                                <span id="authorSelectedText">
+                                    Seleccionar autores...
+                                </span>
+
+                            </button>
+
+                            <div class="custom-selector-menu"
+                                 id="authorDropdown">
+
+                                <div class="custom-selector-options">
+
+                                    @if (Model.Authors.Any())
+                                    {
+                                        @foreach (var author in Model.Authors)
+                                        {
+                                            <label class="custom-selector-option">
+
+                                                <input type="checkbox"
+                                                       class="form-check-input author-checkbox"
+                                                       value="@author.Id" />
+
+                                                <span>
+                                                    @author.FirstName @author.LastName
+                                                </span>
+
+                                            </label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-muted small p-2">
+                                            No hay autores registrados.
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div id="authorHiddenInputs"></div>
+
+                        <button type="button"
+                                class="btn btn-outline-primary mt-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#authorModal">
+
+                            <i class="bi bi-person-plus me-1"></i>
+                            Añadir autor
+
+                        </button>
+
+                        <div class="form-text">
+                            Puede seleccionar uno o varios autores.
+                        </div>
+
+                    </div>
+
+                    <!-- ================================================= -->
+                    <!-- CATEGORÍAS -->
+                    <!-- ================================================= -->
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Categorías
+                        </label>
+
+                        <div class="custom-selector">
+
+                            <button type="button"
+                                    class="form-select text-start custom-selector-button"
+                                    id="categoryDropdownButton">
+
+                                <span id="categorySelectedText">
+                                    Seleccionar categorías...
+                                </span>
+
+                            </button>
+
+                            <div class="custom-selector-menu"
+                                 id="categoryDropdown">
+
+                                <div class="custom-selector-options">
+
+                                    @if (Model.Categories.Any())
+                                    {
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <label class="custom-selector-option">
+
+                                                <input type="checkbox"
+                                                       class="form-check-input category-checkbox"
+                                                       value="@category.Id" />
+
+                                                <span>
+                                                    @category.Name
+                                                </span>
+
+                                            </label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-muted small p-2">
+                                            No hay categorías registradas.
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div id="categoryHiddenInputs"></div>
+
+                        <button type="button"
+                                class="btn btn-outline-primary mt-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#categoryModal">
+
+                            <i class="bi bi-folder-plus me-1"></i>
+                            Añadir categoría
+
+                        </button>
+
+                        <div class="form-text">
+                            Puede seleccionar una o varias categorías.
+                        </div>
+
+                    </div>
+
+                    <!-- ================================================= -->
                     <!-- PORTADA -->
+                    <!-- ================================================= -->
 
-                    <div class="mb-3">
+                    <div class="mb-4">
 
                         <label asp-for="Book.CoverImage"
                                class="form-label">
-                            Portada del libro
+                            Portada
                         </label>
 
                         <input asp-for="Book.CoverImage"
                                type="file"
                                class="form-control"
-                               accept=".jpg,.jpeg,.png,.webp" />
+                               accept=".jpg,.jpeg,.png,.webp"
+                               id="Book_CoverImage" />
 
                         <div class="form-text">
                             Formatos permitidos: JPG, JPEG, PNG y WEBP.
-                            Tamaño máximo: 5 MB.
+                            Máximo 5 MB.
                         </div>
 
                         <span asp-validation-for="Book.CoverImage"
                               class="text-danger">
                         </span>
 
+                        <div id="coverClientError"
+                             class="text-danger mt-2"
+                             style="display:none;">
+                        </div>
+
                         <div class="mt-3">
 
                             <img id="coverPreview"
                                  src="#"
-                                 alt="Vista previa de la portada"
-                                 style="
-                            display:none;
-                            max-width:180px;
-                            max-height:260px;
-                            object-fit:cover;
-                            border-radius:8px;
-                            " />
+                                 alt="Vista previa"
+                                 class="book-cover-preview"
+                                 style="display:none;" />
 
                         </div>
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- DESCRIPCIÓN -->
+                    <!-- ================================================= -->
 
                     <div class="mb-4">
 
@@ -221,8 +398,8 @@
                         <textarea asp-for="Book.Description"
                                   class="form-control"
                                   rows="5"
-                                  placeholder="Ingrese una descripción del libro">
-                        </textarea>
+                                  maxlength="2000"
+                                  placeholder="Ingrese una descripción del libro"></textarea>
 
                         <span asp-validation-for="Book.Description"
                               class="text-danger">
@@ -230,8 +407,9 @@
 
                     </div>
 
-
+                    <!-- ================================================= -->
                     <!-- BOTONES -->
+                    <!-- ================================================= -->
 
                     <div class="d-flex justify-content-end gap-2">
 
@@ -241,8 +419,12 @@
                         </a>
 
                         <button type="submit"
-                                class="btn btn-primary">
+                                class="btn btn-primary"
+                                id="saveBookButton">
+
+                            <i class="bi bi-save me-1"></i>
                             Registrar libro
+
                         </button>
 
                     </div>
@@ -258,43 +440,1104 @@
 </div>
 
 
+<!-- ========================================================= -->
+<!-- MODAL AUTOR -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="authorModal"
+     tabindex="-1"
+     aria-labelledby="authorModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="authorModalLabel">
+
+                    <i class="bi bi-person-plus me-2"></i>
+                    Agregar autor
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           id="newAuthorFirstName"
+                           class="form-control"
+                           maxlength="100"
+                           placeholder="Ingrese el nombre" />
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Apellido
+                    </label>
+
+                    <input type="text"
+                           id="newAuthorLastName"
+                           class="form-control"
+                           maxlength="100"
+                           placeholder="Ingrese el apellido" />
+
+                </div>
+
+                <div id="authorModalError"
+                     class="text-danger"
+                     style="display:none;">
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        id="addAuthorButton">
+
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Agregar autor
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MODAL CATEGORÍA -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="categoryModal"
+     tabindex="-1"
+     aria-labelledby="categoryModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="categoryModalLabel">
+
+                    <i class="bi bi-folder-plus me-2"></i>
+                    Agregar categoría
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           id="newCategoryName"
+                           class="form-control"
+                           maxlength="100"
+                           placeholder="Ingrese el nombre" />
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Descripción
+                    </label>
+
+                    <textarea id="newCategoryDescription"
+                              class="form-control"
+                              rows="3"
+                              maxlength="500"
+                              placeholder="Ingrese una descripción"></textarea>
+
+                </div>
+
+                <div id="categoryModalError"
+                     class="text-danger"
+                     style="display:none;">
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        id="addCategoryButton">
+
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Agregar categoría
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .custom-selector {
+        position: relative;
+        width: 100%;
+    }
+
+    .custom-selector-button {
+        background-color: #fff;
+        min-height: 38px;
+        cursor: pointer;
+    }
+
+    .custom-selector-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        width: 100%;
+        background: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        box-shadow: 0 6px 18px rgba(0,0,0,.12);
+        z-index: 1050;
+        max-height: 230px;
+        overflow-y: auto;
+    }
+
+    .custom-selector-menu.show {
+        display: block;
+    }
+
+    .custom-selector-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .custom-selector-option:hover {
+        background-color: #f5f3ff;
+    }
+
+    .custom-selector-option .form-check-input {
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .book-cover-preview {
+        width: 180px;
+        height: 260px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+</style>
+
+
 @section Scripts {
 
     <partial name="_ValidationScriptsPartial" />
 
     <script>
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-            const input =
-                document.getElementById("Book_CoverImage");
+                // =================================================
+                // ELEMENTOS AUTORES
+                // =================================================
 
-            const preview =
-                document.getElementById("coverPreview");
+                const authorButton =
+                    document.getElementById(
+                        "authorDropdownButton");
 
-            if (!input || !preview)
-                return;
+                const authorDropdown =
+                    document.getElementById(
+                        "authorDropdown");
 
-            input.addEventListener("change", function() {
+                const authorText =
+                    document.getElementById(
+                        "authorSelectedText");
 
-                const file = input.files[0];
+                const authorHiddenInputs =
+                    document.getElementById(
+                        "authorHiddenInputs");
 
-                if (!file) {
+                // =================================================
+                // ELEMENTOS CATEGORÍAS
+                // =================================================
 
-                    preview.style.display = "none";
-                    preview.removeAttribute("src");
+                const categoryButton =
+                    document.getElementById(
+                        "categoryDropdownButton");
 
-                    return;
+                const categoryDropdown =
+                    document.getElementById(
+                        "categoryDropdown");
+
+                const categoryText =
+                    document.getElementById(
+                        "categorySelectedText");
+
+                const categoryHiddenInputs =
+                    document.getElementById(
+                        "categoryHiddenInputs");
+
+                // =================================================
+                // CERRAR DROPDOWNS
+                // =================================================
+
+                function closeAllDropdowns() {
+
+                    document
+                        .querySelectorAll(
+                            ".custom-selector-menu")
+                        .forEach(function (menu) {
+
+                            menu.classList.remove(
+                                "show");
+
+                        });
                 }
 
-                preview.src =
-                    URL.createObjectURL(file);
+                // =================================================
+                // AUTORES
+                // =================================================
 
-                preview.style.display = "block";
+                function updateAuthors() {
+
+                    authorHiddenInputs.innerHTML = "";
+
+                    const selectedNames = [];
+
+                    const checkboxes =
+                        document.querySelectorAll(
+                            ".author-checkbox");
+
+                    checkboxes.forEach(
+                        function (checkbox) {
+
+                            if (!checkbox.checked) {
+                                return;
+                            }
+
+                            const label =
+                                checkbox.closest(
+                                    ".custom-selector-option");
+
+                            if (label) {
+
+                                const span =
+                                    label.querySelector(
+                                        "span");
+
+                                if (span) {
+
+                                    selectedNames.push(
+                                        span.textContent.trim()
+                                    );
+                                }
+                            }
+
+                            // =================================
+                            // SOLO IDS REALES
+                            // =================================
+
+                            if (!checkbox.dataset.newAuthor) {
+
+                                const hidden =
+                                    document.createElement(
+                                        "input");
+
+                                hidden.type =
+                                    "hidden";
+
+                                hidden.name =
+                                    "Book.AuthorIds";
+
+                                hidden.value =
+                                    checkbox.value;
+
+                                authorHiddenInputs
+                                    .appendChild(hidden);
+                            }
+                        });
+
+                    if (selectedNames.length === 0) {
+
+                        authorText.textContent =
+                            "Seleccionar autores...";
+
+                    }
+                    else if (selectedNames.length <= 2) {
+
+                        authorText.textContent =
+                            selectedNames.join(", ");
+
+                    }
+                    else {
+
+                        authorText.textContent =
+                            selectedNames.length +
+                            " autores seleccionados";
+                    }
+                }
+
+                // =================================================
+                // CATEGORÍAS
+                // =================================================
+
+                function updateCategories() {
+
+                    categoryHiddenInputs.innerHTML = "";
+
+                    const selectedNames = [];
+
+                    const checkboxes =
+                        document.querySelectorAll(
+                            ".category-checkbox");
+
+                    checkboxes.forEach(
+                        function (checkbox) {
+
+                            if (!checkbox.checked) {
+                                return;
+                            }
+
+                            const label =
+                                checkbox.closest(
+                                    ".custom-selector-option");
+
+                            if (label) {
+
+                                const span =
+                                    label.querySelector(
+                                        "span");
+
+                                if (span) {
+
+                                    selectedNames.push(
+                                        span.textContent.trim()
+                                    );
+                                }
+                            }
+
+                            // =================================
+                            // SOLO IDS REALES
+                            // =================================
+
+                            if (!checkbox.dataset.newCategory) {
+
+                                const hidden =
+                                    document.createElement(
+                                        "input");
+
+                                hidden.type =
+                                    "hidden";
+
+                                hidden.name =
+                                    "Book.CategoryIds";
+
+                                hidden.value =
+                                    checkbox.value;
+
+                                categoryHiddenInputs
+                                    .appendChild(hidden);
+                            }
+                        });
+
+                    if (selectedNames.length === 0) {
+
+                        categoryText.textContent =
+                            "Seleccionar categorías...";
+
+                    }
+                    else if (selectedNames.length <= 2) {
+
+                        categoryText.textContent =
+                            selectedNames.join(", ");
+
+                    }
+                    else {
+
+                        categoryText.textContent =
+                            selectedNames.length +
+                            " categorías seleccionadas";
+                    }
+                }
+
+                // =================================================
+                // BOTÓN AUTORES
+                // =================================================
+
+                if (authorButton) {
+
+                    authorButton.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.stopPropagation();
+
+                            const isOpen =
+                                authorDropdown.classList
+                                    .contains("show");
+
+                            closeAllDropdowns();
+
+                            if (!isOpen) {
+
+                                authorDropdown.classList
+                                    .add("show");
+                            }
+                        });
+                }
+
+                // =================================================
+                // BOTÓN CATEGORÍAS
+                // =================================================
+
+                if (categoryButton) {
+
+                    categoryButton.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.stopPropagation();
+
+                            const isOpen =
+                                categoryDropdown.classList
+                                    .contains("show");
+
+                            closeAllDropdowns();
+
+                            if (!isOpen) {
+
+                                categoryDropdown.classList
+                                    .add("show");
+                            }
+                        });
+                }
+
+                // =================================================
+                // CAMBIOS EN CHECKBOX
+                // =================================================
+
+                document.addEventListener(
+                    "change",
+                    function (event) {
+
+                        if (event.target.classList
+                            .contains("author-checkbox")) {
+
+                            updateAuthors();
+                        }
+
+                        if (event.target.classList
+                            .contains("category-checkbox")) {
+
+                            updateCategories();
+                        }
+                    });
+
+                // =================================================
+                // CLICK DENTRO DEL DROPDOWN
+                // =================================================
+
+                if (authorDropdown) {
+
+                    authorDropdown.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.stopPropagation();
+
+                        });
+                }
+
+                if (categoryDropdown) {
+
+                    categoryDropdown.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.stopPropagation();
+
+                        });
+                }
+
+                // =================================================
+                // CLICK AFUERA
+                // =================================================
+
+                document.addEventListener(
+                    "click",
+                    function () {
+
+                        closeAllDropdowns();
+
+                    });
+
+                // =================================================
+                // AUTOR NUEVO
+                // =================================================
+
+                const addAuthorButton =
+                    document.getElementById(
+                        "addAuthorButton");
+
+                const firstNameInput =
+                    document.getElementById(
+                        "newAuthorFirstName");
+
+                const lastNameInput =
+                    document.getElementById(
+                        "newAuthorLastName");
+
+                const authorError =
+                    document.getElementById(
+                        "authorModalError");
+
+                const authorModal =
+                    document.getElementById(
+                        "authorModal");
+
+                if (addAuthorButton) {
+
+                    addAuthorButton.addEventListener(
+                        "click",
+                        function () {
+
+                            const firstName =
+                                firstNameInput.value.trim();
+
+                            const lastName =
+                                lastNameInput.value.trim();
+
+                            authorError.style.display =
+                                "none";
+
+                            authorError.textContent =
+                                "";
+
+                            if (!firstName) {
+
+                                authorError.textContent =
+                                    "El nombre del autor es obligatorio.";
+
+                                authorError.style.display =
+                                    "block";
+
+                                return;
+                            }
+
+                            if (!lastName) {
+
+                                authorError.textContent =
+                                    "El apellido del autor es obligatorio.";
+
+                                authorError.style.display =
+                                    "block";
+
+                                return;
+                            }
+
+                            // =================================
+                            // NUEVO ELEMENTO VISUAL
+                            // =================================
+
+                            const optionsContainer =
+                                authorDropdown.querySelector(
+                                    ".custom-selector-options");
+
+                            const label =
+                                document.createElement(
+                                    "label");
+
+                            label.className =
+                                "custom-selector-option";
+
+                            const checkbox =
+                                document.createElement(
+                                    "input");
+
+                            checkbox.type =
+                                "checkbox";
+
+                            checkbox.className =
+                                "form-check-input author-checkbox";
+
+                            checkbox.checked =
+                                true;
+
+                            checkbox.dataset.newAuthor =
+                                "true";
+
+                            const span =
+                                document.createElement(
+                                    "span");
+
+                            span.textContent =
+                                firstName +
+                                " " +
+                                lastName +
+                                " (nuevo)";
+
+                            label.appendChild(
+                                checkbox);
+
+                            label.appendChild(
+                                span);
+
+                            optionsContainer.appendChild(
+                                label);
+
+                            // =================================
+                            // DATOS PARA EL SERVIDOR
+                            // =================================
+
+                            const form =
+                                document.getElementById(
+                                    "createBookForm");
+
+                            const index =
+                                document.querySelectorAll(
+                                    'input[name^="Book.NewAuthors"][name$=".FirstName"]'
+                                ).length;
+
+                            const firstNameHidden =
+                                document.createElement(
+                                    "input");
+
+                            firstNameHidden.type =
+                                "hidden";
+
+                            firstNameHidden.name =
+                                `Book.NewAuthors[${index}].FirstName`;
+
+                            firstNameHidden.value =
+                                firstName;
+
+                            const lastNameHidden =
+                                document.createElement(
+                                    "input");
+
+                            lastNameHidden.type =
+                                "hidden";
+
+                            lastNameHidden.name =
+                                `Book.NewAuthors[${index}].LastName`;
+
+                            lastNameHidden.value =
+                                lastName;
+
+                            form.appendChild(
+                                firstNameHidden);
+
+                            form.appendChild(
+                                lastNameHidden);
+
+                            updateAuthors();
+
+                            firstNameInput.value =
+                                "";
+
+                            lastNameInput.value =
+                                "";
+
+                            const modalInstance =
+                                bootstrap.Modal.getInstance(
+                                    authorModal);
+
+                            if (modalInstance) {
+
+                                modalInstance.hide();
+                            }
+                        });
+                }
+
+                // =================================================
+                // CATEGORÍA NUEVA
+                // =================================================
+
+                const addCategoryButton =
+                    document.getElementById(
+                        "addCategoryButton");
+
+                const categoryNameInput =
+                    document.getElementById(
+                        "newCategoryName");
+
+                const categoryDescriptionInput =
+                    document.getElementById(
+                        "newCategoryDescription");
+
+                const categoryError =
+                    document.getElementById(
+                        "categoryModalError");
+
+                const categoryModal =
+                    document.getElementById(
+                        "categoryModal");
+
+                if (addCategoryButton) {
+
+                    addCategoryButton.addEventListener(
+                        "click",
+                        function () {
+
+                            const name =
+                                categoryNameInput.value.trim();
+
+                            const description =
+                                categoryDescriptionInput
+                                    .value.trim();
+
+                            categoryError.style.display =
+                                "none";
+
+                            categoryError.textContent =
+                                "";
+
+                            if (!name) {
+
+                                categoryError.textContent =
+                                    "El nombre de la categoría es obligatorio.";
+
+                                categoryError.style.display =
+                                    "block";
+
+                                return;
+                            }
+
+                            // =================================
+                            // ELEMENTO VISUAL
+                            // =================================
+
+                            const optionsContainer =
+                                categoryDropdown.querySelector(
+                                    ".custom-selector-options");
+
+                            const label =
+                                document.createElement(
+                                    "label");
+
+                            label.className =
+                                "custom-selector-option";
+
+                            const checkbox =
+                                document.createElement(
+                                    "input");
+
+                            checkbox.type =
+                                "checkbox";
+
+                            checkbox.className =
+                                "form-check-input category-checkbox";
+
+                            checkbox.checked =
+                                true;
+
+                            checkbox.dataset.newCategory =
+                                "true";
+
+                            const span =
+                                document.createElement(
+                                    "span");
+
+                            span.textContent =
+                                name + " (nueva)";
+
+                            label.appendChild(
+                                checkbox);
+
+                            label.appendChild(
+                                span);
+
+                            optionsContainer.appendChild(
+                                label);
+
+                            // =================================
+                            // DATOS PARA EL SERVIDOR
+                            // =================================
+
+                            const form =
+                                document.getElementById(
+                                    "createBookForm");
+
+                            const index =
+                                document.querySelectorAll(
+                                    'input[name^="Book.NewCategories"][name$=".Name"]'
+                                ).length;
+
+                            const nameHidden =
+                                document.createElement(
+                                    "input");
+
+                            nameHidden.type =
+                                "hidden";
+
+                            nameHidden.name =
+                                `Book.NewCategories[${index}].Name`;
+
+                            nameHidden.value =
+                                name;
+
+                            const descriptionHidden =
+                                document.createElement(
+                                    "input");
+
+                            descriptionHidden.type =
+                                "hidden";
+
+                            descriptionHidden.name =
+                                `Book.NewCategories[${index}].Description`;
+
+                            descriptionHidden.value =
+                                description;
+
+                            form.appendChild(
+                                nameHidden);
+
+                            form.appendChild(
+                                descriptionHidden);
+
+                            updateCategories();
+
+                            categoryNameInput.value =
+                                "";
+
+                            categoryDescriptionInput.value =
+                                "";
+
+                            const modalInstance =
+                                bootstrap.Modal.getInstance(
+                                    categoryModal);
+
+                            if (modalInstance) {
+
+                                modalInstance.hide();
+                            }
+                        });
+                }
+
+                // =================================================
+                // PORTADA
+                // =================================================
+
+                const coverInput =
+                    document.getElementById(
+                        "Book_CoverImage");
+
+                const coverPreview =
+                    document.getElementById(
+                        "coverPreview");
+
+                const coverClientError =
+                    document.getElementById(
+                        "coverClientError");
+
+                const maxFileSize =
+                    5 * 1024 * 1024;
+
+                const allowedTypes =
+                    [
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp"
+                    ];
+
+                if (coverInput) {
+
+                    coverInput.addEventListener(
+                        "change",
+                        function () {
+
+                            const file =
+                                coverInput.files &&
+                                coverInput.files.length > 0
+                                    ? coverInput.files[0]
+                                    : null;
+
+                            coverClientError.style.display =
+                                "none";
+
+                            if (!file) {
+
+                                coverPreview.style.display =
+                                    "none";
+
+                                return;
+                            }
+
+                            if (!allowedTypes.includes(
+                                    file.type)) {
+
+                                coverClientError.textContent =
+                                    "La portada debe ser JPG, JPEG o WEBP.";
+
+                                coverClientError.style.display =
+                                    "block";
+
+                                coverInput.value =
+                                    "";
+
+                                coverPreview.style.display =
+                                    "none";
+
+                                return;
+                            }
+
+                            if (file.size >
+                                maxFileSize) {
+
+                                coverClientError.textContent =
+                                    "La portada no puede superar los 5 MB.";
+
+                                coverClientError.style.display =
+                                    "block";
+
+                                coverInput.value =
+                                    "";
+
+                                coverPreview.style.display =
+                                    "none";
+
+                                return;
+                            }
+
+                            coverPreview.src =
+                                URL.createObjectURL(file);
+
+                            coverPreview.style.display =
+                                "block";
+                        });
+                }
+
+                // =================================================
+                // SUBMIT
+                // =================================================
+
+                const form =
+                    document.getElementById(
+                        "createBookForm");
+
+                if (form) {
+
+                    form.addEventListener(
+                        "submit",
+                        function (event) {
+
+                            // Rehacer hidden inputs
+                            // de autores y categorías existentes
+
+                            updateAuthors();
+                            updateCategories();
+
+                            // =================================
+                            // VALIDAR PORTADA
+                            // =================================
+
+                            if (coverInput &&
+                                coverInput.files &&
+                                coverInput.files.length > 0) {
+
+                                const file =
+                                    coverInput.files[0];
+
+                                if (!allowedTypes.includes(
+                                        file.type) ||
+                                    file.size > maxFileSize) {
+
+                                    event.preventDefault();
+
+                                    return;
+                                }
+                            }
+
+                            // =================================
+                            // EVITAR DOBLE SUBMIT
+                            // =================================
+
+                            const saveButton =
+                                document.getElementById(
+                                    "saveBookButton");
+
+                            if (saveButton) {
+
+                                saveButton.disabled =
+                                    true;
+
+                                saveButton.innerHTML =
+                                    '<span class="spinner-border spinner-border-sm me-1"></span>' +
+                                    'Guardando...';
+                            }
+                        });
+                }
+
+                // =================================================
+                // INICIALIZAR
+                // =================================================
+
+                updateAuthors();
+                updateCategories();
 
             });
-
-        });
 
     </script>
 }
