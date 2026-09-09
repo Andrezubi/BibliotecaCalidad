@@ -15,21 +15,30 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
+
                 <h2 class="page-title mb-1">
+
                     <i class="bi bi-book me-2"></i>
+
                     Lista de Libros
+
                 </h2>
 
                 <p class="text-muted mb-0">
+
                     Administración de libros registrados
+
                 </p>
+
             </div>
 
             @if (AuthSession.HasAnyRole("Admin", "Librarian"))
             {
                 <a asp-page="Create" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-2"></i>
+
                     Nuevo Libro
+
                 </a>
             }
 
@@ -65,25 +74,35 @@
 
                 <div class="row g-3">
 
-                    <!-- FRASE -->
                     <div class="col-md-6">
-                        <label asp-for="Phrase" class="form-label">Buscar por:</label>
-                        <input asp-for="Phrase" class="form-control" placeholder="Buscar por frase..." />
+
+                        <label asp-for="Phrase"
+                               class="form-label">
+
+                            Buscar por:
+
+                        </label>
+
+                        <input asp-for="Phrase"
+                               class="form-control"
+                               placeholder="Buscar por título, ISBN, autor, categoría, editorial o descripción..." />
+
                     </div>
 
                 </div>
-
 
                 <!-- BOTONES -->
                 <div class="d-flex justify-content-end gap-2 mt-3">
 
                     <a asp-page="./Index" class="btn btn-secondary">
                         <i class="bi bi-x-circle me-2"></i>
+
                         Limpiar
                     </a>
 
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-search me-2"></i>
+
                         Buscar
                     </button>
 
@@ -103,19 +122,55 @@
 
                     <thead>
                         <tr>
-                            <th class="text-center">Portada</th>
-                            <th>Título</th>
-                            <th class="text-center">Edición</th>
-                            <th class="text-center">ISBN</th>
-                            <th class="text-center">Año</th>
-                            <th>Editorial</th>
-                            <th class="text-center">Páginas</th>
-                            <th class="text-center">Copias disp.</th>
-                            <th class="text-center">Estado</th>
+
+                            <th class="text-center">
+                                Portada
+                            </th>
+
+                            <th>
+                                Título
+                            </th>
+
+                            <th>
+                                Autores
+                            </th>
+
+                            <th>
+                                Categorías
+                            </th>
+
+                            <th class="text-center">
+                                Edición
+                            </th>
+
+                            <th class="text-center">
+                                ISBN
+                            </th>
+
+                            <th class="text-center">
+                                Año
+                            </th>
+
+                            <th>
+                                Editorial
+                            </th>
+
+                            <th class="text-center">
+                                Páginas
+                            </th>
+                            <th class="text-center">
+                                Copias disponibles
+                            </th>
+
+                            <th class="text-center">
+                                Estado
+                            </th>
+
                             @if (AuthSession.HasAnyRole("Admin", "Librarian"))
                             {
                                 <th class="text-center" style="min-width:120px;">Acciones</th>
                             }
+
                         </tr>
                     </thead>
 
@@ -125,18 +180,22 @@
                         {
                             <tr>
 
+                                <!-- ================================================= -->
                                 <!-- PORTADA -->
+                                <!-- ================================================= -->
+
                                 <td class="text-center">
                                     @if (!string.IsNullOrWhiteSpace(book.CoverImage))
                                     {
-                                        <img src="@book.CoverImage"
+                                        <img src="@Model.GetCoverUrl(book.CoverImage)"
                                              alt="Portada de @book.Title"
                                              title="@book.Title"
-                                             style="width:55px; height:80px; object-fit:cover; border-radius:6px; border:1px solid #ddd;" />
+                                             class="index-book-cover" />
                                     }
                                     else
                                     {
-                                        <div style="width:55px; height:80px; display:flex; align-items:center; justify-content:center; margin:auto; background:#f1f1f1; border-radius:6px; border:1px solid #ddd;">
+                                        <div class="index-book-no-cover">
+
                                             <i class="bi bi-image text-muted"></i>
                                         </div>
                                     }
@@ -156,7 +215,94 @@
                                     }
                                 </td>
 
+
+                                <!-- ================================================= -->
+                                <!-- AUTORES -->
+                                <!-- ================================================= -->
+
+                                <td>
+
+                                    @if (book.AuthorIds != null &&
+                                         book.AuthorIds.Any())
+                                    {
+                                        <div class="index-relations">
+
+                                            @foreach (var authorId in book.AuthorIds)
+                                            {
+                                                var author =
+                                                    Model.Authors.FirstOrDefault(
+                                                        a => a.Id == authorId);
+
+                                                if (author != null)
+                                                {
+                                                    <span class="index-relation-badge">
+
+                                                        <i class="bi bi-person me-1"></i>
+
+                                                        @author.FirstName
+                                                        @author.LastName
+
+                                                    </span>
+                                                }
+                                            }
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Sin autor
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- ================================================= -->
+                                <!-- CATEGORÍAS -->
+                                <!-- ================================================= -->
+
+                                <td>
+
+                                    @if (book.CategoryIds != null &&
+                                         book.CategoryIds.Any())
+                                    {
+                                        <div class="index-relations">
+
+                                            @foreach (var categoryId in book.CategoryIds)
+                                            {
+                                                var category =
+                                                    Model.Categories.FirstOrDefault(
+                                                        c => c.Id == categoryId);
+
+                                                if (category != null)
+                                                {
+                                                    <span class="index-relation-badge">
+
+                                                        <i class="bi bi-tag me-1"></i>
+
+                                                        @category.Name
+
+                                                    </span>
+                                                }
+                                            }
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Sin categoría
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- ================================================= -->
                                 <!-- EDICIÓN -->
+                                <!-- ================================================= -->
+
                                 <td class="text-center">
                                     @(book.EditionNumber?.ToString() ?? "-")
                                 </td>
@@ -188,7 +334,10 @@
                                     </span>
                                 </td>
 
+                                <!-- ================================================= -->
                                 <!-- ESTADO -->
+                                <!-- ================================================= -->
+
                                 <td class="text-center">
                                     @if (book.IsActive)
                                     {
@@ -200,7 +349,10 @@
                                     }
                                 </td>
 
+
+                                <!-- ================================================= -->
                                 <!-- ACCIONES -->
+                                <!-- ================================================= -->
                                 @if (AuthSession.HasAnyRole("Admin", "Librarian"))
                                 {
                                     <td class="text-center">
@@ -280,6 +432,7 @@
 
                     <a asp-page="./Index" class="btn btn-secondary">
                         <i class="bi bi-arrow-counterclockwise me-2"></i>
+
                         Limpiar búsqueda
                     </a>
                 }
@@ -306,7 +459,7 @@
 </div>
 
 
-<!-- ===================================================== -->
+<!-- ========================================================= -->
 <!-- MODAL PRÉSTAMO -->
 <!-- ===================================================== -->
 <div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="loanModalLabel" aria-hidden="true">
@@ -316,6 +469,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="loanModalLabel">
                     <i class="bi bi-box-arrow-up me-2"></i>
+
                     Confirmar préstamo
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -335,6 +489,7 @@
                     <input type="hidden" name="bookId" id="loanBookId" />
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-circle me-1"></i>
+
                         Confirmar préstamo
                     </button>
                 </form>
@@ -385,7 +540,7 @@
 </div>
 
 
-<!-- ===================================================== -->
+<!-- ========================================================= -->
 <!-- MODAL ELIMINACIÓN -->
 <!-- ===================================================== -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -395,6 +550,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">
                     <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+
                     Confirmar eliminación
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -413,6 +569,7 @@
                     <input type="hidden" name="id" id="deleteBookId" />
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-trash me-1"></i>
+
                         Eliminar
                     </button>
                 </form>
@@ -423,14 +580,84 @@
 </div>
 
 
-<!-- ===================================================== -->
+<!-- ========================================================= -->
+<!-- ESTILOS ESPECÍFICOS -->
+<!-- ========================================================= -->
+
+<style>
+
+    .index-book-cover {
+        width: 55px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+
+    .index-book-no-cover {
+        width: 55px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        background: #f1f1f1;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+
+    .index-relations {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .index-relation-badge {
+        display: inline-block;
+        width: fit-content;
+        max-width: 220px;
+        padding: 5px 9px;
+        border-radius: 6px;
+        background-color: #f3f1ff;
+        color: #5b3cc4;
+        font-size: 0.82rem;
+        line-height: 1.2;
+    }
+
+        .index-relation-badge i {
+            font-size: 0.75rem;
+        }
+
+    .table th {
+        white-space: nowrap;
+        font-weight: 600;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    @@media (max-width: 1200px) {
+
+        .index-relation-badge {
+            max-width: 170px;
+            white-space: normal;
+        }
+    }
+
+</style>
+
+
+<!-- ========================================================= -->
 <!-- JAVASCRIPT -->
-<!-- ===================================================== -->
+<!-- ========================================================= -->
 @section Scripts {
 
     <script>
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
 
             const loanModal = document.getElementById("loanModal");
             if (loanModal) {

@@ -3,120 +3,141 @@ using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
 using Backend.Domain.Models;
 
-namespace Backend.Application.Services
+namespace Backend.Application.Services;
+
+public class CategoryService : ICategoryService
 {
-    public class CategoryService : ICategoryService
+    private readonly ICategoryRepository _categoryRepository;
+
+    public CategoryService(
+        ICategoryRepository categoryRepository)
     {
-        private readonly ICategoryRepository _categoryRepository;
+        _categoryRepository = categoryRepository;
+    }
 
-        public CategoryService(
-            ICategoryRepository categoryRepository)
+    public async Task<IEnumerable<Category>> GetAllAsync()
+    {
+        return await _categoryRepository.GetAllAsync();
+    }
+
+    public async Task<Category?> GetByIdAsync(int id)
+    {
+        var category =
+            await _categoryRepository
+                .GetByIdAsync(id);
+
+        if (category == null ||
+            !category.IsActive)
         {
-            _categoryRepository = categoryRepository;
+            return null;
         }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
-        {
-            var categories =
-                await _categoryRepository.GetAllAsync();
+        return category;
+    }
 
-            return categories.Select(MapToDto);
+    public async Task<Category> CreateAsync(
+        CreateCategoryDto dto)
+    {
+        var name =
+            dto.Name.Trim();
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException(
+                "El nombre de la categoría es obligatorio.");
         }
 
-        public async Task<Category?> GetByIdAsync(int id)
+        var exists =
+            await _categoryRepository
+                .ExistsAsync(name);
+
+        if (exists)
         {
-            var category =
-                await _categoryRepository.GetByIdAsync(id);
-
-            if (category == null || !category.IsActive)
-                return null;
-
-            return MapToDto(category);
+            throw new InvalidOperationException(
+                "Ya existe una categoría activa con ese nombre.");
         }
 
-        public async Task<Category> CreateAsync(
-            CreateCategoryDto dto)
+        var category = new Category
+        {
+            Name = name,
+            Description =
+                string.IsNullOrWhiteSpace(
+                    dto.Description)
+                    ? null
+                    : dto.Description.Trim(),
+
+            UserId = dto.UserId,
+            IsActive = true,
+            CreatedAt = DateTime.Now
+        };
+
+        await _categoryRepository.AddAsync(category);
+
+        return category;
+    }
+
+    public async Task<Category?> UpdateAsync(
+        int id,
+        CreateCategoryDto dto)
+    {
+        var category =
+            await _categoryRepository
+                .GetByIdAsync(id);
+
+        if (category == null ||
+            !category.IsActive)
+        {
+            return null;
+        }
+
+        var name =
+            dto.Name.Trim();
+
+        if (category.Name != name)
         {
             var exists =
-                await _categoryRepository.ExistsAsync(dto.Name);
+                await _categoryRepository
+                    .ExistsAsync(name);
 
             if (exists)
             {
                 throw new InvalidOperationException(
                     "Ya existe una categoría activa con ese nombre.");
             }
-
-            var category = new Category
-            {
-                Name = dto.Name,
-                Description = dto.Description,
-                UserId = dto.UserId,
-                IsActive = true,
-                CreatedAt = DateTime.Now
-            };
-
-            await _categoryRepository.AddAsync(category);
-
-            return MapToDto(category);
         }
 
-        public async Task<Category?> UpdateAsync(
-            int id,
-            CreateCategoryDto dto)
+        category.Name = name;
+
+        category.Description =
+            string.IsNullOrWhiteSpace(
+                dto.Description)
+                ? null
+                : dto.Description.Trim();
+
+        category.UserId = dto.UserId;
+        category.UpdatedAt = DateTime.Now;
+
+        await _categoryRepository
+            .UpdateAsync(category);
+
+        return category;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var category =
+            await _categoryRepository
+                .GetByIdAsync(id);
+
+        if (category == null ||
+            !category.IsActive)
         {
-            var category =
-                await _categoryRepository.GetByIdAsync(id);
-
-            if (category == null || !category.IsActive)
-                return null;
-
-            if (category.Name != dto.Name)
-            {
-                var exists =
-                    await _categoryRepository.ExistsAsync(dto.Name);
-
-                if (exists)
-                {
-                    throw new InvalidOperationException(
-                        "Ya existe una categoría activa con ese nombre.");
-                }
-            }
-
-            category.Name = dto.Name;
-            category.Description = dto.Description;
-            category.UserId = dto.UserId;
-            category.UpdatedAt = DateTime.Now;
-
-            await _categoryRepository.UpdateAsync(category);
-
-            return MapToDto(category);
+            return false;
         }
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var category =
-                await _categoryRepository.GetByIdAsync(id);
+        await _categoryRepository
+            .DeleteAsync(category);
 
-            if (category == null || !category.IsActive)
-                return false;
-
-            await _categoryRepository.DeleteAsync(category);
-
-            return true;
-        }
-
-        private static Category MapToDto(
-            Category category)
-        {
-            return new Category
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description,
-                IsActive = category.IsActive,
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-            };
-        }
+        return true;
     }
 }

@@ -1,6 +1,9 @@
 ﻿using FrontEnd.DTOs;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
+using static FrontEnd.Services.BookService;
 
 namespace FrontEnd.Services;
 
@@ -22,510 +25,7 @@ public class BookService
     }
     // ======================================================
     // AUTORIZACIÓN
-    // ======================================================
-
-    private void AddAuthorizationHeader()
-    {
-        var token = _httpContextAccessor
-            .HttpContext?
-            .Session
-            .GetString("AuthToken");
-
-        _httpClient.DefaultRequestHeaders.Authorization = null;
-
-        if (!string.IsNullOrWhiteSpace(token))
-        {
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue(
-                    "Bearer",
-                    token);
-        }
-    }
-
-
-    // ======================================================
-    // CONVERTIR RUTA DE PORTADA EN URL DEL BACKEND
-    // ======================================================
-
-    private string? BuildCoverImageUrl(string? coverImage)
-    {
-        if (string.IsNullOrWhiteSpace(coverImage))
-        {
-            return null;
-        }
-
-        // Si ya es una URL completa, no la modificamos.
-        if (Uri.TryCreate(
-                coverImage,
-                UriKind.Absolute,
-                out _))
-        {
-            return coverImage;
-        }
-
-        var backendUrl =
-            _httpClient.BaseAddress?
-                .ToString()
-                .TrimEnd('/');
-
-        if (string.IsNullOrWhiteSpace(backendUrl))
-        {
-            return coverImage;
-        }
-
-        return $"{backendUrl}/{coverImage.TrimStart('/')}";
-    }
-
-
-    // ======================================================
-    // GET ALL
-    // ======================================================
-
-    public async Task<List<BookDto>> GetAllAsync()
-    {
-        AddAuthorizationHeader();
-
-        var response =
-            await _httpClient.GetAsync("api/Book");
-
-        if (!response.IsSuccessStatusCode)
-        {
-            return new List<BookDto>();
-        }
-
-        var books =
-            await response.Content
-                .ReadFromJsonAsync<List<BookDto>>()
-            ?? new List<BookDto>();
-
-
-        // Convertir las rutas de las portadas
-        foreach (var book in books)
-        {
-            book.CoverImage =
-                BuildCoverImageUrl(book.CoverImage);
-        }
-
-        return books;
-    }
-
-
-    // ======================================================
-    // GET BY ID
-    // ======================================================
-
-    public async Task<BookDto?> GetByIdAsync(int id)
-    {
-        AddAuthorizationHeader();
-
-        var response =
-            await _httpClient.GetAsync(
-                $"api/Book/{id}");
-
-        if (response.StatusCode ==
-            HttpStatusCode.NotFound)
-        {
-            return null;
-        }
-
-        if (!response.IsSuccessStatusCode)
-        {
-            return null;
-        }
-
-        var book =
-            await response.Content
-                .ReadFromJsonAsync<BookDto>();
-
-        if (book == null)
-        {
-            return null;
-        }
-
-        book.CoverImage =
-            BuildCoverImageUrl(book.CoverImage);
-
-        return book;
-    }
-
-
-    // ======================================================
-    // CREATE
-    // ======================================================
-
-    public async Task<(
-        bool Success,
-        Dictionary<string, string[]> Errors)>
-        CreateAsync(CreateBookDto book)
-    {
-        AddAuthorizationHeader();
-
-        using var content =
-            new MultipartFormDataContent();
-
-
-        content.Add(
-            new StringContent(
-                book.Title ?? string.Empty),
-            "Title");
-
-
-        content.Add(
-            new StringContent(
-                book.EditionNumber?.ToString()
-                ?? string.Empty),
-            "EditionNumber");
-
-
-        content.Add(
-            new StringContent(
-                book.ISBN ?? string.Empty),
-            "ISBN");
-
-
-        content.Add(
-            new StringContent(
-                book.PublicationYear?.ToString()
-                ?? string.Empty),
-            "PublicationYear");
-
-
-        content.Add(
-            new StringContent(
-                book.Publisher ?? string.Empty),
-            "Publisher");
-
-
-        content.Add(
-            new StringContent(
-                book.PageCount?.ToString()
-                ?? string.Empty),
-            "PageCount");
-
-
-        content.Add(
-            new StringContent(
-                book.Description ?? string.Empty),
-            "Description");
-
-
-        // ==================================================
-        // PORTADA
-        // ==================================================
-
-        if (book.CoverImage != null &&
-            book.CoverImage.Length > 0)
-        {
-            var stream =
-                book.CoverImage.OpenReadStream();
-
-            var streamContent =
-                new StreamContent(stream);
-
-            streamContent.Headers.ContentType =
-                new MediaTypeHeaderValue(
-                    book.CoverImage.ContentType);
-
-            content.Add(
-                streamContent,
-                "CoverImage",
-                Path.GetFileName(
-                    book.CoverImage.FileName));
-        }
-
-
-        var response =
-            await _httpClient.PostAsync(
-                "api/Book",
-                content);
-
-
-        if (response.IsSuccessStatusCode)
-        {
-            return (
-                true,
-                new Dictionary<string, string[]>()
-            );
-        }
-
-
-        var errors =
-            await ReadValidationErrorsAsync(
-                response);
-
-        return (
-            false,
-            errors
-        );
-    }
-
-
-    // ======================================================
-    // UPDATE
-    // ======================================================
-
-    public async Task<(
-        bool Success,
-        Dictionary<string, string[]> Errors)>
-        UpdateAsync(
-            int id,
-            UpdateBookDto book)
-    {
-        AddAuthorizationHeader();
-
-        using var content =
-            new MultipartFormDataContent();
-
-
-        content.Add(
-            new StringContent(
-                book.Title ?? string.Empty),
-            "Title");
-
-
-        content.Add(
-            new StringContent(
-                book.EditionNumber?.ToString()
-                ?? string.Empty),
-            "EditionNumber");
-
-
-        content.Add(
-            new StringContent(
-                book.ISBN ?? string.Empty),
-            "ISBN");
-
-
-        content.Add(
-            new StringContent(
-                book.PublicationYear?.ToString()
-                ?? string.Empty),
-            "PublicationYear");
-
-
-        content.Add(
-            new StringContent(
-                book.Publisher ?? string.Empty),
-            "Publisher");
-
-
-        content.Add(
-            new StringContent(
-                book.PageCount?.ToString()
-                ?? string.Empty),
-            "PageCount");
-
-
-        content.Add(
-            new StringContent(
-                book.Description ?? string.Empty),
-            "Description");
-
-
-        // ==================================================
-        // NUEVA PORTADA
-        // ==================================================
-
-        if (book.CoverImage != null &&
-            book.CoverImage.Length > 0)
-        {
-            var stream =
-                book.CoverImage.OpenReadStream();
-
-            var streamContent =
-                new StreamContent(stream);
-
-            streamContent.Headers.ContentType =
-                new MediaTypeHeaderValue(
-                    book.CoverImage.ContentType);
-
-            content.Add(
-                streamContent,
-                "CoverImage",
-                Path.GetFileName(
-                    book.CoverImage.FileName));
-        }
-
-
-        var response =
-            await _httpClient.PutAsync(
-                $"api/Book/{id}",
-                content);
-
-
-        if (response.IsSuccessStatusCode)
-        {
-            return (
-                true,
-                new Dictionary<string, string[]>()
-            );
-        }
-
-
-        var errors =
-            await ReadValidationErrorsAsync(
-                response);
-
-        return (
-            false,
-            errors
-        );
-    }
-
-
-    // ======================================================
-    // DELETE LÓGICO
-    // ======================================================
-
-    public async Task<bool> DeleteAsync(int id)
-    {
-        AddAuthorizationHeader();
-
-        var response =
-            await _httpClient.DeleteAsync(
-                $"api/Book/{id}");
-
-        return response.IsSuccessStatusCode;
-    }
-
-
-    // ======================================================
-    // SEARCH
-    // ======================================================
-
-    public async Task<List<BookDto>> SearchAsync(
-        string? phrase = null)
-    {
-        AddAuthorizationHeader();
-
-        var queryParams =
-            new List<string>();
-
-
-        if (!string.IsNullOrWhiteSpace(phrase))
-        {
-            queryParams.Add(
-                $"phrase={Uri.EscapeDataString(phrase)}");
-        }
-
-
-        var url =
-            "api/Book/search";
-
-
-        if (queryParams.Any())
-        {
-            url += "?" +
-                   string.Join(
-                       "&",
-                       queryParams);
-        }
-
-
-        var books =
-            await _httpClient
-                .GetFromJsonAsync<List<BookDto>>(
-                    url)
-            ?? new List<BookDto>();
-
-
-        // IMPORTANTE:
-        // también convertir las portadas
-        // cuando usamos búsqueda.
-
-        foreach (var book in books)
-        {
-            book.CoverImage =
-                BuildCoverImageUrl(
-                    book.CoverImage);
-        }
-
-
-        return books;
-    }
-
-
-    // ======================================================
-    // READ VALIDATION ERRORS
-    // ======================================================
-
-    private async Task<
-        Dictionary<string, string[]>>
-        ReadValidationErrorsAsync(
-            HttpResponseMessage response)
-    {
-        try
-        {
-            var validation =
-                await response.Content
-                    .ReadFromJsonAsync<
-                        ValidationResponse>();
-
-
-            if (validation?.Errors != null)
-            {
-                return validation.Errors;
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(
-                    validation?.Message))
-            {
-                return new Dictionary<
-                    string,
-                    string[]>
-                {
-                    {
-                        string.Empty,
-                        new[]
-                        {
-                            validation.Message
-                        }
-                    }
-                };
-            }
-        }
-        catch
-        {
-            // La respuesta no tiene
-            // el formato esperado.
-        }
-
-
-        return new Dictionary<
-            string,
-            string[]>
-        {
-            {
-                string.Empty,
-                new[]
-                {
-                    "No se pudo procesar la solicitud."
-                }
-            }
-        };
-    }
-
-
-    // ======================================================
-    // VALIDATION RESPONSE
-    // ======================================================
-
-    private class ValidationResponse
-    {
-        public string? Title { get; set; }
-
-        public int? Status { get; set; }
-
-        public string? Detail { get; set; }
-
-        public string? Message { get; set; }
-
-        public Dictionary<
-            string,
-            string[]>? Errors
-        { get; set; }
-    }
+    // ============================================================
     public async Task<(bool Success, string Message)> AddCopyAsync(int bookId, string internalCode)
     {
         AddAuthorizationHeader();
@@ -544,4 +44,1010 @@ public class BookService
 
         return (response.IsSuccessStatusCode, message);
     }
+    private void AddAuthorizationHeader()
+    {
+        var token =
+            _httpContextAccessor.HttpContext?
+                .Session
+                .GetString("AuthToken");
+
+        _httpClient.DefaultRequestHeaders.Authorization = null;
+
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    token);
+        }
+    }
+
+    // ============================================================
+    // LIBROS - GET ALL
+    // ============================================================
+
+    public async Task<List<BookDto>> GetAllAsync()
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.GetAsync("api/Book");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<BookDto>();
+            }
+
+            return await response.Content
+                       .ReadFromJsonAsync<List<BookDto>>()
+                   ?? new List<BookDto>();
+        }
+        catch
+        {
+            return new List<BookDto>();
+        }
+    }
+
+    // ============================================================
+    // LIBROS - GET BY ID
+    // ============================================================
+
+    public async Task<BookDto?> GetByIdAsync(int id)
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.GetAsync(
+                    $"api/Book/{id}");
+
+            if (response.StatusCode ==
+                HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await response.Content
+                .ReadFromJsonAsync<BookDto>();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    // ============================================================
+    // LIBROS - SEARCH
+    // ============================================================
+
+    public async Task<List<BookDto>> SearchAsync(
+        string? phrase)
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var url = "api/Book/search";
+
+            if (!string.IsNullOrWhiteSpace(phrase))
+            {
+                url +=
+                    $"?phrase={Uri.EscapeDataString(phrase)}";
+            }
+
+            var response =
+                await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<BookDto>();
+            }
+
+            return await response.Content
+                       .ReadFromJsonAsync<List<BookDto>>()
+                   ?? new List<BookDto>();
+        }
+        catch
+        {
+            return new List<BookDto>();
+        }
+    }
+
+    // ============================================================
+    // LIBROS - CREATE
+    // ============================================================
+
+    public async Task<ServiceResult> CreateAsync(
+        CreateBookDto book)
+    {
+        AddAuthorizationHeader();
+
+        using var content =
+            BuildCreateBookContent(book);
+
+        try
+        {
+            var response =
+                await _httpClient.PostAsync(
+                    "api/Book",
+                    content);
+
+            return await ProcessResponseAsync(
+                response);
+        }
+        catch (HttpRequestException)
+        {
+            return ServiceResult.Fail(
+                new Dictionary<string, string[]>
+                {
+                    {
+                        string.Empty,
+                        new[]
+                        {
+                            "No se pudo conectar con el servidor."
+                        }
+                    }
+                });
+        }
+    }
+
+    // ============================================================
+    // LIBROS - UPDATE
+    // ============================================================
+
+    public async Task<ServiceResult> UpdateAsync(
+        int id,
+        UpdateBookDto book)
+    {
+        AddAuthorizationHeader();
+
+        using var content =
+            BuildUpdateBookContent(book);
+
+        try
+        {
+            var response =
+                await _httpClient.PutAsync(
+                    $"api/Book/{id}",
+                    content);
+
+            return await ProcessResponseAsync(
+                response);
+        }
+        catch (HttpRequestException)
+        {
+            return ServiceResult.Fail(
+                new Dictionary<string, string[]>
+                {
+                    {
+                        string.Empty,
+                        new[]
+                        {
+                            "No se pudo conectar con el servidor."
+                        }
+                    }
+                });
+        }
+    }
+
+    // ============================================================
+    // LIBROS - DELETE
+    // ============================================================
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.DeleteAsync(
+                    $"api/Book/{id}");
+
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    // ============================================================
+    // MULTIPART - CREATE BOOK
+    // ============================================================
+
+    private MultipartFormDataContent
+        BuildCreateBookContent(
+            CreateBookDto book)
+    {
+        var content =
+            new MultipartFormDataContent();
+
+        AddString(
+            content,
+            "Title",
+            book.Title);
+
+        AddNullableString(
+            content,
+            "EditionNumber",
+            book.EditionNumber);
+
+        AddNullableString(
+            content,
+            "ISBN",
+            book.ISBN);
+
+        AddNullableString(
+            content,
+            "PublicationYear",
+            book.PublicationYear);
+
+        AddNullableString(
+            content,
+            "Publisher",
+            book.Publisher);
+
+        AddNullableString(
+            content,
+            "PageCount",
+            book.PageCount);
+
+        AddNullableString(
+            content,
+            "Description",
+            book.Description);
+
+        AddNullableString(
+            content,
+            "UserId",
+            book.UserId);
+
+        // ========================================================
+        // AUTORES
+        // ========================================================
+
+        foreach (var authorId in
+                 book.AuthorIds
+                     .Where(id => id > 0)
+                     .Distinct())
+        {
+            content.Add(
+                new StringContent(
+                    authorId.ToString()),
+                "AuthorIds");
+        }
+
+        // ========================================================
+        // CATEGORÍAS
+        // ========================================================
+
+        foreach (var categoryId in
+                 book.CategoryIds
+                     .Where(id => id > 0)
+                     .Distinct())
+        {
+            content.Add(
+                new StringContent(
+                    categoryId.ToString()),
+                "CategoryIds");
+        }
+
+        // ========================================================
+        // PORTADA
+        // ========================================================
+
+        AddCover(
+            content,
+            book.CoverImage);
+
+        return content;
+    }
+
+    // ============================================================
+    // MULTIPART - UPDATE BOOK
+    // ============================================================
+
+    private MultipartFormDataContent
+        BuildUpdateBookContent(
+            UpdateBookDto book)
+    {
+        var content =
+            new MultipartFormDataContent();
+
+        AddString(
+            content,
+            "Title",
+            book.Title);
+
+        AddNullableString(
+            content,
+            "EditionNumber",
+            book.EditionNumber);
+
+        AddNullableString(
+            content,
+            "ISBN",
+            book.ISBN);
+
+        AddNullableString(
+            content,
+            "PublicationYear",
+            book.PublicationYear);
+
+        AddNullableString(
+            content,
+            "Publisher",
+            book.Publisher);
+
+        AddNullableString(
+            content,
+            "PageCount",
+            book.PageCount);
+
+        AddNullableString(
+            content,
+            "Description",
+            book.Description);
+
+        AddNullableString(
+            content,
+            "UserId",
+            book.UserId);
+
+        // ========================================================
+        // AUTORES
+        // ========================================================
+
+        foreach (var authorId in
+                 book.AuthorIds
+                     .Where(id => id > 0)
+                     .Distinct())
+        {
+            content.Add(
+                new StringContent(
+                    authorId.ToString()),
+                "AuthorIds");
+        }
+
+        // ========================================================
+        // CATEGORÍAS
+        // ========================================================
+
+        foreach (var categoryId in
+                 book.CategoryIds
+                     .Where(id => id > 0)
+                     .Distinct())
+        {
+            content.Add(
+                new StringContent(
+                    categoryId.ToString()),
+                "CategoryIds");
+        }
+
+        // ========================================================
+        // PORTADA
+        // ========================================================
+
+        AddCover(
+            content,
+            book.CoverImage);
+
+        return content;
+    }
+
+    // ============================================================
+    // AGREGAR PORTADA
+    // ============================================================
+
+    private static void AddCover(
+        MultipartFormDataContent content,
+        IFormFile? file)
+    {
+        if (file == null ||
+            file.Length <= 0)
+        {
+            return;
+        }
+
+        var stream =
+            file.OpenReadStream();
+
+        var streamContent =
+            new StreamContent(stream);
+
+        var contentType =
+            string.IsNullOrWhiteSpace(
+                file.ContentType)
+                ? "application/octet-stream"
+                : file.ContentType;
+
+        streamContent.Headers.ContentType =
+            new MediaTypeHeaderValue(
+                contentType);
+
+        content.Add(
+            streamContent,
+            "CoverImage",
+            file.FileName);
+    }
+
+    // ============================================================
+    // STRING HELPERS
+    // ============================================================
+
+    private static void AddString(
+        MultipartFormDataContent content,
+        string name,
+        string? value)
+    {
+        content.Add(
+            new StringContent(
+                value ?? string.Empty),
+            name);
+    }
+
+    private static void AddNullableString(
+        MultipartFormDataContent content,
+        string name,
+        object? value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+
+        content.Add(
+            new StringContent(
+                value.ToString() ?? string.Empty),
+            name);
+    }
+
+    // ============================================================
+    // AUTORES - GET
+    // ============================================================
+
+    public async Task<List<AuthorDto>>
+        GetAuthorsAsync()
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.GetAsync(
+                    "api/Author");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<AuthorDto>();
+            }
+
+            var authors =
+                await response.Content
+                    .ReadFromJsonAsync<
+                        List<BackendAuthorResponse>>();
+
+            if (authors == null)
+            {
+                return new List<AuthorDto>();
+            }
+
+            return authors
+                .Select(author => new AuthorDto
+                {
+                    Id =
+                        author.Id,
+
+                    FirstName =
+                        author.FirstName,
+
+                    LastName =
+                        author.LastName
+                })
+                .ToList();
+        }
+        catch
+        {
+            return new List<AuthorDto>();
+        }
+    }
+
+    // ============================================================
+    // AUTORES - CREATE
+    // ============================================================
+
+    public async Task<(
+        bool Success,
+        int? Id,
+        string? Error)>
+        CreateAuthorAsync(
+            CreateAuthorDto author)
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.PostAsJsonAsync(
+                    "api/Author",
+                    author);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var created =
+                    await response.Content
+                        .ReadFromJsonAsync<
+                            BackendAuthorResponse>();
+
+                if (created != null)
+                {
+                    return (
+                        true,
+                        created.Id,
+                        null);
+                }
+
+                return (
+                    false,
+                    null,
+                    "El autor fue creado pero no se pudo obtener su Id.");
+            }
+
+            var error =
+                await ReadSimpleErrorAsync(
+                    response);
+
+            return (
+                false,
+                null,
+                error);
+        }
+        catch (HttpRequestException)
+        {
+            return (
+                false,
+                null,
+                "No se pudo conectar con el servidor.");
+        }
+    }
+
+    // ============================================================
+    // CATEGORÍAS - GET
+    // ============================================================
+
+    public async Task<List<CategoryDto>>
+        GetCategoriesAsync()
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.GetAsync(
+                    "api/Category");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<CategoryDto>();
+            }
+
+            var categories =
+                await response.Content
+                    .ReadFromJsonAsync<
+                        List<BackendCategoryResponse>>();
+
+            if (categories == null)
+            {
+                return new List<CategoryDto>();
+            }
+
+            return categories
+                .Select(category => new CategoryDto
+                {
+                    Id =
+                        category.Id,
+
+                    Name =
+                        category.Name
+                })
+                .ToList();
+        }
+        catch
+        {
+            return new List<CategoryDto>();
+        }
+    }
+
+    // ============================================================
+    // CATEGORÍAS - CREATE
+    // ============================================================
+
+    public async Task<(
+        bool Success,
+        int? Id,
+        string? Error)>
+        CreateCategoryAsync(
+            CreateCategoryDto category)
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.PostAsJsonAsync(
+                    "api/Category",
+                    category);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var created =
+                    await response.Content
+                        .ReadFromJsonAsync<
+                            BackendCategoryResponse>();
+
+                if (created != null)
+                {
+                    return (
+                        true,
+                        created.Id,
+                        null);
+                }
+
+                return (
+                    false,
+                    null,
+                    "La categoría fue creada pero no se pudo obtener su Id.");
+            }
+
+            var error =
+                await ReadSimpleErrorAsync(
+                    response);
+
+            return (
+                false,
+                null,
+                error);
+        }
+        catch (HttpRequestException)
+        {
+            return (
+                false,
+                null,
+                "No se pudo conectar con el servidor.");
+        }
+    }
+
+    // ============================================================
+    // PROCESAR RESPUESTA DEL BACKEND
+    // ============================================================
+
+    private async Task<ServiceResult>
+        ProcessResponseAsync(
+            HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode)
+        {
+            return ServiceResult.Ok();
+        }
+
+        var errors =
+            new Dictionary<string, string[]>();
+
+        var body =
+            await response.Content
+                .ReadAsStringAsync();
+
+        if (!string.IsNullOrWhiteSpace(body))
+        {
+            try
+            {
+                using var document =
+                    JsonDocument.Parse(body);
+
+                var root =
+                    document.RootElement;
+
+                // =================================================
+                // ERRORS
+                // =================================================
+
+                if (root.TryGetProperty(
+                        "errors",
+                        out var errorsElement))
+                {
+                    foreach (var property in
+                             errorsElement.EnumerateObject())
+                    {
+                        var errorMessages =
+                            property.Value
+                                .EnumerateArray()
+                                .Select(
+                                    element =>
+                                        element.GetString()
+                                        ?? string.Empty)
+                                .Where(
+                                    text =>
+                                        !string.IsNullOrWhiteSpace(
+                                            text))
+                                .ToArray();
+
+                        if (errorMessages.Length > 0)
+                        {
+                            errors[property.Name] =
+                                errorMessages;
+                        }
+                    }
+                }
+
+                // =================================================
+                // MESSAGE
+                // =================================================
+
+                if (root.TryGetProperty(
+                        "message",
+                        out var messageElement))
+                {
+                    var messageText =
+                        messageElement.GetString();
+
+                    if (!string.IsNullOrWhiteSpace(
+                            messageText))
+                    {
+                        errors[string.Empty] =
+                            new[]
+                            {
+                                messageText
+                            };
+                    }
+                }
+
+                // =================================================
+                // DETAIL
+                // =================================================
+
+                if (errors.Count == 0 &&
+                    root.TryGetProperty(
+                        "detail",
+                        out var detailElement))
+                {
+                    var detailText =
+                        detailElement.GetString();
+
+                    if (!string.IsNullOrWhiteSpace(
+                            detailText))
+                    {
+                        errors[string.Empty] =
+                            new[]
+                            {
+                                detailText
+                            };
+                    }
+                }
+            }
+            catch (JsonException)
+            {
+                // Se utilizará el mensaje genérico.
+            }
+        }
+
+        // =========================================================
+        // ERROR GENÉRICO
+        // =========================================================
+
+        if (errors.Count == 0)
+        {
+            errors[string.Empty] =
+                new[]
+                {
+                    GetStatusErrorMessage(
+                        response.StatusCode)
+                };
+        }
+
+        return ServiceResult.Fail(
+            errors);
+    }
+
+    // ============================================================
+    // LEER ERROR SIMPLE
+    // ============================================================
+
+    private async Task<string>
+        ReadSimpleErrorAsync(
+            HttpResponseMessage response)
+    {
+        var body =
+            await response.Content
+                .ReadAsStringAsync();
+
+        if (!string.IsNullOrWhiteSpace(body))
+        {
+            try
+            {
+                using var document =
+                    JsonDocument.Parse(body);
+
+                var root =
+                    document.RootElement;
+
+                // =================================================
+                // MESSAGE
+                // =================================================
+
+                if (root.TryGetProperty(
+                        "message",
+                        out var messageElement))
+                {
+                    var messageText =
+                        messageElement.GetString();
+
+                    if (!string.IsNullOrWhiteSpace(
+                            messageText))
+                    {
+                        return messageText;
+                    }
+                }
+
+                // =================================================
+                // DETAIL
+                // =================================================
+
+                if (root.TryGetProperty(
+                        "detail",
+                        out var detailElement))
+                {
+                    var detailText =
+                        detailElement.GetString();
+
+                    if (!string.IsNullOrWhiteSpace(
+                            detailText))
+                    {
+                        return detailText;
+                    }
+                }
+
+                // =================================================
+                // VALIDATION ERRORS
+                // =================================================
+
+                if (root.TryGetProperty(
+                        "errors",
+                        out var errorsElement))
+                {
+                    var validationMessages =
+                        new List<string>();
+
+                    foreach (var property in
+                             errorsElement.EnumerateObject())
+                    {
+                        foreach (var errorElement in
+                                 property.Value.EnumerateArray())
+                        {
+                            var errorText =
+                                errorElement.GetString();
+
+                            if (!string.IsNullOrWhiteSpace(
+                                    errorText))
+                            {
+                                validationMessages.Add(
+                                    errorText);
+                            }
+                        }
+                    }
+
+                    if (validationMessages.Count > 0)
+                    {
+                        return string.Join(
+                            " ",
+                            validationMessages);
+                    }
+                }
+            }
+            catch (JsonException)
+            {
+                // Se utilizará el mensaje HTTP.
+            }
+        }
+
+        return GetStatusErrorMessage(
+            response.StatusCode);
+    }
+
+    // ============================================================
+    // MENSAJES SEGÚN STATUS HTTP
+    // ============================================================
+
+    private static string
+        GetStatusErrorMessage(
+            HttpStatusCode statusCode)
+    {
+        return statusCode switch
+        {
+            HttpStatusCode.BadRequest =>
+                "Los datos enviados no son válidos.",
+
+            HttpStatusCode.Unauthorized =>
+                "La sesión ha expirado. Inicie sesión nuevamente.",
+
+            HttpStatusCode.Forbidden =>
+                "No tiene permisos para realizar esta operación.",
+
+            HttpStatusCode.NotFound =>
+                "El recurso solicitado no fue encontrado.",
+
+            HttpStatusCode.Conflict =>
+                "La operación no se pudo realizar porque existe un conflicto.",
+
+            HttpStatusCode.InternalServerError =>
+                "Ocurrió un error interno en el servidor.",
+
+            _ =>
+                "No se pudo completar la operación."
+        };
+    }
+
+    // ============================================================
+    // RESPUESTAS DEL BACKEND
+    // ============================================================
+
+    private class BackendAuthorResponse
+    {
+        public int Id { get; set; }
+
+        public string FirstName { get; set; }
+            = string.Empty;
+
+        public string LastName { get; set; }
+            = string.Empty;
+    }
+
+    private class BackendCategoryResponse
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+            = string.Empty;
+
+        public string? Description { get; set; }
+    }
+}
+
+// ================================================================
+// RESULTADO DE OPERACIONES
+// ================================================================
+
+public class ServiceResult
+{
+    public bool Success { get; private set; }
+
+    public Dictionary<string, string[]> Errors { get; private set; }
+        = new();
+
+    public static ServiceResult Ok()
+    {
+        return new ServiceResult
+        {
+            Success = true
+        };
+    }
+
+    public static ServiceResult Fail(
+        Dictionary<string, string[]> errors)
+    {
+        return new ServiceResult
+        {
+            Success = false,
+            Errors = errors
+        };
+    }
+    
 }

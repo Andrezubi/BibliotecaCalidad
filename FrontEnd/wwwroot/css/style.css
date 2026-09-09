@@ -1421,3 +1421,103 @@ main {
                 align-self: flex-start;
             }
 }
+/* =========================================================
+   SELECTOR DE AUTORES Y CATEGORÍAS
+   ========================================================= */
+
+.author-dropdown,
+.category-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+    .author-dropdown > button,
+    .category-dropdown > button {
+        width: 100%;
+        min-height: 45px;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        color: #495057;
+    }
+
+        .author-dropdown > button:hover,
+        .category-dropdown > button:hover {
+            border-color: #6f42c1;
+        }
+
+.author-dropdown-menu,
+.category-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    max-height: 230px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    z-index: 1050;
+    padding: 6px 0;
+}
+
+    .author-dropdown-menu.show,
+    .category-dropdown-menu.show {
+        display: block;
+    }
+
+.author-option,
+.category-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    margin: 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+    .author-option:hover,
+    .category-option:hover {
+        background-color: #f5f1fa;
+    }
+
+    .author-option input,
+    .category-option input {
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+    }
+
+.selected-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.selected-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #eee7f8;
+    color: #5a3d8e;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.cover-preview {
+    display: none;
+    width: 180px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+    .cover-preview.show {
+        display: block;
+    }
