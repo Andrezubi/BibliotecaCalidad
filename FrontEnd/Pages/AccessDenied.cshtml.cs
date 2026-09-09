@@ -1,10 +1,9 @@
-using FrontEnd.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FrontEnd.Pages.Authors
+namespace FrontEnd.Pages
 {
-    public class IndexModel : AuthorizedPageModel
+    public class AccessDeniedModel : PageModel
     {
         public void OnGet()
         {

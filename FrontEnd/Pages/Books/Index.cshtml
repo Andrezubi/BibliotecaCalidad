@@ -1,9 +1,12 @@
-﻿@page
+﻿
+@page
 @model FrontEnd.Pages.Books.IndexModel
 
 @{
     ViewData["Title"] = "Libros";
 }
+@using FrontEnd.Services
+@inject AuthSessionService AuthSession
 
 <div class="container content-wrapper">
 
@@ -26,11 +29,15 @@
                 </p>
             </div>
 
-            <a asp-page="Create"
-               class="btn btn-primary">
+            @if (AuthSession.HasAnyRole("Admin", "Librarian"))
+            {
+                <a asp-page="Create"
+                   class="btn btn-primary">
 
-                <i class="bi bi-plus-circle me-2"></i>
-                Nuevo Libro
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Nuevo Libro
+                </a>
+            }
 
             </a>
 
@@ -328,54 +335,56 @@
 
 
                                 <!-- ACCIONES -->
-
-                                <td class="text-center">
-
-
-                                    <!-- PRESTAR -->
-                                    @if (book.IsActive)
-                                    {
-                                        <button type="button"
-                                                class="btn btn-primary btn-sm me-1"
-                                                title="Prestar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#loanModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
-
-                                            <i class="bi bi-box-arrow-up"></i>
-
-                                        </button>
+                                @if (AuthSession.HasAnyRole("Admin", "Librarian"))
+                                {
+                                    <td class="text-center">
 
 
-                                        <!-- EDITAR -->
+                                        <!-- PRESTAR -->
+                                        @if (book.IsActive)
+                                        {
+                                            <button type="button"
+                                            class="btn btn-primary btn-sm me-1"
+                                            title="Prestar"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#loanModal"
+                                            data-book-id="@book.Id"
+                                            data-book-title="@book.Title">
 
-                                        <a asp-page="Update"
-                                           asp-route-id="@book.Id"
-                                           class="btn btn-warning btn-sm me-1"
-                                           title="Editar">
+                                                <i class="bi bi-box-arrow-up"></i>
 
-                                            <i class="bi bi-pencil"></i>
-
-                                        </a>
+                                            </button>
 
 
-                                        <!-- ELIMINAR -->
+                                            <!-- EDITAR -->
 
-                                        <button type="button"
-                                                class="btn btn-danger btn-sm"
-                                                title="Eliminar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal"
-                                                data-book-id="@book.Id"
-                                                data-book-title="@book.Title">
+                                            <a asp-page="Update"
+                                            asp-route-id="@book.Id"
+                                            class="btn btn-warning btn-sm me-1"
+                                            title="Editar">
 
-                                            <i class="bi bi-trash"></i>
+                                                <i class="bi bi-pencil"></i>
 
-                                        </button>
-                                    }
+                                            </a>
 
-                                </td>
+
+                                            <!-- ELIMINAR -->
+
+                                            <button type="button"
+                                            class="btn btn-danger btn-sm"
+                                            title="Eliminar"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-book-id="@book.Id"
+                                            data-book-title="@book.Title">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </button>
+                                        }
+
+                                    </td>                    
+                                }
 
                             </tr>
                         }

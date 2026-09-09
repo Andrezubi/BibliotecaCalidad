@@ -33,6 +33,8 @@ builder.Services.AddHttpClient<LoanService>();
 
 builder.Services.AddHttpClient<AuthApiService>();
 
+builder.Services.AddScoped<AuthSessionService>();
+
 var app = builder.Build();
 
 // ======================================================
