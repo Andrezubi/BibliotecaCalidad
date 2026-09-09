@@ -1,12 +1,9 @@
-﻿
-@page
+﻿@page
 @model FrontEnd.Pages.Books.IndexModel
 
 @{
     ViewData["Title"] = "Libros";
 }
-@using FrontEnd.Services
-@inject AuthSessionService AuthSession
 
 @using FrontEnd.Services
 @inject AuthSessionService AuthSession
@@ -38,7 +35,6 @@
                 </p>
 
             </div>
-
 
             @if (AuthSession.HasAnyRole("Admin", "Librarian"))
             {
@@ -109,8 +105,6 @@
 
                 <div class="row g-3">
 
-                    <!-- FRASE -->
-
                     <div class="col-md-6">
 
                         <label asp-for="Phrase"
@@ -127,7 +121,6 @@
                     </div>
 
                 </div>
-
 
                 <!-- BOTONES -->
 
@@ -211,12 +204,14 @@
                             <th class="text-center">
                                 Estado
                             </th>
+
                             @if (AuthSession.HasAnyRole("Admin", "Librarian"))
                             {
                                 <th class="text-center">
                                     Acciones
                                 </th>
                             }
+
                         </tr>
 
                     </thead>
@@ -430,17 +425,13 @@
                                     @if (book.IsActive)
                                     {
                                         <span class="badge bg-success">
-
                                             Disponible
-
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="badge bg-secondary">
-
                                             Inactivo
-
                                         </span>
                                     }
 
@@ -454,9 +445,10 @@
                                 {
                                     <td class="text-center">
 
-                                        <!-- PRESTAR -->
                                         @if (book.IsActive)
                                         {
+                                            <!-- PRESTAR -->
+
                                             <button type="button"
                                                     class="btn btn-primary btn-sm me-1"
                                                     title="Prestar"
@@ -632,7 +624,6 @@
 
                 </button>
 
-
                 <form method="post"
                       asp-page-handler="Loan">
 
@@ -725,7 +716,6 @@
 
                 </button>
 
-
                 <form method="post"
                       asp-page-handler="Delete">
 
@@ -754,14 +744,10 @@
 
 
 <!-- ========================================================= -->
-<!-- ESTILOS ESPECÍFICOS DEL INDEX -->
+<!-- ESTILOS ESPECÍFICOS -->
 <!-- ========================================================= -->
 
 <style>
-
-    /* =========================================================
-           PORTADA
-        ========================================================= */
 
     .index-book-cover {
         width: 55px;
@@ -782,11 +768,6 @@
         border-radius: 6px;
         border: 1px solid #ddd;
     }
-
-
-    /* =========================================================
-           AUTORES Y CATEGORÍAS
-        ========================================================= */
 
     .index-relations {
         display: flex;
@@ -810,11 +791,6 @@
             font-size: 0.75rem;
         }
 
-
-    /* =========================================================
-           TABLA
-        ========================================================= */
-
     .table th {
         white-space: nowrap;
         font-weight: 600;
@@ -824,12 +800,7 @@
         vertical-align: middle;
     }
 
-
-    /* =========================================================
-           RESPONSIVE
-        ========================================================= */
-
-    @media (max-width: 1200px) {
+    @@media (max-width: 1200px) {
 
         .index-relation-badge {
             max-width: 170px;
@@ -889,6 +860,7 @@
 
                         }
                     );
+
                 }
 
 
@@ -931,6 +903,7 @@
 
                         }
                     );
+
                 }
 
             }

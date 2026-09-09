@@ -38,12 +38,13 @@ public class CreateModel : AuthorizedPageModel
     // GET
     // =====================================================
 
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {
         if (!IsInAnyRole("Admin", "Librarian"))
         {
             return RedirectToPage("/AccessDenied");
         }
+
         await LoadAuthorsAndCategoriesAsync();
 
         return Page();
@@ -55,6 +56,15 @@ public class CreateModel : AuthorizedPageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // =================================================
+        // VALIDAR AUTORIZACIÓN
+        // =================================================
+
+        if (!IsInAnyRole("Admin", "Librarian"))
+        {
+            return RedirectToPage("/AccessDenied");
+        }
+
         // =================================================
         // LIMPIAR IDs
         // =================================================
@@ -76,11 +86,6 @@ public class CreateModel : AuthorizedPageModel
         // =================================================
         // VALIDAR MODELO
         // =================================================
-        if (!IsInAnyRole("Admin", "Librarian"))
-        {
-            return RedirectToPage("/AccessDenied");
-        }
-
 
         if (!ModelState.IsValid)
         {
@@ -97,16 +102,13 @@ public class CreateModel : AuthorizedPageModel
         {
             foreach (var newAuthor in Book.NewAuthors)
             {
-                if (string.IsNullOrWhiteSpace(
-                        newAuthor.FirstName) &&
-                    string.IsNullOrWhiteSpace(
-                        newAuthor.LastName))
+                if (string.IsNullOrWhiteSpace(newAuthor.FirstName) &&
+                    string.IsNullOrWhiteSpace(newAuthor.LastName))
                 {
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(
-                        newAuthor.FirstName))
+                if (string.IsNullOrWhiteSpace(newAuthor.FirstName))
                 {
                     ModelState.AddModelError(
                         string.Empty,
@@ -116,8 +118,7 @@ public class CreateModel : AuthorizedPageModel
                     return Page();
                 }
 
-                if (string.IsNullOrWhiteSpace(
-                        newAuthor.LastName))
+                if (string.IsNullOrWhiteSpace(newAuthor.LastName))
                 {
                     ModelState.AddModelError(
                         string.Empty,
@@ -143,11 +144,8 @@ public class CreateModel : AuthorizedPageModel
                     return Page();
                 }
 
-                // IMPORTANTE:
-                // agregamos el ID REAL generado por BD
-
-                Book.AuthorIds.Add(
-                    result.Id.Value);
+                // Agregar el ID real generado por la BD
+                Book.AuthorIds.Add(result.Id.Value);
             }
         }
 
@@ -160,8 +158,7 @@ public class CreateModel : AuthorizedPageModel
         {
             foreach (var newCategory in Book.NewCategories)
             {
-                if (string.IsNullOrWhiteSpace(
-                        newCategory.Name))
+                if (string.IsNullOrWhiteSpace(newCategory.Name))
                 {
                     continue;
                 }
@@ -182,10 +179,8 @@ public class CreateModel : AuthorizedPageModel
                     return Page();
                 }
 
-                // ID REAL
-
-                Book.CategoryIds.Add(
-                    result.Id.Value);
+                // Agregar el ID real generado por la BD
+                Book.CategoryIds.Add(result.Id.Value);
             }
         }
 
@@ -238,10 +233,10 @@ public class CreateModel : AuthorizedPageModel
     private async Task LoadAuthorsAndCategoriesAsync()
     {
         Authors =
-            await _bookService.GetAuthorsAsync();
+            (await _bookService.GetAuthorsAsync()).ToList();
 
         Categories =
-            await _bookService.GetCategoriesAsync();
+            (await _bookService.GetCategoriesAsync()).ToList();
     }
 
     // =====================================================
