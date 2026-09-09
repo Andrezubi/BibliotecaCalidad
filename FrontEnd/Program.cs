@@ -42,7 +42,19 @@ builder.Services.AddHttpClient<BookService>(client =>
 
     client.BaseAddress = new Uri(backendUrl);
 });
+builder.Services.AddHttpClient<AuthorService>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["BackendUrl"]!
+    );
+});
 
+builder.Services.AddHttpClient<CategoryService>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["BackendUrl"]!
+    );
+});
 
 // ======================================================
 // HTTP CLIENT - LOANS
