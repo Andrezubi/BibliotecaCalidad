@@ -25,7 +25,15 @@ public class BookService : IBookService
         ".webp"
     };
 
-    private const long MaxFileSize = 5 * 1024 * 1024;
+    private static readonly string[] AllowedContentTypes =
+    {
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    };
+
+    private const long MaxFileSize =
+        5 * 1024 * 1024;
 
     public BookService(
         IBookRepository bookRepository,
@@ -41,33 +49,39 @@ public class BookService : IBookService
         _context = context;
     }
 
-    // ======================================================
-    // GET ALL
-    // ======================================================
+    // ============================================================
+    // OBTENER TODOS
+    // ============================================================
 
     public async Task<IEnumerable<BookDto>> GetAllAsync()
     {
-        var books = await _bookRepository.GetAllAsync();
+        var books =
+            await _bookRepository.GetAllAsync();
 
-        var result = new List<BookDto>();
+        var result =
+            new List<BookDto>();
 
         foreach (var book in books)
         {
-            result.Add(await MapToDtoAsync(book));
+            result.Add(
+                await MapToDtoAsync(book));
         }
 
         return result;
     }
 
-    // ======================================================
-    // GET BY ID
-    // ======================================================
+    // ============================================================
+    // OBTENER POR ID
+    // ============================================================
 
-    public async Task<BookDto?> GetByIdAsync(int id)
+    public async Task<BookDto?> GetByIdAsync(
+        int id)
     {
-        var book = await _bookRepository.GetByIdAsync(id);
+        var book =
+            await _bookRepository.GetByIdAsync(id);
 
-        if (book == null || !book.IsActive)
+        if (book == null ||
+            !book.IsActive)
         {
             return null;
         }
@@ -75,16 +89,22 @@ public class BookService : IBookService
         return await MapToDtoAsync(book);
     }
 
-    // ======================================================
-    // CREATE
-    // ======================================================
+    // ============================================================
+    // CREAR LIBRO
+    // ============================================================
 
-    public async Task<BookDto> CreateAsync(CreateBookDto dto)
+    public async Task<BookDto> CreateAsync(
+        CreateBookDto dto)
     {
         if (dto == null)
         {
-            throw new ArgumentNullException(nameof(dto));
+            throw new ArgumentNullException(
+                nameof(dto));
         }
+
+        // --------------------------------------------------------
+        // NORMALIZAR AUTORES
+        // --------------------------------------------------------
 
         var authorIds = dto.AuthorIds?
             .Where(id => id > 0)
@@ -92,26 +112,28 @@ public class BookService : IBookService
             .ToList()
             ?? new List<int>();
 
+        // --------------------------------------------------------
+        // NORMALIZAR CATEGORÍAS
+        // --------------------------------------------------------
+
         var categoryIds = dto.CategoryIds?
             .Where(id => id > 0)
             .Distinct()
             .ToList()
             ?? new List<int>();
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR AUTORES
-        // ==================================================
+        // --------------------------------------------------------
 
-        if (!authorIds.Any())
-        {
-            throw new InvalidOperationException(
-                "Debe seleccionar al menos un autor.");
-        }
+        BookValidator.ValidateAuthorIds(
+            authorIds);
 
         foreach (var authorId in authorIds)
         {
             var exists =
-                await _authorRepository.ExistsActiveByIdAsync(authorId);
+                await _authorRepository
+                    .ExistsActiveByIdAsync(authorId);
 
             if (!exists)
             {
@@ -120,20 +142,18 @@ public class BookService : IBookService
             }
         }
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR CATEGORÍAS
-        // ==================================================
+        // --------------------------------------------------------
 
-        if (!categoryIds.Any())
-        {
-            throw new InvalidOperationException(
-                "Debe seleccionar al menos una categoría.");
-        }
+        BookValidator.ValidateCategoryIds(
+            categoryIds);
 
         foreach (var categoryId in categoryIds)
         {
             var exists =
-                await _categoryRepository.ExistsActiveByIdAsync(categoryId);
+                await _categoryRepository
+                    .ExistsActiveByIdAsync(categoryId);
 
             if (!exists)
             {
@@ -142,20 +162,22 @@ public class BookService : IBookService
             }
         }
 
-        // ==================================================
-        // VALIDAR PORTADA ANTES DE HACER CAMBIOS
-        // ==================================================
+        // --------------------------------------------------------
+        // VALIDAR PORTADA
+        // --------------------------------------------------------
 
-        ValidateCoverFile(dto.CoverImage);
+        ValidateCoverFile(
+            dto.CoverImage);
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR ISBN
-        // ==================================================
+        // --------------------------------------------------------
 
         if (!string.IsNullOrWhiteSpace(dto.ISBN))
         {
             var isbnExists =
-                await _bookRepository.ExistsByIsbnAsync(dto.ISBN);
+                await _bookRepository
+                    .ExistsByIsbnAsync(dto.ISBN);
 
             if (isbnExists)
             {
@@ -164,9 +186,9 @@ public class BookService : IBookService
             }
         }
 
-        // ==================================================
-        // CREAR LIBRO
-        // ==================================================
+        // --------------------------------------------------------
+        // CREAR ENTIDAD
+        // --------------------------------------------------------
 
         var book = new Book
         {
@@ -182,136 +204,120 @@ public class BookService : IBookService
             CreatedAt = DateTime.Now
         };
 
-        // ==================================================
-        // CREAR RELACIONES EN MEMORIA
-        // ==================================================
-
-        foreach (var authorId in authorIds)
-        {
-            book.Bookauthors.Add(
-                new Bookauthor
-                {
-                    Book = book,
-                    AuthorId = authorId,
-                    IsActive = true,
-                    CreatedAt = DateTime.Now,
-                    UserId = dto.UserId
-                });
-        }
-
-        foreach (var categoryId in categoryIds)
-        {
-            book.Bookcategories.Add(
-                new Bookcategory
-                {
-                    Book = book,
-                    CategoryId = categoryId,
-                    IsActive = true,
-                    CreatedAt = DateTime.Now,
-                    UserId = dto.UserId
-                });
-        }
-
-        // ==================================================
-        // VALIDAR LIBRO COMPLETO
-        // ==================================================
+        // --------------------------------------------------------
+        // VALIDAR DATOS DEL LIBRO
+        // --------------------------------------------------------
 
         BookValidator.Validate(book);
 
         string? savedCoverPath = null;
 
-        // ==================================================
+        // --------------------------------------------------------
         // TRANSACCIÓN
-        // ==================================================
+        // --------------------------------------------------------
 
         await using var transaction =
-            await _context.Database.BeginTransactionAsync();
+            await _context.Database
+                .BeginTransactionAsync();
 
         try
         {
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // GUARDAR PORTADA
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
             if (dto.CoverImage != null &&
                 dto.CoverImage.Length > 0)
             {
                 savedCoverPath =
-                    await SaveCoverImageAsync(dto.CoverImage);
+                    await SaveCoverImageAsync(
+                        dto.CoverImage);
 
-                book.CoverImage = savedCoverPath;
+                book.CoverImage =
+                    savedCoverPath;
 
-                // Validamos nuevamente porque ahora Book tiene
-                // la ruta real de la portada.
-                BookValidator.Validate(book);
+                BookValidator.Validate(
+                    book);
             }
 
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // GUARDAR LIBRO
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
-            await _bookRepository.AddAsync(book);
+            await _bookRepository.AddAsync(
+                book);
 
-            // --------------------------------------------------
-            // GUARDAR RELACIONES
-            // --------------------------------------------------
+            // ----------------------------------------------------
+            // GUARDAR AUTORES
+            // ----------------------------------------------------
 
             foreach (var authorId in authorIds)
             {
-                var bookAuthor =
-                    new Bookauthor
-                    {
-                        BookId = book.Id,
-                        AuthorId = authorId,
-                        IsActive = true,
-                        CreatedAt = DateTime.Now,
-                        UserId = dto.UserId
-                    };
-
-                await _authorRepository.AddBookAuthorAsync(bookAuthor);
+                await _authorRepository
+                    .AddBookAuthorAsync(
+                        new Bookauthor
+                        {
+                            BookId = book.Id,
+                            AuthorId = authorId,
+                            IsActive = true,
+                            CreatedAt = DateTime.Now,
+                            UserId = dto.UserId
+                        });
             }
+
+            // ----------------------------------------------------
+            // GUARDAR CATEGORÍAS
+            // ----------------------------------------------------
 
             foreach (var categoryId in categoryIds)
             {
-                var bookCategory =
-                    new Bookcategory
-                    {
-                        BookId = book.Id,
-                        CategoryId = categoryId,
-                        IsActive = true,
-                        CreatedAt = DateTime.Now,
-                        UserId = dto.UserId
-                    };
-
-                await _categoryRepository.AddBookCategoryAsync(bookCategory);
+                await _categoryRepository
+                    .AddBookCategoryAsync(
+                        new Bookcategory
+                        {
+                            BookId = book.Id,
+                            CategoryId = categoryId,
+                            IsActive = true,
+                            CreatedAt = DateTime.Now,
+                            UserId = dto.UserId
+                        });
             }
 
-            // --------------------------------------------------
-            // CONFIRMAR TRANSACCIÓN
-            // --------------------------------------------------
+            // ----------------------------------------------------
+            // CONFIRMAR
+            // ----------------------------------------------------
 
             await transaction.CommitAsync();
         }
         catch
         {
+            // ----------------------------------------------------
+            // DESHACER BD
+            // ----------------------------------------------------
+
             await transaction.RollbackAsync();
 
-            // Si se guardó una portada pero falló la BD,
-            // eliminamos el archivo para no dejarlo huérfano.
-            if (!string.IsNullOrWhiteSpace(savedCoverPath))
+            // ----------------------------------------------------
+            // ELIMINAR PORTADA
+            // ----------------------------------------------------
+
+            if (!string.IsNullOrWhiteSpace(
+                    savedCoverPath))
             {
-                DeleteCoverImage(savedCoverPath);
+                DeleteCoverImage(
+                    savedCoverPath);
             }
 
             throw;
         }
 
-        return await MapToDtoAsync(book);
+        return await MapToDtoAsync(
+            book);
     }
 
-    // ======================================================
-    // UPDATE
-    // ======================================================
+    // ============================================================
+    // ACTUALIZAR LIBRO
+    // ============================================================
 
     public async Task<BookDto?> UpdateAsync(
         int id,
@@ -319,43 +325,57 @@ public class BookService : IBookService
     {
         if (dto == null)
         {
-            throw new ArgumentNullException(nameof(dto));
+            throw new ArgumentNullException(
+                nameof(dto));
         }
 
-        var book =
-            await _bookRepository.GetByIdAsync(id);
+        // --------------------------------------------------------
+        // OBTENER LIBRO
+        // --------------------------------------------------------
 
-        if (book == null || !book.IsActive)
+        var book =
+            await _bookRepository
+                .GetByIdAsync(id);
+
+        if (book == null ||
+            !book.IsActive)
         {
             return null;
         }
 
+        // --------------------------------------------------------
+        // NORMALIZAR AUTORES
+        // --------------------------------------------------------
+
         var authorIds = dto.AuthorIds?
-            .Where(id => id > 0)
+            .Where(authorId => authorId > 0)
             .Distinct()
             .ToList()
             ?? new List<int>();
+
+        // --------------------------------------------------------
+        // NORMALIZAR CATEGORÍAS
+        // --------------------------------------------------------
 
         var categoryIds = dto.CategoryIds?
-            .Where(id => id > 0)
+            .Where(categoryId => categoryId > 0)
             .Distinct()
             .ToList()
             ?? new List<int>();
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR AUTORES
-        // ==================================================
+        // --------------------------------------------------------
 
-        if (!authorIds.Any())
-        {
-            throw new InvalidOperationException(
-                "Debe seleccionar al menos un autor.");
-        }
+        BookValidator.ValidateAuthorIds(
+            authorIds);
 
         foreach (var authorId in authorIds)
         {
             var exists =
-                await _authorRepository.ExistsActiveByIdAsync(authorId);
+                await _authorRepository
+                    .ExistsActiveByIdAsync(
+                        authorId);
 
             if (!exists)
             {
@@ -364,20 +384,19 @@ public class BookService : IBookService
             }
         }
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR CATEGORÍAS
-        // ==================================================
+        // --------------------------------------------------------
 
-        if (!categoryIds.Any())
-        {
-            throw new InvalidOperationException(
-                "Debe seleccionar al menos una categoría.");
-        }
+        BookValidator.ValidateCategoryIds(
+            categoryIds);
 
         foreach (var categoryId in categoryIds)
         {
             var exists =
-                await _categoryRepository.ExistsActiveByIdAsync(categoryId);
+                await _categoryRepository
+                    .ExistsActiveByIdAsync(
+                        categoryId);
 
             if (!exists)
             {
@@ -386,21 +405,27 @@ public class BookService : IBookService
             }
         }
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR PORTADA
-        // ==================================================
+        // --------------------------------------------------------
 
-        ValidateCoverFile(dto.CoverImage);
+        ValidateCoverFile(
+            dto.CoverImage);
 
-        // ==================================================
+        // --------------------------------------------------------
         // VALIDAR ISBN
-        // ==================================================
+        // --------------------------------------------------------
 
         if (!string.IsNullOrWhiteSpace(dto.ISBN) &&
-            dto.ISBN != book.ISBN)
+            !string.Equals(
+                dto.ISBN,
+                book.ISBN,
+                StringComparison.Ordinal))
         {
             var isbnExists =
-                await _bookRepository.ExistsByIsbnAsync(dto.ISBN);
+                await _bookRepository
+                    .ExistsByIsbnAsync(
+                        dto.ISBN);
 
             if (isbnExists)
             {
@@ -409,196 +434,214 @@ public class BookService : IBookService
             }
         }
 
-        // Guardamos la portada anterior.
-        var oldCover = book.CoverImage;
+        // --------------------------------------------------------
+        // GUARDAR PORTADA ANTERIOR
+        // --------------------------------------------------------
 
-        // ==================================================
+        var oldCover =
+            book.CoverImage;
+
+        // --------------------------------------------------------
         // ACTUALIZAR DATOS
-        // ==================================================
+        // --------------------------------------------------------
 
-        book.Title = dto.Title;
-        book.EditionNumber = dto.EditionNumber;
-        book.ISBN = dto.ISBN;
-        book.PublicationYear = dto.PublicationYear;
-        book.Publisher = dto.Publisher;
-        book.PageCount = dto.PageCount;
-        book.Description = dto.Description;
-        book.UserId = dto.UserId;
-        book.UpdatedAt = DateTime.Now;
+        book.Title =
+            dto.Title;
 
-        // ==================================================
-        // PREPARAR RELACIONES PARA VALIDACIÓN
-        // ==================================================
+        book.EditionNumber =
+            dto.EditionNumber;
 
-        book.Bookauthors.Clear();
+        book.ISBN =
+            dto.ISBN;
 
-        foreach (var authorId in authorIds)
-        {
-            book.Bookauthors.Add(
-                new Bookauthor
-                {
-                    BookId = book.Id,
-                    AuthorId = authorId,
-                    IsActive = true,
-                    UserId = dto.UserId
-                });
-        }
+        book.PublicationYear =
+            dto.PublicationYear;
 
-        book.Bookcategories.Clear();
+        book.Publisher =
+            dto.Publisher;
 
-        foreach (var categoryId in categoryIds)
-        {
-            book.Bookcategories.Add(
-                new Bookcategory
-                {
-                    BookId = book.Id,
-                    CategoryId = categoryId,
-                    IsActive = true,
-                    UserId = dto.UserId
-                });
-        }
+        book.PageCount =
+            dto.PageCount;
 
-        // ==================================================
-        // VALIDAR LIBRO
-        // ==================================================
+        book.Description =
+            dto.Description;
 
-        BookValidator.Validate(book);
+        book.UserId =
+            dto.UserId;
+
+        book.UpdatedAt =
+            DateTime.Now;
+
+        // IMPORTANTE:
+        // NO hacemos Clear() de Bookauthors
+        // NO hacemos Clear() de Bookcategories
+
+        BookValidator.Validate(
+            book);
 
         string? newCoverPath = null;
 
-        // ==================================================
+        // --------------------------------------------------------
         // TRANSACCIÓN
-        // ==================================================
+        // --------------------------------------------------------
 
         await using var transaction =
-            await _context.Database.BeginTransactionAsync();
+            await _context.Database
+                .BeginTransactionAsync();
 
         try
         {
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // GUARDAR NUEVA PORTADA
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
             if (dto.CoverImage != null &&
                 dto.CoverImage.Length > 0)
             {
                 newCoverPath =
-                    await SaveCoverImageAsync(dto.CoverImage);
+                    await SaveCoverImageAsync(
+                        dto.CoverImage);
 
-                book.CoverImage = newCoverPath;
+                book.CoverImage =
+                    newCoverPath;
 
-                BookValidator.Validate(book);
+                BookValidator.Validate(
+                    book);
             }
 
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // ACTUALIZAR LIBRO
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
-            await _bookRepository.UpdateAsync(book);
+            await _bookRepository
+                .UpdateAsync(book);
 
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // ACTUALIZAR AUTORES
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
-            await _bookRepository.UpdateAuthorsAsync(
-                id,
-                authorIds,
-                dto.UserId);
+            await _bookRepository
+                .UpdateAuthorsAsync(
+                    id,
+                    authorIds,
+                    dto.UserId);
 
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // ACTUALIZAR CATEGORÍAS
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
-            await _bookRepository.UpdateCategoriesAsync(
-                id,
-                categoryIds,
-                dto.UserId);
+            await _bookRepository
+                .UpdateCategoriesAsync(
+                    id,
+                    categoryIds,
+                    dto.UserId);
 
-            // --------------------------------------------------
-            // CONFIRMAR
-            // --------------------------------------------------
+            // ----------------------------------------------------
+            // CONFIRMAR TRANSACCIÓN
+            // ----------------------------------------------------
 
             await transaction.CommitAsync();
         }
         catch
         {
+            // ----------------------------------------------------
+            // DESHACER BD
+            // ----------------------------------------------------
+
             await transaction.RollbackAsync();
 
-            // La nueva portada se elimina porque la actualización
-            // completa no llegó a terminar.
-            if (!string.IsNullOrWhiteSpace(newCoverPath))
+            // ----------------------------------------------------
+            // ELIMINAR NUEVA PORTADA
+            // ----------------------------------------------------
+
+            if (!string.IsNullOrWhiteSpace(
+                    newCoverPath))
             {
-                DeleteCoverImage(newCoverPath);
+                DeleteCoverImage(
+                    newCoverPath);
             }
 
             throw;
         }
 
-        // ==================================================
+        // --------------------------------------------------------
         // ELIMINAR PORTADA ANTERIOR
-        // ==================================================
+        // SOLO DESPUÉS DEL COMMIT
+        // --------------------------------------------------------
 
-        if (!string.IsNullOrWhiteSpace(newCoverPath) &&
-            !string.IsNullOrWhiteSpace(oldCover))
+        if (!string.IsNullOrWhiteSpace(
+                newCoverPath) &&
+            !string.IsNullOrWhiteSpace(
+                oldCover))
         {
-            DeleteCoverImage(oldCover);
+            DeleteCoverImage(
+                oldCover);
         }
 
-        return await MapToDtoAsync(book);
+        return await MapToDtoAsync(
+            book);
     }
 
-    // ======================================================
-    // DELETE
-    // ======================================================
+    // ============================================================
+    // ELIMINACIÓN LÓGICA
+    // ============================================================
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(
+        int id)
     {
         var book =
-            await _bookRepository.GetByIdAsync(id);
+            await _bookRepository
+                .GetByIdAsync(id);
 
-        if (book == null || !book.IsActive)
+        if (book == null ||
+            !book.IsActive)
         {
             return false;
         }
 
-        await _bookRepository.DeleteAsync(book);
+        await _bookRepository
+            .DeleteAsync(book);
 
         return true;
     }
 
-    // ======================================================
-    // SEARCH
-    // ======================================================
+    // ============================================================
+    // BÚSQUEDA
+    // ============================================================
 
     public async Task<IEnumerable<BookDto>> SearchAsync(
         string? phrase = null)
     {
         var books =
-            await _bookRepository.SearchAsync(phrase);
+            await _bookRepository
+                .SearchAsync(phrase);
 
-        var result = new List<BookDto>();
+        var result =
+            new List<BookDto>();
 
         foreach (var book in books)
         {
-            result.Add(await MapToDtoAsync(book));
+            result.Add(
+                await MapToDtoAsync(book));
         }
 
         return result;
     }
 
-    // ======================================================
-    // VALIDAR ARCHIVO DE PORTADA
-    // ======================================================
+    // ============================================================
+    // VALIDAR PORTADA
+    // ============================================================
 
     private static void ValidateCoverFile(
         IFormFile? file)
     {
+        // La portada es opcional.
         if (file == null)
         {
             return;
         }
 
-        if (file.Length == 0)
+        if (file.Length <= 0)
         {
             throw new ArgumentException(
                 "La imagen de portada está vacía.");
@@ -611,29 +654,42 @@ public class BookService : IBookService
         }
 
         var extension =
-            Path.GetExtension(file.FileName)
+            Path.GetExtension(
+                file.FileName)
                 .ToLowerInvariant();
 
-        if (!AllowedExtensions.Contains(extension))
+        if (!AllowedExtensions.Contains(
+                extension))
         {
             throw new ArgumentException(
                 "El formato de la portada debe ser JPG, JPEG, PNG o WEBP.");
         }
+
+        if (!string.IsNullOrWhiteSpace(
+                file.ContentType) &&
+            !AllowedContentTypes.Contains(
+                file.ContentType.ToLowerInvariant()))
+        {
+            throw new ArgumentException(
+                "El tipo de archivo de la portada no es válido.");
+        }
     }
 
-    // ======================================================
-    // SAVE COVER IMAGE
-    // ======================================================
+    // ============================================================
+    // GUARDAR PORTADA
+    // ============================================================
 
     private async Task<string> SaveCoverImageAsync(
         IFormFile file)
     {
-        ValidateCoverFile(file);
+        ValidateCoverFile(
+            file);
 
         var webRootPath =
             _environment.WebRootPath;
 
-        if (string.IsNullOrWhiteSpace(webRootPath))
+        if (string.IsNullOrWhiteSpace(
+                webRootPath))
         {
             webRootPath =
                 Path.Combine(
@@ -647,10 +703,12 @@ public class BookService : IBookService
                 "uploads",
                 "books");
 
-        Directory.CreateDirectory(uploadsPath);
+        Directory.CreateDirectory(
+            uploadsPath);
 
         var extension =
-            Path.GetExtension(file.FileName)
+            Path.GetExtension(
+                file.FileName)
                 .ToLowerInvariant();
 
         var fileName =
@@ -666,30 +724,40 @@ public class BookService : IBookService
                 filePath,
                 FileMode.CreateNew);
 
-        await file.CopyToAsync(stream);
+        await file.CopyToAsync(
+            stream);
 
         return $"/uploads/books/{fileName}";
     }
 
-    // ======================================================
-    // DELETE COVER IMAGE
-    // ======================================================
+    // ============================================================
+    // ELIMINAR PORTADA
+    // ============================================================
 
     private void DeleteCoverImage(
         string? coverImage)
     {
-        if (string.IsNullOrWhiteSpace(coverImage))
+        if (string.IsNullOrWhiteSpace(
+                coverImage))
         {
             return;
         }
 
         var fileName =
-            Path.GetFileName(coverImage);
+            Path.GetFileName(
+                coverImage);
+
+        if (string.IsNullOrWhiteSpace(
+                fileName))
+        {
+            return;
+        }
 
         var webRootPath =
             _environment.WebRootPath;
 
-        if (string.IsNullOrWhiteSpace(webRootPath))
+        if (string.IsNullOrWhiteSpace(
+                webRootPath))
         {
             webRootPath =
                 Path.Combine(
@@ -704,44 +772,77 @@ public class BookService : IBookService
                 "books",
                 fileName);
 
-        if (File.Exists(filePath))
+        if (File.Exists(
+                filePath))
         {
-            File.Delete(filePath);
+            File.Delete(
+                filePath);
         }
     }
 
-    // ======================================================
-    // MAP ENTITY -> DTO
-    // ======================================================
+    // ============================================================
+    // MAPEAR A DTO
+    // ============================================================
 
     private async Task<BookDto> MapToDtoAsync(
         Book book)
     {
         var authorIds =
             await _bookRepository
-                .GetAuthorIdsAsync(book.Id);
+                .GetAuthorIdsAsync(
+                    book.Id);
 
         var categoryIds =
             await _bookRepository
-                .GetCategoryIdsAsync(book.Id);
+                .GetCategoryIdsAsync(
+                    book.Id);
 
         return new BookDto
         {
-            Id = book.Id,
-            Title = book.Title,
-            EditionNumber = book.EditionNumber,
-            ISBN = book.ISBN,
-            PublicationYear = book.PublicationYear,
-            Publisher = book.Publisher,
-            PageCount = book.PageCount,
-            Description = book.Description,
-            CoverImage = book.CoverImage,
-            IsActive = book.IsActive,
-            CreatedAt = book.CreatedAt,
-            UpdatedAt = book.UpdatedAt,
-            UserId = book.UserId,
-            AuthorIds = authorIds.ToList(),
-            CategoryIds = categoryIds.ToList()
+            Id =
+                book.Id,
+
+            Title =
+                book.Title,
+
+            EditionNumber =
+                book.EditionNumber,
+
+            ISBN =
+                book.ISBN,
+
+            PublicationYear =
+                book.PublicationYear,
+
+            Publisher =
+                book.Publisher,
+
+            PageCount =
+                book.PageCount,
+
+            Description =
+                book.Description,
+
+            CoverImage =
+                book.CoverImage,
+
+            IsActive =
+                book.IsActive,
+
+            CreatedAt =
+                book.CreatedAt,
+
+            UpdatedAt =
+                book.UpdatedAt,
+
+            UserId =
+                book.UserId,
+
+            AuthorIds =
+                authorIds.ToList(),
+
+            CategoryIds =
+                categoryIds.ToList()
         };
     }
 }

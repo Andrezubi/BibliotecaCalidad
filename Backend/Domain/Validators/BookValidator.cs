@@ -63,43 +63,118 @@ public static class BookValidator
             "Description",
             () => ValidateDescription(book.Description));
 
-        // ============================================================
-        // AUTORES
-        // ============================================================
-
-        AddValidation(
-            errors,
-            "AuthorIds",
-            () => ValidateAuthors(book));
-
-        // ============================================================
-        // CATEGORÍAS
-        // ============================================================
-
-        AddValidation(
-            errors,
-            "CategoryIds",
-            () => ValidateCategories(book));
-
-        // ============================================================
-        // PORTADA
-        // ============================================================
-
         AddValidation(
             errors,
             "CoverImage",
-            () => ValidateCover(book.CoverImage));
+            () => ValidateCoverPath(book.CoverImage));
 
         // ============================================================
         // RESULTADO
         // ============================================================
 
-        if (errors.Count > 0)
+        ThrowIfHasErrors(errors);
+    }
+
+    // ============================================================
+    // VALIDACIÓN DE AUTORES
+    // ============================================================
+
+    public static void ValidateAuthorIds(
+        IEnumerable<int>? authorIds)
+    {
+        var errors = new Dictionary<string, List<string>>();
+
+        AddValidation(
+            errors,
+            "AuthorIds",
+            () =>
+            {
+                if (authorIds == null)
+                {
+                    throw new ArgumentException(
+                        "Debe seleccionar al menos un autor.");
+                }
+
+                var ids = authorIds
+                    .Where(id => id > 0)
+                    .ToList();
+
+                if (!ids.Any())
+                {
+                    throw new ArgumentException(
+                        "Debe seleccionar al menos un autor.");
+                }
+
+                if (ids.Count != ids.Distinct().Count())
+                {
+                    throw new ArgumentException(
+                        "No se puede seleccionar el mismo autor más de una vez.");
+                }
+            });
+
+        ThrowIfHasErrors(errors);
+    }
+
+    // ============================================================
+    // VALIDACIÓN DE CATEGORÍAS
+    // ============================================================
+
+    public static void ValidateCategoryIds(
+        IEnumerable<int>? categoryIds)
+    {
+        var errors = new Dictionary<string, List<string>>();
+
+        AddValidation(
+            errors,
+            "CategoryIds",
+            () =>
+            {
+                if (categoryIds == null)
+                {
+                    throw new ArgumentException(
+                        "Debe seleccionar al menos una categoría.");
+                }
+
+                var ids = categoryIds
+                    .Where(id => id > 0)
+                    .ToList();
+
+                if (!ids.Any())
+                {
+                    throw new ArgumentException(
+                        "Debe seleccionar al menos una categoría.");
+                }
+
+                if (ids.Count != ids.Distinct().Count())
+                {
+                    throw new ArgumentException(
+                        "No se puede seleccionar la misma categoría más de una vez.");
+                }
+            });
+
+        ThrowIfHasErrors(errors);
+    }
+
+    // ============================================================
+    // VALIDACIÓN DE PORTADA
+    // ============================================================
+
+    public static void ValidateCoverPath(
+        string? coverImage)
+    {
+        if (string.IsNullOrWhiteSpace(coverImage))
         {
-            throw new BookValidationException(
-                errors.ToDictionary(
-                    x => x.Key,
-                    x => x.Value.ToArray()));
+            return;
+        }
+
+        var extension =
+            Path.GetExtension(coverImage)
+                .ToLowerInvariant();
+
+        if (!AllowedCoverExtensions.Contains(extension))
+        {
+            throw new ArgumentException(
+                "La portada debe estar en formato JPG, JPEG, PNG o WEBP.");
         }
     }
 
@@ -107,7 +182,8 @@ public static class BookValidator
     // TÍTULO
     // ============================================================
 
-    private static void ValidateTitle(string title)
+    private static void ValidateTitle(
+        string title)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -115,7 +191,8 @@ public static class BookValidator
                 "El título es obligatorio.");
         }
 
-        var normalizedTitle = NormalizeSpaces(title);
+        var normalizedTitle =
+            NormalizeSpaces(title);
 
         if (normalizedTitle.Length > 50)
         {
@@ -143,7 +220,8 @@ public static class BookValidator
     // NÚMERO DE EDICIÓN
     // ============================================================
 
-    private static void ValidateEditionNumber(int? editionNumber)
+    private static void ValidateEditionNumber(
+        int? editionNumber)
     {
         if (!editionNumber.HasValue)
         {
@@ -162,7 +240,8 @@ public static class BookValidator
     // ISBN
     // ============================================================
 
-    private static void ValidateISBN(string? isbn)
+    private static void ValidateISBN(
+        string? isbn)
     {
         if (string.IsNullOrWhiteSpace(isbn))
         {
@@ -170,9 +249,13 @@ public static class BookValidator
                 "El ISBN es obligatorio.");
         }
 
-        var trimmedIsbn = isbn.Trim();
+        var trimmedIsbn =
+            isbn.Trim();
 
-        if (trimmedIsbn != isbn)
+        if (!string.Equals(
+                trimmedIsbn,
+                isbn,
+                StringComparison.Ordinal))
         {
             throw new ArgumentException(
                 "El ISBN no debe contener espacios al inicio o al final.");
@@ -186,10 +269,11 @@ public static class BookValidator
                 "El ISBN contiene caracteres no válidos.");
         }
 
-        var cleanIsbn = Regex.Replace(
-            trimmedIsbn,
-            @"[\s-]",
-            "");
+        var cleanIsbn =
+            Regex.Replace(
+                trimmedIsbn,
+                @"[\s-]",
+                "");
 
         if (cleanIsbn.Length != 13)
         {
@@ -200,7 +284,8 @@ public static class BookValidator
         ValidateISBN13(cleanIsbn);
     }
 
-    private static void ValidateISBN13(string isbn)
+    private static void ValidateISBN13(
+        string isbn)
     {
         if (!isbn.All(char.IsDigit))
         {
@@ -320,90 +405,7 @@ public static class BookValidator
     }
 
     // ============================================================
-    // AUTORES
-    // ============================================================
-
-    private static void ValidateAuthors(Book book)
-    {
-        if (book.Bookauthors == null ||
-            !book.Bookauthors.Any())
-        {
-            throw new ArgumentException(
-                "Debe seleccionar al menos un autor.");
-        }
-
-        var authorIds = book.Bookauthors
-            .Select(x => x.AuthorId)
-            .ToList();
-
-        if (authorIds.Any(id => id <= 0))
-        {
-            throw new ArgumentException(
-                "Uno o más autores seleccionados no son válidos.");
-        }
-
-        if (authorIds.Count != authorIds.Distinct().Count())
-        {
-            throw new ArgumentException(
-                "No se puede seleccionar el mismo autor más de una vez.");
-        }
-    }
-
-    // ============================================================
-    // CATEGORÍAS
-    // ============================================================
-
-    private static void ValidateCategories(Book book)
-    {
-        if (book.Bookcategories == null ||
-            !book.Bookcategories.Any())
-        {
-            throw new ArgumentException(
-                "Debe seleccionar al menos una categoría.");
-        }
-
-        var categoryIds = book.Bookcategories
-            .Select(x => x.CategoryId)
-            .ToList();
-
-        if (categoryIds.Any(id => id <= 0))
-        {
-            throw new ArgumentException(
-                "Una o más categorías seleccionadas no son válidas.");
-        }
-
-        if (categoryIds.Count != categoryIds.Distinct().Count())
-        {
-            throw new ArgumentException(
-                "No se puede seleccionar la misma categoría más de una vez.");
-        }
-    }
-
-    // ============================================================
-    // PORTADA
-    // ============================================================
-
-    private static void ValidateCover(string? coverImage)
-    {
-        // La portada es opcional.
-        if (string.IsNullOrWhiteSpace(coverImage))
-        {
-            return;
-        }
-
-        var extension =
-            Path.GetExtension(coverImage)
-                .ToLowerInvariant();
-
-        if (!AllowedCoverExtensions.Contains(extension))
-        {
-            throw new ArgumentException(
-                "La portada debe estar en formato JPG, JPEG, PNG o WEBP.");
-        }
-    }
-
-    // ============================================================
-    // UTILIDADES
+    // ERRORES
     // ============================================================
 
     private static void AddValidation(
@@ -419,12 +421,31 @@ public static class BookValidator
         {
             if (!errors.ContainsKey(property))
             {
-                errors[property] = new List<string>();
+                errors[property] =
+                    new List<string>();
             }
 
             errors[property].Add(ex.Message);
         }
     }
+
+    private static void ThrowIfHasErrors(
+        Dictionary<string, List<string>> errors)
+    {
+        if (errors.Count == 0)
+        {
+            return;
+        }
+
+        throw new BookValidationException(
+            errors.ToDictionary(
+                x => x.Key,
+                x => x.Value.ToArray()));
+    }
+
+    // ============================================================
+    // UTILIDADES
+    // ============================================================
 
     private static string NormalizeSpaces(
         string value)
