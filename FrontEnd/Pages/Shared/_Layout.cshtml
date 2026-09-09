@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using FrontEnd.Services
+@inject AuthSessionService AuthSession
+
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -40,119 +43,119 @@
 
 <body>
 
+    @if (AuthSession.IsAuthenticated)
+        {
+            <!-- =========================================
+            NAVBAR USUARIO AUTENTICADO
+            ========================================== -->
 
-    @if (Context.Session.GetString("AuthToken") != null)
-    {
-        <!-- =========================================
-             NAVBAR USUARIO AUTENTICADO
-        ========================================== -->
+            <header>
 
-        <header>
+                <nav class="navbar navbar-expand-lg main-navbar">
 
-            <nav class="navbar navbar-expand-lg main-navbar">
+                    <div class="container">
 
-                <div class="container">
+                        <!-- LOGO -->
+                        <a class="navbar-brand"
+                        asp-area=""
+                        asp-page="/Index">
 
-                    <!-- LOGO -->
-                    <a class="navbar-brand"
-                       asp-area=""
-                       asp-page="/Index">
+                            <div class="brand-icon">
+                                <i class="bi bi-book"></i>
+                            </div>
 
-                        <div class="brand-icon">
-                            <i class="bi bi-book"></i>
-                        </div>
+                            <div class="brand-text">
 
-                        <div class="brand-text">
+                                <strong>
+                                    Biblioteca<span>Virtual</span>
+                                </strong>
 
-                            <strong>
-                                Biblioteca<span>Virtual</span>
-                            </strong>
+                                <small>
+                                    Tu biblioteca, siempre contigo
+                                </small>
 
-                            <small>
-                                Tu biblioteca, siempre contigo
-                            </small>
+                            </div>
 
-                        </div>
-
-                    </a>
-
-
-                    <!-- BOTÓN MOBILE -->
-
-                    <button class="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#mainNavbar"
-                            aria-controls="mainNavbar"
-                            aria-expanded="false"
-                            aria-label="Abrir navegación">
-
-                        <span class="navbar-toggler-icon"></span>
-
-                    </button>
+                        </a>
 
 
-                    <!-- NAVIGATION -->
+                        <!-- BOTÓN MOBILE -->
 
-                    <div class="collapse navbar-collapse"
-                         id="mainNavbar">
+                        <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Abrir navegación">
 
+                            <span class="navbar-toggler-icon"></span>
 
-                        <ul class="navbar-nav mx-auto">
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Index">
-
-                                    Inicio
-
-                                </a>
-
-                            </li>
+                        </button>
 
 
-                            <li class="nav-item">
+                        <!-- NAVIGATION -->
 
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Books/Index">
-
-                                    Libros
-
-                                </a>
-
-                            </li>
+                        <div class="collapse navbar-collapse"
+                        id="mainNavbar">
 
 
-                            <li class="nav-item">
+                            <ul class="navbar-nav mx-auto">
 
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Categories/Index">
+                                <li class="nav-item">
 
-                                    Categorías
+                                    <a class="nav-link"
+                                    asp-area=""
+                                    asp-page="/Index">
 
-                                </a>
+                                        Inicio
 
-                            </li>
+                                    </a>
 
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Authors/Index">
-
-                                    Autores
-
-                                </a>
-
-                            </li>
+                                </li>
 
 
-                            <li class="nav-item">
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                    asp-area=""
+                                    asp-page="/Books/Index">
+
+                                        Libros
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                    asp-area=""
+                                    asp-page="/Categories/Index">
+
+                                        Categorías
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                    asp-area=""
+                                    asp-page="/Authors/Index">
+
+                                        Autores
+
+                                    </a>
+
+                                </li>
+
+                                @if (AuthSession.HasAnyRole("Admin", "Librarian"))
+                                {
+                                <li class="nav-item">
 
                                 <a class="nav-link"
                                    asp-area=""
@@ -162,7 +165,9 @@
 
                                 </a>
 
-                            </li>
+                                </li>
+                            }
+                            
 
                         </ul>
 
@@ -260,56 +265,7 @@
 
                         <ul class="navbar-nav mx-auto">
 
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Index">
-
-                                    Inicio
-
-                                </a>
-
-                            </li>
-
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Books/Index">
-
-                                    Libros
-
-                                </a>
-
-                            </li>
-
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Categories/Index">
-
-                                    Categorías
-
-                                </a>
-
-                            </li>
-
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-page="/Authors/Index">
-
-                                    Autores
-
-                                </a>
-
-                            </li>
+                            
 
                         </ul>
 

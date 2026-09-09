@@ -1,4 +1,6 @@
 ﻿using Backend.Application.DTOs;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Backend.Application.Interfaces;
 
@@ -13,13 +15,10 @@ public interface IBookService
     Task<BookDto?> UpdateAsync(int id, UpdateBookDto dto);
 
     Task<bool> DeleteAsync(int id);
+
     Task<IEnumerable<BookDto>> GetAvailableAsync();
+
     Task<string?> AddCopyAsync(int bookId, string internalCode);
 
-    Task<IEnumerable<BookDto>> SearchAsync(
-            string? title = null,
-            string? author = null,
-            string? category = null,
-            string? isbn = null,
-            string? publisher = null);
+    Task<IEnumerable<BookDto>> SearchAsync(string? phrase = null);
 }

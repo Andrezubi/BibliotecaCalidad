@@ -36,65 +36,57 @@ public class BookRepository : BaseRepository<Book>, IBookRepository
 
         await UpdateAsync(book);
     }
-    public async Task<IEnumerable<Book>> SearchAsync(
-        string? title = null,
-        string? author = null,
-        string? category = null,
-        string? isbn = null,
-        string? publisher = null)
+    public async Task<IEnumerable<Book>> SearchAsync(string search)
     {
-        var query = _dbSet
+        if (string.IsNullOrWhiteSpace(search))
+        {
+            return await GetAllAsync();
+        }
+
+        search = search.Trim();
+
+        return await _dbSet
             .AsNoTracking()
-            .Where(book => book.IsActive);
+            .Where(book =>
+                book.IsActive &&
+                (
+                    EF.Functions.Like(book.Title, $"%{search}%") ||
 
-        if (!string.IsNullOrWhiteSpace(title))
-        {
-            query = query.Where(book =>
-                EF.Functions.Like(book.Title, $"%{title}%"));
-        }
+                    (book.ISBN != null &&
+                     EF.Functions.Like(book.ISBN, $"%{search}%")) ||
 
-        if (!string.IsNullOrWhiteSpace(isbn))
-        {
-            query = query.Where(book =>
-                book.ISBN != null &&
-                EF.Functions.Like(book.ISBN, $"%{isbn}%"));
-        }
+                    (book.Description != null &&
+                     EF.Functions.Like(book.Description, $"%{search}%")) ||
 
-        if (!string.IsNullOrWhiteSpace(publisher))
-        {
-            query = query.Where(book =>
-                book.Publisher != null &&
-                EF.Functions.Like(book.Publisher, $"%{publisher}%"));
-        }
+                    (book.Publisher != null &&
+                     EF.Functions.Like(book.Publisher, $"%{search}%")) ||
 
-        if (!string.IsNullOrWhiteSpace(author))
-        {
-            query = query.Where(book =>
-                
-                book.Bookauthors.Any(ba =>
-                    ba.IsActive &&
-                    ba.Author.IsActive &&
-                    (
-                        EF.Functions.Like(ba.Author.FirstName, $"%{author}%") ||
-                        EF.Functions.Like(ba.Author.LastName, $"%{author}%") ||
+                    book.Bookauthors.Any(ba =>
+                        ba.IsActive &&
+                        ba.Author.IsActive &&
+                        (
+                            EF.Functions.Like(
+                                ba.Author.FirstName,
+                                $"%{search}%"
+                            ) ||
+
+                            EF.Functions.Like(
+                                ba.Author.LastName,
+                                $"%{search}%"
+                            )
+                        )
+                    ) ||
+
+                    book.Bookcategories.Any(bc =>
+                        bc.IsActive &&
+                        bc.Category.IsActive &&
                         EF.Functions.Like(
-                            ba.Author.FirstName + " " + ba.Author.LastName,
-                            $"%{author}%")
-                    )));
-        }
-
-        if (!string.IsNullOrWhiteSpace(category))
-        {
-            query = query.Where(book =>
-                book.Bookcategories.Any(bc =>
-                    bc.IsActive &&
-                    bc.Category.IsActive &&
-                    EF.Functions.Like(
-                        bc.Category.Name,
-                        $"%{category}%")));
-        }
-
-        return await query
+                            bc.Category.Name,
+                            $"%{search}%"
+                        )
+                    )
+                )
+            )
             .OrderBy(book => book.Title)
             .ToListAsync();
     }

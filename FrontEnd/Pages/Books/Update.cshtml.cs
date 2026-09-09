@@ -1,11 +1,12 @@
 using FrontEnd.DTOs;
+using FrontEnd.Pages.Shared;
 using FrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FrontEnd.Pages.Books;
 
-public class UpdateModel : PageModel
+public class UpdateModel : AuthorizedPageModel
 {
     private readonly BookService _bookService;
 
@@ -24,6 +25,10 @@ public class UpdateModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
+        if (!IsInAnyRole("Admin", "Librarian"))
+        {
+            return RedirectToPage("/AccessDenied");
+        }
         var book =
             await _bookService.GetByIdAsync(Id);
 
@@ -52,6 +57,10 @@ public class UpdateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!IsInAnyRole("Admin", "Librarian"))
+        {
+            return RedirectToPage("/AccessDenied");
+        }
         if (!ModelState.IsValid)
         {
             await LoadCurrentCoverImageAsync();

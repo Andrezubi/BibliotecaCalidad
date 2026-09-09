@@ -2,6 +2,8 @@
 using Backend.Application.Interfaces;
 using Backend.Domain.Validators;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Backend.Presentation.Controllers;
 
@@ -164,19 +166,10 @@ public class BookController : ControllerBase
 
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<BookDto>>> Search(
-        [FromQuery] string? title = null,
-        [FromQuery] string? author = null,
-        [FromQuery] string? category = null,
-        [FromQuery] string? isbn = null,
-        [FromQuery] string? publisher = null)
+        [FromQuery] string? phrase = null)
     {
         var books =
-            await _bookService.SearchAsync(
-                title,
-                author,
-                category,
-                isbn,
-                publisher);
+            await _bookService.SearchAsync(phrase);
 
         return Ok(books);
     }
@@ -187,6 +180,7 @@ public class BookController : ControllerBase
         var books = await _bookService.GetAvailableAsync();
         return Ok(books);
     }
+
     public record AddCopyRequest(string InternalCode);
 
     [HttpPost("{id}/copies")]
