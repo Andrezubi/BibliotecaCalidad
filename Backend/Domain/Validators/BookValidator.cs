@@ -7,6 +7,14 @@ public static class BookValidator
 {
     private const int CurrentYear = 2026;
 
+    private static readonly string[] AllowedCoverExtensions =
+    {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    };
+
     public static void Validate(Book book)
     {
         if (book is null)
@@ -15,6 +23,10 @@ public static class BookValidator
         }
 
         var errors = new Dictionary<string, List<string>>();
+
+        // ============================================================
+        // DATOS DEL LIBRO
+        // ============================================================
 
         AddValidation(
             errors,
@@ -51,6 +63,37 @@ public static class BookValidator
             "Description",
             () => ValidateDescription(book.Description));
 
+        // ============================================================
+        // AUTORES
+        // ============================================================
+
+        AddValidation(
+            errors,
+            "AuthorIds",
+            () => ValidateAuthors(book));
+
+        // ============================================================
+        // CATEGORÍAS
+        // ============================================================
+
+        AddValidation(
+            errors,
+            "CategoryIds",
+            () => ValidateCategories(book));
+
+        // ============================================================
+        // PORTADA
+        // ============================================================
+
+        AddValidation(
+            errors,
+            "CoverImage",
+            () => ValidateCover(book.CoverImage));
+
+        // ============================================================
+        // RESULTADO
+        // ============================================================
+
         if (errors.Count > 0)
         {
             throw new BookValidationException(
@@ -59,7 +102,6 @@ public static class BookValidator
                     x => x.Value.ToArray()));
         }
     }
-
 
     // ============================================================
     // TÍTULO
@@ -97,7 +139,6 @@ public static class BookValidator
         }
     }
 
-
     // ============================================================
     // NÚMERO DE EDICIÓN
     // ============================================================
@@ -116,7 +157,6 @@ public static class BookValidator
                 "El número de edición debe ser mayor a 0.");
         }
     }
-
 
     // ============================================================
     // ISBN
@@ -151,14 +191,13 @@ public static class BookValidator
             @"[\s-]",
             "");
 
-        if (cleanIsbn.Length == 13)
+        if (cleanIsbn.Length != 13)
         {
-            ValidateISBN13(cleanIsbn);
-            return;
+            throw new ArgumentException(
+                "El ISBN debe contener 13 dígitos.");
         }
 
-        throw new ArgumentException(
-            "El ISBN debe contener 13 dígitos.");
+        ValidateISBN13(cleanIsbn);
     }
 
     private static void ValidateISBN13(string isbn)
@@ -169,7 +208,6 @@ public static class BookValidator
                 "El ISBN-13 debe contener únicamente 13 dígitos.");
         }
     }
-
 
     // ============================================================
     // AÑO DE PUBLICACIÓN
@@ -191,7 +229,6 @@ public static class BookValidator
                 $"El año de publicación debe estar entre 1000 y {CurrentYear}.");
         }
     }
-
 
     // ============================================================
     // EDITORIAL
@@ -231,7 +268,6 @@ public static class BookValidator
         }
     }
 
-
     // ============================================================
     // CANTIDAD DE PÁGINAS
     // ============================================================
@@ -251,7 +287,6 @@ public static class BookValidator
                 "La cantidad de páginas debe ser mayor a 0.");
         }
     }
-
 
     // ============================================================
     // DESCRIPCIÓN
@@ -284,6 +319,88 @@ public static class BookValidator
         }
     }
 
+    // ============================================================
+    // AUTORES
+    // ============================================================
+
+    private static void ValidateAuthors(Book book)
+    {
+        if (book.Bookauthors == null ||
+            !book.Bookauthors.Any())
+        {
+            throw new ArgumentException(
+                "Debe seleccionar al menos un autor.");
+        }
+
+        var authorIds = book.Bookauthors
+            .Select(x => x.AuthorId)
+            .ToList();
+
+        if (authorIds.Any(id => id <= 0))
+        {
+            throw new ArgumentException(
+                "Uno o más autores seleccionados no son válidos.");
+        }
+
+        if (authorIds.Count != authorIds.Distinct().Count())
+        {
+            throw new ArgumentException(
+                "No se puede seleccionar el mismo autor más de una vez.");
+        }
+    }
+
+    // ============================================================
+    // CATEGORÍAS
+    // ============================================================
+
+    private static void ValidateCategories(Book book)
+    {
+        if (book.Bookcategories == null ||
+            !book.Bookcategories.Any())
+        {
+            throw new ArgumentException(
+                "Debe seleccionar al menos una categoría.");
+        }
+
+        var categoryIds = book.Bookcategories
+            .Select(x => x.CategoryId)
+            .ToList();
+
+        if (categoryIds.Any(id => id <= 0))
+        {
+            throw new ArgumentException(
+                "Una o más categorías seleccionadas no son válidas.");
+        }
+
+        if (categoryIds.Count != categoryIds.Distinct().Count())
+        {
+            throw new ArgumentException(
+                "No se puede seleccionar la misma categoría más de una vez.");
+        }
+    }
+
+    // ============================================================
+    // PORTADA
+    // ============================================================
+
+    private static void ValidateCover(string? coverImage)
+    {
+        // La portada es opcional.
+        if (string.IsNullOrWhiteSpace(coverImage))
+        {
+            return;
+        }
+
+        var extension =
+            Path.GetExtension(coverImage)
+                .ToLowerInvariant();
+
+        if (!AllowedCoverExtensions.Contains(extension))
+        {
+            throw new ArgumentException(
+                "La portada debe estar en formato JPG, JPEG, PNG o WEBP.");
+        }
+    }
 
     // ============================================================
     // UTILIDADES
@@ -309,7 +426,6 @@ public static class BookValidator
         }
     }
 
-
     private static string NormalizeSpaces(
         string value)
     {
@@ -318,7 +434,6 @@ public static class BookValidator
             @"\s+",
             " ");
     }
-
 
     private static bool ContainsValidText(
         string value)
