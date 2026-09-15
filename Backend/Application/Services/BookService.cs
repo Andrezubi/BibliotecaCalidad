@@ -170,96 +170,39 @@ public class BookService : IBookService
     // ============================================================
 
     public async Task<BookDto?> UpdateAsync(
-        int id,
-        UpdateBookDto dto)
+    int id,
+    UpdateBookDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
-        var book =
-            await _bookRepository
-                .GetByIdAsync(id);
+        var book = await _bookRepository.GetByIdAsync(id);
 
-        if (book == null ||
-            !book.IsActive)
-        {
+        if (book == null || !book.IsActive)
             return null;
-        }
 
-        var authorIds =
-            NormalizeIds(dto.AuthorIds);
+        var authorIds = NormalizeIds(dto.AuthorIds);
+        var categoryIds = NormalizeIds(dto.CategoryIds);
 
-        var categoryIds =
-            NormalizeIds(dto.CategoryIds);
+        await ValidateAuthorsAsync(authorIds);
+        await ValidateCategoriesAsync(categoryIds);
 
-        await ValidateAuthorsAsync(
-            authorIds);
-
-        await ValidateCategoriesAsync(
-            categoryIds);
-
-        ValidateCoverFile(
-            dto.CoverImage);
+        ValidateCoverFile(dto.CoverImage);
 
         await ValidateUpdateIsbnAsync(
             dto.ISBN,
             book.ISBN);
 
-        var oldCover =
-            book.CoverImage;
+        var oldCover = book.CoverImage;
 
-        UpdateBookEntity(
-            book,
-            dto);
+        UpdateBookEntity(book, dto);
 
         BookValidator.Validate(book);
 
-        string? newCoverPath = null;
-
-        await using var transaction =
-            await _context.Database
-                .BeginTransactionAsync();
-
-        try
-        {
-            newCoverPath =
-                await SaveCoverAsync(
-                    dto.CoverImage);
-
-            if (!string.IsNullOrWhiteSpace(
-                    newCoverPath))
-            {
-                book.CoverImage =
-                    newCoverPath;
-
-                BookValidator.Validate(book);
-            }
-
-            await _bookRepository
-                .UpdateAsync(book);
-
-            await _bookRepository
-                .UpdateAuthorsAsync(
-                    id,
-                    authorIds,
-                    dto.UserId);
-
-            await _bookRepository
-                .UpdateCategoriesAsync(
-                    id,
-                    categoryIds,
-                    dto.UserId);
-
-            await transaction.CommitAsync();
-        }
-        catch
-        {
-            await transaction.RollbackAsync();
-
-            DeleteCoverImage(
-                newCoverPath);
-
-            throw;
-        }
+        var newCoverPath = await UpdateBookTransactionAsync(
+            book,
+            dto,
+            authorIds,
+            categoryIds);
 
         DeleteCoverImage(
             oldCover,
@@ -267,6 +210,62 @@ public class BookService : IBookService
 
         return await MapToDtoAsync(book);
     }
+
+
+
+
+
+
+
+    private async Task<string?> UpdateBookTransactionAsync(
+    Book book,
+    UpdateBookDto dto,
+    IEnumerable<int> authorIds,
+    IEnumerable<int> categoryIds)
+    {
+        string? newCoverPath = null;
+
+        await using var transaction =
+            await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            newCoverPath = await SaveCoverAsync(
+                dto.CoverImage);
+
+            if (!string.IsNullOrWhiteSpace(newCoverPath))
+            {
+                book.CoverImage = newCoverPath;
+
+                BookValidator.Validate(book);
+            }
+
+            await _bookRepository.UpdateAsync(book);
+
+            await _bookRepository.UpdateAuthorsAsync(
+                book.Id,
+                authorIds.ToList(),
+                dto.UserId);
+
+            await _bookRepository.UpdateCategoriesAsync(
+                book.Id,
+                categoryIds.ToList(),
+                dto.UserId);
+
+            await transaction.CommitAsync();
+
+            return newCoverPath;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+
+            DeleteCoverImage(newCoverPath);
+
+            throw;
+        }
+    }
+
 
     // ============================================================
     // ELIMINACIÓN LÓGICA
