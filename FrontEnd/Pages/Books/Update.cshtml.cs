@@ -107,173 +107,40 @@ public class UpdateModel : AuthorizedPageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        // =================================================
-        // LIMPIAR IDS
-        // =================================================
-
-        Book.AuthorIds =
-            Book.AuthorIds?
-                .Where(id => id > 0)
-                .Distinct()
-                .ToList()
-            ?? new List<int>();
-
-        Book.CategoryIds =
-            Book.CategoryIds?
-                .Where(id => id > 0)
-                .Distinct()
-                .ToList()
-            ?? new List<int>();
-
-        // =================================================
-        // VALIDAR PORTADA
-        // =================================================
+        NormalizeSelectedIds();
 
         ValidateCover();
-
-        // =================================================
-        // VALIDACIÓN
-        // =================================================
 
         if (!IsInAnyRole("Admin", "Librarian"))
         {
             return RedirectToPage("/AccessDenied");
         }
+
         if (!ModelState.IsValid)
         {
-            await LoadCurrentDataAsync();
-            return Page();
+            return await ReloadPageAsync();
         }
 
-        // =================================================
-        // CREAR AUTORES NUEVOS
-        // =================================================
-
-        if (Book.NewAuthors != null &&
-            Book.NewAuthors.Count > 0)
+        if (!await CreateNewAuthorsAsync())
         {
-            foreach (var newAuthor in Book.NewAuthors)
-            {
-                if (string.IsNullOrWhiteSpace(
-                        newAuthor.FirstName) &&
-                    string.IsNullOrWhiteSpace(
-                        newAuthor.LastName))
-                {
-                    continue;
-                }
-
-                if (string.IsNullOrWhiteSpace(
-                        newAuthor.FirstName))
-                {
-                    ModelState.AddModelError(
-                        string.Empty,
-                        "El nombre del nuevo autor es obligatorio.");
-
-                    await LoadCurrentDataAsync();
-                    return Page();
-                }
-
-                if (string.IsNullOrWhiteSpace(
-                        newAuthor.LastName))
-                {
-                    ModelState.AddModelError(
-                        string.Empty,
-                        "El apellido del nuevo autor es obligatorio.");
-
-                    await LoadCurrentDataAsync();
-                    return Page();
-                }
-
-                var result =
-                    await _bookService.CreateAuthorAsync(
-                        newAuthor);
-
-                if (!result.Success ||
-                    result.Id == null)
-                {
-                    ModelState.AddModelError(
-                        string.Empty,
-                        result.Error ??
-                        "No se pudo crear el autor.");
-
-                    await LoadCurrentDataAsync();
-                    return Page();
-                }
-
-                Book.AuthorIds.Add(
-                    result.Id.Value);
-            }
+            return await ReloadPageAsync();
         }
 
-        // =================================================
-        // CREAR CATEGORÍAS NUEVAS
-        // =================================================
-
-        if (Book.NewCategories != null &&
-            Book.NewCategories.Count > 0)
+        if (!await CreateNewCategoriesAsync())
         {
-            foreach (var newCategory in Book.NewCategories)
-            {
-                if (string.IsNullOrWhiteSpace(
-                        newCategory.Name))
-                {
-                    continue;
-                }
-
-                var result =
-                    await _bookService.CreateCategoryAsync(
-                        newCategory);
-
-                if (!result.Success ||
-                    result.Id == null)
-                {
-                    ModelState.AddModelError(
-                        string.Empty,
-                        result.Error ??
-                        "No se pudo crear la categoría.");
-
-                    await LoadCurrentDataAsync();
-                    return Page();
-                }
-
-                Book.CategoryIds.Add(
-                    result.Id.Value);
-            }
+            return await ReloadPageAsync();
         }
 
-        // =================================================
-        // LIMPIAR DUPLICADOS
-        // =================================================
+        NormalizeSelectedIds();
 
-        Book.AuthorIds =
-            Book.AuthorIds
-                .Where(id => id > 0)
-                .Distinct()
-                .ToList();
-
-        Book.CategoryIds =
-            Book.CategoryIds
-                .Where(id => id > 0)
-                .Distinct()
-                .ToList();
-
-        // =================================================
-        // ACTUALIZAR
-        // =================================================
-
-        var resultBook =
-            await _bookService.UpdateAsync(
-                Id,
-                Book);
+        var resultBook = await _bookService.UpdateAsync(
+            Id,
+            Book);
 
         if (!resultBook.Success)
         {
-            AddErrorsToModelState(
-                resultBook.Errors);
-
-            await LoadCurrentDataAsync();
-
-            return Page();
+            AddErrorsToModelState(resultBook.Errors);
+            return await ReloadPageAsync();
         }
 
         TempData["Success"] =
@@ -281,6 +148,119 @@ public class UpdateModel : AuthorizedPageModel
 
         return RedirectToPage("Index");
     }
+
+    private void NormalizeSelectedIds()
+    {
+        Book.AuthorIds = NormalizeIds(Book.AuthorIds);
+        Book.CategoryIds = NormalizeIds(Book.CategoryIds);
+    }
+
+    private static List<int> NormalizeIds(
+        IEnumerable<int>? ids)
+    {
+        return ids?
+            .Where(id => id > 0)
+            .Distinct()
+            .ToList()
+            ?? new List<int>();
+    }
+
+    private async Task<bool> CreateNewAuthorsAsync()
+    {
+        if (Book.NewAuthors == null ||
+            Book.NewAuthors.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (var newAuthor in Book.NewAuthors)
+        {
+            if (string.IsNullOrWhiteSpace(newAuthor.FirstName) &&
+                string.IsNullOrWhiteSpace(newAuthor.LastName))
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(newAuthor.FirstName))
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    "El nombre del nuevo autor es obligatorio.");
+
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(newAuthor.LastName))
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    "El apellido del nuevo autor es obligatorio.");
+
+                return false;
+            }
+
+            var result =
+                await _bookService.CreateAuthorAsync(newAuthor);
+
+            if (!result.Success ||
+                result.Id == null)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    result.Error ??
+                    "No se pudo crear el autor.");
+
+                return false;
+            }
+
+            Book.AuthorIds.Add(result.Id.Value);
+        }
+
+        return true;
+    }
+
+    private async Task<bool> CreateNewCategoriesAsync()
+    {
+        if (Book.NewCategories == null ||
+            Book.NewCategories.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (var newCategory in Book.NewCategories)
+        {
+            if (string.IsNullOrWhiteSpace(newCategory.Name))
+            {
+                continue;
+            }
+
+            var result =
+                await _bookService.CreateCategoryAsync(
+                    newCategory);
+
+            if (!result.Success ||
+                result.Id == null)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    result.Error ??
+                    "No se pudo crear la categoría.");
+
+                return false;
+            }
+
+            Book.CategoryIds.Add(result.Id.Value);
+        }
+
+        return true;
+    }
+
+    private async Task<IActionResult> ReloadPageAsync()
+    {
+        await LoadCurrentDataAsync();
+        return Page();
+    }
+
 
     // =====================================================
     // VALIDAR PORTADA
