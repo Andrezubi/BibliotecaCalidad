@@ -29,9 +29,4 @@ public class CreateBookDto
     // Existing categories
     public List<int> CategoryIds { get; set; } = new();
 
-    // Authors created while creating the book
-    public List<CreateAuthorDto> NewAuthors { get; set; } = new();
-
-    // Categories created while creating the book
-    public List<CreateCategoryDto> NewCategories { get; set; } = new();
 }

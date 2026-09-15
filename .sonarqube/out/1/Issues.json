@@ -1,0 +1,3057 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilador de Microsoft (R) Visual C#",
+        "version": "5.9.0.0",
+        "fileVersion": "5.9.0-1.26423.113 (e34a38d2ae1fc26406a317517196e55c68ff83ab)",
+        "semanticVersion": "5.9.0",
+        "language": "es-ES"
+      },
+      "results": [
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IAuthorRepository.GetAllAsync()' oculta el miembro heredado 'IBaseRepository<Author>.GetAllAsync()'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Interfaces/IAuthorRepository.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 31,
+                  "endLine": 11,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'IAuthorRepository.DeleteAsync(Author)' oculta el miembro heredado 'IBaseRepository<Author>.DeleteAsync(Author)'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Interfaces/IAuthorRepository.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 10,
+                  "endLine": 13,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'ICategoryRepository.GetAllAsync()' oculta el miembro heredado 'IBaseRepository<Category>.GetAllAsync()'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Interfaces/ICategoryRepository.cs",
+                "region": {
+                  "startLine": 9,
+                  "startColumn": 33,
+                  "endLine": 9,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'ICategoryRepository.DeleteAsync(Category)' oculta el miembro heredado 'IBaseRepository<Category>.DeleteAsync(Category)'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Interfaces/ICategoryRepository.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 10,
+                  "endLine": 11,
+                  "endColumn": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'BookRepository.GetAllAsync()' oculta el miembro heredado 'BaseRepository<Book>.GetAllAsync()'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/BookRepository.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 42,
+                  "endLine": 22,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'BookRepository.GetByIdAsync(int)' oculta el miembro heredado 'BaseRepository<Book>.GetByIdAsync(int)'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/BookRepository.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 30,
+                  "endLine": 35,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'BookRepository.DeleteAsync(Book)' oculta el miembro heredado 'BaseRepository<Book>.DeleteAsync(Book)'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/BookRepository.cs",
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 23,
+                  "endLine": 67,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'AuthorRepository.GetAllAsync()' oculta el miembro heredado 'BaseRepository<Author>.GetAllAsync()'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/AuthorRespository.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 44,
+                  "endLine": 18,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'AuthorRepository.DeleteAsync(Author)' oculta el miembro heredado 'BaseRepository<Author>.DeleteAsync(Author)'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/AuthorRespository.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 23,
+                  "endLine": 48,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'CategoryRepository.GetAllAsync()' oculta el miembro heredado 'BaseRepository<Category>.GetAllAsync()'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/CategoryRepository.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 46,
+                  "endLine": 18,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS0108",
+          "level": "warning",
+          "message": "'CategoryRepository.DeleteAsync(Category)' oculta el miembro heredado 'BaseRepository<Category>.DeleteAsync(Category)'. Use la palabra clave new si su intención era ocultarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/CategoryRepository.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 23,
+                  "endLine": 43,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Authors\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 34,
+                  "endLine": 20,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Books\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 32,
+                  "endLine": 22,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Bookauthors\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 38,
+                  "endLine": 24,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Bookcategories\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 40,
+                  "endLine": 26,
+                  "endColumn": 54
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Categories\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 36,
+                  "endLine": 28,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Copies\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 32,
+                  "endLine": 30,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Holidays\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 35,
+                  "endLine": 32,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Loans\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 32,
+                  "endLine": 34,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Renewals\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 35,
+                  "endLine": 36,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Reservations\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 39,
+                  "endLine": 38,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Roles\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 32,
+                  "endLine": 40,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Users\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 12,
+                  "endLine": 11,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 32,
+                  "endLine": 42,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Authors\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 34,
+                  "endLine": 20,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Books\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 32,
+                  "endLine": 22,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Bookauthors\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 38,
+                  "endLine": 24,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Bookcategories\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 40,
+                  "endLine": 26,
+                  "endColumn": 54
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Categories\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 36,
+                  "endLine": 28,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Copies\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 32,
+                  "endLine": 30,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Holidays\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 35,
+                  "endLine": 32,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Loans\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 32,
+                  "endLine": 34,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Renewals\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 35,
+                  "endLine": 36,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Reservations\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 39,
+                  "endLine": 38,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Roles\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 32,
+                  "endLine": 40,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Users\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required'\"o declarar el propiedad como un valor que acepta valores NULL.",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 12,
+                  "endLine": 15,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 32,
+                  "endLine": 42,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2068",
+          "level": "warning",
+          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/appsettings.json",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 25,
+                  "endLine": 3,
+                  "endColumn": 100
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3251",
+          "level": "warning",
+          "message": "Supply an implementation for this partial method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 435,
+                  "startColumn": 5,
+                  "endLine": 435,
+                  "endColumn": 12
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'PRIMARY' 12 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 53,
+                  "startColumn": 46,
+                  "endLine": 53,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 76,
+                  "startColumn": 46,
+                  "endLine": 76,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 111,
+                  "startColumn": 26,
+                  "endLine": 111,
+                  "endColumn": 35
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 146,
+                  "startColumn": 26,
+                  "endLine": 146,
+                  "endColumn": 35
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 180,
+                  "startColumn": 46,
+                  "endLine": 180,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 205,
+                  "startColumn": 46,
+                  "endLine": 205,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 239,
+                  "startColumn": 46,
+                  "endLine": 239,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 262,
+                  "startColumn": 46,
+                  "endLine": 262,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 311,
+                  "startColumn": 46,
+                  "endLine": 311,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 351,
+                  "startColumn": 46,
+                  "endLine": 351,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 385,
+                  "startColumn": 46,
+                  "endLine": 385,
+                  "endColumn": 55
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 396,
+                  "startColumn": 46,
+                  "endLine": 396,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null,
+              "7": null,
+              "8": null,
+              "9": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'CURRENT_TIMESTAMP' 13 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 60,
+                  "startColumn": 37,
+                  "endLine": 60,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 85,
+                  "startColumn": 37,
+                  "endLine": 85,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 121,
+                  "startColumn": 37,
+                  "endLine": 121,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 156,
+                  "startColumn": 37,
+                  "endLine": 156,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 189,
+                  "startColumn": 37,
+                  "endLine": 189,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 216,
+                  "startColumn": 37,
+                  "endLine": 216,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 248,
+                  "startColumn": 37,
+                  "endLine": 248,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 273,
+                  "startColumn": 37,
+                  "endLine": 273,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 285,
+                  "startColumn": 37,
+                  "endLine": 285,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 322,
+                  "startColumn": 37,
+                  "endLine": 322,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 330,
+                  "startColumn": 37,
+                  "endLine": 330,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 360,
+                  "startColumn": 37,
+                  "endLine": 360,
+                  "endColumn": 56
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 411,
+                  "startColumn": 37,
+                  "endLine": 411,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "11": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null,
+              "7": null,
+              "8": null,
+              "9": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal 'datetime' 29 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 32,
+                  "endLine": 61,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 61,
+                  "endLine": 67,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 32,
+                  "endLine": 86,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 101,
+                  "startColumn": 61,
+                  "endLine": 101,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 122,
+                  "startColumn": 32,
+                  "endLine": 122,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 126,
+                  "startColumn": 61,
+                  "endLine": 126,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 157,
+                  "startColumn": 32,
+                  "endLine": 157,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 161,
+                  "startColumn": 61,
+                  "endLine": 161,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 190,
+                  "startColumn": 32,
+                  "endLine": 190,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 196,
+                  "startColumn": 61,
+                  "endLine": 196,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 217,
+                  "startColumn": 32,
+                  "endLine": 217,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 225,
+                  "startColumn": 61,
+                  "endLine": 225,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 249,
+                  "startColumn": 32,
+                  "endLine": 249,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 253,
+                  "startColumn": 61,
+                  "endLine": 253,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 274,
+                  "startColumn": 32,
+                  "endLine": 274,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 275,
+                  "startColumn": 59,
+                  "endLine": 275,
+                  "endColumn": 69
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 277,
+                  "startColumn": 62,
+                  "endLine": 277,
+                  "endColumn": 72
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 286,
+                  "startColumn": 32,
+                  "endLine": 286,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 287,
+                  "startColumn": 62,
+                  "endLine": 287,
+                  "endColumn": 72
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 291,
+                  "startColumn": 61,
+                  "endLine": 291,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 323,
+                  "startColumn": 32,
+                  "endLine": 323,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 327,
+                  "startColumn": 62,
+                  "endLine": 327,
+                  "endColumn": 72
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 328,
+                  "startColumn": 67,
+                  "endLine": 328,
+                  "endColumn": 77
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 331,
+                  "startColumn": 32,
+                  "endLine": 331,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 332,
+                  "startColumn": 61,
+                  "endLine": 332,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 361,
+                  "startColumn": 32,
+                  "endLine": 361,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 370,
+                  "startColumn": 61,
+                  "endLine": 370,
+                  "endColumn": 71
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 412,
+                  "startColumn": 32,
+                  "endLine": 412,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 423,
+                  "startColumn": 61,
+                  "endLine": 423,
+                  "endColumn": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "10": null,
+              "11": null,
+              "12": null,
+              "13": null,
+              "14": null,
+              "15": null,
+              "16": null,
+              "17": null,
+              "18": null,
+              "19": null,
+              "2": null,
+              "20": null,
+              "21": null,
+              "22": null,
+              "23": null,
+              "24": null,
+              "25": null,
+              "26": null,
+              "27": null,
+              "3": null,
+              "4": null,
+              "5": null,
+              "6": null,
+              "7": null,
+              "8": null,
+              "9": null
+            }
+          }
+        },
+        {
+          "ruleId": "S6964",
+          "level": "warning",
+          "message": "Value type property used as input in a controller action should be nullable, required or annotated with the JsonRequiredAttribute to avoid under-posting.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/DTOs/RegisterUserRequest.cs",
+                "region": {
+                  "startLine": 5,
+                  "startColumn": 16,
+                  "endLine": 5,
+                  "endColumn": 18
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Es preferible comparar \"Count\" con 0 en lugar de usar \"Any()\", tanto por claridad como por rendimiento.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 102,
+                  "startColumn": 22,
+                  "endLine": 102,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1510",
+          "level": "note",
+          "message": "Use 'ArgumentNullException.ThrowIfNull' en lugar de iniciar explícitamente una nueva instancia de excepción",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 9,
+                  "endLine": 23,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 13,
+                  "endLine": 20,
+                  "endColumn": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Es preferible comparar \"Count\" con 0 en lugar de usar \"Any()\", tanto por claridad como por rendimiento.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 142,
+                  "startColumn": 22,
+                  "endLine": 142,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
+          }
+        },
+        {
+          "ruleId": "S6966",
+          "level": "warning",
+          "message": "Await RunAsync instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Program.cs",
+                "region": {
+                  "startLine": 161,
+                  "startColumn": 1,
+                  "endLine": 161,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "SYSLIB1045",
+          "level": "note",
+          "message": "Use 'GeneratedRegexAttribute' para generar la implementación de expresiones regulares en tiempo de compilación.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 264,
+                  "startColumn": 14,
+                  "endLine": 266,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "SYSLIB1045",
+          "level": "note",
+          "message": "Use 'GeneratedRegexAttribute' para generar la implementación de expresiones regulares en tiempo de compilación.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 273,
+                  "startColumn": 13,
+                  "endLine": 276,
+                  "endColumn": 20
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1125",
+          "level": "warning",
+          "message": "Remove the unnecessary Boolean literal(s).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/LoanRepository.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 28,
+                  "endLine": 20,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1125",
+          "level": "warning",
+          "message": "Remove the unnecessary Boolean literal(s).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/LoanRepository.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 33,
+                  "endLine": 21,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1125",
+          "level": "warning",
+          "message": "Remove the unnecessary Boolean literal(s).",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/LoanRepository.cs",
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 28,
+                  "endLine": 57,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1854",
+          "level": "note",
+          "message": "Preferir una llamada \"TryGetValue\" en lugar de un acceso al indexador del diccionario protegido por una comprobación \"ContainsKey\" para evitar la doble búsqueda",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 422,
+                  "startColumn": 18,
+                  "endLine": 422,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 428,
+                  "startColumn": 13,
+                  "endLine": 428,
+                  "endColumn": 29
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 424,
+                  "startColumn": 17,
+                  "endLine": 425,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "SYSLIB1045",
+          "level": "note",
+          "message": "Use 'GeneratedRegexAttribute' para generar la implementación de expresiones regulares en tiempo de compilación.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 453,
+                  "startColumn": 16,
+                  "endLine": 456,
+                  "endColumn": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 32,
+                  "endLine": 96,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 99,
+                  "startColumn": 9,
+                  "endLine": 99,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 132,
+                  "startColumn": 9,
+                  "endLine": 132,
+                  "endColumn": 16
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 138,
+                  "startColumn": 13,
+                  "endLine": 138,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 152,
+                  "startColumn": 9,
+                  "endLine": 152,
+                  "endColumn": 16
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 158,
+                  "startColumn": 13,
+                  "endLine": 158,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 176,
+                  "startColumn": 9,
+                  "endLine": 176,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 182,
+                  "startColumn": 13,
+                  "endLine": 182,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 229,
+                  "startColumn": 13,
+                  "endLine": 229,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 229,
+                  "startColumn": 40,
+                  "endLine": 229,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 254,
+                  "startColumn": 13,
+                  "endLine": 254,
+                  "endColumn": 20
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 272,
+                  "startColumn": 13,
+                  "endLine": 272,
+                  "endColumn": 20
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 292,
+                  "startColumn": 9,
+                  "endLine": 292,
+                  "endColumn": 14
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 304,
+                  "startColumn": 13,
+                  "endLine": 304,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+1",
+              "11": "+1",
+              "12": "+2 (incl 1 for nesting)",
+              "2": "+2 (incl 1 for nesting)",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+1",
+              "9": "+1"
+            }
+          }
+        },
+        {
+          "ruleId": "S3776",
+          "level": "warning",
+          "message": "Refactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 322,
+                  "startColumn": 33,
+                  "endLine": 322,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 326,
+                  "startColumn": 9,
+                  "endLine": 326,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 340,
+                  "startColumn": 9,
+                  "endLine": 340,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 340,
+                  "startColumn": 26,
+                  "endLine": 340,
+                  "endColumn": 28
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 373,
+                  "startColumn": 9,
+                  "endLine": 373,
+                  "endColumn": 16
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 380,
+                  "startColumn": 13,
+                  "endLine": 380,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 394,
+                  "startColumn": 9,
+                  "endLine": 394,
+                  "endColumn": 16
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 401,
+                  "startColumn": 13,
+                  "endLine": 401,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 419,
+                  "startColumn": 9,
+                  "endLine": 419,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 419,
+                  "startColumn": 50,
+                  "endLine": 419,
+                  "endColumn": 52
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 430,
+                  "startColumn": 13,
+                  "endLine": 430,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 498,
+                  "startColumn": 13,
+                  "endLine": 498,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 498,
+                  "startColumn": 40,
+                  "endLine": 498,
+                  "endColumn": 42
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 545,
+                  "startColumn": 9,
+                  "endLine": 545,
+                  "endColumn": 14
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 557,
+                  "startColumn": 13,
+                  "endLine": 557,
+                  "endColumn": 15
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 572,
+                  "startColumn": 9,
+                  "endLine": 572,
+                  "endColumn": 11
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 573,
+                  "startColumn": 31,
+                  "endLine": 573,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "+1",
+              "1": "+1",
+              "10": "+1",
+              "11": "+1",
+              "12": "+1",
+              "13": "+2 (incl 1 for nesting)",
+              "14": "+1",
+              "15": "+1",
+              "2": "+1",
+              "3": "+1",
+              "4": "+2 (incl 1 for nesting)",
+              "5": "+1",
+              "6": "+2 (incl 1 for nesting)",
+              "7": "+1",
+              "8": "+1",
+              "9": "+2 (incl 1 for nesting)"
+            }
+          }
+        },
+        {
+          "ruleId": "S1006",
+          "level": "warning",
+          "message": "Add the default parameter value defined in the overridden method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/BookRepository.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 17,
+                  "endLine": 81,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'search' to 'phrase' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Repositories/BookRepository.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 17,
+                  "endLine": 81,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1510",
+          "level": "note",
+          "message": "Use 'ArgumentNullException.ThrowIfNull' en lugar de iniciar explícitamente una nueva instancia de excepción",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 99,
+                  "startColumn": 9,
+                  "endLine": 103,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 99,
+                  "startColumn": 13,
+                  "endLine": 99,
+                  "endColumn": 16
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1510",
+          "level": "note",
+          "message": "Use 'ArgumentNullException.ThrowIfNull' en lugar de iniciar explícitamente una nueva instancia de excepción",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 326,
+                  "startColumn": 9,
+                  "endLine": 330,
+                  "endColumn": 10
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Application/Services/BookService.cs",
+                "region": {
+                  "startLine": 326,
+                  "startColumn": 13,
+                  "endLine": 326,
+                  "endColumn": 16
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3251",
+          "level": "warning",
+          "message": "Supply an implementation for the partial method, otherwise this call will be ignored.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 432,
+                  "startColumn": 9,
+                  "endLine": 432,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Preferir campos \"static readonly\" frente a argumentos de matriz constantes si se llama repetidamente al método llamado y no muta la matriz pasada",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 112,
+                  "startColumn": 59,
+                  "endLine": 112,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "value"
+            }
+          }
+        },
+        {
+          "ruleId": "CA1861",
+          "level": "note",
+          "message": "Preferir campos \"static readonly\" frente a argumentos de matriz constantes si se llama repetidamente al método llamado y no muta la matriz pasada",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Infraestructure/Persistence/LibraryDbContext.cs",
+                "region": {
+                  "startLine": 147,
+                  "startColumn": 59,
+                  "endLine": 147,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "paramName": "value"
+            }
+          }
+        },
+        {
+          "ruleId": "S6444",
+          "level": "warning",
+          "message": "Pass a timeout to limit the execution time.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 453,
+                  "startColumn": 16,
+                  "endLine": 456,
+                  "endColumn": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6444",
+          "level": "warning",
+          "message": "Pass a timeout to limit the execution time.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 273,
+                  "startColumn": 13,
+                  "endLine": 276,
+                  "endColumn": 20
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S6444",
+          "level": "warning",
+          "message": "Pass a timeout to limit the execution time.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/CDC/Documents/Proyectos%20calidad/BibliotecaCalidad/Backend/Domain/Validators/BookValidator.cs",
+                "region": {
+                  "startLine": 264,
+                  "startColumn": 14,
+                  "endLine": 266,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1510": {
+          "id": "CA1510",
+          "shortDescription": "Uso del asistente de inicio ArgumentNullException",
+          "fullDescription": "Los asistentes de inicio son más sencillos y eficaces que un bloque if que construye una nueva instancia de excepción.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1510",
+          "properties": {
+            "category": "Maintainability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1854": {
+          "id": "CA1854",
+          "shortDescription": "Preferir el método \"IDictionary.TryGetValue(TKey, out TValue)\"",
+          "fullDescription": "Preferir una llamada \"TryGetValue\" a un acceso al indexador del diccionario protegido por una comprobación \"ContainsKey\". Tanto \"ContainsKey\" como el indexador buscarían de forma exhaustiva, por lo que el uso de \"TryGetValue\" elimina la búsqueda adicional.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1854",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1860": {
+          "id": "CA1860",
+          "shortDescription": "Evitar usar el método de extensión \"Enumerable.Any()\"",
+          "fullDescription": "Es preferible usar las propiedades \"IsEmpty\", \"Count\" o \"Length\", si hay alguna disponible, en lugar de llamar a \"Enumerable.Any()\". La intención es más clara y tiene un mejor rendimiento que usar el método de extensión \"Enumerable.Any()\".",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1860",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA1861": {
+          "id": "CA1861",
+          "shortDescription": "Evitar matrices constantes como argumentos",
+          "fullDescription": "Las matrices constantes pasadas como argumentos no se reutilizan cuando se llaman repetidamente, lo que implica que se cree una nueva matriz cada vez. Considere la posibilidad de extraerlas a campos \"static readonly\" para mejorar el rendimiento si la matriz pasada no se muta dentro del método llamado.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1861",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CS0108": {
+          "id": "CS0108",
+          "shortDescription": "El miembro oculta el miembro heredado. Falta una contraseña nueva",
+          "fullDescription": "Se declaró una variable con el mismo nombre que una variable de un tipo base. Sin embargo, no se usó la palabra clave new. Esta advertencia le informa de que debería usar new. La variable se declaró como si new se hubiera usado en la declaración.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0108)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador \"required\" o declararlo como un valor que acepta valores NULL.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S1006": {
+          "id": "S1006",
+          "shortDescription": "Method overrides should not change parameter defaults",
+          "fullDescription": "Default arguments are determined by the static type of the object.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1125": {
+          "id": "S1125",
+          "shortDescription": "Boolean literals should not be redundant",
+          "fullDescription": "A boolean literal can be represented in two different ways: true or false. They can be combined with logical operators (!, &&, ||, ==, !=) to produce logical expressions that represent truth values. However, comparing a boolean literal to a variable or expression that evaluates to a boolean value is unnecessary and can make the code harder to read and understand. The more complex a boolean expression is, the harder it will be for developers to understand its meaning and expected behavior, and it will favour the introduction of new bugs.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1192": {
+          "id": "S1192",
+          "shortDescription": "String literals should not be duplicated",
+          "fullDescription": "Duplicated string literals make the process of refactoring complex and error-prone, as any change would need to be propagated on all occurrences.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2068": {
+          "id": "S2068",
+          "shortDescription": "Credentials should not be hard-coded",
+          "fullDescription": "Hard-coding credentials in source code or binaries makes it easy for attackers to extract sensitive information, especially in distributed or open-source applications. This practice exposes your application to significant security risks.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Vulnerability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3251": {
+          "id": "S3251",
+          "shortDescription": "Implementations should be provided for \"partial\" methods",
+          "fullDescription": "partial methods allow an increased degree of flexibility in programming a system. Hooks can be added to generated code by invoking methods that define their signature, but might not have an implementation yet. But if the implementation is still missing when the code makes it to production, the compiler silently removes the call. In the best case scenario, such calls simply represent cruft, but in the worst case they are critical, missing functionality, the loss of which will lead to unexpected results at runtime.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3776": {
+          "id": "S3776",
+          "shortDescription": "Cognitive Complexity of methods should not be too high",
+          "fullDescription": "This rule raises an issue when the code cognitive complexity of a function is above a certain threshold.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6444": {
+          "id": "S6444",
+          "shortDescription": "Regular expressions should be executed with a timeout",
+          "fullDescription": "Regular expressions without a timeout can be exploited to cause a Denial-of-Service attack.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Minor Vulnerability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay",
+              "CompilationEnd"
+            ]
+          }
+        },
+        "S6964": {
+          "id": "S6964",
+          "shortDescription": "Value type property used as input in a controller action should be nullable, required or annotated with the JsonRequiredAttribute to avoid under-posting.",
+          "fullDescription": "\"Under-posting\" refers to a situation where a client sends less data than expected to the server during an HTTP request, for example when the client omits some properties from the request body that the server expects to receive.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6966": {
+          "id": "S6966",
+          "shortDescription": "Awaitable method should be used",
+          "fullDescription": "In an async method, any blocking operations should be avoided.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S927": {
+          "id": "S927",
+          "shortDescription": "Parameter names should match base declaration and other partial definitions",
+          "fullDescription": "Parameters are part of the method signature and its identity.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "SYSLIB1045": {
+          "id": "SYSLIB1045",
+          "shortDescription": "Convertir en 'GeneratedRegexAttribute'.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/syslib-diagnostics/syslib1045",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true
+          }
+        }
+      }
+    }
+  ]
+}

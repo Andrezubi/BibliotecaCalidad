@@ -1,0 +1,1 @@
+^RQC:\Users\CDC\Documents\Proyectos calidad\BibliotecaCalidad\Backend\Backend.csprojòCSharp14

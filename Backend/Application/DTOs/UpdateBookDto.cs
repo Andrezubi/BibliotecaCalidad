@@ -28,4 +28,7 @@ public class UpdateBookDto
     public int? UserId { get; set; }
     // Ruta de la imagen de portada
     public IFormFile? CoverImage { get; set; }
+    public List<int> AuthorIds { get; set; } = new();
+    public List<int> CategoryIds { get; set; } = new();
+ 
 }
