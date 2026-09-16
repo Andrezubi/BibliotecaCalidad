@@ -95,7 +95,7 @@
                     <!-- CI -->
                     <div class="auth-field">
 
-                        <label asp-for="User.Ci"
+                        <label asp-for="UserDto.Ci"
                                class="form-label">
 
                             CI
@@ -108,13 +108,13 @@
                                 <i class="bi bi-card-text"></i>
                             </span>
 
-                            <input asp-for="User.Ci"
+                            <input asp-for="UserDto.Ci"
                                    class="form-control"
                                    placeholder="Ingresa tu CI" />
 
                         </div>
 
-                        <span asp-validation-for="User.Ci"
+                        <span asp-validation-for="UserDto.Ci"
                               class="text-danger">
                         </span>
 
@@ -124,7 +124,7 @@
                     <!-- COMPLEMENTO -->
                     <div class="auth-field">
 
-                        <label asp-for="User.Complement"
+                        <label asp-for="UserDto.Complement"
                                class="form-label">
 
                             Complemento
@@ -140,14 +140,14 @@
                                 <i class="bi bi-card-text"></i>
                             </span>
 
-                            <input asp-for="User.Complement"
+                            <input asp-for="UserDto.Complement"
                                    class="form-control"
                                    maxlength="2"
                                    placeholder="Ej. 1A" />
 
                         </div>
 
-                        <span asp-validation-for="User.Complement"
+                        <span asp-validation-for="UserDto.Complement"
                               class="text-danger">
                         </span>
 
@@ -161,18 +161,18 @@
 
                             <div class="auth-field">
 
-                                <label asp-for="User.FirstName"
+                                <label asp-for="UserDto.FirstName"
                                        class="form-label">
 
                                     Nombre
 
                                 </label>
 
-                                <input asp-for="User.FirstName"
+                                <input asp-for="UserDto.FirstName"
                                        class="form-control"
                                        placeholder="Nombre" />
 
-                                <span asp-validation-for="User.FirstName"
+                                <span asp-validation-for="UserDto.FirstName"
                                       class="text-danger">
                                 </span>
 
@@ -186,18 +186,18 @@
 
                             <div class="auth-field">
 
-                                <label asp-for="User.LastName"
+                                <label asp-for="UserDto.LastName"
                                        class="form-label">
 
                                     Apellido
 
                                 </label>
 
-                                <input asp-for="User.LastName"
+                                <input asp-for="UserDto.LastName"
                                        class="form-control"
                                        placeholder="Apellido" />
 
-                                <span asp-validation-for="User.LastName"
+                                <span asp-validation-for="UserDto.LastName"
                                       class="text-danger">
                                 </span>
 
@@ -211,7 +211,7 @@
                     <!-- TELÉFONO -->
                     <div class="auth-field">
 
-                        <label asp-for="User.Phone"
+                        <label asp-for="UserDto.Phone"
                                class="form-label">
 
                             Teléfono
@@ -224,13 +224,13 @@
                                 <i class="bi bi-telephone"></i>
                             </span>
 
-                            <input asp-for="User.Phone"
+                            <input asp-for="UserDto.Phone"
                                    class="form-control"
                                    placeholder="Ingresa tu teléfono" />
 
                         </div>
 
-                        <span asp-validation-for="User.Phone"
+                        <span asp-validation-for="UserDto.Phone"
                               class="text-danger">
                         </span>
 
@@ -240,7 +240,7 @@
                     <!-- USUARIO -->
                     <div class="auth-field">
 
-                        <label asp-for="User.Username"
+                        <label asp-for="UserDto.Username"
                                class="form-label">
 
                             Nombre de usuario
@@ -253,14 +253,14 @@
                                 <i class="bi bi-person"></i>
                             </span>
 
-                            <input asp-for="User.Username"
+                            <input asp-for="UserDto.Username"
                                    class="form-control"
                                    placeholder="Crea tu nombre de usuario"
                                    autocomplete="username" />
 
                         </div>
 
-                        <span asp-validation-for="User.Username"
+                        <span asp-validation-for="UserDto.Username"
                               class="text-danger">
                         </span>
 
@@ -270,7 +270,7 @@
                     <!-- CONTRASEÑA -->
                     <div class="auth-field">
 
-                        <label asp-for="User.Password"
+                        <label asp-for="UserDto.Password"
                                class="form-label">
 
                             Contraseña
@@ -283,7 +283,7 @@
                                 <i class="bi bi-lock"></i>
                             </span>
 
-                            <input asp-for="User.Password"
+                            <input asp-for="UserDto.Password"
                                    type="password"
                                    class="form-control"
                                    placeholder="Crea una contraseña"
@@ -291,7 +291,7 @@
 
                         </div>
 
-                        <span asp-validation-for="User.Password"
+                        <span asp-validation-for="UserDto.Password"
                               class="text-danger">
                         </span>
 

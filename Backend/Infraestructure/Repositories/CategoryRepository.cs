@@ -15,7 +15,7 @@ public class CategoryRepository
     {
     }
 
-    public async Task<IEnumerable<Category>> GetAllAsync()
+    public new async Task<IEnumerable<Category>> GetAllAsync()
     {
         return await _dbSet
             .AsNoTracking()
@@ -40,7 +40,7 @@ public class CategoryRepository
             category.IsActive);
     }
 
-    public async Task DeleteAsync(Category category)
+    public new async Task DeleteAsync(Category category)
     {
         category.IsActive = false;
         category.UpdatedAt = DateTime.Now;

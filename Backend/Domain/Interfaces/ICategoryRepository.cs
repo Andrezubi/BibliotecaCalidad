@@ -6,10 +6,6 @@ public interface ICategoryRepository : IBaseRepository<Category>
 {
     Task<bool> ExistsAsync(string name);
 
-    Task<IEnumerable<Category>> GetAllAsync();
-
-    Task DeleteAsync(Category category);
-
     Task<bool> ExistsActiveByIdAsync(int id);
 
     Task AddBookCategoryAsync(Bookcategory bookCategory);

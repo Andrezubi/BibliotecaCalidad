@@ -19,7 +19,7 @@ public class BookRepository
     // OBTENER TODOS
     // ============================================================
 
-    public async Task<IEnumerable<Book>> GetAllAsync()
+    public new async Task<IEnumerable<Book>> GetAllAsync()
     {
         return await _dbSet
             .AsNoTracking()
@@ -32,7 +32,7 @@ public class BookRepository
     // OBTENER POR ID
     // ============================================================
 
-    public async Task<Book?> GetByIdAsync(
+    public new async Task<Book?> GetByIdAsync(
         int id)
     {
         return await _dbSet
@@ -64,7 +64,7 @@ public class BookRepository
     // ELIMINACIÓN LÓGICA
     // ============================================================
 
-    public async Task DeleteAsync(
+    public new async Task DeleteAsync(
         Book book)
     {
         book.IsActive = false;

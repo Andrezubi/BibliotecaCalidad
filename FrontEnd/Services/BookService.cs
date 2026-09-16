@@ -301,14 +301,7 @@ public class BookService
 
         AddBookFields(
             content,
-            book.Title,
-            book.EditionNumber,
-            book.ISBN,
-            book.PublicationYear,
-            book.Publisher,
-            book.PageCount,
-            book.Description,
-            book.UserId);
+            book);
 
         AddAuthors(
             content,
@@ -337,14 +330,7 @@ public class BookService
 
         AddBookFields(
             content,
-            book.Title,
-            book.EditionNumber,
-            book.ISBN,
-            book.PublicationYear,
-            book.Publisher,
-            book.PageCount,
-            book.Description,
-            book.UserId);
+            MapBookUpdateDtoToCreateDto(book));
 
         AddAuthors(
             content,
@@ -365,7 +351,7 @@ public class BookService
     // CAMPOS DEL LIBRO
     // ============================================================
 
-    private static void AddBookFields(
+    private static void AddBookFieldsbad(
         MultipartFormDataContent content,
         string? title,
         object? editionNumber,
@@ -415,6 +401,68 @@ public class BookService
             content,
             "UserId",
             userId);
+    }
+
+
+
+
+    private static void AddBookFields(
+        MultipartFormDataContent content,
+        CreateBookDto book)
+    {
+        AddString(
+            content,
+            "Title",
+            book.Title);
+
+        AddNullableString(
+            content,
+            "EditionNumber",
+            book.EditionNumber);
+
+        AddNullableString(
+            content,
+            "ISBN",
+            book.ISBN);
+
+        AddNullableString(
+            content,
+            "PublicationYear",
+            book.PublicationYear);
+
+        AddNullableString(
+            content,
+            "Publisher",
+            book.Publisher);
+
+        AddNullableString(
+            content,
+            "PageCount",
+            book.PageCount);
+
+        AddNullableString(
+            content,
+            "Description",
+            book.Description);
+
+        AddNullableString(
+            content,
+            "UserId",
+            book.UserId);
+    }
+    private static CreateBookDto MapBookUpdateDtoToCreateDto(UpdateBookDto updateDto)
+    {
+        return new CreateBookDto
+        {
+            Title = updateDto.Title,
+            EditionNumber = updateDto.EditionNumber,
+            ISBN = updateDto.ISBN,
+            PublicationYear = updateDto.PublicationYear,
+            Publisher = updateDto.Publisher,
+            PageCount = updateDto.PageCount,
+            Description = updateDto.Description,
+            UserId = updateDto.UserId
+        };
     }
 
     // ============================================================

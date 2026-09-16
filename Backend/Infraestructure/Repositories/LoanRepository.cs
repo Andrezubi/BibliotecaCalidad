@@ -17,8 +17,8 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
         return await _context.Copies
             .Where(c =>
                 c.Status == "Loaned" &&
-                c.IsActive == true &&
-                c.Book.IsActive == true
+                c.IsActive &&
+                c.Book.IsActive
             )
             .Select(c => new LoanedBook
             {
@@ -54,7 +54,7 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
             .Where(c =>
                 c.BookId == bookId &&
                 c.Status == "Available" &&
-                c.IsActive == true)
+                c.IsActive)
             .OrderBy(c => c.Id)
             .FirstOrDefaultAsync();
     }

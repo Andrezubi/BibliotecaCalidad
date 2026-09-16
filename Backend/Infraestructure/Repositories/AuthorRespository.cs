@@ -15,7 +15,7 @@ public class AuthorRepository
     {
     }
 
-    public async Task<IEnumerable<Author>> GetAllAsync()
+    public new async Task<IEnumerable<Author>> GetAllAsync()
     {
         return await _dbSet
             .AsNoTracking()
@@ -45,7 +45,7 @@ public class AuthorRepository
             author.IsActive);
     }
 
-    public async Task DeleteAsync(Author author)
+    public new async Task DeleteAsync(Author author)
     {
         author.IsActive = false;
         author.UpdatedAt = DateTime.Now;

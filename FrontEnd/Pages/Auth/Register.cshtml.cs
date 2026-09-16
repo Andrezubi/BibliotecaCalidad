@@ -15,7 +15,7 @@ public class RegisterModel : PageModel
     }
 
     [BindProperty]
-    public RegisterUserDto User { get; set; } = new();
+    public RegisterUserDto UserDto { get; set; } = new();
 
     public string? ErrorMessage { get; set; }
 
@@ -27,7 +27,7 @@ public class RegisterModel : PageModel
         }
 
         var result =
-            await _authService.RegisterAsync(User);
+            await _authService.RegisterAsync(UserDto);
 
         if (!result.Success)
         {
