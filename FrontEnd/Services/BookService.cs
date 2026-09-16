@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using static FrontEnd.Services.BookService;
 
 namespace FrontEnd.Services;
 
@@ -19,31 +18,16 @@ public class BookService
         _httpClient = httpClient;
         _httpContextAccessor = httpContextAccessor;
     }
+
     public class ApiMessage
     {
         public string? Message { get; set; }
     }
-    // ======================================================
+
+    // ============================================================
     // AUTORIZACIÓN
     // ============================================================
-    public async Task<(bool Success, string Message)> AddCopyAsync(int bookId, string internalCode)
-    {
-        AddAuthorizationHeader();
 
-        var response = await _httpClient.PostAsJsonAsync(
-            $"api/Book/{bookId}/copies",
-            new { InternalCode = internalCode });
-
-        var result = await response.Content
-            .ReadFromJsonAsync<ApiMessage>();
-
-        var message = result?.Message
-            ?? (response.IsSuccessStatusCode
-                ? "Copia agregada correctamente."
-                : "No se pudo agregar la copia.");
-
-        return (response.IsSuccessStatusCode, message);
-    }
     private void AddAuthorizationHeader()
     {
         var token =
@@ -53,13 +37,55 @@ public class BookService
 
         _httpClient.DefaultRequestHeaders.Authorization = null;
 
-        if (!string.IsNullOrWhiteSpace(token))
+        if (string.IsNullOrWhiteSpace(token))
         {
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue(
-                    "Bearer",
-                    token);
+            return;
         }
+
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                token);
+    }
+
+    // ============================================================
+    // COPIAS
+    // ============================================================
+
+    public async Task<(bool Success, string Message)> AddCopyAsync(
+        int bookId,
+        string internalCode)
+    {
+        AddAuthorizationHeader();
+
+        var response =
+            await _httpClient.PostAsJsonAsync(
+                $"api/Book/{bookId}/copies",
+                new
+                {
+                    InternalCode = internalCode
+                });
+
+        var result =
+            await response.Content
+                .ReadFromJsonAsync<ApiMessage>();
+
+        var message =
+            result?.Message ??
+            GetCopyOperationMessage(
+                response.IsSuccessStatusCode);
+
+        return (
+            response.IsSuccessStatusCode,
+            message);
+    }
+
+    private static string GetCopyOperationMessage(
+        bool success)
+    {
+        return success
+            ? "Copia agregada correctamente."
+            : "No se pudo agregar la copia.";
     }
 
     // ============================================================
@@ -73,7 +99,8 @@ public class BookService
         try
         {
             var response =
-                await _httpClient.GetAsync("api/Book");
+                await _httpClient.GetAsync(
+                    "api/Book");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -135,13 +162,8 @@ public class BookService
 
         try
         {
-            var url = "api/Book/search";
-
-            if (!string.IsNullOrWhiteSpace(phrase))
-            {
-                url +=
-                    $"?phrase={Uri.EscapeDataString(phrase)}";
-            }
+            var url =
+                BuildSearchUrl(phrase);
 
             var response =
                 await _httpClient.GetAsync(url);
@@ -159,6 +181,18 @@ public class BookService
         {
             return new List<BookDto>();
         }
+    }
+
+    private static string BuildSearchUrl(
+        string? phrase)
+    {
+        if (string.IsNullOrWhiteSpace(phrase))
+        {
+            return "api/Book/search";
+        }
+
+        return
+            $"api/Book/search?phrase={Uri.EscapeDataString(phrase)}";
     }
 
     // ============================================================
@@ -185,17 +219,7 @@ public class BookService
         }
         catch (HttpRequestException)
         {
-            return ServiceResult.Fail(
-                new Dictionary<string, string[]>
-                {
-                    {
-                        string.Empty,
-                        new[]
-                        {
-                            "No se pudo conectar con el servidor."
-                        }
-                    }
-                });
+            return CreateConnectionError();
         }
     }
 
@@ -224,18 +248,23 @@ public class BookService
         }
         catch (HttpRequestException)
         {
-            return ServiceResult.Fail(
-                new Dictionary<string, string[]>
-                {
-                    {
-                        string.Empty,
-                        new[]
-                        {
-                            "No se pudo conectar con el servidor."
-                        }
-                    }
-                });
+            return CreateConnectionError();
         }
+    }
+
+    private static ServiceResult CreateConnectionError()
+    {
+        return ServiceResult.Fail(
+            new Dictionary<string, string[]>
+            {
+                {
+                    string.Empty,
+                    new[]
+                    {
+                        "No se pudo conectar con el servidor."
+                    }
+                }
+            });
     }
 
     // ============================================================
@@ -264,86 +293,30 @@ public class BookService
     // MULTIPART - CREATE BOOK
     // ============================================================
 
-    private MultipartFormDataContent
-        BuildCreateBookContent(
-            CreateBookDto book)
+    private MultipartFormDataContent BuildCreateBookContent(
+        CreateBookDto book)
     {
         var content =
             new MultipartFormDataContent();
 
-        AddString(
+        AddBookFields(
             content,
-            "Title",
-            book.Title);
-
-        AddNullableString(
-            content,
-            "EditionNumber",
-            book.EditionNumber);
-
-        AddNullableString(
-            content,
-            "ISBN",
-            book.ISBN);
-
-        AddNullableString(
-            content,
-            "PublicationYear",
-            book.PublicationYear);
-
-        AddNullableString(
-            content,
-            "Publisher",
-            book.Publisher);
-
-        AddNullableString(
-            content,
-            "PageCount",
-            book.PageCount);
-
-        AddNullableString(
-            content,
-            "Description",
-            book.Description);
-
-        AddNullableString(
-            content,
-            "UserId",
+            book.Title,
+            book.EditionNumber,
+            book.ISBN,
+            book.PublicationYear,
+            book.Publisher,
+            book.PageCount,
+            book.Description,
             book.UserId);
 
-        // ========================================================
-        // AUTORES
-        // ========================================================
+        AddAuthors(
+            content,
+            book.AuthorIds);
 
-        foreach (var authorId in
-                 book.AuthorIds
-                     .Where(id => id > 0)
-                     .Distinct())
-        {
-            content.Add(
-                new StringContent(
-                    authorId.ToString()),
-                "AuthorIds");
-        }
-
-        // ========================================================
-        // CATEGORÍAS
-        // ========================================================
-
-        foreach (var categoryId in
-                 book.CategoryIds
-                     .Where(id => id > 0)
-                     .Distinct())
-        {
-            content.Add(
-                new StringContent(
-                    categoryId.ToString()),
-                "CategoryIds");
-        }
-
-        // ========================================================
-        // PORTADA
-        // ========================================================
+        AddCategories(
+            content,
+            book.CategoryIds);
 
         AddCover(
             content,
@@ -356,92 +329,136 @@ public class BookService
     // MULTIPART - UPDATE BOOK
     // ============================================================
 
-    private MultipartFormDataContent
-        BuildUpdateBookContent(
-            UpdateBookDto book)
+    private MultipartFormDataContent BuildUpdateBookContent(
+        UpdateBookDto book)
     {
         var content =
             new MultipartFormDataContent();
 
-        AddString(
+        AddBookFields(
             content,
-            "Title",
-            book.Title);
-
-        AddNullableString(
-            content,
-            "EditionNumber",
-            book.EditionNumber);
-
-        AddNullableString(
-            content,
-            "ISBN",
-            book.ISBN);
-
-        AddNullableString(
-            content,
-            "PublicationYear",
-            book.PublicationYear);
-
-        AddNullableString(
-            content,
-            "Publisher",
-            book.Publisher);
-
-        AddNullableString(
-            content,
-            "PageCount",
-            book.PageCount);
-
-        AddNullableString(
-            content,
-            "Description",
-            book.Description);
-
-        AddNullableString(
-            content,
-            "UserId",
+            book.Title,
+            book.EditionNumber,
+            book.ISBN,
+            book.PublicationYear,
+            book.Publisher,
+            book.PageCount,
+            book.Description,
             book.UserId);
 
-        // ========================================================
-        // AUTORES
-        // ========================================================
+        AddAuthors(
+            content,
+            book.AuthorIds);
 
-        foreach (var authorId in
-                 book.AuthorIds
-                     .Where(id => id > 0)
-                     .Distinct())
-        {
-            content.Add(
-                new StringContent(
-                    authorId.ToString()),
-                "AuthorIds");
-        }
-
-        // ========================================================
-        // CATEGORÍAS
-        // ========================================================
-
-        foreach (var categoryId in
-                 book.CategoryIds
-                     .Where(id => id > 0)
-                     .Distinct())
-        {
-            content.Add(
-                new StringContent(
-                    categoryId.ToString()),
-                "CategoryIds");
-        }
-
-        // ========================================================
-        // PORTADA
-        // ========================================================
+        AddCategories(
+            content,
+            book.CategoryIds);
 
         AddCover(
             content,
             book.CoverImage);
 
         return content;
+    }
+
+    // ============================================================
+    // CAMPOS DEL LIBRO
+    // ============================================================
+
+    private static void AddBookFields(
+        MultipartFormDataContent content,
+        string? title,
+        object? editionNumber,
+        object? isbn,
+        object? publicationYear,
+        object? publisher,
+        object? pageCount,
+        object? description,
+        object? userId)
+    {
+        AddString(
+            content,
+            "Title",
+            title);
+
+        AddNullableString(
+            content,
+            "EditionNumber",
+            editionNumber);
+
+        AddNullableString(
+            content,
+            "ISBN",
+            isbn);
+
+        AddNullableString(
+            content,
+            "PublicationYear",
+            publicationYear);
+
+        AddNullableString(
+            content,
+            "Publisher",
+            publisher);
+
+        AddNullableString(
+            content,
+            "PageCount",
+            pageCount);
+
+        AddNullableString(
+            content,
+            "Description",
+            description);
+
+        AddNullableString(
+            content,
+            "UserId",
+            userId);
+    }
+
+    // ============================================================
+    // AUTORES MULTIPART
+    // ============================================================
+
+    private static void AddAuthors(
+        MultipartFormDataContent content,
+        IEnumerable<int> authorIds)
+    {
+        var ids =
+            authorIds
+                .Where(id => id > 0)
+                .Distinct();
+
+        foreach (var authorId in ids)
+        {
+            content.Add(
+                new StringContent(
+                    authorId.ToString()),
+                "AuthorIds");
+        }
+    }
+
+    // ============================================================
+    // CATEGORÍAS MULTIPART
+    // ============================================================
+
+    private static void AddCategories(
+        MultipartFormDataContent content,
+        IEnumerable<int> categoryIds)
+    {
+        var ids =
+            categoryIds
+                .Where(id => id > 0)
+                .Distinct();
+
+        foreach (var categoryId in ids)
+        {
+            content.Add(
+                new StringContent(
+                    categoryId.ToString()),
+                "CategoryIds");
+        }
     }
 
     // ============================================================
@@ -452,8 +469,7 @@ public class BookService
         MultipartFormDataContent content,
         IFormFile? file)
     {
-        if (file == null ||
-            file.Length <= 0)
+        if (file == null || file.Length <= 0)
         {
             return;
         }
@@ -515,8 +531,7 @@ public class BookService
     // AUTORES - GET
     // ============================================================
 
-    public async Task<List<AuthorDto>>
-        GetAuthorsAsync()
+    public async Task<List<AuthorDto>> GetAuthorsAsync()
     {
         AddAuthorizationHeader();
 
@@ -536,29 +551,30 @@ public class BookService
                     .ReadFromJsonAsync<
                         List<BackendAuthorResponse>>();
 
-            if (authors == null)
-            {
-                return new List<AuthorDto>();
-            }
-
-            return authors
-                .Select(author => new AuthorDto
-                {
-                    Id =
-                        author.Id,
-
-                    FirstName =
-                        author.FirstName,
-
-                    LastName =
-                        author.LastName
-                })
-                .ToList();
+            return MapAuthors(authors);
         }
         catch
         {
             return new List<AuthorDto>();
         }
+    }
+
+    private static List<AuthorDto> MapAuthors(
+        List<BackendAuthorResponse>? authors)
+    {
+        if (authors == null)
+        {
+            return new List<AuthorDto>();
+        }
+
+        return authors
+            .Select(author => new AuthorDto
+            {
+                Id = author.Id,
+                FirstName = author.FirstName,
+                LastName = author.LastName
+            })
+            .ToList();
     }
 
     // ============================================================
@@ -583,23 +599,8 @@ public class BookService
 
             if (response.IsSuccessStatusCode)
             {
-                var created =
-                    await response.Content
-                        .ReadFromJsonAsync<
-                            BackendAuthorResponse>();
-
-                if (created != null)
-                {
-                    return (
-                        true,
-                        created.Id,
-                        null);
-                }
-
-                return (
-                    false,
-                    null,
-                    "El autor fue creado pero no se pudo obtener su Id.");
+                return await ProcessCreatedAuthorAsync(
+                    response);
             }
 
             var error =
@@ -618,6 +619,32 @@ public class BookService
                 null,
                 "No se pudo conectar con el servidor.");
         }
+    }
+
+    private static async Task<(
+        bool Success,
+        int? Id,
+        string? Error)>
+        ProcessCreatedAuthorAsync(
+            HttpResponseMessage response)
+    {
+        var created =
+            await response.Content
+                .ReadFromJsonAsync<
+                    BackendAuthorResponse>();
+
+        if (created != null)
+        {
+            return (
+                true,
+                created.Id,
+                null);
+        }
+
+        return (
+            false,
+            null,
+            "El autor fue creado pero no se pudo obtener su Id.");
     }
 
     // ============================================================
@@ -645,26 +672,29 @@ public class BookService
                     .ReadFromJsonAsync<
                         List<BackendCategoryResponse>>();
 
-            if (categories == null)
-            {
-                return new List<CategoryDto>();
-            }
-
-            return categories
-                .Select(category => new CategoryDto
-                {
-                    Id =
-                        category.Id,
-
-                    Name =
-                        category.Name
-                })
-                .ToList();
+            return MapCategories(categories);
         }
         catch
         {
             return new List<CategoryDto>();
         }
+    }
+
+    private static List<CategoryDto> MapCategories(
+        List<BackendCategoryResponse>? categories)
+    {
+        if (categories == null)
+        {
+            return new List<CategoryDto>();
+        }
+
+        return categories
+            .Select(category => new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name
+            })
+            .ToList();
     }
 
     // ============================================================
@@ -689,23 +719,8 @@ public class BookService
 
             if (response.IsSuccessStatusCode)
             {
-                var created =
-                    await response.Content
-                        .ReadFromJsonAsync<
-                            BackendCategoryResponse>();
-
-                if (created != null)
-                {
-                    return (
-                        true,
-                        created.Id,
-                        null);
-                }
-
-                return (
-                    false,
-                    null,
-                    "La categoría fue creada pero no se pudo obtener su Id.");
+                return await ProcessCreatedCategoryAsync(
+                    response);
             }
 
             var error =
@@ -726,6 +741,32 @@ public class BookService
         }
     }
 
+    private static async Task<(
+        bool Success,
+        int? Id,
+        string? Error)>
+        ProcessCreatedCategoryAsync(
+            HttpResponseMessage response)
+    {
+        var created =
+            await response.Content
+                .ReadFromJsonAsync<
+                    BackendCategoryResponse>();
+
+        if (created != null)
+        {
+            return (
+                true,
+                created.Id,
+                null);
+        }
+
+        return (
+            false,
+            null,
+            "La categoría fue creada pero no se pudo obtener su Id.");
+    }
+
     // ============================================================
     // PROCESAR RESPUESTA DEL BACKEND
     // ============================================================
@@ -739,122 +780,200 @@ public class BookService
             return ServiceResult.Ok();
         }
 
-        var errors =
-            new Dictionary<string, string[]>();
-
         var body =
             await response.Content
                 .ReadAsStringAsync();
 
-        if (!string.IsNullOrWhiteSpace(body))
-        {
-            try
-            {
-                using var document =
-                    JsonDocument.Parse(body);
-
-                var root =
-                    document.RootElement;
-
-                // =================================================
-                // ERRORS
-                // =================================================
-
-                if (root.TryGetProperty(
-                        "errors",
-                        out var errorsElement))
-                {
-                    foreach (var property in
-                             errorsElement.EnumerateObject())
-                    {
-                        var errorMessages =
-                            property.Value
-                                .EnumerateArray()
-                                .Select(
-                                    element =>
-                                        element.GetString()
-                                        ?? string.Empty)
-                                .Where(
-                                    text =>
-                                        !string.IsNullOrWhiteSpace(
-                                            text))
-                                .ToArray();
-
-                        if (errorMessages.Length > 0)
-                        {
-                            errors[property.Name] =
-                                errorMessages;
-                        }
-                    }
-                }
-
-                // =================================================
-                // MESSAGE
-                // =================================================
-
-                if (root.TryGetProperty(
-                        "message",
-                        out var messageElement))
-                {
-                    var messageText =
-                        messageElement.GetString();
-
-                    if (!string.IsNullOrWhiteSpace(
-                            messageText))
-                    {
-                        errors[string.Empty] =
-                            new[]
-                            {
-                                messageText
-                            };
-                    }
-                }
-
-                // =================================================
-                // DETAIL
-                // =================================================
-
-                if (errors.Count == 0 &&
-                    root.TryGetProperty(
-                        "detail",
-                        out var detailElement))
-                {
-                    var detailText =
-                        detailElement.GetString();
-
-                    if (!string.IsNullOrWhiteSpace(
-                            detailText))
-                    {
-                        errors[string.Empty] =
-                            new[]
-                            {
-                                detailText
-                            };
-                    }
-                }
-            }
-            catch (JsonException)
-            {
-                // Se utilizará el mensaje genérico.
-            }
-        }
-
-        // =========================================================
-        // ERROR GENÉRICO
-        // =========================================================
+        var errors =
+            ParseResponseErrors(body);
 
         if (errors.Count == 0)
         {
-            errors[string.Empty] =
-                new[]
-                {
-                    GetStatusErrorMessage(
-                        response.StatusCode)
-                };
+            AddGenericError(
+                errors,
+                response.StatusCode);
         }
 
-        return ServiceResult.Fail(
-            errors);
+        return ServiceResult.Fail(errors);
+    }
+
+    private static Dictionary<string, string[]>
+        ParseResponseErrors(
+            string body)
+    {
+        var errors =
+            new Dictionary<string, string[]>();
+
+        if (string.IsNullOrWhiteSpace(body))
+        {
+            return errors;
+        }
+
+        try
+        {
+            using var document =
+                JsonDocument.Parse(body);
+
+            var root =
+                document.RootElement;
+
+            AddValidationErrors(
+                errors,
+                root);
+
+            AddMessageError(
+                errors,
+                root);
+
+            AddDetailError(
+                errors,
+                root);
+        }
+        catch (JsonException)
+        {
+            // Se utilizará el mensaje genérico.
+        }
+
+        return errors;
+    }
+
+    // ============================================================
+    // ERRORES DE VALIDACIÓN
+    // ============================================================
+
+    private static void AddValidationErrors(
+        Dictionary<string, string[]> errors,
+        JsonElement root)
+    {
+        if (!root.TryGetProperty(
+                "errors",
+                out var errorsElement))
+        {
+            return;
+        }
+
+        foreach (var property in
+                 errorsElement.EnumerateObject())
+        {
+            var messages =
+                GetValidationMessages(
+                    property.Value);
+
+            if (messages.Length > 0)
+            {
+                errors[property.Name] =
+                    messages;
+            }
+        }
+    }
+
+    private static string[] GetValidationMessages(
+        JsonElement property)
+    {
+        return property
+            .EnumerateArray()
+            .Select(element =>
+                element.GetString() ?? string.Empty)
+            .Where(text =>
+                !string.IsNullOrWhiteSpace(text))
+            .ToArray();
+    }
+
+    // ============================================================
+    // MESSAGE
+    // ============================================================
+
+    private static void AddMessageError(
+        Dictionary<string, string[]> errors,
+        JsonElement root)
+    {
+        if (!TryGetJsonString(
+                root,
+                "message",
+                out var message))
+        {
+            return;
+        }
+
+        errors[string.Empty] =
+            new[]
+            {
+                message
+            };
+    }
+
+    // ============================================================
+    // DETAIL
+    // ============================================================
+
+    private static void AddDetailError(
+        Dictionary<string, string[]> errors,
+        JsonElement root)
+    {
+        if (errors.Count > 0)
+        {
+            return;
+        }
+
+        if (!TryGetJsonString(
+                root,
+                "detail",
+                out var detail))
+        {
+            return;
+        }
+
+        errors[string.Empty] =
+            new[]
+            {
+                detail
+            };
+    }
+
+    // ============================================================
+    // LEER STRING JSON
+    // ============================================================
+
+    private static bool TryGetJsonString(
+        JsonElement root,
+        string propertyName,
+        out string value)
+    {
+        value = string.Empty;
+
+        if (!root.TryGetProperty(
+                propertyName,
+                out var property))
+        {
+            return false;
+        }
+
+        var text =
+            property.GetString();
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return false;
+        }
+
+        value = text;
+        return true;
+    }
+
+    // ============================================================
+    // ERROR GENÉRICO
+    // ============================================================
+
+    private static void AddGenericError(
+        Dictionary<string, string[]> errors,
+        HttpStatusCode statusCode)
+    {
+        errors[string.Empty] =
+            new[]
+            {
+                GetStatusErrorMessage(
+                    statusCode)
+            };
     }
 
     // ============================================================
@@ -869,97 +988,98 @@ public class BookService
             await response.Content
                 .ReadAsStringAsync();
 
-        if (!string.IsNullOrWhiteSpace(body))
+        if (string.IsNullOrWhiteSpace(body))
         {
-            try
-            {
-                using var document =
-                    JsonDocument.Parse(body);
-
-                var root =
-                    document.RootElement;
-
-                // =================================================
-                // MESSAGE
-                // =================================================
-
-                if (root.TryGetProperty(
-                        "message",
-                        out var messageElement))
-                {
-                    var messageText =
-                        messageElement.GetString();
-
-                    if (!string.IsNullOrWhiteSpace(
-                            messageText))
-                    {
-                        return messageText;
-                    }
-                }
-
-                // =================================================
-                // DETAIL
-                // =================================================
-
-                if (root.TryGetProperty(
-                        "detail",
-                        out var detailElement))
-                {
-                    var detailText =
-                        detailElement.GetString();
-
-                    if (!string.IsNullOrWhiteSpace(
-                            detailText))
-                    {
-                        return detailText;
-                    }
-                }
-
-                // =================================================
-                // VALIDATION ERRORS
-                // =================================================
-
-                if (root.TryGetProperty(
-                        "errors",
-                        out var errorsElement))
-                {
-                    var validationMessages =
-                        new List<string>();
-
-                    foreach (var property in
-                             errorsElement.EnumerateObject())
-                    {
-                        foreach (var errorElement in
-                                 property.Value.EnumerateArray())
-                        {
-                            var errorText =
-                                errorElement.GetString();
-
-                            if (!string.IsNullOrWhiteSpace(
-                                    errorText))
-                            {
-                                validationMessages.Add(
-                                    errorText);
-                            }
-                        }
-                    }
-
-                    if (validationMessages.Count > 0)
-                    {
-                        return string.Join(
-                            " ",
-                            validationMessages);
-                    }
-                }
-            }
-            catch (JsonException)
-            {
-                // Se utilizará el mensaje HTTP.
-            }
+            return GetStatusErrorMessage(
+                response.StatusCode);
         }
 
-        return GetStatusErrorMessage(
-            response.StatusCode);
+        try
+        {
+            using var document =
+                JsonDocument.Parse(body);
+
+            return ExtractSimpleError(
+                       document.RootElement)
+                   ?? GetStatusErrorMessage(
+                       response.StatusCode);
+        }
+        catch (JsonException)
+        {
+            return GetStatusErrorMessage(
+                response.StatusCode);
+        }
+    }
+
+    // ============================================================
+    // EXTRAER ERROR SIMPLE
+    // ============================================================
+
+    private static string?
+        ExtractSimpleError(
+            JsonElement root)
+    {
+        return
+            GetMessage(root)
+            ?? GetDetail(root)
+            ?? GetValidationError(root);
+    }
+
+    // ============================================================
+    // EXTRAER MESSAGE
+    // ============================================================
+
+    private static string? GetMessage(
+        JsonElement root)
+    {
+        return TryGetJsonString(
+            root,
+            "message",
+            out var message)
+            ? message
+            : null;
+    }
+
+    // ============================================================
+    // EXTRAER DETAIL
+    // ============================================================
+
+    private static string? GetDetail(
+        JsonElement root)
+    {
+        return TryGetJsonString(
+            root,
+            "detail",
+            out var detail)
+            ? detail
+            : null;
+    }
+
+    // ============================================================
+    // EXTRAER ERRORES DE VALIDACIÓN
+    // ============================================================
+
+    private static string? GetValidationError(
+        JsonElement root)
+    {
+        if (!root.TryGetProperty(
+                "errors",
+                out var errorsElement))
+        {
+            return null;
+        }
+
+        var messages =
+            errorsElement
+                .EnumerateObject()
+                .SelectMany(property =>
+                    GetValidationMessages(
+                        property.Value))
+                .ToList();
+
+        return messages.Count > 0
+            ? string.Join(" ", messages)
+            : null;
     }
 
     // ============================================================
@@ -1049,5 +1169,4 @@ public class ServiceResult
             Errors = errors
         };
     }
-    
 }
