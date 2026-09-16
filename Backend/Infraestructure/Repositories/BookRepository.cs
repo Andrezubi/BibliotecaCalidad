@@ -78,14 +78,14 @@ public class BookRepository
     // ============================================================
 
     public async Task<IEnumerable<Book>> SearchAsync(
-        string? search)
+        string? phrase = null)
     {
-        if (string.IsNullOrWhiteSpace(search))
+        if (string.IsNullOrWhiteSpace(phrase))
         {
             return await GetAllAsync();
         }
 
-        search = search.Trim();
+        phrase = phrase.Trim();
 
         return await _dbSet
             .AsNoTracking()
@@ -94,7 +94,7 @@ public class BookRepository
                 (
                     EF.Functions.Like(
                         book.Title,
-                        $"%{search}%")
+                        $"%{phrase}%")
 
                     ||
 
@@ -102,7 +102,7 @@ public class BookRepository
                         book.ISBN != null &&
                         EF.Functions.Like(
                             book.ISBN,
-                            $"%{search}%")
+                            $"%{phrase}%")
                     )
 
                     ||
@@ -111,7 +111,7 @@ public class BookRepository
                         book.Description != null &&
                         EF.Functions.Like(
                             book.Description,
-                            $"%{search}%")
+                            $"%{phrase}%")
                     )
 
                     ||
@@ -120,7 +120,7 @@ public class BookRepository
                         book.Publisher != null &&
                         EF.Functions.Like(
                             book.Publisher,
-                            $"%{search}%")
+                            $"%{phrase}%")
                     )
 
                     ||
@@ -131,13 +131,13 @@ public class BookRepository
                         (
                             EF.Functions.Like(
                                 ba.Author.FirstName,
-                                $"%{search}%")
+                                $"%{phrase}%")
 
                             ||
 
                             EF.Functions.Like(
                                 ba.Author.LastName,
-                                $"%{search}%")
+                                $"%{phrase}%")
                         ))
 
                     ||
@@ -147,12 +147,17 @@ public class BookRepository
                         bc.Category.IsActive &&
                         EF.Functions.Like(
                             bc.Category.Name,
-                            $"%{search}%"))
+                            $"%{phrase}%"))
                 )
             )
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
+
+    // ============================================================
+    // OBTENER LIBROS DISPONIBLES
+    // ============================================================
+
     public async Task<IEnumerable<Book>> GetAvailableAsync()
     {
         return await _dbSet
@@ -165,24 +170,42 @@ public class BookRepository
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
-    public async Task<bool> InternalCodeExistsAsync(string internalCode)
+
+    // ============================================================
+    // VALIDAR CÓDIGO INTERNO DE COPIA
+    // ============================================================
+
+    public async Task<bool> InternalCodeExistsAsync(
+        string internalCode)
     {
         return await _context.Copies
-            .AnyAsync(c => c.InternalCode == internalCode);
+            .AnyAsync(copy =>
+                copy.InternalCode == internalCode);
     }
 
-    public async Task AddCopyAsync(Copy copy)
+    // ============================================================
+    // AGREGAR COPIA
+    // ============================================================
+
+    public async Task AddCopyAsync(
+        Copy copy)
     {
         await _context.Copies.AddAsync(copy);
         await _context.SaveChangesAsync();
     }
-    public async Task<int> CountAvailableCopiesAsync(int bookId)
+
+    // ============================================================
+    // CONTAR COPIAS DISPONIBLES
+    // ============================================================
+
+    public async Task<int> CountAvailableCopiesAsync(
+        int bookId)
     {
         return await _context.Copies
-            .CountAsync(c =>
-                c.BookId == bookId &&
-                c.IsActive &&
-                c.Status == "Available");
+            .CountAsync(copy =>
+                copy.BookId == bookId &&
+                copy.IsActive &&
+                copy.Status == "Available");
     }
 
     // ============================================================
@@ -194,11 +217,12 @@ public class BookRepository
     {
         return await _context.Bookauthors
             .AsNoTracking()
-            .Where(ba =>
-                ba.BookId == bookId &&
-                ba.IsActive &&
-                ba.Author.IsActive)
-            .Select(ba => ba.AuthorId)
+            .Where(bookAuthor =>
+                bookAuthor.BookId == bookId &&
+                bookAuthor.IsActive &&
+                bookAuthor.Author.IsActive)
+            .Select(bookAuthor =>
+                bookAuthor.AuthorId)
             .ToListAsync();
     }
 
@@ -211,11 +235,12 @@ public class BookRepository
     {
         return await _context.Bookcategories
             .AsNoTracking()
-            .Where(bc =>
-                bc.BookId == bookId &&
-                bc.IsActive &&
-                bc.Category.IsActive)
-            .Select(bc => bc.CategoryId)
+            .Where(bookCategory =>
+                bookCategory.BookId == bookId &&
+                bookCategory.IsActive &&
+                bookCategory.Category.IsActive)
+            .Select(bookCategory =>
+                bookCategory.CategoryId)
             .ToListAsync();
     }
 
@@ -233,17 +258,12 @@ public class BookRepository
             .Distinct()
             .ToHashSet();
 
-        var relations =
-            await _context.Bookauthors
-                .Where(ba =>
-                    ba.BookId == bookId)
-                .ToListAsync();
+        var relations = await _context.Bookauthors
+            .Where(bookAuthor =>
+                bookAuthor.BookId == bookId)
+            .ToListAsync();
 
         var now = DateTime.Now;
-
-        // --------------------------------------------------------
-        // ACTIVAR / DESACTIVAR RELACIONES EXISTENTES
-        // --------------------------------------------------------
 
         foreach (var relation in relations)
         {
@@ -261,18 +281,10 @@ public class BookRepository
             }
         }
 
-        // --------------------------------------------------------
-        // OBTENER IDS YA EXISTENTES
-        // --------------------------------------------------------
-
-        var existingIds =
-            relations
-                .Select(r => r.AuthorId)
-                .ToHashSet();
-
-        // --------------------------------------------------------
-        // AGREGAR NUEVAS RELACIONES
-        // --------------------------------------------------------
+        var existingIds = relations
+            .Select(relation =>
+                relation.AuthorId)
+            .ToHashSet();
 
         foreach (var authorId in selectedIds)
         {
@@ -310,17 +322,12 @@ public class BookRepository
             .Distinct()
             .ToHashSet();
 
-        var relations =
-            await _context.Bookcategories
-                .Where(bc =>
-                    bc.BookId == bookId)
-                .ToListAsync();
+        var relations = await _context.Bookcategories
+            .Where(bookCategory =>
+                bookCategory.BookId == bookId)
+            .ToListAsync();
 
         var now = DateTime.Now;
-
-        // --------------------------------------------------------
-        // ACTIVAR / DESACTIVAR RELACIONES EXISTENTES
-        // --------------------------------------------------------
 
         foreach (var relation in relations)
         {
@@ -338,18 +345,10 @@ public class BookRepository
             }
         }
 
-        // --------------------------------------------------------
-        // OBTENER IDS YA EXISTENTES
-        // --------------------------------------------------------
-
-        var existingIds =
-            relations
-                .Select(r => r.CategoryId)
-                .ToHashSet();
-
-        // --------------------------------------------------------
-        // AGREGAR NUEVAS RELACIONES
-        // --------------------------------------------------------
+        var existingIds = relations
+            .Select(relation =>
+                relation.CategoryId)
+            .ToHashSet();
 
         foreach (var categoryId in selectedIds)
         {
