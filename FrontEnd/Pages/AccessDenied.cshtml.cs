@@ -5,8 +5,6 @@ namespace FrontEnd.Pages
 {
     public class AccessDeniedModel : PageModel
     {
-        public void OnGet()
-        {
-        }
+
     }
 }

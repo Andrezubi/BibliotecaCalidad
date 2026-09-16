@@ -5,9 +5,6 @@ namespace FrontEnd.Pages
 {
     public class PrivacyModel : PageModel
     {
-        public void OnGet()
-        {
-        }
     }
 
 }
