@@ -293,7 +293,7 @@ public class BookService
     // MULTIPART - CREATE BOOK
     // ============================================================
 
-    private MultipartFormDataContent BuildCreateBookContent(
+    private static MultipartFormDataContent BuildCreateBookContent(
         CreateBookDto book)
     {
         var content =
@@ -322,7 +322,7 @@ public class BookService
     // MULTIPART - UPDATE BOOK
     // ============================================================
 
-    private MultipartFormDataContent BuildUpdateBookContent(
+    private static MultipartFormDataContent BuildUpdateBookContent(
         UpdateBookDto book)
     {
         var content =
@@ -350,61 +350,6 @@ public class BookService
     // ============================================================
     // CAMPOS DEL LIBRO
     // ============================================================
-
-    private static void AddBookFieldsbad(
-        MultipartFormDataContent content,
-        string? title,
-        object? editionNumber,
-        object? isbn,
-        object? publicationYear,
-        object? publisher,
-        object? pageCount,
-        object? description,
-        object? userId)
-    {
-        AddString(
-            content,
-            "Title",
-            title);
-
-        AddNullableString(
-            content,
-            "EditionNumber",
-            editionNumber);
-
-        AddNullableString(
-            content,
-            "ISBN",
-            isbn);
-
-        AddNullableString(
-            content,
-            "PublicationYear",
-            publicationYear);
-
-        AddNullableString(
-            content,
-            "Publisher",
-            publisher);
-
-        AddNullableString(
-            content,
-            "PageCount",
-            pageCount);
-
-        AddNullableString(
-            content,
-            "Description",
-            description);
-
-        AddNullableString(
-            content,
-            "UserId",
-            userId);
-    }
-
-
-
 
     private static void AddBookFields(
         MultipartFormDataContent content,
