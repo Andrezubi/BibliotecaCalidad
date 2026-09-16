@@ -5,13 +5,12 @@ namespace FrontEnd.Services
     public class AuthorService
     {
         private readonly HttpClient _httpClient;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public AuthorService(
-            HttpClient httpClient,
-            IHttpContextAccessor httpContextAccessor)
+            HttpClient httpClient
+            )
         {
             _httpClient = httpClient;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<AuthorDto>> GetAllAsync()

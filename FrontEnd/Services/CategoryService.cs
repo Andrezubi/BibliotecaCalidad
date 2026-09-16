@@ -5,13 +5,10 @@ namespace FrontEnd.Services
     public class CategoryService
     {
         private readonly HttpClient _httpClient;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         public CategoryService(
-            HttpClient httpClient,
-            IHttpContextAccessor httpContextAccessor)
+            HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<CategoryDto>> GetAllAsync()
