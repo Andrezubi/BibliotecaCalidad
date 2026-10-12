@@ -1,4 +1,5 @@
 ﻿using Backend.Application.Interfaces;
+using Backend.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -24,7 +25,7 @@ namespace Backend.Controllers
         [HttpPost("return/{copyId}")]
         public async Task<IActionResult> RegisterReturn(int copyId)
         {
-            var result = await _loanService.RegisterReturnAsync(copyId);
+            var result = await _loanService.RegisterReturnAsync((uint)copyId);
 
             if (!result)
             {
@@ -43,7 +44,7 @@ namespace Backend.Controllers
         [HttpPost("loan-book/{bookId}")]
         public async Task<IActionResult> RegisterLoan(int bookId)
         {
-            var result = await _loanService.RegisterLoanAsync(bookId);
+            var result = await _loanService.RegisterLoanAsync((uint)bookId);
 
             if (!result)
             {

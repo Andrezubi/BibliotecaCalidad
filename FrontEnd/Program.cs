@@ -56,6 +56,13 @@ builder.Services.AddHttpClient<CategoryService>(client =>
     );
 });
 
+builder.Services.AddHttpClient<PublisherService>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["BackendUrl"]!
+    );
+});
+
 // ======================================================
 // HTTP CLIENT - LOANS
 // ======================================================

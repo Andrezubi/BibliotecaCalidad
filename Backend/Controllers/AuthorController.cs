@@ -1,6 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -27,7 +27,7 @@ namespace Backend.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Author>> GetById(int id)
         {
-            var author = await _authorService.GetByIdAsync(id);
+            var author = await _authorService.GetByIdAsync((uint)id);
 
             if (author == null)
                 return NotFound();
@@ -65,7 +65,7 @@ namespace Backend.Controllers
             try
             {
                 var author =
-                    await _authorService.UpdateAsync(id, dto);
+                    await _authorService.UpdateAsync((uint)id, dto);
 
                 if (author == null)
                     return NotFound();
@@ -84,7 +84,7 @@ namespace Backend.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _authorService.DeleteAsync(id);
+            var deleted = await _authorService.DeleteAsync((uint)id);
 
             if (!deleted)
                 return NotFound();

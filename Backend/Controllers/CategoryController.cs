@@ -1,6 +1,6 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -30,7 +30,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<Category>> GetById(int id)
         {
             var category =
-                await _categoryService.GetByIdAsync(id);
+                await _categoryService.GetByIdAsync((byte)id);
 
             if (category == null)
                 return NotFound();
@@ -69,7 +69,7 @@ namespace Backend.Controllers
             try
             {
                 var category =
-                    await _categoryService.UpdateAsync(id, dto);
+                    await _categoryService.UpdateAsync((byte)id, dto);
 
                 if (category == null)
                     return NotFound();
@@ -89,7 +89,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var deleted =
-                await _categoryService.DeleteAsync(id);
+                await _categoryService.DeleteAsync((byte)id);
 
             if (!deleted)
                 return NotFound();

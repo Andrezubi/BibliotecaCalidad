@@ -10,7 +10,7 @@ public class UpdateBookDto
 
     public int? PublicationYear { get; set; }
 
-    public string? Publisher { get; set; }
+    public uint? PublisherId { get; set; }
 
     public int? PageCount { get; set; }
 

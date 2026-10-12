@@ -1,16 +1,16 @@
 ﻿using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
 using Backend.Infraestructure.Persistence;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infraestructure.Repositories;
 
 public class CategoryRepository
-    : BaseRepository<Category>,
+    : BaseRepository<Category, byte>,
       ICategoryRepository
 {
     public CategoryRepository(
-        LibraryDbContext context)
+        LibraryDbcontext context)
         : base(context)
     {
     }
@@ -19,7 +19,7 @@ public class CategoryRepository
     {
         return await _dbSet
             .AsNoTracking()
-            .Where(category => category.IsActive)
+            .Where(category => category.IsActive == true)
             .OrderBy(category => category.Name)
             .ToListAsync();
     }
@@ -29,15 +29,15 @@ public class CategoryRepository
         name = name.Trim();
 
         return await _dbSet.AnyAsync(category =>
-            category.IsActive &&
+            category.IsActive == true &&
             category.Name == name);
     }
 
-    public async Task<bool> ExistsActiveByIdAsync(int id)
+    public async Task<bool> ExistsActiveByIdAsync(byte id)
     {
         return await _dbSet.AnyAsync(category =>
             category.Id == id &&
-            category.IsActive);
+            category.IsActive == true);
     }
 
     public new async Task DeleteAsync(Category category)

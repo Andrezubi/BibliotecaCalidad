@@ -1,6 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
+using Backend.Models;
 
 namespace Backend.Application.Services;
 
@@ -42,8 +43,7 @@ public class AuthService : IAuthService
             );
         }
 
-        if (user.IsActive != true ||
-            user.Status != "Active")
+        if (user.Status != "Active")
         {
             throw new InvalidOperationException(
                 "El usuario no se encuentra activo."
@@ -69,7 +69,7 @@ public class AuthService : IAuthService
         {
             Token = token,
             Username = user.Username,
-            Role = user.Role.Name
+            Role = user.Role
         };
     }
 }

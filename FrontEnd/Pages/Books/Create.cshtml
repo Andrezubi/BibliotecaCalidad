@@ -152,17 +152,18 @@
 
                     <div class="mb-3">
 
-                        <label asp-for="Book.Publisher"
+                        <label asp-for="Book.PublisherId"
                                class="form-label">
                             Editorial
                         </label>
 
-                        <input asp-for="Book.Publisher"
-                               class="form-control"
-                               maxlength="150"
-                               placeholder="Ingrese la editorial" />
+                        <select asp-for="Book.PublisherId"
+                                class="form-select"
+                                asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Model.Publishers, "Id", "Name"))">
+                            <option value="">Seleccionar editorial...</option>
+                        </select>
 
-                        <span asp-validation-for="Book.Publisher"
+                        <span asp-validation-for="Book.PublisherId"
                               class="text-danger">
                         </span>
 

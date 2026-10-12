@@ -23,11 +23,13 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
-    public byte RoleId { get; set; }
+    public string Role { get; set; } = null!;
 
     public bool IsLibraryComputerUser { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public bool? IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -77,6 +79,8 @@ public partial class User
 
     public virtual ICollection<Notification> NotificationUsers { get; set; } = new List<Notification>();
 
+    public virtual ICollection<Publisher> Publishers { get; set; } = new List<Publisher>();
+
     public virtual ICollection<Renewal> RenewalLibrarians { get; set; } = new List<Renewal>();
 
     public virtual ICollection<Renewal> RenewalUsers { get; set; } = new List<Renewal>();
@@ -84,12 +88,6 @@ public partial class User
     public virtual ICollection<Reservation> ReservationReaders { get; set; } = new List<Reservation>();
 
     public virtual ICollection<Reservation> ReservationUsers { get; set; } = new List<Reservation>();
-
-    public virtual Role Role { get; set; } = null!;
-
-    public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
-
-    public virtual ICollection<Setting> Settings { get; set; } = new List<Setting>();
 
     public virtual User? UserNavigation { get; set; }
 }

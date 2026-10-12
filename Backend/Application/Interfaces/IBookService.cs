@@ -8,17 +8,17 @@ public interface IBookService
 {
     Task<IEnumerable<BookDto>> GetAllAsync();
 
-    Task<BookDto?> GetByIdAsync(int id);
+    Task<BookDto?> GetByIdAsync(uint id);
 
     Task<BookDto> CreateAsync(CreateBookDto dto);
 
-    Task<BookDto?> UpdateAsync(int id, UpdateBookDto dto);
+    Task<BookDto?> UpdateAsync(uint id, UpdateBookDto dto);
 
-    Task<bool> DeleteAsync(int id);
+    Task<bool> DeleteAsync(uint id);
 
     Task<IEnumerable<BookDto>> GetAvailableAsync();
 
-    Task<string?> AddCopyAsync(int bookId, string internalCode);
+    Task<string?> AddCopyAsync(uint bookId, string internalCode);
 
     Task<IEnumerable<BookDto>> SearchAsync(string? phrase = null);
 }

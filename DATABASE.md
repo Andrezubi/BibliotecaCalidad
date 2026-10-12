@@ -1,5 +1,12 @@
 Use this sql as a reference, not as an executable
 
+-- ============================================================
+-- LIBRARY DATABASE
+-- MySQL 8+
+-- ============================================================
+
+DROP DATABASE IF EXISTS `librarydb2`;
+
 CREATE DATABASE `librarydb2`
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
@@ -96,19 +103,13 @@ ENGINE = InnoDB;
 
 CREATE TABLE `Publisher` (
     `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-
     `Name` VARCHAR(150) NOT NULL,
-
     `CreatedAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `UpdatedAt` DATETIME NULL DEFAULT NULL,
     `UserId` SMALLINT UNSIGNED NULL,
-
     PRIMARY KEY (`Id`),
-
     UNIQUE KEY `UQ_Publisher_Name` (`Name`),
-
     KEY `IX_Publisher_UserId` (`UserId`),
-
     CONSTRAINT `FK_Publisher_User`
         FOREIGN KEY (`UserId`)
         REFERENCES `User` (`Id`)

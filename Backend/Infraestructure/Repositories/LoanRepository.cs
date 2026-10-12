@@ -1,24 +1,26 @@
-﻿using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
+﻿using Backend.Domain.Common;
+using Backend.Domain.Interfaces;
 using Backend.Infraestructure.Persistence;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Infrastructure.Repositories;
+namespace Backend.Infraestructure.Repositories;
 
-public class LoanRepository : BaseRepository<Loan>, ILoanRepository
+public class LoanRepository : ILoanRepository
 {
-    public LoanRepository(LibraryDbContext context)
-        : base(context)
+    private readonly LibraryDbcontext _context;
+
+    public LoanRepository(LibraryDbcontext context)
     {
+        _context = context;
     }
 
     public async Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync()
     {
         return await _context.Copies
             .Where(c =>
-                c.Status == "Loaned" &&
-                c.IsActive &&
-                c.Book.IsActive
+                c.StatusId == 2 && // Loaned
+                c.Book.IsActive == true
             )
             .Select(c => new LoanedBook
             {
@@ -26,20 +28,21 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
                 BookId = c.Book.Id,
                 Title = c.Book.Title,
                 InternalCode = c.InternalCode,
-                Status = c.Status
+                Status = c.Status.Name
             })
             .ToListAsync();
     }
-    public async Task<Copy?> GetCopyByIdAsync(int copyId)
+
+    public async Task<Copy?> GetCopyByIdAsync(uint copyId)
     {
         return await _context.Copies
             .FirstOrDefaultAsync(c => c.Id == copyId);
     }
 
-    public async Task<Loan?> GetActiveLoanByCopyIdAsync(int copyId)
+    public async Task<Loan?> GetActiveLoanByCopyIdAsync(uint copyId)
     {
         return await _context.Loans
-            .Where(l => l.CopyId == copyId && l.Status == "Active")
+            .Where(l => l.Loanitems.Any(li => li.CopyId == copyId && li.Status == "Active"))
             .OrderByDescending(l => l.LoanDate)
             .FirstOrDefaultAsync();
     }
@@ -48,13 +51,14 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
     {
         await _context.SaveChangesAsync();
     }
-    public async Task<Copy?> GetFirstAvailableCopyByBookIdAsync(int bookId)
+
+    public async Task<Copy?> GetFirstAvailableCopyByBookIdAsync(uint bookId)
     {
         return await _context.Copies
             .Where(c =>
                 c.BookId == bookId &&
-                c.Status == "Available" &&
-                c.IsActive)
+                c.StatusId == 1 && // Available
+                c.Book.IsActive == true)
             .OrderBy(c => c.Id)
             .FirstOrDefaultAsync();
     }

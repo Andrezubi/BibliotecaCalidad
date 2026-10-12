@@ -13,7 +13,7 @@ public class CreateBookDto
 
     public int? PublicationYear { get; set; }
 
-    public string? Publisher { get; set; } = string.Empty;
+    public uint? PublisherId { get; set; }
 
     public int? PageCount { get; set; }
 

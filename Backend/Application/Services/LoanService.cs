@@ -1,6 +1,7 @@
 ﻿using Backend.Application.Interfaces;
+using Backend.Domain.Common;
 using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 
 namespace Backend.Application.Services
 {
@@ -18,19 +19,19 @@ namespace Backend.Application.Services
             return await _loanRepository.GetLoanedBooksAsync();
         }
 
-        public async Task<bool> RegisterReturnAsync(int copyId)
+        public async Task<bool> RegisterReturnAsync(uint copyId)
             {
                 var copy = await _loanRepository.GetCopyByIdAsync(copyId);
 
-                // La copia debe existir, estar activa y estar prestada.
-                if (copy == null || !copy.IsActive)
+                // La copia debe existir y estar prestada.
+                if (copy == null)
                     return false;
 
-                if (copy.Status != "Loaned")
+                if (copy.StatusId != 2) // Loaned
                     return false;
 
                 // 1) Cambiar el estado de la copia a Disponible.
-                copy.Status = "Available";
+                copy.StatusId = 1; // Available
                 copy.UpdatedAt = DateTime.Now;
 
                 // 2) Registrar la devolución en el préstamo activo, si existe.
@@ -38,16 +39,27 @@ namespace Backend.Application.Services
 
                 if (loan != null)
                 {
-                    loan.ReturnedAt = DateTime.Now;
-                    loan.Status = "Returned";
-                    loan.UpdatedAt = DateTime.Now;
+                    var loanItem = loan.Loanitems.FirstOrDefault(li => li.CopyId == copyId && li.Status == "Active");
+                    if (loanItem != null)
+                    {
+                        loanItem.ReturnedAt = DateTime.Now;
+                        loanItem.Status = "Returned";
+                        loanItem.UpdatedAt = DateTime.Now;
+                    }
+                    
+                    // Check if all items are returned
+                    if (loan.Loanitems.All(li => li.Status == "Returned"))
+                    {
+                        loan.Status = "Completed";
+                        loan.UpdatedAt = DateTime.Now;
+                    }
                 }
 
                 await _loanRepository.SaveChangesAsync();
 
                 return true;
         }
-        public async Task<bool> RegisterLoanAsync(int bookId)
+        public async Task<bool> RegisterLoanAsync(uint bookId)
         {
             var copy = await _loanRepository.GetFirstAvailableCopyByBookIdAsync(bookId);
 
@@ -56,7 +68,7 @@ namespace Backend.Application.Services
                 return false;
 
             // Cambiar el estado de la copia a Prestado.
-            copy.Status = "Loaned";
+            copy.StatusId = 2; // Loaned
             copy.UpdatedAt = DateTime.Now;
 
             await _loanRepository.SaveChangesAsync();

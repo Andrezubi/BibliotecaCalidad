@@ -5,8 +5,6 @@ namespace Backend.Models;
 
 public partial class Loanitem
 {
-    public uint Id { get; set; }
-
     public uint LoanId { get; set; }
 
     public uint CopyId { get; set; }
@@ -14,6 +12,8 @@ public partial class Loanitem
     public DateTime? ReturnedAt { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public bool? IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -26,6 +26,8 @@ public partial class Loanitem
     public virtual Fine? Fine { get; set; }
 
     public virtual Loan Loan { get; set; } = null!;
+
+    public virtual ICollection<Renewal> Renewals { get; set; } = new List<Renewal>();
 
     public virtual User? User { get; set; }
 }

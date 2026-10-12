@@ -1,4 +1,4 @@
-﻿using Backend.Domain.Models;
+﻿using Backend.Models;
 using System.Text.RegularExpressions;
 
 namespace Backend.Domain.Validators;
@@ -41,7 +41,7 @@ public static class BookValidator
         AddValidation(
             errors,
             "ISBN",
-            () => ValidateISBN(book.ISBN));
+            () => ValidateISBN(book.Isbn));
 
         AddValidation(
             errors,
@@ -50,8 +50,8 @@ public static class BookValidator
 
         AddValidation(
             errors,
-            "Publisher",
-            () => ValidatePublisher(book.Publisher));
+            "PublisherId",
+            () => ValidatePublisherId(book.PublisherId));
 
         AddValidation(
             errors,
@@ -80,7 +80,7 @@ public static class BookValidator
     // ============================================================
 
     public static void ValidateAuthorIds(
-        IEnumerable<int>? authorIds)
+        IEnumerable<uint>? authorIds)
     {
         var errors = new Dictionary<string, List<string>>();
 
@@ -120,7 +120,7 @@ public static class BookValidator
     // ============================================================
 
     public static void ValidateCategoryIds(
-        IEnumerable<int>? categoryIds)
+        IEnumerable<byte>? categoryIds)
     {
         var errors = new Dictionary<string, List<string>>();
 
@@ -194,10 +194,10 @@ public static class BookValidator
         var normalizedTitle =
             NormalizeSpaces(title);
 
-        if (normalizedTitle.Length > 50)
+        if (normalizedTitle.Length > 255)
         {
             throw new ArgumentException(
-                "El título no puede superar los 50 caracteres.");
+                "El título no puede superar los 255 caracteres.");
         }
 
         if (!string.Equals(
@@ -221,18 +221,12 @@ public static class BookValidator
     // ============================================================
 
     private static void ValidateEditionNumber(
-        int? editionNumber)
+        byte editionNumber)
     {
-        if (!editionNumber.HasValue)
+        if (editionNumber == 0)
         {
             throw new ArgumentException(
                 "El número de edición es obligatorio.");
-        }
-
-        if (editionNumber <= 0)
-        {
-            throw new ArgumentException(
-                "El número de edición debe ser mayor a 0.");
         }
     }
 
@@ -245,8 +239,7 @@ public static class BookValidator
     {
         if (string.IsNullOrWhiteSpace(isbn))
         {
-            throw new ArgumentException(
-                "El ISBN es obligatorio.");
+            return; // ISBN is optional in new model
         }
 
         var trimmedIsbn =
@@ -299,12 +292,11 @@ public static class BookValidator
     // ============================================================
 
     private static void ValidatePublicationYear(
-        int? publicationYear)
+        ushort? publicationYear)
     {
         if (!publicationYear.HasValue)
         {
-            throw new ArgumentException(
-                "El año de publicación es obligatorio.");
+            return; // Optional in new model
         }
 
         if (publicationYear < 1000 ||
@@ -316,40 +308,21 @@ public static class BookValidator
     }
 
     // ============================================================
-    // EDITORIAL
+    // EDITORIAL (PublisherId)
     // ============================================================
 
-    private static void ValidatePublisher(
-        string? publisher)
+    private static void ValidatePublisherId(
+        uint? publisherId)
     {
-        if (string.IsNullOrWhiteSpace(publisher))
+        if (!publisherId.HasValue)
         {
-            throw new ArgumentException(
-                "La editorial es obligatoria.");
+            return; // Optional in new model
         }
 
-        var normalizedPublisher =
-            NormalizeSpaces(publisher);
-
-        if (normalizedPublisher.Length > 50)
+        if (publisherId == 0)
         {
             throw new ArgumentException(
-                "La editorial no puede superar los 50 caracteres.");
-        }
-
-        if (!string.Equals(
-                publisher,
-                normalizedPublisher,
-                StringComparison.Ordinal))
-        {
-            throw new ArgumentException(
-                "La editorial no debe contener espacios innecesarios.");
-        }
-
-        if (!ContainsValidText(normalizedPublisher))
-        {
-            throw new ArgumentException(
-                "La editorial contiene caracteres no válidos.");
+                "El ID de la editorial no es válido.");
         }
     }
 
@@ -358,15 +331,14 @@ public static class BookValidator
     // ============================================================
 
     private static void ValidatePageCount(
-        int? pageCount)
+        ushort? pageCount)
     {
         if (!pageCount.HasValue)
         {
-            throw new ArgumentException(
-                "La cantidad de páginas es obligatoria.");
+            return; // Optional in new model
         }
 
-        if (pageCount <= 0)
+        if (pageCount == 0)
         {
             throw new ArgumentException(
                 "La cantidad de páginas debe ser mayor a 0.");
@@ -388,10 +360,10 @@ public static class BookValidator
         var normalizedDescription =
             NormalizeSpaces(description);
 
-        if (normalizedDescription.Length > 500)
+        if (normalizedDescription.Length > 400)
         {
             throw new ArgumentException(
-                "La descripción no puede superar los 500 caracteres.");
+                "La descripción no puede superar los 400 caracteres.");
         }
 
         if (!string.Equals(

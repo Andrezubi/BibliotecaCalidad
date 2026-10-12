@@ -7,8 +7,6 @@ public partial class Loan
 {
     public uint Id { get; set; }
 
-    public uint? LoanRequestId { get; set; }
-
     public ushort BorrowerId { get; set; }
 
     public ushort LibrarianId { get; set; }
@@ -18,6 +16,8 @@ public partial class Loan
     public DateTime DueDate { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public bool? IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -29,11 +29,7 @@ public partial class Loan
 
     public virtual User Librarian { get; set; } = null!;
 
-    public virtual Loanrequest? LoanRequest { get; set; }
-
     public virtual ICollection<Loanitem> Loanitems { get; set; } = new List<Loanitem>();
-
-    public virtual ICollection<Renewal> Renewals { get; set; } = new List<Renewal>();
 
     public virtual User? User { get; set; }
 }

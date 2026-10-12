@@ -9,15 +9,15 @@ public partial class Book
 
     public string Title { get; set; } = null!;
 
-    public ushort EditionNumber { get; set; }
+    public byte EditionNumber { get; set; }
 
     public string? Isbn { get; set; }
 
     public ushort? PublicationYear { get; set; }
 
-    public string? Publisher { get; set; }
+    public uint? PublisherId { get; set; }
 
-    public uint? PageCount { get; set; }
+    public ushort? PageCount { get; set; }
 
     public string? Description { get; set; }
 
@@ -36,6 +36,8 @@ public partial class Book
     public virtual ICollection<Bookcategory> Bookcategories { get; set; } = new List<Bookcategory>();
 
     public virtual ICollection<Copy> Copies { get; set; } = new List<Copy>();
+
+    public virtual Publisher? Publisher { get; set; }
 
     public virtual User? User { get; set; }
 }

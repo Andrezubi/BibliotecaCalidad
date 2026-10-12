@@ -1,16 +1,16 @@
 ﻿using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
 using Backend.Infraestructure.Persistence;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Infraestructure.Repositories;
 
 public class AuthorRepository
-    : BaseRepository<Author>,
+    : BaseRepository<Author, uint>,
       IAuthorRepository
 {
     public AuthorRepository(
-        LibraryDbContext context)
+        LibraryDbcontext context)
         : base(context)
     {
     }
@@ -19,7 +19,7 @@ public class AuthorRepository
     {
         return await _dbSet
             .AsNoTracking()
-            .Where(author => author.IsActive)
+            .Where(author => author.IsActive == true)
             .OrderBy(author => author.LastName)
             .ThenBy(author => author.FirstName)
             .ToListAsync();
@@ -33,16 +33,16 @@ public class AuthorRepository
         lastName = lastName.Trim();
 
         return await _dbSet.AnyAsync(author =>
-            author.IsActive &&
+            author.IsActive == true &&
             author.FirstName == firstName &&
             author.LastName == lastName);
     }
 
-    public async Task<bool> ExistsActiveByIdAsync(int id)
+    public async Task<bool> ExistsActiveByIdAsync(uint id)
     {
         return await _dbSet.AnyAsync(author =>
             author.Id == id &&
-            author.IsActive);
+            author.IsActive == true);
     }
 
     public new async Task DeleteAsync(Author author)

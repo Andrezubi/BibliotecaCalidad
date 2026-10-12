@@ -1,7 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 
 namespace Backend.Application.Services;
 
@@ -20,13 +20,13 @@ public class AuthorService : IAuthorService
         return await _authorRepository.GetAllAsync();
     }
 
-    public async Task<Author?> GetByIdAsync(int id)
+    public async Task<Author?> GetByIdAsync(uint id)
     {
         var author =
             await _authorRepository.GetByIdAsync(id);
 
         if (author == null ||
-            !author.IsActive)
+            author.IsActive != true)
         {
             return null;
         }
@@ -70,7 +70,7 @@ public class AuthorService : IAuthorService
         {
             FirstName = firstName,
             LastName = lastName,
-            UserId = dto.UserId,
+            UserId = dto.UserId != null ? (ushort)dto.UserId.Value : null,
             IsActive = true,
             CreatedAt = DateTime.Now
         };
@@ -81,7 +81,7 @@ public class AuthorService : IAuthorService
     }
 
     public async Task<Author?> UpdateAsync(
-        int id,
+        uint id,
         CreateAuthorDto dto)
     {
         var author =
@@ -89,7 +89,7 @@ public class AuthorService : IAuthorService
                 .GetByIdAsync(id);
 
         if (author == null ||
-            !author.IsActive)
+            author.IsActive != true)
         {
             return null;
         }
@@ -117,7 +117,7 @@ public class AuthorService : IAuthorService
 
         author.FirstName = firstName;
         author.LastName = lastName;
-        author.UserId = dto.UserId;
+        author.UserId = dto.UserId != null ? (ushort)dto.UserId.Value : null;
         author.UpdatedAt = DateTime.Now;
 
         await _authorRepository.UpdateAsync(author);
@@ -125,14 +125,14 @@ public class AuthorService : IAuthorService
         return author;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(uint id)
     {
         var author =
             await _authorRepository
                 .GetByIdAsync(id);
 
         if (author == null ||
-            !author.IsActive)
+            author.IsActive != true)
         {
             return false;
         }

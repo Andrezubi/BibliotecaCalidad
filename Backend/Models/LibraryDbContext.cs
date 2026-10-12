@@ -5,13 +5,13 @@ using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Backend.Models;
 
-public partial class LibraryDbContext : DbContext
+public partial class LibraryDbcontext : DbContext
 {
-    public LibraryDbContext()
+    public LibraryDbcontext()
     {
     }
 
-    public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
+    public LibraryDbcontext(DbContextOptions<LibraryDbcontext> options)
         : base(options)
     {
     }
@@ -44,19 +44,17 @@ public partial class LibraryDbContext : DbContext
 
     public virtual DbSet<Notification> Notifications { get; set; }
 
+    public virtual DbSet<Publisher> Publishers { get; set; }
+
     public virtual DbSet<Renewal> Renewals { get; set; }
 
     public virtual DbSet<Reservation> Reservations { get; set; }
-
-    public virtual DbSet<Role> Roles { get; set; }
-
-    public virtual DbSet<Setting> Settings { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;port=3306;database=librarydb2;user=root;password=1234", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.46-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;port=3306;database=librarydb2;uid=root;password=1234", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.46-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -97,6 +95,8 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.EditionNumber, "IX_Book_EditionNumber");
 
+            entity.HasIndex(e => e.PublisherId, "IX_Book_PublisherId");
+
             entity.HasIndex(e => e.Title, "IX_Book_Title");
 
             entity.HasIndex(e => e.UserId, "IX_Book_UserId");
@@ -107,15 +107,18 @@ public partial class LibraryDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Description).HasMaxLength(400);
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("'1'");
             entity.Property(e => e.Isbn)
                 .HasMaxLength(20)
                 .HasColumnName("ISBN");
-            entity.Property(e => e.Publisher).HasMaxLength(150);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Publisher).WithMany(p => p.Books)
+                .HasForeignKey(d => d.PublisherId)
+                .HasConstraintName("FK_Book_Publisher");
 
             entity.HasOne(d => d.User).WithMany(p => p.Books)
                 .HasForeignKey(d => d.UserId)
@@ -195,6 +198,7 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.Name, "UQ_Category_Name").IsUnique();
 
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
@@ -229,6 +233,9 @@ public partial class LibraryDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.InternalCode).HasMaxLength(50);
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
             entity.Property(e => e.StatusId).HasDefaultValueSql("'1'");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -281,7 +288,7 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "IX_Fine_UserId");
 
-            entity.HasIndex(e => e.LoanItemId, "UQ_Fine_LoanItem").IsUnique();
+            entity.HasIndex(e => new { e.LoanId, e.CopyId }, "UQ_Fine_Loan_Copy").IsUnique();
 
             entity.Property(e => e.Amount).HasPrecision(7, 2);
             entity.Property(e => e.CreatedAt)
@@ -295,15 +302,15 @@ public partial class LibraryDbContext : DbContext
                 .HasColumnType("enum('Pending','PartiallyPaid','Paid','Waived')");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-            entity.HasOne(d => d.LoanItem).WithOne(p => p.Fine)
-                .HasForeignKey<Fine>(d => d.LoanItemId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Fine_LoanItem");
-
             entity.HasOne(d => d.User).WithMany(p => p.Fines)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Fine_User");
+
+            entity.HasOne(d => d.Loanitem).WithOne(p => p.Fine)
+                .HasForeignKey<Fine>(d => new { d.LoanId, d.CopyId })
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Fine_LoanItem");
         });
 
         modelBuilder.Entity<Finepayment>(entity =>
@@ -360,8 +367,6 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.LibrarianId, "IX_Loan_LibrarianId");
 
-            entity.HasIndex(e => e.LoanRequestId, "IX_Loan_LoanRequestId");
-
             entity.HasIndex(e => e.Status, "IX_Loan_Status");
 
             entity.HasIndex(e => e.UserId, "IX_Loan_UserId");
@@ -370,6 +375,9 @@ public partial class LibraryDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.DueDate).HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
             entity.Property(e => e.LoanDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
@@ -388,11 +396,6 @@ public partial class LibraryDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Loan_Librarian");
 
-            entity.HasOne(d => d.LoanRequest).WithMany(p => p.Loans)
-                .HasForeignKey(d => d.LoanRequestId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_Loan_LoanRequest");
-
             entity.HasOne(d => d.User).WithMany(p => p.LoanUsers)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.SetNull)
@@ -401,7 +404,9 @@ public partial class LibraryDbContext : DbContext
 
         modelBuilder.Entity<Loanitem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => new { e.LoanId, e.CopyId })
+                .HasName("PRIMARY")
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
             entity.ToTable("loanitem");
 
@@ -411,11 +416,12 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "IX_LoanItem_UserId");
 
-            entity.HasIndex(e => new { e.LoanId, e.CopyId }, "UQ_LoanItem_Loan_Copy").IsUnique();
-
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
             entity.Property(e => e.ReturnedAt).HasColumnType("datetime");
             entity.Property(e => e.Status)
                 .HasDefaultValueSql("'Active'")
@@ -483,15 +489,15 @@ public partial class LibraryDbContext : DbContext
 
         modelBuilder.Entity<Loanrequestitem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => new { e.LoanRequestId, e.CopyId })
+                .HasName("PRIMARY")
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
             entity.ToTable("loanrequestitem");
 
             entity.HasIndex(e => e.CopyId, "IX_LoanRequestItem_CopyId");
 
             entity.HasIndex(e => e.UserId, "IX_LoanRequestItem_UserId");
-
-            entity.HasIndex(e => new { e.LoanRequestId, e.CopyId }, "UQ_LoanRequestItem_Request_Copy").IsUnique();
 
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -546,6 +552,28 @@ public partial class LibraryDbContext : DbContext
                 .HasConstraintName("FK_Notification_User");
         });
 
+        modelBuilder.Entity<Publisher>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("publisher");
+
+            entity.HasIndex(e => e.UserId, "IX_Publisher_UserId");
+
+            entity.HasIndex(e => e.Name, "UQ_Publisher_Name").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Name).HasMaxLength(150);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Publishers)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Publisher_User");
+        });
+
         modelBuilder.Entity<Renewal>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -554,7 +582,7 @@ public partial class LibraryDbContext : DbContext
 
             entity.HasIndex(e => e.LibrarianId, "IX_Renewal_LibrarianId");
 
-            entity.HasIndex(e => e.LoanId, "IX_Renewal_LoanId");
+            entity.HasIndex(e => new { e.LoanId, e.CopyId }, "IX_Renewal_Loan_Copy");
 
             entity.HasIndex(e => e.UserId, "IX_Renewal_UserId");
 
@@ -573,14 +601,14 @@ public partial class LibraryDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Renewal_Librarian");
 
-            entity.HasOne(d => d.Loan).WithMany(p => p.Renewals)
-                .HasForeignKey(d => d.LoanId)
-                .HasConstraintName("FK_Renewal_Loan");
-
             entity.HasOne(d => d.User).WithMany(p => p.RenewalUsers)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Renewal_User");
+
+            entity.HasOne(d => d.Loanitem).WithMany(p => p.Renewals)
+                .HasForeignKey(d => new { d.LoanId, d.CopyId })
+                .HasConstraintName("FK_Renewal_LoanItem");
         });
 
         modelBuilder.Entity<Reservation>(entity =>
@@ -605,6 +633,9 @@ public partial class LibraryDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.EndAt).HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
             entity.Property(e => e.StartAt).HasColumnType("datetime");
             entity.Property(e => e.Status)
                 .HasDefaultValueSql("'Pending'")
@@ -627,60 +658,11 @@ public partial class LibraryDbContext : DbContext
                 .HasConstraintName("FK_Reservation_User");
         });
 
-        modelBuilder.Entity<Role>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("role");
-
-            entity.HasIndex(e => e.UserId, "IX_Role_UserId");
-
-            entity.HasIndex(e => e.Name, "UQ_Role_Name").IsUnique();
-
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Roles)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_Role_User");
-        });
-
-        modelBuilder.Entity<Setting>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("setting");
-
-            entity.HasIndex(e => e.UserId, "IX_Setting_UserId");
-
-            entity.HasIndex(e => e.SettingKey, "UQ_Setting_Key").IsUnique();
-
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.SettingKey).HasMaxLength(50);
-            entity.Property(e => e.SettingValue).HasMaxLength(100);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Settings)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK_Setting_User");
-        });
-
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable("user");
-
-            entity.HasIndex(e => e.RoleId, "IX_User_RoleId");
 
             entity.HasIndex(e => e.UserId, "IX_User_UserId");
 
@@ -694,20 +676,19 @@ public partial class LibraryDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
             entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("'1'");
             entity.Property(e => e.LastName).HasMaxLength(50);
-            entity.Property(e => e.PasswordHash).HasMaxLength(255);
+            entity.Property(e => e.PasswordHash).HasMaxLength(100);
             entity.Property(e => e.Phone).HasMaxLength(15);
+            entity.Property(e => e.Role).HasMaxLength(20);
             entity.Property(e => e.SecondLastName).HasMaxLength(50);
             entity.Property(e => e.Status)
                 .HasDefaultValueSql("'Active'")
                 .HasColumnType("enum('Active','Blocked','Inactive')");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-            entity.Property(e => e.Username).HasMaxLength(20);
-
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_User_Role");
+            entity.Property(e => e.Username).HasMaxLength(15);
 
             entity.HasOne(d => d.UserNavigation).WithMany(p => p.InverseUserNavigation)
                 .HasForeignKey(d => d.UserId)
