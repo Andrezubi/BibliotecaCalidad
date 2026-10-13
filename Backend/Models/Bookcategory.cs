@@ -7,7 +7,7 @@ public partial class Bookcategory
 {
     public uint BookId { get; set; }
 
-    public ushort CategoryId { get; set; }
+    public byte CategoryId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

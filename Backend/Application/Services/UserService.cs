@@ -1,7 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 
 namespace Backend.Application.Services;
 
@@ -75,16 +75,6 @@ public class UserService : IUserService
             );
         }
 
-        var userRole =
-            await _userRepository.GetRoleByNameAsync("User");
-
-        if (userRole is null)
-        {
-            throw new InvalidOperationException(
-                "El rol de usuario no está configurado."
-            );
-        }
-
         var passwordHash =
             _passwordService.HashPassword(request.Password);
 
@@ -104,10 +94,9 @@ public class UserService : IUserService
 
             PasswordHash = passwordHash,
 
-            RoleId = userRole.Id,
+            Role = "User",
 
             Status = "Active",
-            IsActive = true,
 
             CreatedAt = DateTime.Now
         };

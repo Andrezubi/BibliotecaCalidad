@@ -1,5 +1,5 @@
 ﻿using Backend.Application.DTOs;
-using Backend.Domain.Models;
+using Backend.Models;
 
 namespace Backend.Application.Interfaces
 {
@@ -7,14 +7,14 @@ namespace Backend.Application.Interfaces
     {
         Task<IEnumerable<Author>> GetAllAsync();
 
-        Task<Author?> GetByIdAsync(int id);
+        Task<Author?> GetByIdAsync(uint id);
 
         Task<Author> CreateAsync(CreateAuthorDto dto);
 
         Task<Author?> UpdateAsync(
-            int id,
+            uint id,
             CreateAuthorDto dto);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(uint id);
     }
 }

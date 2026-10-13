@@ -1,14 +1,14 @@
-﻿using Backend.Domain.Models;
+﻿using Backend.Models;
 
 namespace Backend.Domain.Interfaces;
 
-public interface IAuthorRepository : IBaseRepository<Author>
+public interface IAuthorRepository : IBaseRepository<Author, uint>
 {
     Task<bool> ExistsAsync(
         string firstName,
         string lastName);
 
-    Task<bool> ExistsActiveByIdAsync(int id);
+    Task<bool> ExistsActiveByIdAsync(uint id);
 
     Task AddBookAuthorAsync(Bookauthor bookAuthor);
 }

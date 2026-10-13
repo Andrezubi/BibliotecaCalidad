@@ -7,7 +7,9 @@ public partial class Fine
 {
     public uint Id { get; set; }
 
-    public uint LoanItemId { get; set; }
+    public uint LoanId { get; set; }
+
+    public uint CopyId { get; set; }
 
     public decimal DailyRate { get; set; }
 
@@ -25,7 +27,7 @@ public partial class Fine
 
     public virtual ICollection<Finepayment> Finepayments { get; set; } = new List<Finepayment>();
 
-    public virtual Loanitem LoanItem { get; set; } = null!;
+    public virtual Loanitem Loanitem { get; set; } = null!;
 
     public virtual User? User { get; set; }
 }

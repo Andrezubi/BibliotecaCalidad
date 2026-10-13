@@ -1,5 +1,5 @@
 ﻿using Backend.Application.DTOs;
-using Backend.Domain.Models;
+using Backend.Models;
 
 namespace Backend.Application.Interfaces
 {
@@ -7,15 +7,15 @@ namespace Backend.Application.Interfaces
     {
         Task<IEnumerable<Category>> GetAllAsync();
 
-        Task<Category?> GetByIdAsync(int id);
+        Task<Category?> GetByIdAsync(byte id);
 
         Task<Category> CreateAsync(
             CreateCategoryDto dto);
 
         Task<Category?> UpdateAsync(
-            int id,
+            byte id,
             CreateCategoryDto dto);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(byte id);
     }
 }

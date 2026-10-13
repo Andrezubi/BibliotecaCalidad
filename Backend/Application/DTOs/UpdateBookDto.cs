@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Application.DTOs;
 
@@ -17,8 +18,7 @@ public class UpdateBookDto
     [Range(1000, 2100)]
     public int? PublicationYear { get; set; }
 
-    [StringLength(150)]
-    public string? Publisher { get; set; }
+    public uint? PublisherId { get; set; }
 
     [Range(1, int.MaxValue)]
     public int? PageCount { get; set; }
@@ -30,5 +30,5 @@ public class UpdateBookDto
     public IFormFile? CoverImage { get; set; }
     public List<int> AuthorIds { get; set; } = new();
     public List<int> CategoryIds { get; set; } = new();
- 
+  
 }

@@ -1,21 +1,22 @@
 ﻿using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
 using Backend.Infraestructure.Persistence;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Infrastructure.Repositories;
+namespace Backend.Infraestructure.Repositories;
 
-public class UserRepository : BaseRepository<User>, IUserRepository
+public class UserRepository : IUserRepository
 {
-    public UserRepository(LibraryDbContext context)
-        : base(context)
+    private readonly LibraryDbcontext _context;
+
+    public UserRepository(LibraryDbcontext context)
     {
+        _context = context;
     }
 
     public async Task<User?> GetByUsernameAsync(string username)
     {
         return await _context.Users
-            .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Username == username);
     }
 
@@ -38,10 +39,9 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             );
     }
 
-    public async Task<Role?> GetRoleByNameAsync(string roleName)
+    public async Task AddAsync(User user)
     {
-        return await _context.Roles
-            .FirstOrDefaultAsync(r => r.Name == roleName);
+        await _context.Users.AddAsync(user);
     }
 
     public async Task SaveChangesAsync()

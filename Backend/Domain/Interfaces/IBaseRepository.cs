@@ -2,9 +2,9 @@
 
 namespace Backend.Domain.Interfaces;
 
-public interface IBaseRepository<T> where T : class
+public interface IBaseRepository<T, TKey> where T : class
 {
-    Task<T?> GetByIdAsync(int id);
+    Task<T?> GetByIdAsync(TKey id);
 
     Task<IEnumerable<T>> GetAllAsync();
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Backend.Presentation.Controllers;
+namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -37,7 +37,7 @@ public class BookController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<BookDto>> GetById(int id)
     {
-        var book = await _bookService.GetByIdAsync(id);
+        var book = await _bookService.GetByIdAsync((uint)id);
 
         if (book == null)
             return NotFound();
@@ -106,7 +106,7 @@ public class BookController : ControllerBase
         try
         {
             var book =
-                await _bookService.UpdateAsync(id, dto);
+                await _bookService.UpdateAsync((uint)id, dto);
 
             if (book == null)
                 return NotFound();
@@ -152,7 +152,7 @@ public class BookController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var deleted =
-            await _bookService.DeleteAsync(id);
+            await _bookService.DeleteAsync((uint)id);
 
         if (!deleted)
             return NotFound();
@@ -186,7 +186,7 @@ public class BookController : ControllerBase
     [HttpPost("{id}/copies")]
     public async Task<IActionResult> AddCopy(int id, [FromBody] AddCopyRequest request)
     {
-        var error = await _bookService.AddCopyAsync(id, request.InternalCode);
+        var error = await _bookService.AddCopyAsync((uint)id, request.InternalCode);
 
         if (error != null)
             return BadRequest(new { message = error });

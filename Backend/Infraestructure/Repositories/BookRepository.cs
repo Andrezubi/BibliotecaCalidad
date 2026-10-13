@@ -1,16 +1,16 @@
 ﻿using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
 using Backend.Infraestructure.Persistence;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Infrastructure.Repositories;
+namespace Backend.Infraestructure.Repositories;
 
 public class BookRepository
-    : BaseRepository<Book>,
+    : BaseRepository<Book, uint>,
       IBookRepository
 {
     public BookRepository(
-        LibraryDbContext context)
+        LibraryDbcontext context)
         : base(context)
     {
     }
@@ -23,7 +23,7 @@ public class BookRepository
     {
         return await _dbSet
             .AsNoTracking()
-            .Where(book => book.IsActive)
+            .Where(book => book.IsActive == true)
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
@@ -33,7 +33,7 @@ public class BookRepository
     // ============================================================
 
     public new async Task<Book?> GetByIdAsync(
-        int id)
+        uint id)
     {
         return await _dbSet
             .Include(book => book.Bookauthors)
@@ -56,8 +56,8 @@ public class BookRepository
 
         return await _dbSet
             .AnyAsync(book =>
-                book.ISBN == isbn &&
-                book.IsActive);
+                book.Isbn == isbn &&
+                book.IsActive == true);
     }
 
     // ============================================================
@@ -90,7 +90,7 @@ public class BookRepository
         return await _dbSet
             .AsNoTracking()
             .Where(book =>
-                book.IsActive &&
+                book.IsActive == true &&
                 (
                     EF.Functions.Like(
                         book.Title,
@@ -99,9 +99,9 @@ public class BookRepository
                     ||
 
                     (
-                        book.ISBN != null &&
+                        book.Isbn != null &&
                         EF.Functions.Like(
-                            book.ISBN,
+                            book.Isbn,
                             $"%{phrase}%")
                     )
 
@@ -119,15 +119,14 @@ public class BookRepository
                     (
                         book.Publisher != null &&
                         EF.Functions.Like(
-                            book.Publisher,
+                            book.Publisher.Name,
                             $"%{phrase}%")
                     )
 
                     ||
 
                     book.Bookauthors.Any(ba =>
-                        ba.IsActive &&
-                        ba.Author.IsActive &&
+                        ba.Author.IsActive == true &&
                         (
                             EF.Functions.Like(
                                 ba.Author.FirstName,
@@ -143,8 +142,7 @@ public class BookRepository
                     ||
 
                     book.Bookcategories.Any(bc =>
-                        bc.IsActive &&
-                        bc.Category.IsActive &&
+                        bc.Category.IsActive == true &&
                         EF.Functions.Like(
                             bc.Category.Name,
                             $"%{phrase}%"))
@@ -163,10 +161,10 @@ public class BookRepository
         return await _dbSet
             .AsNoTracking()
             .Where(book =>
-                book.IsActive &&
+                book.IsActive == true &&
                 book.Copies.Any(copy =>
-                    copy.IsActive &&
-                    copy.Status == "Available"))
+                    copy.StatusId == 1 && // Available
+                    copy.Status.Name == "Available"))
             .OrderBy(book => book.Title)
             .ToListAsync();
     }
@@ -199,28 +197,27 @@ public class BookRepository
     // ============================================================
 
     public async Task<int> CountAvailableCopiesAsync(
-        int bookId)
+        uint bookId)
     {
         return await _context.Copies
             .CountAsync(copy =>
                 copy.BookId == bookId &&
-                copy.IsActive &&
-                copy.Status == "Available");
+                copy.StatusId == 1 && // Available
+                copy.Status.Name == "Available");
     }
 
     // ============================================================
     // OBTENER AUTORES ACTIVOS DEL LIBRO
     // ============================================================
 
-    public async Task<List<int>> GetAuthorIdsAsync(
-        int bookId)
+    public async Task<List<uint>> GetAuthorIdsAsync(
+        uint bookId)
     {
         return await _context.Bookauthors
             .AsNoTracking()
             .Where(bookAuthor =>
                 bookAuthor.BookId == bookId &&
-                bookAuthor.IsActive &&
-                bookAuthor.Author.IsActive)
+                bookAuthor.Author.IsActive == true)
             .Select(bookAuthor =>
                 bookAuthor.AuthorId)
             .ToListAsync();
@@ -230,15 +227,14 @@ public class BookRepository
     // OBTENER CATEGORÍAS ACTIVAS DEL LIBRO
     // ============================================================
 
-    public async Task<List<int>> GetCategoryIdsAsync(
-        int bookId)
+    public async Task<List<byte>> GetCategoryIdsAsync(
+        uint bookId)
     {
         return await _context.Bookcategories
             .AsNoTracking()
             .Where(bookCategory =>
                 bookCategory.BookId == bookId &&
-                bookCategory.IsActive &&
-                bookCategory.Category.IsActive)
+                bookCategory.Category.IsActive == true)
             .Select(bookCategory =>
                 bookCategory.CategoryId)
             .ToListAsync();
@@ -249,9 +245,9 @@ public class BookRepository
     // ============================================================
 
     public async Task UpdateAuthorsAsync(
-        int bookId,
-        IEnumerable<int> authorIds,
-        int? userId)
+        uint bookId,
+        IEnumerable<uint> authorIds,
+        ushort? userId)
     {
         var selectedIds = authorIds
             .Where(id => id > 0)
@@ -270,14 +266,14 @@ public class BookRepository
             if (selectedIds.Contains(
                     relation.AuthorId))
             {
-                relation.IsActive = true;
                 relation.UpdatedAt = now;
                 relation.UserId = userId;
             }
             else
             {
-                relation.IsActive = false;
                 relation.UpdatedAt = now;
+                // Soft delete by removing the relation
+                _context.Bookauthors.Remove(relation);
             }
         }
 
@@ -298,7 +294,6 @@ public class BookRepository
                 {
                     BookId = bookId,
                     AuthorId = authorId,
-                    IsActive = true,
                     CreatedAt = now,
                     UpdatedAt = null,
                     UserId = userId
@@ -313,9 +308,9 @@ public class BookRepository
     // ============================================================
 
     public async Task UpdateCategoriesAsync(
-        int bookId,
-        IEnumerable<int> categoryIds,
-        int? userId)
+        uint bookId,
+        IEnumerable<byte> categoryIds,
+        ushort? userId)
     {
         var selectedIds = categoryIds
             .Where(id => id > 0)
@@ -334,14 +329,14 @@ public class BookRepository
             if (selectedIds.Contains(
                     relation.CategoryId))
             {
-                relation.IsActive = true;
                 relation.UpdatedAt = now;
                 relation.UserId = userId;
             }
             else
             {
-                relation.IsActive = false;
                 relation.UpdatedAt = now;
+                // Soft delete by removing the relation
+                _context.Bookcategories.Remove(relation);
             }
         }
 
@@ -362,7 +357,6 @@ public class BookRepository
                 {
                     BookId = bookId,
                     CategoryId = categoryId,
-                    IsActive = true,
                     CreatedAt = now,
                     UpdatedAt = null,
                     UserId = userId

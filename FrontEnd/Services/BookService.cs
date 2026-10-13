@@ -377,8 +377,8 @@ public class BookService
 
         AddNullableString(
             content,
-            "Publisher",
-            book.Publisher);
+            "PublisherId",
+            book.PublisherId);
 
         AddNullableString(
             content,
@@ -403,7 +403,7 @@ public class BookService
             EditionNumber = updateDto.EditionNumber,
             ISBN = updateDto.ISBN,
             PublicationYear = updateDto.PublicationYear,
-            Publisher = updateDto.Publisher,
+            PublisherId = updateDto.PublisherId,
             PageCount = updateDto.PageCount,
             Description = updateDto.Description,
             UserId = updateDto.UserId

@@ -9,10 +9,12 @@ namespace FrontEnd.Pages.Books;
 public class CreateModel : AuthorizedPageModel
 {
     private readonly BookService _bookService;
+    private readonly PublisherService _publisherService;
 
-    public CreateModel(BookService bookService)
+    public CreateModel(BookService bookService, PublisherService publisherService)
     {
         _bookService = bookService;
+        _publisherService = publisherService;
     }
 
     // =====================================================
@@ -33,6 +35,12 @@ public class CreateModel : AuthorizedPageModel
     // =====================================================
 
     public List<CategoryDto> Categories { get; set; } = new();
+
+    // =====================================================
+    // EDITORIALES
+    // =====================================================
+
+    public List<PublisherDto> Publishers { get; set; } = new();
 
     // =====================================================
     // GET
@@ -98,7 +106,7 @@ public class CreateModel : AuthorizedPageModel
     }
 
     // =====================================================
-    // CARGAR AUTORES Y CATEGORÍAS
+    // CARGAR AUTORES, CATEGORÍAS Y EDITORIALES
     // =====================================================
 
     private async Task LoadAuthorsAndCategoriesAsync()
@@ -108,6 +116,9 @@ public class CreateModel : AuthorizedPageModel
 
         Categories =
             (await _bookService.GetCategoriesAsync()).ToList();
+
+        Publishers =
+            (await _publisherService.GetAllAsync()).ToList();
     }
 
     // =====================================================

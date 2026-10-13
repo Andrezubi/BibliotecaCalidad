@@ -5,8 +5,6 @@ namespace Backend.Models;
 
 public partial class Loanrequestitem
 {
-    public uint Id { get; set; }
-
     public uint LoanRequestId { get; set; }
 
     public uint CopyId { get; set; }

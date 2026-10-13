@@ -1,16 +1,17 @@
 ﻿using Backend.Domain.Interfaces;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Backend.Infraestructure.Persistence;
 
-public class BaseRepository<T> : IBaseRepository<T>
+public class BaseRepository<T, TKey> : IBaseRepository<T, TKey>
     where T : class
 {
-    protected readonly LibraryDbContext _context;
+    protected readonly LibraryDbcontext _context;
     protected readonly DbSet<T> _dbSet;
 
-    public BaseRepository(LibraryDbContext context)
+    public BaseRepository(LibraryDbcontext context)
     {
         _context = context
             ?? throw new ArgumentNullException(nameof(context));
@@ -18,17 +19,17 @@ public class BaseRepository<T> : IBaseRepository<T>
         _dbSet = _context.Set<T>();
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(TKey id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
 
-    public async Task<IEnumerable<T>> FindAsync(
+    public virtual async Task<IEnumerable<T>> FindAsync(
         Expression<Func<T, bool>> predicate)
     {
         return await _dbSet
@@ -36,19 +37,19 @@ public class BaseRepository<T> : IBaseRepository<T>
             .ToListAsync();
     }
 
-    public async Task AddAsync(T entity)
+    public virtual async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(T entity)
+    public virtual async Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(T entity)
+    public virtual async Task DeleteAsync(T entity)
     {
         _dbSet.Remove(entity);
         await _context.SaveChangesAsync();

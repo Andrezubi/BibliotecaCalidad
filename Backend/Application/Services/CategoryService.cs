@@ -1,7 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 
 namespace Backend.Application.Services;
 
@@ -20,14 +20,14 @@ public class CategoryService : ICategoryService
         return await _categoryRepository.GetAllAsync();
     }
 
-    public async Task<Category?> GetByIdAsync(int id)
+    public async Task<Category?> GetByIdAsync(byte id)
     {
         var category =
             await _categoryRepository
                 .GetByIdAsync(id);
 
         if (category == null ||
-            !category.IsActive)
+            category.IsActive != true)
         {
             return null;
         }
@@ -66,7 +66,7 @@ public class CategoryService : ICategoryService
                     ? null
                     : dto.Description.Trim(),
 
-            UserId = dto.UserId,
+            UserId = dto.UserId != null ? (ushort)dto.UserId.Value : null,
             IsActive = true,
             CreatedAt = DateTime.Now
         };
@@ -77,7 +77,7 @@ public class CategoryService : ICategoryService
     }
 
     public async Task<Category?> UpdateAsync(
-        int id,
+        byte id,
         CreateCategoryDto dto)
     {
         var category =
@@ -85,7 +85,7 @@ public class CategoryService : ICategoryService
                 .GetByIdAsync(id);
 
         if (category == null ||
-            !category.IsActive)
+            category.IsActive != true)
         {
             return null;
         }
@@ -114,7 +114,7 @@ public class CategoryService : ICategoryService
                 ? null
                 : dto.Description.Trim();
 
-        category.UserId = dto.UserId;
+        category.UserId = dto.UserId != null ? (ushort)dto.UserId.Value : null;
         category.UpdatedAt = DateTime.Now;
 
         await _categoryRepository
@@ -123,14 +123,14 @@ public class CategoryService : ICategoryService
         return category;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(byte id)
     {
         var category =
             await _categoryRepository
                 .GetByIdAsync(id);
 
         if (category == null ||
-            !category.IsActive)
+            category.IsActive != true)
         {
             return false;
         }

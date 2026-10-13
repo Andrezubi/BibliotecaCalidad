@@ -9,6 +9,8 @@ public partial class Renewal
 
     public uint LoanId { get; set; }
 
+    public uint CopyId { get; set; }
+
     public ushort LibrarianId { get; set; }
 
     public DateTime RenewalDate { get; set; }
@@ -25,7 +27,7 @@ public partial class Renewal
 
     public virtual User Librarian { get; set; } = null!;
 
-    public virtual Loan Loan { get; set; } = null!;
+    public virtual Loanitem Loanitem { get; set; } = null!;
 
     public virtual User? User { get; set; }
 }

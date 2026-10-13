@@ -1,8 +1,8 @@
-﻿using Backend.Application.DTOs;
+using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
-using Backend.Domain.Models;
 using Backend.Domain.Validators;
+using Backend.Models;
 using Backend.Infraestructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -19,7 +19,7 @@ public class BookService : IBookService
     private readonly IAuthorRepository _authorRepository;
     private readonly ICategoryRepository _categoryRepository;
     private readonly IWebHostEnvironment _environment;
-    private readonly LibraryDbContext _context;
+    private readonly LibraryDbcontext _context;
 
     private static readonly string[] AllowedExtensions =
     {
@@ -44,7 +44,7 @@ public class BookService : IBookService
         IAuthorRepository authorRepository,
         ICategoryRepository categoryRepository,
         IWebHostEnvironment environment,
-        LibraryDbContext context)
+        LibraryDbcontext context)
     {
         _bookRepository = bookRepository;
         _authorRepository = authorRepository;
@@ -77,12 +77,12 @@ public class BookService : IBookService
     // OBTENER POR ID
     // ============================================================
 
-    public async Task<BookDto?> GetByIdAsync(int id)
+    public async Task<BookDto?> GetByIdAsync(uint id)
     {
         var book =
             await _bookRepository.GetByIdAsync(id);
 
-        if (book == null || !book.IsActive)
+        if (book == null || book.IsActive != true)
         {
             return null;
         }
@@ -100,10 +100,10 @@ public class BookService : IBookService
         ArgumentNullException.ThrowIfNull(dto);
 
         var authorIds =
-            NormalizeIds(dto.AuthorIds);
+            NormalizeAuthorIds(dto.AuthorIds);
 
         var categoryIds =
-            NormalizeIds(dto.CategoryIds);
+            NormalizeCategoryIds(dto.CategoryIds);
 
         await ValidateAuthorsAsync(authorIds);
         await ValidateCategoriesAsync(categoryIds);
@@ -170,18 +170,18 @@ public class BookService : IBookService
     // ============================================================
 
     public async Task<BookDto?> UpdateAsync(
-    int id,
-    UpdateBookDto dto)
+        uint id,
+        UpdateBookDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
         var book = await _bookRepository.GetByIdAsync(id);
 
-        if (book == null || !book.IsActive)
+        if (book == null || book.IsActive != true)
             return null;
 
-        var authorIds = NormalizeIds(dto.AuthorIds);
-        var categoryIds = NormalizeIds(dto.CategoryIds);
+        var authorIds = NormalizeAuthorIds(dto.AuthorIds);
+        var categoryIds = NormalizeCategoryIds(dto.CategoryIds);
 
         await ValidateAuthorsAsync(authorIds);
         await ValidateCategoriesAsync(categoryIds);
@@ -190,7 +190,7 @@ public class BookService : IBookService
 
         await ValidateUpdateIsbnAsync(
             dto.ISBN,
-            book.ISBN);
+            book.Isbn);
 
         var oldCover = book.CoverImage;
 
@@ -212,16 +212,11 @@ public class BookService : IBookService
     }
 
 
-
-
-
-
-
     private async Task<string?> UpdateBookTransactionAsync(
     Book book,
     UpdateBookDto dto,
-    IEnumerable<int> authorIds,
-    IEnumerable<int> categoryIds)
+    IEnumerable<uint> authorIds,
+    IEnumerable<byte> categoryIds)
     {
         string? newCoverPath = null;
 
@@ -245,12 +240,12 @@ public class BookService : IBookService
             await _bookRepository.UpdateAuthorsAsync(
                 book.Id,
                 authorIds.ToList(),
-                dto.UserId);
+                dto.UserId != null ? (ushort)dto.UserId.Value : null);
 
             await _bookRepository.UpdateCategoriesAsync(
                 book.Id,
                 categoryIds.ToList(),
-                dto.UserId);
+                dto.UserId != null ? (ushort)dto.UserId.Value : null);
 
             await transaction.CommitAsync();
 
@@ -271,14 +266,14 @@ public class BookService : IBookService
     // ELIMINACIÓN LÓGICA
     // ============================================================
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(uint id)
     {
         var book =
             await _bookRepository
                 .GetByIdAsync(id);
 
         if (book == null ||
-            !book.IsActive)
+            book.IsActive != true)
         {
             return false;
         }
@@ -317,7 +312,7 @@ public class BookService : IBookService
     // ============================================================
 
     public async Task<string?> AddCopyAsync(
-        int bookId,
+        uint bookId,
         string internalCode)
     {
         if (string.IsNullOrWhiteSpace(internalCode))
@@ -338,7 +333,7 @@ public class BookService : IBookService
                 .GetByIdAsync(bookId);
 
         if (book == null ||
-            !book.IsActive)
+            book.IsActive != true)
         {
             return "El libro no existe.";
         }
@@ -354,8 +349,7 @@ public class BookService : IBookService
         {
             BookId = bookId,
             InternalCode = internalCode,
-            Status = "Available",
-            IsActive = true,
+            StatusId = 1, // Available
             CreatedAt = DateTime.Now
         };
 
@@ -369,14 +363,26 @@ public class BookService : IBookService
     // NORMALIZAR IDS
     // ============================================================
 
-    private static List<int> NormalizeIds(
+    private static List<uint> NormalizeAuthorIds(
         IEnumerable<int>? ids)
     {
         return ids?
             .Where(id => id > 0)
+            .Select(id => (uint)id)
             .Distinct()
             .ToList()
-            ?? new List<int>();
+            ?? new List<uint>();
+    }
+
+    private static List<byte> NormalizeCategoryIds(
+        IEnumerable<int>? ids)
+    {
+        return ids?
+            .Where(id => id > 0)
+            .Select(id => (byte)id)
+            .Distinct()
+            .ToList()
+            ?? new List<byte>();
     }
 
     // ============================================================
@@ -384,7 +390,7 @@ public class BookService : IBookService
     // ============================================================
 
     private async Task ValidateAuthorsAsync(
-        IEnumerable<int> authorIds)
+        IEnumerable<uint> authorIds)
     {
         var ids =
             authorIds.ToList();
@@ -411,7 +417,7 @@ public class BookService : IBookService
     // ============================================================
 
     private async Task ValidateCategoriesAsync(
-        IEnumerable<int> categoryIds)
+        IEnumerable<byte> categoryIds)
     {
         var ids =
             categoryIds.ToList();
@@ -494,13 +500,13 @@ public class BookService : IBookService
         return new Book
         {
             Title = dto.Title,
-            EditionNumber = dto.EditionNumber,
-            ISBN = dto.ISBN,
-            PublicationYear = dto.PublicationYear,
-            Publisher = dto.Publisher,
-            PageCount = dto.PageCount,
+            EditionNumber = (byte)(dto.EditionNumber ?? 1),
+            Isbn = dto.ISBN,
+            PublicationYear = dto.PublicationYear != null ? (ushort)dto.PublicationYear : null,
+            PublisherId = dto.PublisherId,
+            PageCount = dto.PageCount != null ? (ushort)dto.PageCount : null,
             Description = dto.Description,
-            UserId = dto.UserId,
+            UserId = dto.UserId != null ? (ushort)dto.UserId : null,
             IsActive = true,
             CreatedAt = DateTime.Now
         };
@@ -518,25 +524,25 @@ public class BookService : IBookService
             dto.Title;
 
         book.EditionNumber =
-            dto.EditionNumber;
+            dto.EditionNumber.HasValue ? (byte)dto.EditionNumber.Value : book.EditionNumber;
 
-        book.ISBN =
+        book.Isbn =
             dto.ISBN;
 
         book.PublicationYear =
-            dto.PublicationYear;
+            dto.PublicationYear.HasValue ? (ushort)dto.PublicationYear.Value : book.PublicationYear;
 
-        book.Publisher =
-            dto.Publisher;
+        book.PublisherId =
+            dto.PublisherId;
 
         book.PageCount =
-            dto.PageCount;
+            dto.PageCount.HasValue ? (ushort)dto.PageCount.Value : book.PageCount;
 
         book.Description =
             dto.Description;
 
         book.UserId =
-            dto.UserId;
+            dto.UserId.HasValue ? (ushort)dto.UserId.Value : book.UserId;
 
         book.UpdatedAt =
             DateTime.Now;
@@ -547,8 +553,8 @@ public class BookService : IBookService
     // ============================================================
 
     private async Task AddAuthorsAsync(
-        int bookId,
-        IEnumerable<int> authorIds,
+        uint bookId,
+        IEnumerable<uint> authorIds,
         int? userId)
     {
         foreach (var authorId in authorIds)
@@ -558,9 +564,8 @@ public class BookService : IBookService
                 {
                     BookId = bookId,
                     AuthorId = authorId,
-                    IsActive = true,
                     CreatedAt = DateTime.Now,
-                    UserId = userId
+                    UserId = userId != null ? (ushort)userId.Value : null
                 };
 
             await _authorRepository
@@ -574,8 +579,8 @@ public class BookService : IBookService
     // ============================================================
 
     private async Task AddCategoriesAsync(
-        int bookId,
-        IEnumerable<int> categoryIds,
+        uint bookId,
+        IEnumerable<byte> categoryIds,
         int? userId)
     {
         foreach (var categoryId in categoryIds)
@@ -585,9 +590,8 @@ public class BookService : IBookService
                 {
                     BookId = bookId,
                     CategoryId = categoryId,
-                    IsActive = true,
                     CreatedAt = DateTime.Now,
-                    UserId = userId
+                    UserId = userId != null ? (ushort)userId.Value : null
                 };
 
             await _categoryRepository
@@ -774,7 +778,7 @@ public class BookService : IBookService
         return new BookDto
         {
             Id =
-                book.Id,
+                (int)book.Id,
 
             Title =
                 book.Title,
@@ -783,16 +787,19 @@ public class BookService : IBookService
                 book.EditionNumber,
 
             ISBN =
-                book.ISBN,
+                book.Isbn,
 
             PublicationYear =
-                book.PublicationYear,
+                book.PublicationYear != null ? (int)book.PublicationYear.Value : null,
+
+            PublisherId =
+                book.PublisherId,
 
             Publisher =
-                book.Publisher,
+                book.Publisher?.Name,
 
             PageCount =
-                book.PageCount,
+                book.PageCount != null ? (int)book.PageCount.Value : null,
 
             Description =
                 book.Description,
@@ -801,7 +808,7 @@ public class BookService : IBookService
                 book.CoverImage,
 
             IsActive =
-                book.IsActive,
+                book.IsActive ?? true,
 
             CreatedAt =
                 book.CreatedAt,
@@ -810,13 +817,13 @@ public class BookService : IBookService
                 book.UpdatedAt,
 
             UserId =
-                book.UserId,
+                book.UserId != null ? (int)book.UserId.Value : null,
 
             AuthorIds =
-                authorIds.ToList(),
+                authorIds.Select(x => (int)x).ToList(),
 
             CategoryIds =
-                categoryIds.ToList()
+                categoryIds.Select(x => (int)x).ToList()
         };
     }
 

@@ -10,13 +10,16 @@ public class UpdateModel : AuthorizedPageModel
 {
     private readonly BookService _bookService;
     private readonly IConfiguration _configuration;
+    private readonly PublisherService _publisherService;
 
     public UpdateModel(
         BookService bookService,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        PublisherService publisherService)
     {
         _bookService = bookService;
         _configuration = configuration;
+        _publisherService = publisherService;
     }
 
     // =====================================================
@@ -52,6 +55,12 @@ public class UpdateModel : AuthorizedPageModel
     public List<CategoryDto> Categories { get; set; } = new();
 
     // =====================================================
+    // EDITORIALES
+    // =====================================================
+
+    public List<PublisherDto> Publishers { get; set; } = new();
+
+    // =====================================================
     // GET
     // =====================================================
 
@@ -75,7 +84,7 @@ public class UpdateModel : AuthorizedPageModel
             EditionNumber = book.EditionNumber,
             ISBN = book.ISBN,
             PublicationYear = book.PublicationYear,
-            Publisher = book.Publisher,
+            PublisherId = book.PublisherId,
             PageCount = book.PageCount,
             Description = book.Description,
             UserId = book.UserId,
@@ -331,7 +340,7 @@ public class UpdateModel : AuthorizedPageModel
     }
 
     // =====================================================
-    // CARGAR AUTORES Y CATEGORÍAS
+    // CARGAR AUTORES, CATEGORÍAS Y EDITORIALES
     // =====================================================
 
     private async Task LoadAuthorsAndCategoriesAsync()
@@ -341,6 +350,9 @@ public class UpdateModel : AuthorizedPageModel
 
         Categories =
             await _bookService.GetCategoriesAsync();
+
+        Publishers =
+            (await _publisherService.GetAllAsync()).ToList();
     }
 
     // =====================================================

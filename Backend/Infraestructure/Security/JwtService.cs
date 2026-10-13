@@ -1,5 +1,5 @@
 ﻿using Backend.Application.Interfaces;
-using Backend.Domain.Models;
+using Backend.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -49,7 +49,7 @@ public class JwtService : IJwtService
 
             new(
                 ClaimTypes.Role,
-                user.Role.Name
+                user.Role
             )
         };
 

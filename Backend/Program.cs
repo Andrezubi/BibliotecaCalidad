@@ -3,8 +3,8 @@ using Backend.Application.Services;
 using Backend.Domain.Interfaces;
 using Backend.Infraestructure.Persistence;
 using Backend.Infraestructure.Repositories;
-using Backend.Infrastructure.Repositories;
 using Backend.Infrastructure.Security;
+using Backend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -32,7 +32,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
     );
 }
 
-builder.Services.AddDbContext<LibraryDbContext>(options =>
+builder.Services.AddDbContext<LibraryDbcontext>(options =>
     options.UseMySql(
         connectionString,
         ServerVersion.AutoDetect(connectionString)
@@ -44,8 +44,8 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
 // ======================================================
 
 builder.Services.AddScoped(
-    typeof(IBaseRepository<>),
-    typeof(BaseRepository<>)
+    typeof(IBaseRepository<,>),
+    typeof(BaseRepository<,>)
 );
 
 // ======================================================
@@ -84,6 +84,13 @@ builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+
+// ======================================================
+// PUBLISHER
+// ======================================================
+
+builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
+builder.Services.AddScoped<IPublisherService, PublisherService>();
 
 
 // ======================================================
