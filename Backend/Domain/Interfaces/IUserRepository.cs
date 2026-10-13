@@ -13,4 +13,6 @@ public interface IUserRepository
     Task AddAsync(User user);
 
     Task SaveChangesAsync();
+
+    Task<IEnumerable<User>> GetReadersAsync();
 }

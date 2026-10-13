@@ -5,4 +5,5 @@ namespace Backend.Application.Interfaces;
 public interface IUserService
 {
     Task<int> RegisterAsync(RegisterUserRequest request);
+    Task<IEnumerable<Backend.Application.DTOs.UserListDto>> GetReadersAsync();
 }

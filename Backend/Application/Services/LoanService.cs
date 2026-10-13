@@ -1,4 +1,8 @@
-﻿using Backend.Application.DTOs;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Common;
 using Backend.Domain.Interfaces;
@@ -60,21 +64,91 @@ namespace Backend.Application.Services
 
             return true;
         }
-        public async Task<bool> RegisterLoanAsync(uint bookId)
+
+        public async Task<(bool Success, string? Error, int? LoanId)> RegisterLoanAsync(uint borrowerId, IEnumerable<uint> bookIds, uint librarianId, int loanDays = 14)
         {
-            var copy = await _loanRepository.GetFirstAvailableCopyByBookIdAsync(bookId);
+            if (borrowerId == 0)
 
-            // El libro no tiene ninguna copia disponible.
-            if (copy == null)
-                return false;
+            // borrowerId and librarianId are uint in the service signature; cast to model types when creating the Loan entity.
+                return (false, "BorrowerId inválido.", null);
 
-            // Cambiar el estado de la copia a Prestado.
-            copy.StatusId = 2; // Loaned
-            copy.UpdatedAt = DateTime.Now;
+            var bookIdList = bookIds?.ToList() ?? new List<uint>();
+            if (!bookIdList.Any())
+                return (false, "No se han especificado libros para el préstamo.", null);
 
-            await _loanRepository.SaveChangesAsync();
+            // Iniciar transacción
+            var tx = await _loanRepository.BeginTransactionAsync();
+            try
+            {
+                var reservedCopies = new List<Copy>();
+                var unavailable = new List<uint>();
 
-            return true;
+                // Intentar reservar una copia por cada bookId usando FOR UPDATE en repositorio
+                foreach (var bookId in bookIdList)
+                {
+                    var copy = await _loanRepository.GetFirstAvailableCopyByBookIdForUpdateAsync(bookId);
+
+                    // DEBUG: comprobar si la consulta FOR UPDATE devuelve resultado
+                    Console.WriteLine($"[LoanService] Buscar copia FOR UPDATE para BookId={bookId} -> {(copy != null ? "Found Id=" + copy.Id.ToString() : "null")}");
+
+                    if (copy == null)
+                    {
+                        // Intento alternativo sin FOR UPDATE para ver si hay copias disponibles
+                        var copyNoLock = await _loanRepository.GetFirstAvailableCopyByBookIdAsync(bookId);
+                        Console.WriteLine($"[LoanService] Buscar copia sin lock para BookId={bookId} -> {(copyNoLock != null ? "Found Id=" + copyNoLock.Id.ToString() : "null")}");
+
+                        unavailable.Add(bookId);
+                        continue;
+                    }
+
+                    copy.StatusId = 2; // Loaned
+                    copy.UpdatedAt = DateTime.Now;
+                    reservedCopies.Add(copy);
+                }
+
+                if (unavailable.Any())
+                {
+                    await tx.RollbackAsync();
+                    return (false, $"No hay copias disponibles para: {string.Join(',', unavailable)}", null);
+                }
+
+                // Persistir los cambios de estado de las copias reservadas dentro de la transacción
+                // (marcamos las copias como prestadas antes de crear el registro de Loan)
+                await _loanRepository.SaveChangesAsync();
+
+                // Crear entidad Loan con Loanitems
+                var loan = new Loan
+                {
+                    BorrowerId = (ushort)borrowerId,
+                    LibrarianId = (ushort)librarianId,
+                    LoanDate = DateTime.Now,
+                    DueDate = DateTime.Now.AddDays(loanDays),
+                    Status = "Active",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    Loanitems = reservedCopies.Select(c => new Loanitem
+                    {
+                        CopyId = c.Id,
+                        Status = "Active",
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    }).ToList()
+                };
+
+                await _loanRepository.AddLoanAsync(loan);
+
+                // Guardar el Loan y sus items antes de confirmar la transacción
+                await _loanRepository.SaveChangesAsync();
+
+                await tx.CommitAsync();
+
+                return (true, null, (int?)loan.Id);
+            }
+            catch (Exception ex)
+            {
+                await tx.RollbackAsync();
+                return (false, ex.Message, null);
+            }
         }
 
         public async Task<IEnumerable<LoanListDto>> GetAllLoansAsync()

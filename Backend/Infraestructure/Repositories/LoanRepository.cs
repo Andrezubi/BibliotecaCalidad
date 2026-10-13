@@ -4,6 +4,7 @@ using Backend.Domain.Interfaces;
 using Backend.Infraestructure.Persistence;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Backend.Infraestructure.Repositories;
 
@@ -14,6 +15,25 @@ public class LoanRepository : ILoanRepository
     public LoanRepository(LibraryDbcontext context)
     {
         _context = context;
+    }
+
+    public async Task<Copy?> GetFirstAvailableCopyByBookIdForUpdateAsync(uint bookId)
+    {
+        // Usamos SELECT ... FOR UPDATE para evitar race conditions cuando se ejecuta dentro de una transacción.
+        // Aseguramos el nombre de la tabla con mayúscula tal como está definida en la base de datos.
+        var sql = "SELECT * FROM `Copy` WHERE `BookId` = {0} AND `StatusId` = 1 AND `IsActive` = 1 ORDER BY `Id` LIMIT 1 FOR UPDATE";
+        return await _context.Copies.FromSqlRaw(sql, bookId).FirstOrDefaultAsync();
+    }
+
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await _context.Database.BeginTransactionAsync();
+    }
+
+    public async Task AddLoanAsync(Loan loan)
+    {
+        await _context.Loans.AddAsync(loan);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync()
