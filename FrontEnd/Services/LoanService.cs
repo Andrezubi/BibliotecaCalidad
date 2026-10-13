@@ -101,5 +101,16 @@ namespace FrontEnd.Services
 
             return loan;
         }
+        public async Task<ReturnBookResponseDto?> ReturnBookWithFineAsync(int copyId)
+        {
+            var response = await _httpClient.PostAsync($"api/loans/return/{copyId}", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await response.Content.ReadFromJsonAsync<ReturnBookResponseDto>();
+        }
     }
 }
