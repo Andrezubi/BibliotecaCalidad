@@ -1,4 +1,5 @@
-﻿using Backend.Application.Interfaces;
+﻿using Backend.Application.DTOs;
+using Backend.Application.Interfaces;
 using Backend.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,6 +60,24 @@ namespace Backend.Controllers
             {
                 message = "Préstamo registrado. El libro ahora está prestado."
             });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var loans = await _loanService.GetAllLoansAsync();
+            return Ok(loans);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var loan = await _loanService.GetLoanByIdAsync((uint)id);
+
+            if (loan == null)
+                return NotFound();
+
+            return Ok(loan);
         }
     }
 

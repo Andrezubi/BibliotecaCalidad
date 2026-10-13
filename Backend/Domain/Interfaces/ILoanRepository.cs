@@ -1,4 +1,5 @@
-﻿using Backend.Domain.Common;
+﻿using Backend.Application.DTOs;
+using Backend.Domain.Common;
 using Backend.Models;
 
 namespace Backend.Domain.Interfaces;
@@ -12,4 +13,6 @@ public interface ILoanRepository
     Task<Copy?> GetFirstAvailableCopyByBookIdAsync(uint bookId);
 
     Task SaveChangesAsync();
+    Task<IEnumerable<LoanListDto>> GetAllLoansAsync();
+    Task<Loan?> GetLoanWithItemsByIdAsync(uint id);
 }

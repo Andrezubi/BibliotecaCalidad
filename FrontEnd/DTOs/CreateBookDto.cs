@@ -34,4 +34,7 @@ public class CreateBookDto
 
     // Categorías nuevas
     public List<CreateCategoryDto> NewCategories { get; set; } = new();
+
+    // Editoriales nuevas
+    public List<CreatePublisherDto> NewPublishers { get; set; } = new();
 }

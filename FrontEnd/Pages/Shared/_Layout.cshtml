@@ -161,13 +161,24 @@
                                    asp-area=""
                                    asp-page="/Books/Loaned">
 
-                                    Libros prestados
+                                     Libros prestados
 
-                                </a>
+                                 </a>
 
-                                </li>
-                            }
-                            
+                                 </li>
+
+                                <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-page="/Loans/Index">
+
+                                     Préstamos
+
+                                 </a>
+
+                                 </li>
+                                }
 
                         </ul>
 
@@ -223,23 +234,23 @@
                        asp-area=""
                        asp-page="/Index">
 
-                        <div class="brand-icon">
-                            <i class="bi bi-book"></i>
-                        </div>
+                         <div class="brand-icon">
+                             <i class="bi bi-book"></i>
+                         </div>
 
-                        <div class="brand-text">
+                         <div class="brand-text">
 
-                            <strong>
-                                Biblioteca<span>Virtual</span>
-                            </strong>
+                             <strong>
+                                 Biblioteca<span>Virtual</span>
+                             </strong>
 
-                            <small>
-                                Tu biblioteca, siempre contigo
-                            </small>
+                             <small>
+                                 Tu biblioteca, siempre contigo
+                             </small>
 
-                        </div>
+                         </div>
 
-                    </a>
+                     </a>
 
 
                     <!-- MOBILE -->
@@ -277,21 +288,21 @@
                             <a class="btn btn-login"
                                asp-page="/Auth/Login">
 
-                                <i class="bi bi-person me-1"></i>
+                                 <i class="bi bi-person me-1"></i>
 
-                                Iniciar sesión
+                                 Iniciar sesión
 
-                            </a>
+                             </a>
 
 
                             <a class="btn btn-success"
                                asp-page="/Auth/Register">
 
-                                <i class="bi bi-person-plus me-1"></i>
+                                 <i class="bi bi-person-plus me-1"></i>
 
-                                Registrarse
+                                 Registrarse
 
-                            </a>
+                             </a>
 
                         </div>
 
@@ -334,25 +345,23 @@
                     <a class="footer-brand"
                        asp-page="/Index">
 
-                        <div class="brand-icon">
+                         <div class="brand-icon">
+                             <i class="bi bi-book"></i>
+                         </div>
 
-                            <i class="bi bi-book"></i>
+                         <div class="brand-text">
 
-                        </div>
+                             <strong>
+                                 Biblioteca<span>Virtual</span>
+                             </strong>
 
-                        <div class="brand-text">
+                             <small>
+                                 Tu biblioteca, siempre contigo
+                             </small>
 
-                            <strong>
-                                Biblioteca<span>Virtual</span>
-                            </strong>
+                         </div>
 
-                            <small>
-                                Tu biblioteca, siempre contigo
-                            </small>
-
-                        </div>
-
-                    </a>
+                     </a>
 
 
                     <p class="footer-description">
@@ -417,6 +426,14 @@
 
                                 <a asp-page="/Books/Loaned">
                                     Libros prestados
+                                </a>
+
+                            </li>
+
+                            <li>
+
+                                <a asp-page="/Loans/Index">
+                                    Préstamos
                                 </a>
 
                             </li>

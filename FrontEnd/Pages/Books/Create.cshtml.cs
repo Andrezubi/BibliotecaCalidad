@@ -53,7 +53,7 @@ public class CreateModel : AuthorizedPageModel
             return RedirectToPage("/AccessDenied");
         }
 
-        await LoadAuthorsAndCategoriesAsync();
+        await LoadAuthorsCategoriesAndPublishersAsync();
 
         return Page();
     }
@@ -86,6 +86,11 @@ public class CreateModel : AuthorizedPageModel
             return await ReloadPageAsync();
         }
 
+        if (!await CreateNewPublishersAsync())
+        {
+            return await ReloadPageAsync();
+        }
+
         NormalizeSelectedIds();
 
         var resultBook =
@@ -106,19 +111,57 @@ public class CreateModel : AuthorizedPageModel
     }
 
     // =====================================================
+    // POST CREAR EDITORIAL
+    // =====================================================
+
+    public async Task<IActionResult> OnPostCreatePublisherAsync()
+    {
+        if (!IsInAnyRole("Admin", "Librarian"))
+        {
+            return RedirectToPage("/AccessDenied");
+        }
+
+        // Validar el nombre de la editorial
+        if (Book.NewPublishers == null || Book.NewPublishers.Count == 0)
+        {
+            ModelState.AddModelError(string.Empty, "No se proporcionaron datos de la editorial.");
+            return await ReloadPageAsync();
+        }
+
+        var newPublisher = Book.NewPublishers[^1]; // Último agregado
+
+        if (string.IsNullOrWhiteSpace(newPublisher.Name))
+        {
+            ModelState.AddModelError(string.Empty, "El nombre de la editorial es obligatorio.");
+            return await ReloadPageAsync();
+        }
+
+        var result = await _publisherService.CreateAsync(newPublisher);
+
+        if (!result.Success || result.Id == null)
+        {
+            ModelState.AddModelError(string.Empty, result.Error ?? "No se pudo crear la editorial.");
+            return await ReloadPageAsync();
+        }
+
+        // Agregar la nueva editorial a la lista de seleccionados
+        Book.PublisherId = (uint)result.Id.Value;
+        Book.NewPublishers.Clear();
+
+        TempData["Success"] = "Editorial creada y seleccionada correctamente.";
+
+        return await ReloadPageAsync();
+    }
+
+    // =====================================================
     // CARGAR AUTORES, CATEGORÍAS Y EDITORIALES
     // =====================================================
 
-    private async Task LoadAuthorsAndCategoriesAsync()
+    private async Task LoadAuthorsCategoriesAndPublishersAsync()
     {
-        Authors =
-            (await _bookService.GetAuthorsAsync()).ToList();
-
-        Categories =
-            (await _bookService.GetCategoriesAsync()).ToList();
-
-        Publishers =
-            (await _publisherService.GetAllAsync()).ToList();
+        Authors = (await _bookService.GetAuthorsAsync()).ToList();
+        Categories = (await _bookService.GetCategoriesAsync()).ToList();
+        Publishers = (await _publisherService.GetAllAsync()).ToList();
     }
 
     // =====================================================
@@ -158,11 +201,8 @@ public class CreateModel : AuthorizedPageModel
     // =====================================================
     private void NormalizeSelectedIds()
     {
-        Book.AuthorIds =
-            NormalizeIds(Book.AuthorIds);
-
-        Book.CategoryIds =
-            NormalizeIds(Book.CategoryIds);
+        Book.AuthorIds = NormalizeIds(Book.AuthorIds);
+        Book.CategoryIds = NormalizeIds(Book.CategoryIds);
     }
 
     private static List<int> NormalizeIds(
@@ -268,9 +308,41 @@ public class CreateModel : AuthorizedPageModel
         return true;
     }
 
+    private async Task<bool> CreateNewPublishersAsync()
+    {
+        if (Book.NewPublishers == null ||
+            Book.NewPublishers.Count == 0)
+        {
+            return true;
+        }
+
+        foreach (var newPublisher in Book.NewPublishers)
+        {
+            if (string.IsNullOrWhiteSpace(newPublisher.Name))
+            {
+                continue;
+            }
+
+            var result = await _publisherService.CreateAsync(newPublisher);
+
+            if (!result.Success || result.Id == null)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    result.Error ?? "No se pudo crear la editorial.");
+
+                return false;
+            }
+
+            Book.PublisherId = (uint)result.Id.Value;
+        }
+
+        return true;
+    }
+
     private async Task<IActionResult> ReloadPageAsync()
     {
-        await LoadAuthorsAndCategoriesAsync();
+        await LoadAuthorsCategoriesAndPublishersAsync();
 
         return Page();
     }

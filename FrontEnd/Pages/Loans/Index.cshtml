@@ -1,0 +1,150 @@
+@page
+@model FrontEnd.Pages.Loans.IndexModel
+
+@{
+    ViewData["Title"] = "Préstamos";
+}
+
+<div class="container content-wrapper">
+
+    <div class="card-custom">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="page-title mb-0">
+
+                    <i class="bi bi-journal-text me-2"></i>
+                    Préstamos
+
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Lista de todos los préstamos registrados
+                </p>
+
+            </div>
+
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                @Model.ErrorMessage
+            </div>
+        }
+        else if (Model.Loans.Count == 0)
+        {
+            <div class="text-center py-5">
+
+                <i class="bi bi-journal-text display-1 text-secondary"></i>
+
+                <h4 class="mt-3">No hay préstamos registrados</h4>
+
+                <p class="text-muted">
+                    No se han registrado préstamos en el sistema.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Lector</th>
+
+                            <th>Bibliotecario</th>
+
+                            <th>Fecha préstamo</th>
+
+                            <th>Fecha vencimiento</th>
+
+                            <th class="text-center">Estado</th>
+
+                            <th class="text-center">Ítems</th>
+
+                            <th class="text-center">Devueltos</th>
+
+                            <th class="text-center" style="min-width: 100px;">Acciones</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var loan in Model.Loans)
+                        {
+                            <tr>
+
+                                <td>
+                                    <code>@loan.Id</code>
+                                </td>
+
+                                <td>
+                                    <strong>@loan.BorrowerName</strong>
+                                </td>
+
+                                <td>
+                                    @loan.LibrarianName
+                                </td>
+
+                                <td>
+                                    @loan.LoanDate.ToString("dd/MM/yyyy HH:mm")
+                                </td>
+
+                                <td>
+                                    @loan.DueDate.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td class="text-center">
+                                    @{
+                                        var badgeClass = loan.Status switch
+                                        {
+                                            "Active" => "bg-primary",
+                                            "Completed" => "bg-success",
+                                            "Overdue" => "bg-danger",
+                                            "Lost" => "bg-dark",
+                                            _ => "bg-secondary"
+                                        };
+                                    }
+                                    <span class="badge @badgeClass">
+                                        @loan.StatusDisplayName
+                                    </span>
+                                </td>
+
+                                <td class="text-center">
+                                    @loan.ItemsCount
+                                </td>
+
+                                <td class="text-center">
+                                    @loan.ReturnedItemsCount
+                                </td>
+
+                                <td class="text-center">
+                                    <a asp-page="Details" asp-route-id="@loan.Id" class="btn btn-outline-primary btn-sm" title="Ver detalles">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+</div>

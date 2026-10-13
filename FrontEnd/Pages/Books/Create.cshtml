@@ -157,11 +157,21 @@
                             Editorial
                         </label>
 
-                        <select asp-for="Book.PublisherId"
-                                class="form-select"
-                                asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Model.Publishers, "Id", "Name"))">
-                            <option value="">Seleccionar editorial...</option>
-                        </select>
+                        <div class="input-group">
+                            <select asp-for="Book.PublisherId"
+                                    class="form-select"
+                                    asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Model.Publishers, "Id", "Name"))">
+                                <option value="">Seleccionar editorial...</option>
+                            </select>
+
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#publisherModal"
+                                    title="Crear nueva editorial">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                        </div>
 
                         <span asp-validation-for="Book.PublisherId"
                               class="text-danger">
@@ -618,6 +628,92 @@
 
                     <i class="bi bi-plus-circle me-1"></i>
                     Agregar categoría
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MODAL EDITORIAL -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="publisherModal"
+     tabindex="-1"
+     aria-labelledby="publisherModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="publisherModalLabel">
+
+                    <i class="bi bi-building-plus me-2"></i>
+                    Agregar editorial
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form method="post" asp-page-handler="CreatePublisher" id="createPublisherForm">
+
+                    <div class="mb-3">
+
+                        <label class="form-label" for="newPublisherName">
+                            Nombre
+                        </label>
+
+                        <input type="text"
+                               id="newPublisherName"
+                               name="Book.NewPublishers[0].Name"
+                               class="form-control"
+                               maxlength="150"
+                               placeholder="Ingrese el nombre de la editorial" />
+
+                    </div>
+
+                    <div id="publisherModalError"
+                         class="text-danger"
+                         style="display:none;">
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button type="submit"
+                        form="createPublisherForm"
+                        class="btn btn-primary"
+                        id="addPublisherButton">
+
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Agregar editorial
 
                 </button>
 
@@ -1375,6 +1471,59 @@
 
                                 modalInstance.hide();
                             }
+                        });
+                }
+
+                // =================================================
+                // EDITORIAL NUEVA
+                // =================================================
+
+                const addPublisherButton =
+                    document.getElementById(
+                        "addPublisherButton");
+
+                const publisherNameInput =
+                    document.getElementById(
+                        "newPublisherName");
+
+                const publisherError =
+                    document.getElementById(
+                        "publisherModalError");
+
+                const publisherModal =
+                    document.getElementById(
+                        "publisherModal");
+
+                if (addPublisherButton) {
+
+                    addPublisherButton.addEventListener(
+                        "click",
+                        function () {
+
+                            const name =
+                                publisherNameInput.value.trim();
+
+                            publisherError.style.display =
+                                "none";
+
+                            publisherError.textContent =
+                                "";
+
+                            if (!name) {
+
+                                publisherError.textContent =
+                                    "El nombre de la editorial es obligatorio.";
+
+                                publisherError.style.display =
+                                    "block";
+
+                                return;
+                            }
+
+                            // El formulario se envía automáticamente vía form="createPublisherForm"
+                            // No necesitamos hacer nada más aquí, el submit del formulario
+                            // recargará la página con la nueva editorial seleccionada.
+
                         });
                 }
 

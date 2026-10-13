@@ -31,4 +31,7 @@ public class UpdateBookDto
 
     // Categorías nuevas que se crearán dentro de la misma operación
     public List<CreateCategoryDto> NewCategories { get; set; } = new();
+
+    // Editoriales nuevas que se crearán dentro de la misma operación
+    public List<CreatePublisherDto> NewPublishers { get; set; } = new();
 }

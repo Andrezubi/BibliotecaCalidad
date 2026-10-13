@@ -65,5 +65,41 @@ namespace FrontEnd.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<List<LoanListDto>> GetAllLoansAsync()
+        {
+            var backendUrl = _configuration["BackendUrl"];
+
+            if (string.IsNullOrEmpty(backendUrl))
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            var url = $"{backendUrl}/api/loans";
+
+            var loans =
+                await _httpClient.GetFromJsonAsync<List<LoanListDto>>(url);
+
+            return loans ?? new List<LoanListDto>();
+        }
+
+        public async Task<LoanDto?> GetLoanByIdAsync(int id)
+        {
+            var backendUrl = _configuration["BackendUrl"];
+
+            if (string.IsNullOrEmpty(backendUrl))
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            var url = $"{backendUrl}/api/loans/{id}";
+
+            var loan =
+                await _httpClient.GetFromJsonAsync<LoanDto>(url);
+
+            return loan;
+        }
     }
 }

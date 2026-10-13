@@ -1,0 +1,190 @@
+@page "{id:int}"
+@model FrontEnd.Pages.Loans.DetailsModel
+
+@{
+    ViewData["Title"] = "Detalle de Préstamo";
+}
+
+<div class="container content-wrapper">
+
+    <div class="card-custom">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="page-title mb-0">
+
+                    <i class="bi bi-journal-text me-2"></i>
+                    Detalle de Préstamo @Model.Loan?.Id
+
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Información completa del préstamo y sus ítems
+                </p>
+
+            </div>
+
+            <a asp-page="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Volver a Préstamos
+            </a>
+
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                @Model.ErrorMessage
+            </div>
+        }
+        else if (Model.Loan == null)
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-exclamation-circle display-1 text-warning"></i>
+                <h4 class="mt-3">Préstamo no encontrado</h4>
+            </div>
+        }
+        else
+        {
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5 class="border-bottom pb-2">Información del Préstamo</h5>
+                    <dl class="row">
+                        <dt class="col-sm-3">ID</dt>
+                        <dd class="col-sm-9"><code>@Model.Loan.Id</code></dd>
+
+                        <dt class="col-sm-3">Lector</dt>
+                        <dd class="col-sm-9">@Model.Loan.BorrowerName (ID: @Model.Loan.BorrowerId)</dd>
+
+                        <dt class="col-sm-3">Bibliotecario</dt>
+                        <dd class="col-sm-9">@Model.Loan.LibrarianName (ID: @Model.Loan.LibrarianId)</dd>
+
+                        <dt class="col-sm-3">Fecha de préstamo</dt>
+                        <dd class="col-sm-9">@Model.Loan.LoanDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-3">Fecha de vencimiento</dt>
+                        <dd class="col-sm-9">@Model.Loan.DueDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Estado</dt>
+                        <dd class="col-sm-9">
+                            @{
+                                var badgeClass = Model.Loan.Status switch
+                                {
+                                    "Active" => "bg-primary",
+                                    "Completed" => "bg-success",
+                                    "Overdue" => "bg-danger",
+                                    "Lost" => "bg-dark",
+                                    _ => "bg-secondary"
+                                };
+                            }
+                            <span class="badge @badgeClass fs-6 px-3 py-2">
+                                @Model.Loan.StatusDisplayName
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-3">Creado</dt>
+                        <dd class="col-sm-9">@Model.Loan.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-3">Actualizado</dt>
+                        <dd class="col-sm-9">@(Model.Loan.UpdatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "-")</dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-6">
+                    <h5 class="border-bottom pb-2">Resumen de Ítems</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">Total de ítems</dt>
+                        <dd class="col-sm-8"><strong>@Model.Loan.Items.Count</strong></dd>
+
+                        <dt class="col-sm-4">Devueltos</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-success">@Model.Loan.Items.Count(i => i.Status == "Returned")</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Activos</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">@Model.Loan.Items.Count(i => i.Status == "Active")</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Vencidos</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-danger">@Model.Loan.Items.Count(i => i.Status == "Overdue")</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Perdidos</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-dark">@Model.Loan.Items.Count(i => i.Status == "Lost")</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <hr />
+
+            <h5 class="mb-3">Ítems del Préstamo</h5>
+
+            @if (Model.Loan.Items.Count == 0)
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Este préstamo no tiene ítems registrados.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Copia</th>
+                                <th>Libro</th>
+                                <th>Estado</th>
+                                <th class="text-center">Fecha devolución</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Loan.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        <code>@item.InternalCode</code>
+                                        <br />
+                                        <small class="text-muted">ID: @item.CopyId</small>
+                                    </td>
+                                    <td>
+                                        <strong>@item.BookTitle</strong>
+                                        <br />
+                                        <small class="text-muted">ID: @item.BookId</small>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var itemBadgeClass = item.Status switch
+                                            {
+                                                "Active" => "bg-primary",
+                                                "Returned" => "bg-success",
+                                                "Overdue" => "bg-danger",
+                                                "Lost" => "bg-dark",
+                                                _ => "bg-secondary"
+                                            };
+                                        }
+                                        <span class="badge @itemBadgeClass">
+                                            @item.StatusDisplayName
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        @(item.ReturnedAt?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+
+    </div>
+
+</div>

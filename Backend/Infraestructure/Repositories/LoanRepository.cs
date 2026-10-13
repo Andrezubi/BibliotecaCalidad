@@ -1,4 +1,5 @@
-﻿using Backend.Domain.Common;
+﻿using Backend.Application.DTOs;
+using Backend.Domain.Common;
 using Backend.Domain.Interfaces;
 using Backend.Infraestructure.Persistence;
 using Backend.Models;
@@ -61,5 +62,50 @@ public class LoanRepository : ILoanRepository
                 c.Book.IsActive == true)
             .OrderBy(c => c.Id)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<LoanListDto>> GetAllLoansAsync()
+    {
+        return await _context.Loans
+            .OrderByDescending(l => l.LoanDate)
+            .Select(l => new LoanListDto
+            {
+                Id = (int)l.Id,
+                BorrowerName = l.Borrower.FirstName + " " + l.Borrower.LastName,
+                LibrarianName = l.Librarian.FirstName + " " + l.Librarian.LastName,
+                LoanDate = l.LoanDate,
+                DueDate = l.DueDate,
+                Status = l.Status,
+                StatusDisplayName = GetLoanStatusDisplayName(l.Status),
+                ItemsCount = l.Loanitems.Count,
+                ReturnedItemsCount = l.Loanitems.Count(li => li.Status == "Returned")
+            })
+            .ToListAsync();
+    }
+
+    public async Task<Loan?> GetLoanWithItemsByIdAsync(uint id)
+    {
+        return await _context.Loans
+            .Include(l => l.Borrower)
+            .Include(l => l.Librarian)
+            .Include(l => l.Loanitems)
+                .ThenInclude(li => li.Copy)
+                    .ThenInclude(c => c.Book)
+            .Include(l => l.Loanitems)
+                .ThenInclude(li => li.Copy)
+                    .ThenInclude(c => c.Status)
+            .FirstOrDefaultAsync(l => l.Id == id);
+    }
+
+    private static string GetLoanStatusDisplayName(string status)
+    {
+        return status switch
+        {
+            "Active" => "Activo",
+            "Completed" => "Completado",
+            "Overdue" => "Vencido",
+            "Lost" => "Perdido",
+            _ => status
+        };
     }
 }
