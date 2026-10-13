@@ -19,6 +19,8 @@ Existing components have included `LibraryDbContext`, `BaseRepository<Book>`, `I
 ## Architecture and Coding Rules
 
 * Follow the existing project architecture unless a change is necessary and justified.
+* The UI and anything the final users see should be in spanish
+* The code should be kept in english
 * Update all affected repositories, services, DTOs, mappings, validators, controllers, Razor Pages, and dependency injection registrations.
 * Use asynchronous database operations consistently with the existing architecture.
 * Keep database access and business logic in their appropriate layers.
