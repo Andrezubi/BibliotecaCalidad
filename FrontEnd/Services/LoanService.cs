@@ -125,5 +125,12 @@ namespace FrontEnd.Services
 
             return loan;
         }
+        public async Task<bool> UpdateLoanAsync(int id, UpdateLoanDto dto)
+        {
+            var backendUrl = _configuration["BackendUrl"];
+            var url = $"{backendUrl}/api/loans/{id}";
+            var response = await _httpClient.PutAsJsonAsync(url, dto);
+            return response.IsSuccessStatusCode;
+        }
     }
 }
