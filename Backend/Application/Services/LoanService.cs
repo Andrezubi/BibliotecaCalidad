@@ -202,5 +202,18 @@ namespace Backend.Application.Services
                 _ => status
             };
         }
+        public async Task<bool> UpdateLoanAsync(uint id, UpdateLoanDto dto)
+        {
+            var loan = await _context.Loans.FirstOrDefaultAsync(l => l.Id == id);
+            if (loan == null)
+                return false;
+
+            loan.DueDate = dto.DueDate;
+            loan.Status = dto.Status;
+            loan.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
