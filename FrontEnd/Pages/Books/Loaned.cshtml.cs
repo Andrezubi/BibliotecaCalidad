@@ -1,6 +1,5 @@
 ﻿using FrontEnd.DTOs;
 using FrontEnd.Services;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using FrontEnd.Pages.Shared;
 
@@ -42,7 +41,10 @@ namespace FrontEnd.Pages.Books
         {
             if (!IsInAnyRole("Admin", "Librarian"))
             {
-                return Unauthorized(new { message = "No tienes permisos para realizar esta acción." });
+                return new ObjectResult(new { message = "No tienes permisos para realizar esta acción." })
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
             }
 
             var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId);

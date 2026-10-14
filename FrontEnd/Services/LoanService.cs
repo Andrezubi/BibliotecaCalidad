@@ -33,6 +33,7 @@ namespace FrontEnd.Services
 
             return books ?? new List<LoanedBookDto>();
         }
+
         public async Task<bool> RegisterReturnAsync(int copyId)
         {
             var backendUrl = _configuration["BackendUrl"];
@@ -49,6 +50,29 @@ namespace FrontEnd.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<FineReceiptDto?> RegisterReturnWithFineAsync(uint copyId)
+        {
+            var backendUrl = _configuration["BackendUrl"];
+
+            if (string.IsNullOrEmpty(backendUrl))
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            var url = $"{backendUrl}/api/loans/return/{copyId}";
+
+            var response = await _httpClient.PostAsync(url, null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await response.Content.ReadFromJsonAsync<FineReceiptDto>();
+        }
+
         public async Task<bool> RegisterLoanAsync(int bookId)
         {
             var backendUrl = _configuration["BackendUrl"];
@@ -100,28 +124,6 @@ namespace FrontEnd.Services
                 await _httpClient.GetFromJsonAsync<LoanDto>(url);
 
             return loan;
-        }
-        public async Task<ReturnBookResponseDto?> ReturnBookWithFineAsync(int copyId)
-        {
-            var response = await _httpClient.PostAsync($"api/loans/return/{copyId}", null);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-
-            return await response.Content.ReadFromJsonAsync<ReturnBookResponseDto>();
-        }
-        public async Task<FineReceiptDto?> RegisterReturnWithFineAsync(uint copyId)
-        {
-            var response = await _httpClient.PostAsync($"api/Loans/return/{copyId}", null);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-
-            return await response.Content.ReadFromJsonAsync<FineReceiptDto>();
         }
     }
 }
