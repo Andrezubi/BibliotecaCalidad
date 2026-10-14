@@ -55,7 +55,7 @@ public partial class LibraryDbcontext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     #warning To protect potentially sensitive information in your connection string, you should move it out of source code.
     => optionsBuilder.UseMySql(
-        "server=localhost;port=3306;database=librarydb2;uid=root;password=TU_CONTRASEÑA",
+        "server=localhost;port=3306;database=librarydb2;uid=root;password=yosoydios",
         Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.46-mysql")
     );
     protected override void OnModelCreating(ModelBuilder modelBuilder)
