@@ -76,5 +76,14 @@ namespace Backend.Controllers
 
             return Ok(loan);
         }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateLoan(int id, [FromBody] UpdateLoanDto dto)
+        {
+            var updated = await _loanService.UpdateLoanAsync((uint)id, dto);
+            if (!updated)
+                return NotFound(new { message = "Préstamo no encontrado." });
+
+            return Ok(new { message = "Préstamo actualizado exitosamente." });
+        }
     }
 }
