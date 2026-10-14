@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,16 +24,16 @@ namespace Backend.Application.Services
             return await _loanRepository.GetLoanedBooksAsync();
         }
 
-        public async Task<bool> RegisterReturnAsync(uint copyId)
+        public async Task<ReturnResultDto?> RegisterReturnAsync(uint copyId)
         {
             var copy = await _loanRepository.GetCopyByIdAsync(copyId);
 
             // La copia debe existir y estar prestada.
             if (copy == null)
-                return false;
+                return null;
 
             if (copy.StatusId != 2) // Loaned
-                return false;
+                return new ReturnResultDto { HasFine = false, Message = "La copia no está prestada." };
 
             // 1) Cambiar el estado de la copia a Disponible.
             copy.StatusId = 1; // Available
@@ -51,7 +51,7 @@ namespace Backend.Application.Services
                     loanItem.Status = "Returned";
                     loanItem.UpdatedAt = DateTime.Now;
                 }
-                
+
                 // Check if all items are returned
                 if (loan.Loanitems.All(li => li.Status == "Returned"))
                 {
@@ -62,14 +62,14 @@ namespace Backend.Application.Services
 
             await _loanRepository.SaveChangesAsync();
 
-            return true;
+            return new ReturnResultDto { HasFine = false, Message = "Devolución registrada correctamente." };
         }
 
         public async Task<(bool Success, string? Error, int? LoanId)> RegisterLoanAsync(uint borrowerId, IEnumerable<uint> bookIds, uint librarianId, int loanDays = 14)
         {
             if (borrowerId == 0)
 
-            // borrowerId and librarianId are uint in the service signature; cast to model types when creating the Loan entity.
+                // borrowerId and librarianId are uint in the service signature; cast to model types when creating the Loan entity.
                 return (false, "BorrowerId inválido.", null);
 
             var bookIdList = bookIds?.ToList() ?? new List<uint>();
@@ -164,6 +164,30 @@ namespace Backend.Application.Services
                 return null;
 
             return MapToDto(loan);
+        }
+
+        public Task<bool> RegisterLoanAsync(uint bookId)
+        {
+            // Método antiguo no implementado; use RegisterLoanAsync con parámetros completos.
+            return Task.FromResult(false);
+        }
+
+        public async Task<bool> UpdateLoanAsync(uint id, UpdateLoanDto dto)
+        {
+            // Intentar obtener el préstamo
+            var loan = await _loanRepository.GetLoanWithItemsByIdAsync(id);
+            if (loan == null)
+                return false;
+
+            // Actualizar campos permitidos
+            loan.DueDate = dto.DueDate;
+            loan.Status = dto.Status;
+            loan.UpdatedAt = DateTime.Now;
+
+            // Persistir cambios
+            await _loanRepository.SaveChangesAsync();
+
+            return true;
         }
 
         private static LoanDto MapToDto(Loan loan)

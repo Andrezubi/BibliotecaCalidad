@@ -1,4 +1,5 @@
-﻿using FrontEnd.DTOs;
+
+using FrontEnd.DTOs;
 using System.Text.Json;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -30,8 +31,7 @@ namespace FrontEnd.Services
             if (string.IsNullOrEmpty(backendUrl))
             {
                 throw new InvalidOperationException(
-                    "La URL del backend no está configurada."
-                );
+                    "La URL del backend no está configurada.");
             }
 
             var url = $"{backendUrl}/api/loans/loaned-books";
@@ -41,6 +41,7 @@ namespace FrontEnd.Services
 
             return books ?? new List<LoanedBookDto>();
         }
+
         public async Task<bool> RegisterReturnAsync(int copyId)
         {
             var backendUrl = _configuration["BackendUrl"];
@@ -59,7 +60,10 @@ namespace FrontEnd.Services
 
             return response.IsSuccessStatusCode;
         }
-        public async Task<bool> RegisterLoanAsync(int bookId, int borrowerId = 1)
+
+        // Registrar una devolución y obtener información de la multa.
+        public async Task<FineReceiptDto?> RegisterReturnWithFineAsync(
+            uint copyId)
         {
             var backendUrl = _configuration["BackendUrl"];
 
@@ -69,7 +73,36 @@ namespace FrontEnd.Services
                     "La URL del backend no está configurada.");
             }
 
-            var url = $"{backendUrl}/api/loans/loan-book/{bookId}?borrowerId={borrowerId}";
+            var url = $"{backendUrl}/api/loans/return/{copyId}";
+
+            AddAuthorizationHeader();
+
+            var response = await _httpClient.PostAsync(url, null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return await response.Content
+                .ReadFromJsonAsync<FineReceiptDto>();
+        }
+
+        // Registrar un préstamo individual.
+        public async Task<bool> RegisterLoanAsync(
+            int bookId,
+            int borrowerId = 1)
+        {
+            var backendUrl = _configuration["BackendUrl"];
+
+            if (string.IsNullOrEmpty(backendUrl))
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            var url =
+                $"{backendUrl}/api/loans/loan-book/{bookId}?borrowerId={borrowerId}";
 
             AddAuthorizationHeader();
 
@@ -78,20 +111,41 @@ namespace FrontEnd.Services
             return response.IsSuccessStatusCode;
         }
 
+        // Agregar el token de autenticación a las peticiones.
         private void AddAuthorizationHeader()
         {
-            var token = _httpContextAccessor.HttpContext?.Session?.GetString("AuthToken");
+            var token = _httpContextAccessor.HttpContext?
+                .Session?.GetString("AuthToken");
+
             _httpClient.DefaultRequestHeaders.Authorization = null;
+
             if (!string.IsNullOrWhiteSpace(token))
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            {
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", token);
+            }
         }
 
-        public async Task<(bool Success, string? Message, int? LoanId)> CreateLoanAsync(int borrowerId, List<int> bookIds, int? librarianId = null, int loanDays = 14)
+        // Registrar un préstamo con varios libros para un usuario.
+        public async Task<(bool Success, string? Message, int? LoanId)>
+            CreateLoanAsync(
+                int borrowerId,
+                List<int> bookIds,
+                int? librarianId = null,
+                int loanDays = 14)
         {
             var backendUrl = _configuration["BackendUrl"];
 
             if (string.IsNullOrWhiteSpace(backendUrl))
-                throw new InvalidOperationException("La URL del backend no está configurada.");
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            if (bookIds == null || bookIds.Count == 0)
+            {
+                return (false, "Debes seleccionar al menos un libro.", null);
+            }
 
             AddAuthorizationHeader();
 
@@ -99,39 +153,59 @@ namespace FrontEnd.Services
             {
                 BorrowerId = (uint)borrowerId,
                 BookIds = bookIds.Select(b => (uint)b).ToList(),
-                LibrarianId = librarianId.HasValue ? (uint?)librarianId.Value : null,
+                LibrarianId = librarianId.HasValue
+                    ? (uint?)librarianId.Value
+                    : null,
                 LoanDays = loanDays
             };
 
-            var response = await _httpClient.PostAsJsonAsync("api/loans", req);
+            var url = $"{backendUrl}/api/loans";
+
+            var response = await _httpClient.PostAsJsonAsync(url, req);
 
             if (!response.IsSuccessStatusCode)
             {
-                var txt = await response.Content.ReadAsStringAsync();
-                return (false, txt, null);
+                var error = await response.Content.ReadAsStringAsync();
+
+                return (false, error, null);
             }
 
             var body = await response.Content.ReadAsStringAsync();
+
             try
             {
                 using var doc = JsonDocument.Parse(body);
                 var root = doc.RootElement;
+
                 int? loanId = null;
-                if (root.TryGetProperty("loanId", out var loanIdProp) && loanIdProp.ValueKind == JsonValueKind.Number)
+
+                if (root.TryGetProperty("loanId", out var loanIdProp)
+                    && loanIdProp.ValueKind == JsonValueKind.Number)
+                {
                     loanId = loanIdProp.GetInt32();
+                }
 
                 string? message = null;
-                if (root.TryGetProperty("message", out var msgProp) && msgProp.ValueKind == JsonValueKind.String)
-                    message = msgProp.GetString();
 
-                return (true, message ?? "Préstamo creado", loanId);
+                if (root.TryGetProperty("message", out var msgProp)
+                    && msgProp.ValueKind == JsonValueKind.String)
+                {
+                    message = msgProp.GetString();
+                }
+
+                return (
+                    true,
+                    message ?? "Préstamo creado.",
+                    loanId
+                );
             }
-            catch
+            catch (JsonException)
             {
-                return (true, "Préstamo creado", null);
+                return (true, "Préstamo creado.", null);
             }
         }
 
+        // Obtener todos los préstamos.
         public async Task<List<LoanListDto>> GetAllLoansAsync()
         {
             var backendUrl = _configuration["BackendUrl"];
@@ -150,6 +224,7 @@ namespace FrontEnd.Services
             return loans ?? new List<LoanListDto>();
         }
 
+        // Obtener un préstamo por su ID.
         public async Task<LoanDto?> GetLoanByIdAsync(int id)
         {
             var backendUrl = _configuration["BackendUrl"];
@@ -162,10 +237,29 @@ namespace FrontEnd.Services
 
             var url = $"{backendUrl}/api/loans/{id}";
 
-            var loan =
-                await _httpClient.GetFromJsonAsync<LoanDto>(url);
+            return await _httpClient.GetFromJsonAsync<LoanDto>(url);
+        }
 
-            return loan;
+        // Actualizar un préstamo.
+        public async Task<bool> UpdateLoanAsync(
+            int id,
+            UpdateLoanDto dto)
+        {
+            var backendUrl = _configuration["BackendUrl"];
+
+            if (string.IsNullOrWhiteSpace(backendUrl))
+            {
+                throw new InvalidOperationException(
+                    "La URL del backend no está configurada.");
+            }
+
+            var url = $"{backendUrl}/api/loans/{id}";
+
+            AddAuthorizationHeader();
+
+            var response = await _httpClient.PutAsJsonAsync(url, dto);
+
+            return response.IsSuccessStatusCode;
         }
     }
 }
