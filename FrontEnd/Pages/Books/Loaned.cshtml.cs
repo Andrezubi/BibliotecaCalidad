@@ -25,35 +25,34 @@ namespace FrontEnd.Pages.Books
             {
                 return RedirectToPage("/AccessDenied");
             }
-    
+
             try
             {
-
                 LoanedBooks = await _loanService.GetLoanedBooksAsync();
                 return Page();
             }
             catch
             {
-                ErrorMessage =
-                    "No se pudieron cargar los libros prestados.";
+                ErrorMessage = "No se pudieron cargar los libros prestados.";
                 return Page();
             }
         }
+
         public async Task<IActionResult> OnPostReturnAsync(int copyId)
         {
             if (!IsInAnyRole("Admin", "Librarian"))
             {
-                return RedirectToPage("/AccessDenied");
+                return Unauthorized(new { message = "No tienes permisos para realizar esta acción." });
             }
 
-            var ok = await _loanService.RegisterReturnAsync(copyId);
+            var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId);
 
-            if (ok)
-                TempData["Success"] = "Devolución registrada. El libro ahora está disponible.";
-            else
-                TempData["Error"] = "No se pudo registrar la devolución.";
+            if (result == null)
+            {
+                return BadRequest(new { message = "No se pudo registrar la devolución del ejemplar." });
+            }
 
-            return RedirectToPage();
+            return new JsonResult(result);
         }
     }
 }

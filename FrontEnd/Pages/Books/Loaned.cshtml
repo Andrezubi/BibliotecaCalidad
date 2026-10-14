@@ -20,26 +20,22 @@
 
         <p class="text-muted">
             Libros que actualmente no se encuentran disponibles.
-            Registra su devolución para marcarlos como disponibles y liquidar multas pendientes.
+            Registra su devolución para marcarlos como disponibles y emitir el recibo en caso de multa.
         </p>
 
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-                <i class="bi bi-check-circle me-2"></i>
-                @TempData["Success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
+        @Html.AntiForgeryToken()
 
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                @TempData["Error"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
+        <div id="alertaExito" class="alert alert-success alert-dismissible fade show d-none" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            <span id="mensajeExito"></span>
+            <button type="button" class="btn-close" onclick="this.parentElement.classList.add('d-none')"></button>
+        </div>
+
+        <div id="alertaError" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span id="mensajeError"></span>
+            <button type="button" class="btn-close" onclick="this.parentElement.classList.add('d-none')"></button>
+        </div>
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
@@ -71,7 +67,7 @@
                     <tbody>
                         @foreach (var book in Model.LoanedBooks)
                         {
-                            <tr>
+                            <tr id="fila-@book.CopyId">
                                 <td>
                                     <strong>@book.Title</strong>
                                 </td>
@@ -84,17 +80,12 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <form method="post"
-                                          asp-page-handler="Return"
-                                          asp-route-copyId="@book.CopyId"
-                                          style="display:inline;">
-                                        <button type="submit"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('¿Registrar la devolución del ejemplar @book.InternalCode?');">
-                                            <i class="bi bi-arrow-return-left me-1"></i>
-                                            Marcar como disponible
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            class="btn btn-success btn-sm"
+                                            onclick="confirmarDevolucion(@book.CopyId, '@book.Title')">
+                                        <i class="bi bi-arrow-return-left me-1"></i>
+                                        Marcar como disponible
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -105,77 +96,127 @@
     </div>
 </div>
 
-<!-- Modal del Recibo de Multa -->
-@if (Model.Receipt != null)
-{
-    <div class="modal fade" id="reciboModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title">
-                        <i class="bi bi-receipt me-2"></i>Comprobante de Pago
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+<!-- Modal Comprobante / Recibo -->
+<div class="modal fade" id="reciboModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-receipt me-2"></i>Recibo de Multa
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="location.reload()"></button>
+            </div>
+            <div class="modal-body p-4" id="areaImpresion">
+                <div class="text-center mb-3">
+                    <h4 class="fw-bold mb-0">Sistema de Biblioteca</h4>
+                    <small class="text-muted">Comprobante de Devolución con Sanción</small>
                 </div>
-                <div class="modal-body p-4" id="areaImpresion">
-                    <div class="text-center mb-3">
-                        <h4 class="fw-bold mb-0">Sistema de Biblioteca</h4>
-                        <small class="text-muted">Recibo de Devolución con Sanción</small>
-                    </div>
-                    <hr />
-                    <div class="row mb-2">
-                        <span class="col-6 text-muted">N° de Recibo:</span>
-                        <strong class="col-6 text-end text-primary">@Model.Receipt.ReceiptNumber</strong>
-                    </div>
-                    <div class="row mb-2">
-                        <span class="col-6 text-muted">Lector:</span>
-                        <span class="col-6 text-end fw-semibold">@Model.Receipt.BorrowerName</span>
-                    </div>
-                    <div class="row mb-2">
-                        <span class="col-6 text-muted">Libro:</span>
-                        <span class="col-6 text-end">@Model.Receipt.BookTitle</span>
-                    </div>
-                    <div class="row mb-2">
-                        <span class="col-6 text-muted">Días de retraso:</span>
-                        <span class="col-6 text-end text-danger fw-bold">@Model.Receipt.OverdueDays día(s)</span>
-                    </div>
-                    <div class="row pt-2 border-top">
-                        <span class="col-6 fs-5 fw-bold">Total Pagado:</span>
-                        <span class="col-6 fs-5 fw-bold text-end text-success">Bs. @Model.Receipt.Amount.ToString("0.00")</span>
-                    </div>
-                    <div class="text-center mt-3 text-muted">
-                        <small>Fecha: @Model.Receipt.PaidAt?.ToString("dd/MM/yyyy HH:mm")</small>
-                    </div>
+                <hr />
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">N° Recibo:</span>
+                    <strong class="col-6 text-end text-primary" id="reciboNumero">-</strong>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="imprimirRecibo()">
-                        <i class="bi bi-printer me-1"></i> Imprimir
-                    </button>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Lector:</span>
+                    <span class="col-6 text-end fw-semibold" id="reciboLector">-</span>
                 </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Libro:</span>
+                    <span class="col-6 text-end" id="reciboLibro">-</span>
+                </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Días de retraso:</span>
+                    <span class="col-6 text-end text-danger fw-bold" id="reciboDias">-</span>
+                </div>
+                <div class="row pt-2 border-top">
+                    <span class="col-6 fs-5 fw-bold">Total Pagado:</span>
+                    <span class="col-6 fs-5 fw-bold text-end text-success" id="reciboMonto">-</span>
+                </div>
+                <div class="text-center mt-3 text-muted">
+                    <small id="reciboFecha"></small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.reload()">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="imprimirRecibo()">
+                    <i class="bi bi-printer me-1"></i> Imprimir Recibo
+                </button>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var modal = new bootstrap.Modal(document.getElementById('reciboModal'));
-                modal.show();
-            });
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 
-            function imprimirRecibo() {
-                var contenido = document.getElementById('areaImpresion').innerHTML;
-                var ventana = window.open('', '', 'height=500,width=500');
-                ventana.document.write('<html><head><title>Recibo de Multa</title>');
-                ventana.document.write('<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">');
-                ventana.document.write('</head><body class="p-4">');
-                ventana.document.write(contenido);
-                ventana.document.write('</body></html>');
-                ventana.document.close();
-                ventana.focus();
-                setTimeout(() => { ventana.print(); ventana.close(); }, 300);
+    <script>
+        async function confirmarDevolucion(copyId, titulo) {
+            if (!confirm(`¿Confirmar la devolución del libro "${titulo}"?`)) {
+                return;
             }
-        </script>
-    }
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            try {
+                const response = await fetch(`?handler=Return&copyId=${copyId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    mostrarError(data.message || 'No se pudo registrar la devolución.');
+                    return;
+                }
+
+                if (data.hasFine) {
+                    document.getElementById('reciboNumero').innerText = data.receiptNumber || 'N/A';
+                    document.getElementById('reciboLector').innerText = data.borrowerName || 'Lector';
+                    document.getElementById('reciboLibro').innerText = data.bookTitle || titulo;
+                    document.getElementById('reciboDias').innerText = `${data.overdueDays} día(s)`;
+                    document.getElementById('reciboMonto').innerText = `Bs. ${Number(data.amount).toFixed(2)}`;
+                    document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
+
+                    const modal = new bootstrap.Modal(document.getElementById('reciboModal'));
+                    modal.show();
+                } else {
+                    mostrarExito(data.message || 'Devolución registrada exitosamente (sin multas).');
+                    const fila = document.getElementById(`fila-${copyId}`);
+                    if (fila) fila.remove();
+                }
+            } catch (err) {
+                mostrarError('Ocurrió un error inesperado al procesar la devolución.');
+            }
+        }
+
+        function mostrarExito(mensaje) {
+            const alerta = document.getElementById('alertaExito');
+            document.getElementById('mensajeExito').innerText = mensaje;
+            alerta.classList.remove('d-none');
+            document.getElementById('alertaError').classList.add('d-none');
+        }
+
+        function mostrarError(mensaje) {
+            const alerta = document.getElementById('alertaError');
+            document.getElementById('mensajeError').innerText = mensaje;
+            alerta.classList.remove('d-none');
+            document.getElementById('alertaExito').classList.add('d-none');
+        }
+
+        function imprimirRecibo() {
+            const contenido = document.getElementById('areaImpresion').innerHTML;
+            const ventana = window.open('', '', 'height=550,width=550');
+            ventana.document.write('<html><head><title>Recibo de Multa</title>');
+            ventana.document.write('<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">');
+            ventana.document.write('</head><body class="p-4">');
+            ventana.document.write(contenido);
+            ventana.document.write('</body></html>');
+            ventana.document.close();
+            ventana.focus();
+            setTimeout(() => { ventana.print(); ventana.close(); }, 300);
+        }
+    </script>
 }
