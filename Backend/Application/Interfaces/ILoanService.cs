@@ -10,5 +10,6 @@ namespace Backend.Application.Interfaces
         Task<bool> RegisterLoanAsync(uint bookId);
         Task<IEnumerable<LoanListDto>> GetAllLoansAsync();
         Task<LoanDto?> GetLoanByIdAsync(uint id);
+        Task<bool> UpdateLoanAsync(uint id, UpdateLoanDto dto);
     }
 }
