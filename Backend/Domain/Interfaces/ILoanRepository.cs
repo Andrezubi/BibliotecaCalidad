@@ -1,6 +1,7 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Domain.Common;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Backend.Domain.Interfaces;
 
@@ -11,6 +12,13 @@ public interface ILoanRepository
 
     Task<Loan?> GetActiveLoanByCopyIdAsync(uint copyId);
     Task<Copy?> GetFirstAvailableCopyByBookIdAsync(uint bookId);
+
+    // Devuelve la primera copia disponible pero dentro de una transacción con FOR UPDATE
+    Task<Copy?> GetFirstAvailableCopyByBookIdForUpdateAsync(uint bookId);
+
+    Task<IDbContextTransaction> BeginTransactionAsync();
+
+    Task AddLoanAsync(Loan loan);
 
     Task SaveChangesAsync();
     Task<IEnumerable<LoanListDto>> GetAllLoansAsync();
