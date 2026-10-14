@@ -1,4 +1,5 @@
-﻿using Backend.Application.DTOs;
+﻿using System.Linq;
+using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,23 +41,37 @@ namespace Backend.Controllers
         }
 
         [HttpPost("loan-book/{bookId}")]
-        public async Task<IActionResult> RegisterLoan(int bookId)
+        public async Task<IActionResult> RegisterLoan(int bookId, [FromQuery] int borrowerId)
         {
-            var result = await _loanService.RegisterLoanAsync((uint)bookId);
-
-            if (!result)
+            if (borrowerId <= 0)
             {
-                return BadRequest(new
-                {
-                    message = "No se pudo registrar el préstamo. " +
-                              "El libro no tiene copias disponibles."
-                });
+                return BadRequest(new { message = "Debe indicar borrowerId como parámetro de consulta." });
             }
 
-            return Ok(new
+            var (success, error, loanId) = await _loanService.RegisterLoanAsync((uint)borrowerId, new[] { (uint)bookId }, 1);
+
+            if (!success)
             {
-                message = "Préstamo registrado. El libro ahora está prestado."
-            });
+                return BadRequest(new { message = error });
+            }
+
+            return Ok(new { message = "Préstamo registrado.", loanId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Backend.Application.DTOs.LoanCreateRequest request)
+        {
+            if (request == null || request.BookIds == null || !request.BookIds.Any())
+                return BadRequest(new { message = "Solicitud inválida. Se requieren BorrowerId y al menos un BookId." });
+
+            var librarianId = request.LibrarianId ?? 1;
+
+            var (success, error, loanId) = await _loanService.RegisterLoanAsync(request.BorrowerId, request.BookIds, librarianId, request.LoanDays);
+
+            if (!success)
+                return BadRequest(new { message = error });
+
+            return Ok(new { message = "Préstamo creado", loanId });
         }
 
         [HttpGet]

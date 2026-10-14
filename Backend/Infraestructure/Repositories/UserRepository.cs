@@ -48,4 +48,12 @@ public class UserRepository : IUserRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<User>> GetReadersAsync()
+    {
+        return await _context.Users
+            .Where(u => u.Role == "User" && (u.IsActive ?? false))
+            .OrderBy(u => u.FirstName)
+            .ToListAsync();
+    }
 }

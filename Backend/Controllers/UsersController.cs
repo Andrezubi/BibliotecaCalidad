@@ -38,4 +38,11 @@ public class UsersController : ControllerBase
             });
         }
     }
+
+        [HttpGet("readers")]
+        public async Task<IActionResult> GetReaders()
+        {
+            var readers = await _userService.GetReadersAsync();
+            return Ok(readers);
+        }
 }

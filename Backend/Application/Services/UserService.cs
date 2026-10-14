@@ -107,4 +107,17 @@ public class UserService : IUserService
 
         return user.Id;
     }
+
+    public async Task<IEnumerable<Backend.Application.DTOs.UserListDto>> GetReadersAsync()
+    {
+        var users = await _userRepository.GetReadersAsync();
+
+        return users.Select(u => new Backend.Application.DTOs.UserListDto
+        {
+            Id = u.Id,
+            FirstName = u.FirstName,
+            LastName = u.LastName,
+            Username = u.Username
+        });
+    }
 }
