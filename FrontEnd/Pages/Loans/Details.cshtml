@@ -6,32 +6,51 @@
 }
 
 <div class="container content-wrapper">
-
     <div class="card-custom">
-
         <div class="d-flex justify-content-between align-items-center mb-4">
-
             <div>
-
                 <h2 class="page-title mb-0">
-
                     <i class="bi bi-journal-text me-2"></i>
                     Detalle de Préstamo @Model.Loan?.Id
-
                 </h2>
-
                 <p class="text-muted mb-0">
                     Información completa del préstamo y sus ítems
                 </p>
-
             </div>
 
-            <a asp-page="Index" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left me-2"></i>
-                Volver a Préstamos
-            </a>
+            <div class="d-flex gap-2">
+                @if (Model.Loan != null)
+                {
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditarPrestamo">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Modificar Préstamo
+                    </button>
+                }
 
+                <a asp-page="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Volver a Préstamos
+                </a>
+            </div>
         </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
@@ -66,7 +85,9 @@
                         <dd class="col-sm-9">@Model.Loan.LoanDate.ToString("dd/MM/yyyy HH:mm")</dd>
 
                         <dt class="col-sm-3">Fecha de vencimiento</dt>
-                        <dd class="col-sm-9">@Model.Loan.DueDate.ToString("dd/MM/yyyy")</dd>
+                        <dd class="col-sm-9">
+                            <span class="fw-semibold">@Model.Loan.DueDate.ToString("dd/MM/yyyy")</span>
+                        </dd>
 
                         <dt class="col-sm-3">Estado</dt>
                         <dd class="col-sm-9">
@@ -184,7 +205,49 @@
                 </div>
             }
         }
-
     </div>
-
 </div>
+
+<!-- Modal para Modificar Estado y Fecha de Vencimiento -->
+@if (Model.Loan != null)
+{
+    <div class="modal fade" id="modalEditarPrestamo" tabindex="-1" aria-labelledby="modalEditarPrestamoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="UpdateLoan">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarPrestamoLabel">
+                            <i class="bi bi-calendar-event me-2"></i>Modificar Préstamo #@Model.Loan.Id
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label asp-for="EditDueDate" class="form-label fw-semibold">Nueva Fecha de Vencimiento</label>
+                            <input asp-for="EditDueDate" type="date" class="form-control" required />
+                            <small class="text-muted">Extiende la fecha límite de entrega del libro.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EditStatus" class="form-label fw-semibold">Estado del Préstamo</label>
+                            <select asp-for="EditStatus" class="form-select" required>
+                                <option value="Active">Activo</option>
+                                <option value="Completed">Completado</option>
+                                <option value="Overdue">Vencido</option>
+                                <option value="Lost">Perdido</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
