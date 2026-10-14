@@ -1,6 +1,5 @@
 ﻿using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
-using Backend.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -20,15 +19,15 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetLoanedBooks()
         {
             var books = await _loanService.GetLoanedBooksAsync();
-
             return Ok(books);
         }
+
         [HttpPost("return/{copyId}")]
         public async Task<IActionResult> RegisterReturn(int copyId)
         {
             var result = await _loanService.RegisterReturnAsync((uint)copyId);
 
-            if (!result)
+            if (result == null)
             {
                 return BadRequest(new
                 {
@@ -37,11 +36,9 @@ namespace Backend.Controllers
                 });
             }
 
-            return Ok(new
-            {
-                message = "Devolución registrada. El libro ahora está disponible."
-            });
+            return Ok(result);
         }
+
         [HttpPost("loan-book/{bookId}")]
         public async Task<IActionResult> RegisterLoan(int bookId)
         {
@@ -80,5 +77,4 @@ namespace Backend.Controllers
             return Ok(loan);
         }
     }
-
 }
