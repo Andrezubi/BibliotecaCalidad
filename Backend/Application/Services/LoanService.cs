@@ -208,6 +208,58 @@ namespace Backend.Application.Services
             return new ReturnResultDto { HasFine = false, Message = "Devolución registrada correctamente." };
         }
 
+        public async Task<ReturnResultDto?> RegisterReturnAsync(uint loanId, uint copyId, bool confirm = true)
+        {
+            var loan = await _loanRepository.GetLoanWithItemsByIdAsync(loanId);
+            var item = loan?.Loanitems.FirstOrDefault(li => li.CopyId == copyId);
+            if (loan == null || item == null) return null;
+            if (item.Status != "Active" && item.Status != "Overdue")
+                return new ReturnResultDto { Success = false, Message = "El ejemplar no admite devolución." };
+
+            var now = DateTime.Now;
+            var daysLate = Math.Max(0, (now.Date - loan.DueDate.Date).Days);
+            var fine = daysLate > 0 ? await _loanRepository.GetFineByLoanCopyAsync(loanId, copyId) : null;
+            var dailyRate = GetDailyFineRate();
+            if (!confirm)
+            {
+                var previewRate = fine?.DailyRate ?? dailyRate;
+                return new ReturnResultDto { HasFine = daysLate > 0, Message = daysLate > 0 ? "Se generará una multa al confirmar la devolución." : "El ejemplar está dentro del plazo; no se generará multa.",
+                    CopyId = (int)copyId, Amount = fine?.Amount ?? previewRate * daysLate,
+                    OverdueDays = fine == null ? daysLate : (int)fine.OverdueDays,
+                    BorrowerName = $"{loan.Borrower.FirstName} {loan.Borrower.LastName}".Trim(),
+                    BookTitle = item.Copy.Book.Title, FineStatus = fine?.Status ?? (daysLate > 0 ? "Pending" : null),
+                    DailyRate = daysLate > 0 ? previewRate : null, DueDate = loan.DueDate, LoanId = (int)loan.Id };
+            }
+
+            await using var transaction = await _loanRepository.BeginTransactionAsync();
+            if (daysLate > 0 && fine == null)
+            {
+                fine = new Fine { LoanId = loanId, CopyId = copyId, DailyRate = dailyRate,
+                    OverdueDays = (uint)daysLate, Amount = dailyRate * daysLate,
+                    Status = "Pending", CreatedAt = now, UpdatedAt = now };
+                Backend.Domain.Validators.FineValidator.Validate(fine);
+                await _loanRepository.AddFineAsync(fine);
+            }
+
+            item.ReturnedAt = now;
+            item.Status = "Returned";
+            item.UpdatedAt = now;
+            item.Copy.StatusId = 1;
+            item.Copy.UpdatedAt = now;
+            var remaining = loan.Loanitems.Where(li => li.CopyId != copyId && li.Status != "Returned" && li.Status != "Lost").ToList();
+            loan.Status = remaining.Count == 0 ? "Completed" : loan.DueDate.Date < now.Date ? "Overdue" : "Active";
+            loan.UpdatedAt = now;
+            await _loanRepository.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return new ReturnResultDto { HasFine = fine != null,
+                Message = fine == null ? "Devolución registrada correctamente." : "Devolución registrada. Multa generada.",
+                CopyId = (int)copyId, Amount = fine?.Amount ?? 0, OverdueDays = fine == null ? 0 : (int)fine.OverdueDays,
+                BorrowerName = $"{loan.Borrower.FirstName} {loan.Borrower.LastName}".Trim(),
+                BookTitle = item.Copy.Book.Title, PaidAt = now, FineStatus = fine?.Status,
+                DailyRate = fine?.DailyRate, DueDate = loan.DueDate, LoanId = (int)loan.Id };
+        }
+
         public async Task<(bool Success, string? Error, int? LoanId)> RegisterLoanAsync(uint borrowerId, IEnumerable<uint> bookIds, uint librarianId, int loanDays = 14)
         {
             if (borrowerId == 0)
@@ -358,6 +410,7 @@ namespace Backend.Application.Services
 
         private static LoanDto MapToDto(Loan loan)
         {
+            var overdue = loan.DueDate.Date < DateTime.Now.Date;
             var loanDto = new LoanDto
             {
                 Id = (int)loan.Id,
@@ -367,8 +420,8 @@ namespace Backend.Application.Services
                 LibrarianName = $"{loan.Librarian.FirstName} {loan.Librarian.LastName}".Trim(),
                 LoanDate = loan.LoanDate,
                 DueDate = loan.DueDate,
-                Status = loan.Status,
-                StatusDisplayName = GetLoanStatusDisplayName(loan.Status),
+                Status = loan.Status == "Completed" || loan.Status == "Lost" ? loan.Status : overdue ? "Overdue" : "Active",
+                StatusDisplayName = GetLoanStatusDisplayName(loan.Status == "Completed" || loan.Status == "Lost" ? loan.Status : overdue ? "Overdue" : "Active"),
                 CreatedAt = loan.CreatedAt,
                 UpdatedAt = loan.UpdatedAt,
                 Items = loan.Loanitems.Select(li => new LoanItemDto
@@ -378,8 +431,8 @@ namespace Backend.Application.Services
                     BookId = (int)li.Copy.BookId,
                     BookTitle = li.Copy.Book.Title,
                     ReturnedAt = li.ReturnedAt,
-                    Status = li.Status,
-                    StatusDisplayName = GetLoanItemStatusDisplayName(li.Status)
+                    Status = li.Status == "Returned" || li.Status == "Lost" ? li.Status : overdue ? "Overdue" : "Active",
+                    StatusDisplayName = GetLoanItemStatusDisplayName(li.Status == "Returned" || li.Status == "Lost" ? li.Status : overdue ? "Overdue" : "Active")
                 }).ToList()
             };
 
@@ -396,6 +449,16 @@ namespace Backend.Application.Services
                 "Lost" => "Perdido",
                 _ => status
             };
+        }
+
+        private decimal GetDailyFineRate()
+        {
+            var configuredRate = _configuration["Fine:DailyRate"];
+            if (decimal.TryParse(configuredRate, System.Globalization.NumberStyles.Number,
+                    System.Globalization.CultureInfo.InvariantCulture, out var rate) && rate > 0)
+                return rate;
+
+            return 10.00m; // Fine.DailyRate default defined by the current database model.
         }
 
         private static string GetLoanItemStatusDisplayName(string status)

@@ -74,7 +74,7 @@ namespace FrontEnd.Pages.Loans
 
             try
             {
-                var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId, false);
+                var result = await _loanService.RegisterReturnWithFineAsync(Id, (uint)copyId, false);
 
                 if (result == null)
                 {
@@ -91,8 +91,6 @@ namespace FrontEnd.Pages.Loans
                     // Para AJAX devolvemos el resultado del cálculo (cliente mostrará modal y confirmará)
                     return new JsonResult(result);
                 }
-
-                // Petición tradicional sin JS: si hay multa, devolver la misma página con el resultado
                 if (result.HasFine)
                 {
                     LastReturnResult = result;
@@ -100,13 +98,8 @@ namespace FrontEnd.Pages.Loans
                     return Page();
                 }
 
-                // Si no hay multa, confirmar inmediatamente (persistir)
-                var confirmResult = await _loanService.RegisterReturnWithFineAsync((uint)copyId, true);
-                if (confirmResult == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error al confirmar la devolución." });
-                }
-
+                var confirmResult = await _loanService.RegisterReturnWithFineAsync(Id, (uint)copyId, true);
+                if (confirmResult == null) return StatusCode(StatusCodes.Status502BadGateway, new { message = "No se pudo confirmar la devolución." });
                 TempData["Success"] = confirmResult.Message ?? "Devolución registrada correctamente.";
                 return RedirectToPage(new { id = Id });
             }
@@ -130,7 +123,7 @@ namespace FrontEnd.Pages.Loans
 
             try
             {
-                var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId, true);
+                var result = await _loanService.RegisterReturnWithFineAsync(Id, (uint)copyId, true);
 
                 if (result == null)
                 {

@@ -34,12 +34,28 @@
                     <span class="col-6 text-end" id="reciboLibro">-</span>
                 </div>
                 <div class="row mb-2">
+                    <span class="col-6 text-muted">Préstamo:</span>
+                    <span class="col-6 text-end" id="reciboPrestamo">-</span>
+                </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Fecha límite:</span>
+                    <span class="col-6 text-end" id="reciboVencimiento">-</span>
+                </div>
+                <div class="row mb-2">
                     <span class="col-6 text-muted">Días de retraso:</span>
                     <span class="col-6 text-end text-danger fw-bold" id="reciboDias">-</span>
                 </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Tarifa diaria:</span>
+                    <span class="col-6 text-end" id="reciboTarifa">-</span>
+                </div>
                 <div class="row pt-2 border-top">
-                    <span class="col-6 fs-5 fw-bold">Total Pagado:</span>
+                    <span class="col-6 fs-5 fw-bold">Importe de multa:</span>
                     <span class="col-6 fs-5 fw-bold text-end text-success" id="reciboMonto">-</span>
+                </div>
+                <div class="row mt-2">
+                    <span class="col-6 text-muted">Estado:</span>
+                    <span class="col-6 text-end fw-semibold" id="reciboEstado">Pendiente</span>
                 </div>
                 <div class="text-center mt-3 text-muted">
                     <small id="reciboFecha"></small>
@@ -56,12 +72,13 @@
             </div>
         </div>
     </div>
+ </div>
 
 @* Mostrar modal tanto si TempData contiene el JSON (legacy) como si PageModel.LastReturnResult fue poblado *@
 @if (TempData["ReturnResult"] != null || Model.LastReturnResult != null)
 {
     <script>
-        (function() {
+        document.addEventListener('DOMContentLoaded', function() {
             try {
                 var data = null;
                 if (@(Model.LastReturnResult != null ? "true" : "false")) {
@@ -71,7 +88,11 @@
                         bookTitle: '@(Model.LastReturnResult?.BookTitle ?? "-")',
                         overdueDays: @(Model.LastReturnResult?.OverdueDays ?? 0),
                         amount: @(Model.LastReturnResult?.Amount ?? 0),
-                        paidAt: '@(Model.LastReturnResult?.PaidAt?.ToString("o") ?? string.Empty)'
+                        paidAt: '@(Model.LastReturnResult?.PaidAt?.ToString("o") ?? string.Empty)',
+                        dailyRate: @(Model.LastReturnResult?.DailyRate ?? 0),
+                        dueDate: '@(Model.LastReturnResult?.DueDate?.ToString("o") ?? string.Empty)',
+                        loanId: @(Model.LastReturnResult?.LoanId ?? 0),
+                        fineStatus: '@(Model.LastReturnResult?.FineStatus ?? "Pending")'
                     };
                     // Mostrar y configurar el botón confirmar cuando el preview viene del servidor
                     var confirmBtn = document.getElementById('confirmReturnBtn');
@@ -88,14 +109,17 @@
                 document.getElementById('reciboLibro').innerText = data.bookTitle ?? '-';
                 document.getElementById('reciboDias').innerText = data.overdueDays ?? '-';
                 document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(data.amount).toFixed(2);
+                document.getElementById('reciboPrestamo').innerText = data.loanId ?? '-';
+                document.getElementById('reciboVencimiento').innerText = data.dueDate ? new Date(data.dueDate).toLocaleDateString('es-BO') : '-';
+                document.getElementById('reciboTarifa').innerText = data.dailyRate ? 'Bs. ' + Number(data.dailyRate).toFixed(2) : '-';
+                document.getElementById('reciboEstado').innerText = data.fineStatus ?? 'Pendiente';
                 document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
                 var modal = new bootstrap.Modal(document.getElementById('reciboModal'));
                 modal.show();
             } catch (e) { console.error('Error parsing ReturnResult', e); }
-        })();
+        });
     </script>
 }
-</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -144,14 +168,18 @@
                     document.getElementById('reciboLibro').innerText = data.bookTitle ?? '-';
                     document.getElementById('reciboDias').innerText = data.overdueDays ?? '-';
                     document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(data.amount).toFixed(2);
+                    document.getElementById('reciboPrestamo').innerText = data.loanId ?? '-';
+                    document.getElementById('reciboVencimiento').innerText = data.dueDate ? new Date(data.dueDate).toLocaleDateString('es-BO') : '-';
+                    document.getElementById('reciboTarifa').innerText = data.dailyRate ? 'Bs. ' + Number(data.dailyRate).toFixed(2) : '-';
+                    document.getElementById('reciboEstado').innerText = data.fineStatus ?? 'Pendiente';
                     document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
 
                     // Mostrar botón de confirmar devolución dentro del modal
                     const confirmBtn = document.getElementById('confirmReturnBtn');
-                    confirmBtn.style.display = 'inline-block';
-                    // Guardar copyId en dataset para usarlo en confirmReturn
-                    confirmBtn.dataset.copyId = copyId;
-                    const modal = new bootstrap.Modal(document.getElementById('reciboModal'));
+                    if (confirmBtn) confirmBtn.style.display = 'none';
+                    const modalElement = document.getElementById('reciboModal');
+                    modalElement.addEventListener('hidden.bs.modal', () => location.reload(), { once: true });
+                    const modal = new bootstrap.Modal(modalElement);
                     modal.show();
                 } else {
                     // No fine: show success and reload
@@ -175,9 +203,13 @@
                 formData.append('copyId', copyId);
                 if (token) formData.append('__RequestVerificationToken', token);
 
-                const url = window.location.pathname + '?handler=ReturnItem';
+                const url = window.location.pathname + '?handler=ConfirmReturnItem';
 
-                const response = await fetch(url, { method: 'POST', body: formData });
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                    body: formData
+                });
 
                 if (!response.ok) {
                     const txt = await response.text();

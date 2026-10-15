@@ -76,7 +76,6 @@ public class LoanRepository : ILoanRepository
     public async Task AddFineAsync(Fine fine)
     {
         await _context.Fines.AddAsync(fine);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<Fine?> GetFineByLoanCopyAsync(uint loanId, uint copyId)
@@ -107,8 +106,8 @@ public class LoanRepository : ILoanRepository
                 LibrarianName = l.Librarian.FirstName + " " + l.Librarian.LastName,
                 LoanDate = l.LoanDate,
                 DueDate = l.DueDate,
-                Status = l.Status,
-                StatusDisplayName = GetLoanStatusDisplayName(l.Status),
+                Status = l.Status == "Completed" || l.Status == "Lost" ? l.Status : l.DueDate.Date < DateTime.Now.Date ? "Overdue" : "Active",
+                StatusDisplayName = GetLoanStatusDisplayName(l.Status == "Completed" || l.Status == "Lost" ? l.Status : l.DueDate.Date < DateTime.Now.Date ? "Overdue" : "Active"),
                 ItemsCount = l.Loanitems.Count,
                 ReturnedItemsCount = l.Loanitems.Count(li => li.Status == "Returned")
             })

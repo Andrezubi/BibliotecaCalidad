@@ -37,24 +37,5 @@ namespace FrontEnd.Pages.Books
             }
         }
 
-        public async Task<IActionResult> OnPostReturnAsync(int copyId)
-        {
-            if (!IsInAnyRole("Admin", "Librarian"))
-            {
-                return new ObjectResult(new { message = "No tienes permisos para realizar esta acción." })
-                {
-                    StatusCode = StatusCodes.Status401Unauthorized
-                };
-            }
-
-            var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId);
-
-            if (result == null)
-            {
-                return BadRequest(new { message = "No se pudo registrar la devolución del ejemplar." });
-            }
-
-            return new JsonResult(result);
-        }
     }
 }

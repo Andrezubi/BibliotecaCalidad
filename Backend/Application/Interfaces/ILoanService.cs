@@ -10,7 +10,7 @@ namespace Backend.Application.Interfaces
         // Registrar la devolución de una copia. Si 'confirm' es false, solo devuelve el detalle de multa
         // sin modificar el estado en la base de datos. Si 'confirm' es true, realiza la devolución y
         // persiste la multa si corresponde.
-        Task<ReturnResultDto?> RegisterReturnAsync(uint copyId, bool confirm = false);
+        Task<ReturnResultDto?> RegisterReturnAsync(uint loanId, uint copyId, bool confirm = true);
 
         // Registrar un préstamo individual (método anterior).
         Task<bool> RegisterLoanAsync(uint bookId);

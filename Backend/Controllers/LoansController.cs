@@ -2,6 +2,7 @@
 using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -23,19 +24,22 @@ namespace Backend.Controllers
             return Ok(books);
         }
 
-        [HttpPost("return/{copyId}")]
-        public async Task<IActionResult> RegisterReturn(int copyId, [FromQuery] bool confirm = true)
+        [Authorize(Roles = "Admin,Librarian")]
+        [HttpPost("{loanId:int}/items/{copyId:int}/return")]
+        public async Task<IActionResult> RegisterReturn(int loanId, int copyId, [FromQuery] bool confirm = true)
         {
-            // Si confirm == false -> solo calcular/mostrar multa sin persistir la devolución
-            var result = await _loanService.RegisterReturnAsync((uint)copyId, confirm);
+            if (loanId <= 0 || copyId <= 0) return BadRequest(new { message = "Identificadores inválidos." });
+            var result = await _loanService.RegisterReturnAsync((uint)loanId, (uint)copyId, confirm);
 
             if (result == null)
             {
-                return BadRequest(new
+                return Conflict(new
                 {
                     message = "No se pudo procesar la operación. La copia no existe o no está prestada."
                 });
             }
+
+            if (!result.Success) return Conflict(new { message = result.Message });
 
             return Ok(result);
         }
