@@ -38,8 +38,8 @@
                     <span class="col-6 text-end text-danger fw-bold" id="reciboDias">-</span>
                 </div>
                 <div class="row pt-2 border-top">
-                    <span class="col-6 fs-5 fw-bold">Total Pagado:</span>
-                    <span class="col-6 fs-5 fw-bold text-end text-success" id="reciboMonto">-</span>
+                    <span class="col-6 fs-5 fw-bold">Total Multa:</span>
+                    <span class="col-6 fs-5 fw-bold text-end text-danger" id="reciboMonto">-</span>
                 </div>
                 <div class="text-center mt-3 text-muted">
                     <small id="reciboFecha"></small>
@@ -101,6 +101,7 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
+        // Called from the return button next to each loan item
         window.returnCopy = async function (copyId, titulo) {
             console.log('returnCopy called', copyId, titulo);
             if (!confirm('¿Confirmar la devolución del libro "' + titulo + '"?')) {
@@ -111,63 +112,52 @@
                 const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
                 const token = tokenEl ? tokenEl.value : '';
 
+                // Step 1: Preview - check if there will be a fine (confirm=false)
+                const previewUrl = window.location.pathname + '?handler=ReturnItem&confirm=false';
                 const formData = new FormData();
                 formData.append('copyId', copyId);
+                if (token) formData.append('__RequestVerificationToken', token);
 
-                // include antiforgery token both as form field and header for compatibility
-                if (token) {
-                    formData.append('__RequestVerificationToken', token);
-                }
-
-                const url = window.location.pathname + '?handler=ReturnItem';
-
-                const headers = {};
-                if (token) headers['RequestVerificationToken'] = token;
-
-                const response = await fetch(url, {
+                const previewResponse = await fetch(previewUrl, {
                     method: 'POST',
-                    headers,
                     body: formData
                 });
 
-                if (!response.ok) {
-                    const txt = await response.text();
+                if (!previewResponse.ok) {
+                    const txt = await previewResponse.text();
                     alert('Error: ' + txt);
                     return;
                 }
 
-                const data = await response.json();
+                const previewData = await previewResponse.json();
 
-                if (data.hasFine) {
-                    document.getElementById('reciboNumero').innerText = data.receiptNumber ?? '-';
-                    document.getElementById('reciboLector').innerText = data.borrowerName ?? '-';
-                    document.getElementById('reciboLibro').innerText = data.bookTitle ?? '-';
-                    document.getElementById('reciboDias').innerText = data.overdueDays ?? '-';
-                    document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(data.amount).toFixed(2);
-                    document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
+                if (previewData.hasFine) {
+                    // Show fine modal with confirm button
+                    document.getElementById('reciboNumero').innerText = previewData.receiptNumber ?? '-';
+                    document.getElementById('reciboLector').innerText = previewData.borrowerName ?? '-';
+                    document.getElementById('reciboLibro').innerText = previewData.bookTitle ?? '-';
+                    document.getElementById('reciboDias').innerText = previewData.overdueDays ?? '-';
+                    document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(previewData.amount).toFixed(2);
+                    document.getElementById('reciboFecha').innerText = previewData.paidAt ? new Date(previewData.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
 
-                    // Mostrar botón de confirmar devolución dentro del modal
                     const confirmBtn = document.getElementById('confirmReturnBtn');
                     confirmBtn.style.display = 'inline-block';
-                    // Guardar copyId en dataset para usarlo en confirmReturn
                     confirmBtn.dataset.copyId = copyId;
                     const modal = new bootstrap.Modal(document.getElementById('reciboModal'));
                     modal.show();
                 } else {
-                    // No fine: show success and reload
-                    alert(data.message || 'Devolución registrada exitosamente (sin multas).');
-                    location.reload();
+                    // No fine - confirm directly (persist)
+                    await confirmReturnDirect(copyId);
                 }
             } catch (err) {
                 alert('Ocurrió un error inesperado al procesar la devolución.');
+                console.error(err);
             }
         }
 
-        // Called from modal to confirm and persist the return when a fine exists
-        async function confirmReturn() {
+        // Direct confirmation without fine (or after user clicks confirm in modal)
+        async function confirmReturnDirect(copyId) {
             try {
-                const btn = document.getElementById('confirmReturnBtn');
-                const copyId = btn.dataset.copyId;
                 const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
                 const token = tokenEl ? tokenEl.value : '';
 
@@ -175,7 +165,7 @@
                 formData.append('copyId', copyId);
                 if (token) formData.append('__RequestVerificationToken', token);
 
-                const url = window.location.pathname + '?handler=ReturnItem';
+                const url = window.location.pathname + '?handler=ReturnItem&confirm=true';
 
                 const response = await fetch(url, { method: 'POST', body: formData });
 
@@ -187,20 +177,29 @@
 
                 const data = await response.json();
                 if (data.hasFine) {
+                    // This shouldn't happen in direct confirm, but handle it
                     alert('Multa registrada y devolución confirmada.');
-                    location.reload();
                 } else {
                     alert(data.message || 'Devolución confirmada.');
-                    location.reload();
                 }
+                location.reload();
             } catch (e) {
                 alert('Error inesperado al confirmar la devolución.');
+                console.error(e);
             }
         }
 
-        // Custom print removed; use window.print() instead when needed.
-
-        // Event binding removed: form fallback used for reliable behavior without JS injection issues.
+        // Called from modal to confirm and persist the return when a fine exists
+        async function confirmReturn() {
+            try {
+                const btn = document.getElementById('confirmReturnBtn');
+                const copyId = btn.dataset.copyId;
+                await confirmReturnDirect(copyId);
+            } catch (e) {
+                alert('Error inesperado al confirmar la devolución.');
+                console.error(e);
+            }
+        }
     </script>
 }
 
@@ -403,13 +402,9 @@
                                     <td class="text-center">
                                         @if (item.Status == "Active" || item.Status == "Overdue")
                                         {
-                                            <form method="post" asp-page-handler="ReturnItem" class="d-inline">
-                                                <!-- Server-side return form (kept for clarity) -->
-                                                <input type="hidden" name="copyId" value="@item.CopyId" />
-                                                <button type="submit" class="btn btn-success btn-sm">
-                                                    <i class="bi bi-arrow-return-left me-1"></i> Devolver
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-success btn-sm" onclick="returnCopy(@item.CopyId, '@item.BookTitle.Replace("'", "\\'")')">
+                                                <i class="bi bi-arrow-return-left me-1"></i> Devolver
+                                            </button>
                                         }
                                         else
                                         {

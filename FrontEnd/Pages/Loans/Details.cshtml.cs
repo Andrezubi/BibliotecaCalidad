@@ -62,7 +62,7 @@ namespace FrontEnd.Pages.Loans
         }
 
         // Preview: calcula multa sin persistir (confirm=false)
-        public async Task<IActionResult> OnPostReturnItemAsync([FromForm] int copyId)
+        public async Task<IActionResult> OnPostReturnItemAsync([FromForm] int copyId, [FromQuery] bool confirm = false)
         {
             if (!IsInAnyRole("Admin", "Librarian"))
             {
@@ -74,7 +74,7 @@ namespace FrontEnd.Pages.Loans
 
             try
             {
-                var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId, false);
+                var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId, confirm);
 
                 if (result == null)
                 {
@@ -117,56 +117,11 @@ namespace FrontEnd.Pages.Loans
             }
         }
 
-        // Confirmar: persistir la devolución (confirm=true)
+        // Confirmar: persistir la devolución (confirm=true) - now handled by OnPostReturnItemAsync with confirm=true
+        // Keeping this for backward compatibility but it delegates to the main handler
         public async Task<IActionResult> OnPostConfirmReturnItemAsync([FromForm] int copyId)
         {
-            if (!IsInAnyRole("Admin", "Librarian"))
-            {
-                return new ObjectResult(new { message = "No tienes permisos para realizar esta acción." })
-                {
-                    StatusCode = StatusCodes.Status401Unauthorized
-                };
-            }
-
-            try
-            {
-                var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId, true);
-
-                if (result == null)
-                {
-                    return BadRequest(new { message = "No se pudo confirmar la devolución del ejemplar." });
-                }
-
-                var isAjax = (Request?.Headers != null) &&
-                             (Request.Headers["X-Requested-With"] == "XMLHttpRequest" ||
-                              (Request.Headers.ContainsKey("Accept") && Request.Headers["Accept"].ToString().Contains("application/json")));
-
-                if (isAjax)
-                {
-                    return new JsonResult(result);
-                }
-
-                if (result.HasFine)
-                {
-                    var json = System.Text.Json.JsonSerializer.Serialize(
-                        result,
-                        new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }
-                    );
-
-                    TempData["ReturnResult"] = json;
-                }
-                else
-                {
-                    TempData["Success"] = result.Message ?? "Devolución confirmada.";
-                }
-
-                return RedirectToPage(new { id = Id });
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"OnPostConfirmReturnItemAsync error: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error interno al confirmar la devolución." });
-            }
+            return await OnPostReturnItemAsync(copyId, true);
         }
 
         public async Task<IActionResult> OnPostUpdateLoanAsync()
