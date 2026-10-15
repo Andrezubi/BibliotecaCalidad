@@ -27,4 +27,5 @@ public interface ILoanRepository
     Task SaveChangesAsync();
     Task<IEnumerable<LoanListDto>> GetAllLoansAsync();
     Task<Loan?> GetLoanWithItemsByIdAsync(uint id);
+    Task<IEnumerable<Loan>> GetLoansForStatusUpdateAsync();
 }

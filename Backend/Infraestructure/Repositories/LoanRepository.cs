@@ -63,9 +63,13 @@ public class LoanRepository : ILoanRepository
     public async Task<Loan?> GetActiveLoanByCopyIdAsync(uint copyId)
     {
         return await _context.Loans
-            .Where(l => l.Loanitems.Any(li => li.CopyId == copyId && (li.Status == "Active" || li.Status == "Overdue")))
-            .OrderByDescending(l => l.LoanDate)
-            .FirstOrDefaultAsync();
+        .Include(l => l.Borrower)
+        .Include(l => l.Loanitems)
+            .ThenInclude(li => li.Copy)
+                .ThenInclude(c => c.Book)
+        .Where(l => l.Loanitems.Any(li => li.CopyId == copyId && (li.Status == "Active" || li.Status == "Overdue")))
+        .OrderByDescending(l => l.LoanDate)
+        .FirstOrDefaultAsync();
     }
 
     public async Task SaveChangesAsync()
@@ -138,5 +142,13 @@ public class LoanRepository : ILoanRepository
             "Lost" => "Perdido",
             _ => status
         };
+    }
+
+    public async Task<IEnumerable<Loan>> GetLoansForStatusUpdateAsync()
+    {
+        return await _context.Loans
+            .Where(l => l.Status != "Completed" && l.Status != "Lost")
+            .Include(l => l.Loanitems)
+            .ToListAsync();
     }
 }

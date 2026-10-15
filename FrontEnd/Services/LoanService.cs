@@ -1,5 +1,5 @@
 
-using FrontEnd.DTOs;
+using FrfntEnd.DTOs;
 using System.Text.Json;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -80,13 +80,39 @@ namespace FrontEnd.Services
 
             var response = await _httpClient.PostAsync(url, null);
 
+            var responseContent = await response.Content.ReadAsStringAsync();
+
             if (!response.IsSuccessStatusCode)
             {
-                return null;
+                // Try to parse error response
+                string errorMessage = $"Error HTTP {response.StatusCode}";
+                try
+                {
+                    using var doc = System.Text.Json.JsonDocument.Parse(responseContent);
+                    if (doc.RootElement.TryGetProperty("message", out var msgProp))
+                    {
+                        errorMessage = msgProp.GetString() ?? errorMessage;
+                    }
+                    else if (doc.RootElement.TryGetProperty("title", out var titleProp))
+                    {
+                        errorMessage = titleProp.GetString() ?? errorMessage;
+                    }
+                }
+                catch
+                {
+                    // If not JSON, use raw content (might be HTML error page)
+                    if (!string.IsNullOrWhiteSpace(responseContent) && !responseContent.TrimStart().StartsWith("<"))
+                    {
+                        errorMessage = responseContent;
+                    }
+                }
+                throw new HttpRequestException(errorMessage);
             }
 
-            return await response.Content
-                .ReadFromJsonAsync<FineReceiptDto>();
+            return System.Text.Json.JsonSerializer.Deserialize<FineReceiptDto>(responseContent, new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         // Registrar un préstamo individual.
@@ -133,7 +159,7 @@ namespace FrontEnd.Services
                 int borrowerId,
                 List<int> bookIds,
                 int? librarianId = null,
-                int loanDays = 14)
+                int loanDays = 2)
         {
             var backendUrl = _configuration["BackendUrl"];
 

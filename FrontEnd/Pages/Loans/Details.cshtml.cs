@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FrontEnd.Pages.Loans
 {
+    [IgnoreAntiforgeryToken]
     public class DetailsModel : AuthorizedPageModel
     {
         private readonly LoanService _loanService;
@@ -66,7 +67,7 @@ namespace FrontEnd.Pages.Loans
         {
             if (!IsInAnyRole("Admin", "Librarian"))
             {
-                return new ObjectResult(new { message = "No tienes permisos para realizar esta acción." })
+                return new JsonResult(new { message = "No tienes permisos para realizar esta acción." })
                 {
                     StatusCode = StatusCodes.Status401Unauthorized
                 };
@@ -77,9 +78,7 @@ namespace FrontEnd.Pages.Loans
                 var result = await _loanService.RegisterReturnWithFineAsync(Id, (uint)copyId, false);
 
                 if (result == null)
-                {
                     return BadRequest(new { message = "No se pudo procesar la devolución del ejemplar." });
-                }
 
                 // Detectar si la petición es AJAX (fetch/XHR que espera JSON)
                 var isAjax = (Request?.Headers != null) &&
@@ -106,7 +105,7 @@ namespace FrontEnd.Pages.Loans
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"OnPostReturnItemAsync error: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error interno al procesar la devolución." });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 
