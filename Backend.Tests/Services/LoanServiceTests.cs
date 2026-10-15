@@ -1,4 +1,5 @@
-﻿using Backend.Application.Services;
+﻿using Backend.Application.DTOs;
+using Backend.Application.Services;
 using Backend.Domain.Interfaces;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -532,6 +533,325 @@ namespace Backend.Tests.Services
 
 
 
+
+
+
+
+
+
+
+        public class AddBusinessDaysTests
+        {
+            // ---------- Helper ----------
+
+            private static DateTime InvokeAddBusinessDays(DateTime start, int businessDays)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "AddBusinessDays",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+                Assert.NotNull(method);
+
+                return (DateTime)method!.Invoke(null, new object[] { start, businessDays })!;
+            }
+
+            // ---------- Caso 1: I,1,F ----------
+            [Fact]
+            public void Caso1_CeroDiasHabiles_RetornaLaMismaFecha()
+            {
+                // added < businessDays es false desde el inicio
+                var start = new DateTime(2026, 10, 15); // jueves
+
+                var result = InvokeAddBusinessDays(start, 0);
+
+                Assert.Equal(new DateTime(2026, 10, 15), result);
+                Assert.Equal(DayOfWeek.Thursday, result.DayOfWeek);
+            }
+
+            // ---------- Caso 2: I,1,2,3,4,5,1,F ----------
+            [Fact]
+            public void Caso2_DesdeDomingoSumaUnDiaHabil_RetornaLunes()
+            {
+                // domingo + 1 día = lunes (día hábil, added++)
+                var start = new DateTime(2026, 10, 18); // domingo
+
+                var result = InvokeAddBusinessDays(start, 1);
+
+                Assert.Equal(new DateTime(2026, 10, 19), result);
+                Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+            }
+
+            // ---------- Caso 3: I,1,2,3,1,2,3,4,1,2,3,4,5,1,F ----------
+            [Fact]
+            public void Caso3_DesdeViernesSaltaSabadoYDomingo_RetornaLunes()
+            {
+                // viernes + 1: sábado (se omite), domingo (se omite), lunes (cuenta)
+                var start = new DateTime(2026, 10, 16); // viernes
+
+                var result = InvokeAddBusinessDays(start, 1);
+
+                Assert.Equal(new DateTime(2026, 10, 19), result);
+                Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+            }
+
+            // ---------- Caso 4: I,1,2,3,4,1,2,3,4,5,1,F ----------
+            [Fact]
+            public void Caso4_DesdeSabadoSaltaDomingo_RetornaLunes()
+            {
+                // sábado + 1: domingo (se omite), lunes (cuenta)
+                var start = new DateTime(2026, 10, 17); // sábado
+
+                var result = InvokeAddBusinessDays(start, 1);
+
+                Assert.Equal(new DateTime(2026, 10, 19), result);
+                Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class UpdateLoanTests
+        {
+            private const string ActiveStatus = "Active";
+            private const string OverdueStatus = "Overdue";
+            private const string ReturnedStatus = "Returned";
+
+            private readonly Mock<ILoanRepository> _repo = new();
+            private readonly Mock<IConfiguration> _config = new();
+            private readonly LoanService _sut;
+
+            public UpdateLoanTests()
+            {
+                _sut = new LoanService(_repo.Object, _config.Object);
+            }
+
+            // ---------- Caso 1: I,1,2,F ----------
+            [Fact]
+            public async Task Caso1_PrestamoNoExiste_RetornaFalse()
+            {
+                // Arrange
+                var dto = new UpdateLoanDto
+                {
+                    DueDate = new DateTime(2026, 10, 20),
+                    Status = ActiveStatus
+                };
+                _repo.Setup(r => r.GetLoanWithItemsByIdAsync(999)).ReturnsAsync((Loan?)null);
+
+                // Act
+                var result = await _sut.UpdateLoanAsync(999, dto);
+
+                // Assert
+                Assert.False(result);
+                _repo.Verify(r => r.GetLoanWithItemsByIdAsync(999), Times.Once);
+                _repo.Verify(r => r.SaveChangesAsync(), Times.Never);
+                _repo.VerifyNoOtherCalls();
+            }
+
+            // ---------- Caso 2: I,1,3,4,5,6,F ----------
+            [Fact]
+            public async Task Caso2_PrestamoExiste_ActualizaSincronizaYGuarda()
+            {
+                // Arrange
+                // Se usa una fecha relativa (en lugar de 2026-10-20 fija) para que el test
+                // siga funcionando después de esa fecha: el vencimiento debe estar en el futuro.
+                var newDueDate = DateTime.Now.AddDays(5);
+
+                var overdueItem = new Loanitem { CopyId = 1, Status = OverdueStatus };
+                var returnedItem = new Loanitem { CopyId = 2, Status = ReturnedStatus };
+
+                var loan = new Loan
+                {
+                    Id = 1,
+                    DueDate = DateTime.Now.AddDays(-10),
+                    Status = OverdueStatus,
+                    Loanitems = new List<Loanitem> { overdueItem, returnedItem }
+                };
+
+                var dto = new UpdateLoanDto
+                {
+                    DueDate = newDueDate,
+                    Status = ActiveStatus
+                };
+
+                _repo.Setup(r => r.GetLoanWithItemsByIdAsync(1)).ReturnsAsync(loan);
+
+                var before = DateTime.Now;
+
+                // Act
+                var result = await _sut.UpdateLoanAsync(1, dto);
+
+                var after = DateTime.Now;
+
+                // Assert: resultado
+                Assert.True(result);
+
+                // Assert: el préstamo se actualiza
+                Assert.Equal(newDueDate, loan.DueDate);
+                Assert.Equal(ActiveStatus, loan.Status);
+                Assert.NotNull(loan.UpdatedAt);
+                Assert.InRange(loan.UpdatedAt!.Value, before, after);
+
+                // Assert: sincronización de ítems (Overdue -> Active; Returned no cambia)
+                Assert.Equal(ActiveStatus, overdueItem.Status);
+                Assert.Equal(ReturnedStatus, returnedItem.Status);
+
+                // Assert: se guardan los cambios
+                _repo.Verify(r => r.SaveChangesAsync(), Times.Once);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        public class LoanServiceUpdateLoanStatusesTests
+        {
+            private const string ActiveStatus = "Active";
+            private const string OverdueStatus = "Overdue";
+
+            private static readonly DateTime OldUpdatedAt = new DateTime(2026, 1, 1);
+
+            private readonly Mock<ILoanRepository> _repo = new();
+            private readonly Mock<IConfiguration> _config = new();
+            private readonly LoanService _sut;
+
+            public LoanServiceUpdateLoanStatusesTests()
+            {
+                _sut = new LoanService(_repo.Object, _config.Object);
+            }
+
+            // ---------- Helpers ----------
+
+            private async Task InvokeUpdateLoanStatusesAsync()
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "UpdateLoanStatusesAsync",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+
+                Assert.NotNull(method);
+
+                await (Task)method!.Invoke(_sut, null)!;
+            }
+
+            private static Loan BuildLoan(string loanStatus, DateTime dueDate, params Loanitem[] items) =>
+                new Loan
+                {
+                    Status = loanStatus,
+                    DueDate = dueDate,
+                    UpdatedAt = OldUpdatedAt,
+                    Loanitems = new List<Loanitem>(items)
+                };
+
+            // ---------- Caso 1: I,1,6,F ----------
+            [Fact]
+            public async Task Caso1_SinPrestamos_NoGuarda()
+            {
+                // Arrange
+                _repo.Setup(r => r.GetLoansForStatusUpdateAsync())
+                     .ReturnsAsync(new List<Loan>());
+
+                // Act
+                await InvokeUpdateLoanStatusesAsync();
+
+                // Assert
+                _repo.Verify(r => r.GetLoansForStatusUpdateAsync(), Times.Once);
+                _repo.Verify(r => r.SaveChangesAsync(), Times.Never);
+                _repo.VerifyNoOtherCalls();
+            }
+
+            // ---------- Caso 2: I,1,2,3,5,1,6,F ----------
+            [Fact]
+            public async Task Caso2_EstadoNoCambiaYItemsNoCambian_NoGuarda()
+            {
+                // Préstamo Active, vencimiento futuro, ítem Active:
+                //   DetermineLoanStatus => Active (igual al actual)
+                //   SynchronizeItemStatuses => false (no hay ítems Overdue que pasar a Active)
+                var item = new Loanitem { Status = ActiveStatus };
+                var loan = BuildLoan(ActiveStatus, DateTime.Now.AddDays(5), item);
+                _repo.Setup(r => r.GetLoansForStatusUpdateAsync())
+                     .ReturnsAsync(new List<Loan> { loan });
+
+                // Act
+                await InvokeUpdateLoanStatusesAsync();
+
+                // Assert
+                Assert.Equal(ActiveStatus, loan.Status);
+                Assert.Equal(OldUpdatedAt, loan.UpdatedAt);
+                Assert.Equal(ActiveStatus, item.Status);
+                _repo.Verify(r => r.SaveChangesAsync(), Times.Never);
+            }
+
+            // ---------- Caso 3: I,1,2,3,4,5,1,6,7,F ----------
+            [Fact]
+            public async Task Caso3_EstadoCambiaAOverdue_ActualizaYGuarda()
+            {
+                // Préstamo marcado Active con vencimiento pasado y un ítem ya Overdue:
+                //   DetermineLoanStatus => Overdue (distinto al actual)
+                //   SynchronizeItemStatuses => false (no hay ítems Active que pasar a Overdue)
+                var item = new Loanitem { Status = OverdueStatus };
+                var loan = BuildLoan(ActiveStatus, DateTime.Now.AddDays(-5), item);
+                _repo.Setup(r => r.GetLoansForStatusUpdateAsync())
+                     .ReturnsAsync(new List<Loan> { loan });
+
+                var before = DateTime.Now;
+
+                // Act
+                await InvokeUpdateLoanStatusesAsync();
+
+                var after = DateTime.Now;
+
+                // Assert
+                Assert.Equal(OverdueStatus, loan.Status);
+                Assert.NotNull(loan.UpdatedAt);
+                Assert.InRange(loan.UpdatedAt!.Value, before, after);
+                Assert.Equal(OverdueStatus, item.Status);
+                _repo.Verify(r => r.SaveChangesAsync(), Times.Once);
+            }
+
+            // ---------- Caso 4: I,1,2,3,5,1,6,7,F ----------
+            [Fact]
+            public async Task Caso4_EstadoIgualPeroItemsCambian_Guarda()
+            {
+                // Préstamo Active, vencimiento futuro, ítem Overdue:
+                //   DetermineLoanStatus => Active (igual al actual)
+                //   SynchronizeItemStatuses => true (ítem Overdue pasa a Active)
+                var item = new Loanitem { Status = OverdueStatus };
+                var loan = BuildLoan(ActiveStatus, DateTime.Now.AddDays(5), item);
+                _repo.Setup(r => r.GetLoansForStatusUpdateAsync())
+                     .ReturnsAsync(new List<Loan> { loan });
+
+                var before = DateTime.Now;
+
+                // Act
+                await InvokeUpdateLoanStatusesAsync();
+
+                var after = DateTime.Now;
+
+                // Assert
+                Assert.Equal(ActiveStatus, loan.Status);
+                Assert.Equal(OldUpdatedAt, loan.UpdatedAt);      // el préstamo no cambia de estado
+                Assert.Equal(ActiveStatus, item.Status);          // el ítem sí se sincroniza
+                Assert.NotNull(item.UpdatedAt);
+                Assert.InRange(item.UpdatedAt!.Value, before, after);
+                _repo.Verify(r => r.SaveChangesAsync(), Times.Once);
+            }
+        }
 
 
 
