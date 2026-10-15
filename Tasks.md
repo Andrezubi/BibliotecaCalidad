@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TASKS.md — Revisión integral de préstamos, devoluciones y multas
 
 ## 1. Objetivo principal
@@ -519,3 +520,9 @@ No marcar una tarea como completada si no ha sido implementada y verificada.
 11. Presentar el informe final.
 
 **Prioridad máxima:** conseguir que prestar, consultar, vencer, devolver y generar multas funcionen como un único flujo coherente y confiable, sin romper las funcionalidades existentes ni alterar innecesariamente la arquitectura y el diseño de Biblioteca Virtual.
+=======
+Objective:
+I want you to fix the UserSearch in the LoanCreationPage (I just want Users that dont have an active loan and Users that dont have the IsLibraryComputer tag as true)
+
+In the same LoanCreation page i want the books to show the amount of available copies that they have as well as only show the books that actually have available copies i also want it to limit the maximum amount of books that can be loaned to two
+>>>>>>> main

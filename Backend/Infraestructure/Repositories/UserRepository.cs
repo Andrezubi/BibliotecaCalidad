@@ -52,7 +52,9 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<User>> GetReadersAsync()
     {
         return await _context.Users
-            .Where(u => u.Role == "User" && (u.IsActive ?? false))
+            .Where(u => u.Role == "User" && (u.IsActive ?? false)
+                && u.IsLibraryComputerUser == false
+                && !u.LoanBorrowers.Any(l => l.Status == "Active"))
             .OrderBy(u => u.FirstName)
             .ToListAsync();
     }

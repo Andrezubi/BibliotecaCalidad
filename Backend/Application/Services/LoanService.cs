@@ -183,6 +183,15 @@ namespace Backend.Application.Services
             if (!bookIdList.Any())
                 return (false, "No se han especificado libros para el préstamo.", null);
 
+            // Validar máximo 2 libros por préstamo
+            if (bookIdList.Count > 2)
+                return (false, "No se pueden prestar más de 2 libros a la vez.", null);
+
+            // Validar libros duplicados
+            var duplicateBooks = bookIdList.GroupBy(id => id).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+            if (duplicateBooks.Any())
+                return (false, $"No se pueden agregar libros duplicados: {string.Join(',', duplicateBooks)}", null);
+
             // Iniciar transacción
             var tx = await _loanRepository.BeginTransactionAsync();
             try
