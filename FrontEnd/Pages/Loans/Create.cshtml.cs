@@ -38,7 +38,7 @@ public class CreateModel : AuthorizedPageModel
         if (!IsInAnyRole("Admin", "Librarian"))
             return RedirectToPage("/AccessDenied");
 
-        Books = await _bookService.GetAllAsync();
+        Books = await _bookService.GetAvailableAsync();
         Borrowers = await _userService.GetReadersAsync();
 
         return Page();
@@ -52,7 +52,7 @@ public class CreateModel : AuthorizedPageModel
         if (SelectedBorrowerId <= 0 || SelectedBookIds == null || !SelectedBookIds.Any())
         {
             ErrorMessage = "Seleccione un lector y al menos un libro.";
-            Books = await _bookService.GetAllAsync();
+            Books = await _bookService.GetAvailableAsync();
             Borrowers = await _userService.GetReadersAsync();
             return Page();
         }
@@ -62,7 +62,7 @@ public class CreateModel : AuthorizedPageModel
         if (!success)
         {
             ErrorMessage = message;
-            Books = await _bookService.GetAllAsync();
+            Books = await _bookService.GetAvailableAsync();
             Borrowers = await _userService.GetReadersAsync();
             return Page();
         }

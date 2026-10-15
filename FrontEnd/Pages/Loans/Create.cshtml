@@ -24,18 +24,57 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Libros</label>
+        <label class="form-label">Libros (máximo 2)</label>
         <div>
             @foreach (var book in Model.Books)
             {
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="SelectedBookIds" value="@book.Id" id="book_@book.Id" />
-                    <label class="form-check-label" for="book_@book.Id">@book.Title</label>
+                    <input class="form-check-input book-checkbox" type="checkbox" name="SelectedBookIds" value="@book.Id" id="book_@book.Id" data-title="@book.Title" />
+                    <label class="form-check-label" for="book_@book.Id">
+                        @book.Title <span class="text-muted small">(Disponibles: @book.AvailableCopies)</span>
+                    </label>
                 </div>
             }
         </div>
+        <div id="bookLimitError" class="text-danger small mt-2" style="display:none;">Solo puede seleccionar un máximo de 2 libros.</div>
     </div>
 
     <button type="submit" class="btn btn-primary">Crear préstamo</button>
     <a asp-page="/Loans/Index" class="btn btn-secondary">Cancelar</a>
 </form>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkboxes = document.querySelectorAll('.book-checkbox');
+            var errorDiv = document.getElementById('bookLimitError');
+            var submitBtn = document.querySelector('button[type="submit"]');
+
+            function updateCheckboxes() {
+                var checkedCount = document.querySelectorAll('.book-checkbox:checked').length;
+                
+                if (checkedCount > 2) {
+                    checkboxes.forEach(function(cb) {
+                        if (!cb.checked) {
+                            cb.disabled = true;
+                        }
+                    });
+                    errorDiv.style.display = 'block';
+                    submitBtn.disabled = true;
+                } else {
+                    checkboxes.forEach(function(cb) {
+                        cb.disabled = false;
+                    });
+                    errorDiv.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            }
+
+            checkboxes.forEach(function(cb) {
+                cb.addEventListener('change', updateCheckboxes);
+            });
+
+            updateCheckboxes();
+        });
+    </script>
+}
