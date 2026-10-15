@@ -62,8 +62,9 @@ namespace FrontEnd.Services
         }
 
         // Registrar una devolución y obtener información de la multa.
+        // confirm=false -> only compute fine details without persisting return
         public async Task<FineReceiptDto?> RegisterReturnWithFineAsync(
-            uint copyId)
+            uint copyId, bool confirm = false)
         {
             var backendUrl = _configuration["BackendUrl"];
 
@@ -73,7 +74,7 @@ namespace FrontEnd.Services
                     "La URL del backend no está configurada.");
             }
 
-            var url = $"{backendUrl}/api/loans/return/{copyId}";
+            var url = $"{backendUrl}/api/loans/return/{copyId}?confirm={confirm.ToString().ToLowerInvariant()}";
 
             AddAuthorizationHeader();
 

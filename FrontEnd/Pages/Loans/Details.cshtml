@@ -5,6 +5,207 @@
     ViewData["Title"] = "Detalle de Préstamo";
 }
 
+<!-- Modal Comprobante / Recibo de Multa -->
+<div class="modal fade" id="reciboModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-receipt me-2"></i>Recibo de Multa
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="location.reload()"></button>
+            </div>
+            <div class="modal-body p-4" id="areaImpresion">
+                <div class="text-center mb-3">
+                    <h4 class="fw-bold mb-0">Sistema de Biblioteca</h4>
+                    <small class="text-muted">Comprobante de Devolución con Sanción</small>
+                </div>
+                <hr />
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">N° Recibo:</span>
+                    <strong class="col-6 text-end text-primary" id="reciboNumero">-</strong>
+                </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Lector:</span>
+                    <span class="col-6 text-end fw-semibold" id="reciboLector">-</span>
+                </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Libro:</span>
+                    <span class="col-6 text-end" id="reciboLibro">-</span>
+                </div>
+                <div class="row mb-2">
+                    <span class="col-6 text-muted">Días de retraso:</span>
+                    <span class="col-6 text-end text-danger fw-bold" id="reciboDias">-</span>
+                </div>
+                <div class="row pt-2 border-top">
+                    <span class="col-6 fs-5 fw-bold">Total Pagado:</span>
+                    <span class="col-6 fs-5 fw-bold text-end text-success" id="reciboMonto">-</span>
+                </div>
+                <div class="text-center mt-3 text-muted">
+                    <small id="reciboFecha"></small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.reload()">Cerrar</button>
+                <button type="button" class="btn btn-success" id="confirmReturnBtn" style="display:none;" onclick="confirmReturn()">
+                    <i class="bi bi-check2-circle me-1"></i> Confirmar Devolución
+                </button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    <i class="bi bi-printer me-1"></i> Imprimir Recibo
+                </button>
+            </div>
+        </div>
+    </div>
+
+@* Mostrar modal tanto si TempData contiene el JSON (legacy) como si PageModel.LastReturnResult fue poblado *@
+@if (TempData["ReturnResult"] != null || Model.LastReturnResult != null)
+{
+    <script>
+        (function() {
+            try {
+                var data = null;
+                if (@(Model.LastReturnResult != null ? "true" : "false")) {
+                    data = {
+                        receiptNumber: '@(Model.LastReturnResult?.ReceiptNumber ?? "-")',
+                        borrowerName: '@(Model.LastReturnResult?.BorrowerName ?? "-")',
+                        bookTitle: '@(Model.LastReturnResult?.BookTitle ?? "-")',
+                        overdueDays: @(Model.LastReturnResult?.OverdueDays ?? 0),
+                        amount: @(Model.LastReturnResult?.Amount ?? 0),
+                        paidAt: '@(Model.LastReturnResult?.PaidAt?.ToString("o") ?? string.Empty)'
+                    };
+                    // Mostrar y configurar el botón confirmar cuando el preview viene del servidor
+                    var confirmBtn = document.getElementById('confirmReturnBtn');
+                    if (confirmBtn) {
+                        confirmBtn.style.display = 'inline-block';
+                        confirmBtn.dataset.copyId = @(Model.LastReturnResult?.CopyId ?? 0);
+                    }
+                } else {
+                    data = @Html.Raw(TempData["ReturnResult"]);
+                }
+
+                document.getElementById('reciboNumero').innerText = data.receiptNumber ?? '-';
+                document.getElementById('reciboLector').innerText = data.borrowerName ?? '-';
+                document.getElementById('reciboLibro').innerText = data.bookTitle ?? '-';
+                document.getElementById('reciboDias').innerText = data.overdueDays ?? '-';
+                document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(data.amount).toFixed(2);
+                document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
+                var modal = new bootstrap.Modal(document.getElementById('reciboModal'));
+                modal.show();
+            } catch (e) { console.error('Error parsing ReturnResult', e); }
+        })();
+    </script>
+}
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        window.returnCopy = async function (copyId, titulo) {
+            console.log('returnCopy called', copyId, titulo);
+            if (!confirm('¿Confirmar la devolución del libro "' + titulo + '"?')) {
+                return;
+            }
+
+            try {
+                const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
+                const token = tokenEl ? tokenEl.value : '';
+
+                const formData = new FormData();
+                formData.append('copyId', copyId);
+
+                // include antiforgery token both as form field and header for compatibility
+                if (token) {
+                    formData.append('__RequestVerificationToken', token);
+                }
+
+                const url = window.location.pathname + '?handler=ReturnItem';
+
+                const headers = {};
+                if (token) headers['RequestVerificationToken'] = token;
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers,
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const txt = await response.text();
+                    alert('Error: ' + txt);
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.hasFine) {
+                    document.getElementById('reciboNumero').innerText = data.receiptNumber ?? '-';
+                    document.getElementById('reciboLector').innerText = data.borrowerName ?? '-';
+                    document.getElementById('reciboLibro').innerText = data.bookTitle ?? '-';
+                    document.getElementById('reciboDias').innerText = data.overdueDays ?? '-';
+                    document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(data.amount).toFixed(2);
+                    document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
+
+                    // Mostrar botón de confirmar devolución dentro del modal
+                    const confirmBtn = document.getElementById('confirmReturnBtn');
+                    confirmBtn.style.display = 'inline-block';
+                    // Guardar copyId en dataset para usarlo en confirmReturn
+                    confirmBtn.dataset.copyId = copyId;
+                    const modal = new bootstrap.Modal(document.getElementById('reciboModal'));
+                    modal.show();
+                } else {
+                    // No fine: show success and reload
+                    alert(data.message || 'Devolución registrada exitosamente (sin multas).');
+                    location.reload();
+                }
+            } catch (err) {
+                alert('Ocurrió un error inesperado al procesar la devolución.');
+            }
+        }
+
+        // Called from modal to confirm and persist the return when a fine exists
+        async function confirmReturn() {
+            try {
+                const btn = document.getElementById('confirmReturnBtn');
+                const copyId = btn.dataset.copyId;
+                const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
+                const token = tokenEl ? tokenEl.value : '';
+
+                const formData = new FormData();
+                formData.append('copyId', copyId);
+                if (token) formData.append('__RequestVerificationToken', token);
+
+                const url = window.location.pathname + '?handler=ReturnItem';
+
+                const response = await fetch(url, { method: 'POST', body: formData });
+
+                if (!response.ok) {
+                    const txt = await response.text();
+                    alert('Error al confirmar la devolución: ' + txt);
+                    return;
+                }
+
+                const data = await response.json();
+                if (data.hasFine) {
+                    alert('Multa registrada y devolución confirmada.');
+                    location.reload();
+                } else {
+                    alert(data.message || 'Devolución confirmada.');
+                    location.reload();
+                }
+            } catch (e) {
+                alert('Error inesperado al confirmar la devolución.');
+            }
+        }
+
+        // Custom print removed; use window.print() instead when needed.
+
+        // Event binding removed: form fallback used for reliable behavior without JS injection issues.
+    </script>
+}
+
+@Html.AntiForgeryToken()
+
 <div class="container content-wrapper">
     <div class="card-custom">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -163,7 +364,8 @@
                                 <th>Copia</th>
                                 <th>Libro</th>
                                 <th>Estado</th>
-                                <th class="text-center">Fecha devolución</th>
+                        <th class="text-center">Fecha devolución</th>
+                        <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -197,6 +399,22 @@
                                     </td>
                                     <td class="text-center">
                                         @(item.ReturnedAt?.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.Status == "Active" || item.Status == "Overdue")
+                                        {
+                                            <form method="post" asp-page-handler="ReturnItem" class="d-inline">
+                                                <!-- Server-side return form (kept for clarity) -->
+                                                <input type="hidden" name="copyId" value="@item.CopyId" />
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="bi bi-arrow-return-left me-1"></i> Devolver
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
                                     </td>
                                 </tr>
                             }

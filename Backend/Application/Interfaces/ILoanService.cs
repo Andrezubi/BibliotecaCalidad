@@ -7,8 +7,10 @@ namespace Backend.Application.Interfaces
     {
         Task<IEnumerable<LoanedBook>> GetLoanedBooksAsync();
 
-        // Registrar la devolución de una copia.
-        Task<ReturnResultDto?> RegisterReturnAsync(uint copyId);
+        // Registrar la devolución de una copia. Si 'confirm' es false, solo devuelve el detalle de multa
+        // sin modificar el estado en la base de datos. Si 'confirm' es true, realiza la devolución y
+        // persiste la multa si corresponde.
+        Task<ReturnResultDto?> RegisterReturnAsync(uint copyId, bool confirm = false);
 
         // Registrar un préstamo individual (método anterior).
         Task<bool> RegisterLoanAsync(uint bookId);

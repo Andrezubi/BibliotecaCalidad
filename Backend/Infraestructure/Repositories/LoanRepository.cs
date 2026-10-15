@@ -63,7 +63,7 @@ public class LoanRepository : ILoanRepository
     public async Task<Loan?> GetActiveLoanByCopyIdAsync(uint copyId)
     {
         return await _context.Loans
-            .Where(l => l.Loanitems.Any(li => li.CopyId == copyId && li.Status == "Active"))
+            .Where(l => l.Loanitems.Any(li => li.CopyId == copyId && (li.Status == "Active" || li.Status == "Overdue")))
             .OrderByDescending(l => l.LoanDate)
             .FirstOrDefaultAsync();
     }
@@ -71,6 +71,18 @@ public class LoanRepository : ILoanRepository
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    public async Task AddFineAsync(Fine fine)
+    {
+        await _context.Fines.AddAsync(fine);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Fine?> GetFineByLoanCopyAsync(uint loanId, uint copyId)
+    {
+        return await _context.Fines
+            .FirstOrDefaultAsync(f => f.LoanId == loanId && f.CopyId == copyId);
     }
 
     public async Task<Copy?> GetFirstAvailableCopyByBookIdAsync(uint bookId)

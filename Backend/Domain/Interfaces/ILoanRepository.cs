@@ -20,6 +20,10 @@ public interface ILoanRepository
 
     Task AddLoanAsync(Loan loan);
 
+    Task AddFineAsync(Fine fine);
+
+    Task<Fine?> GetFineByLoanCopyAsync(uint loanId, uint copyId);
+
     Task SaveChangesAsync();
     Task<IEnumerable<LoanListDto>> GetAllLoansAsync();
     Task<Loan?> GetLoanWithItemsByIdAsync(uint id);

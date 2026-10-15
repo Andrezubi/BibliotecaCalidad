@@ -24,16 +24,16 @@ namespace Backend.Controllers
         }
 
         [HttpPost("return/{copyId}")]
-        public async Task<IActionResult> RegisterReturn(int copyId)
+        public async Task<IActionResult> RegisterReturn(int copyId, [FromQuery] bool confirm = true)
         {
-            var result = await _loanService.RegisterReturnAsync((uint)copyId);
+            // Si confirm == false -> solo calcular/mostrar multa sin persistir la devolución
+            var result = await _loanService.RegisterReturnAsync((uint)copyId, confirm);
 
             if (result == null)
             {
                 return BadRequest(new
                 {
-                    message = "No se pudo registrar la devolución. " +
-                              "La copia no existe o no está prestada."
+                    message = "No se pudo procesar la operación. La copia no existe o no está prestada."
                 });
             }
 
