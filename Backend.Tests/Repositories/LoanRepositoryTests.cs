@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Backend.Tests.Repositories
 {
-    internal class LoanRepository
+    public class LoanRepositoryTests
     {
     }
 }
