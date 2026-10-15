@@ -118,6 +118,35 @@ public class BookService
     }
 
     // ============================================================
+    // LIBROS - GET AVAILABLE
+    // ============================================================
+
+    public async Task<List<BookDto>> GetAvailableAsync()
+    {
+        AddAuthorizationHeader();
+
+        try
+        {
+            var response =
+                await _httpClient.GetAsync(
+                    "api/Book/available");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<BookDto>();
+            }
+
+            return await response.Content
+                       .ReadFromJsonAsync<List<BookDto>>()
+                   ?? new List<BookDto>();
+        }
+        catch
+        {
+            return new List<BookDto>();
+        }
+    }
+
+    // ============================================================
     // LIBROS - GET BY ID
     // ============================================================
 

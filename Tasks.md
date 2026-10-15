@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TASK: Corregir el sistema de multas, vencimiento de préstamos y devolución de libros
 
 ## Objetivo principal
@@ -284,3 +285,9 @@ Cuando termines, proporciona un informe con:
 No afirmes que una funcionalidad está corregida si únicamente modificaste el código sin ejecutar las pruebas correspondientes.
 
 **Prioridad máxima:** solucionar el flujo de devolución de un libro vencido, mostrar el modal con el detalle correcto de la multa y evitar que el sistema marque incorrectamente el préstamo como completado antes de registrar la devolución de forma coherente.
+=======
+Objective:
+I want you to fix the UserSearch in the LoanCreationPage (I just want Users that dont have an active loan and Users that dont have the IsLibraryComputer tag as true)
+
+In the same LoanCreation page i want the books to show the amount of available copies that they have as well as only show the books that actually have available copies i also want it to limit the maximum amount of books that can be loaned to two
+>>>>>>> e9267f5 (Arrreglar Creacion de prestamo)
