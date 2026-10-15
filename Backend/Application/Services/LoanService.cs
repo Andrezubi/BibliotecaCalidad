@@ -7,6 +7,7 @@ using Backend.Application.Interfaces;
 using Backend.Domain.Common;
 using Backend.Domain.Interfaces;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Backend.Application.Services
 {
@@ -38,174 +39,137 @@ namespace Backend.Application.Services
             if (copy.StatusId != 2) // Loaned
                 return new ReturnResultDto { HasFine = false, Message = "La copia no está prestada." };
 
-            // 1) Cambiar el estado de la copia a Disponible solo si confirmamos la devolución.
-            if (confirm)
-            {
-                copy.StatusId = 1; // Available
-                copy.UpdatedAt = DateTime.Now;
-            }
-
-            // 2) Registrar la devolución en el préstamo activo, si existe.
+            // 2) Obtener el préstamo activo que contiene esta copia
             var loan = await _loanRepository.GetActiveLoanByCopyIdAsync(copyId);
 
-            if (loan != null)
+            if (loan == null)
+                return new ReturnResultDto { HasFine = false, Message = "No se encontró un préstamo activo para esta copia." };
+
+            // Permitimos devolver un ítem que esté Active u Overdue
+            var loanItem = loan.Loanitems.FirstOrDefault(li => li.CopyId == copyId && (li.Status == "Active" || li.Status == "Overdue"));
+
+            if (loanItem == null)
+                return new ReturnResultDto { HasFine = false, Message = "El ejemplar no está pendiente de devolución." };
+
+            // Verificar si ya fue devuelto (doble devolución)
+            if (loanItem.Status == "Returned")
+                return new ReturnResultDto { HasFine = false, Message = "Este ejemplar ya fue devuelto." };
+
+            // Calcular días de retraso basado en la fecha de vencimiento del préstamo vs fecha actual
+            var returnDate = DateTime.Now;
+            var overdueDays = (returnDate.Date - loan.DueDate.Date).Days;
+            if (overdueDays < 0) overdueDays = 0;
+
+            // Leer tarifa diaria desde configuración
+            decimal dailyRate = 10.00m;
+            try
             {
-                // Permitimos devolver un ítem que esté Active u Overdue
-                var loanItem = loan.Loanitems.FirstOrDefault(li => li.CopyId == copyId && (li.Status == "Active" || li.Status == "Overdue"));
-                string? prevStatus = null;
-                if (loanItem != null)
+                var cfg = _configuration["Fine:DailyRate"];
+                if (!string.IsNullOrWhiteSpace(cfg))
                 {
-                    // Guardar estado previo antes de modificar para el cálculo de multa y lógica UI
-                    prevStatus = loanItem.Status;
-
-                    if (confirm)
+                    if (decimal.TryParse(cfg, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out var parsed))
                     {
-                        loanItem.ReturnedAt = DateTime.Now;
-                        loanItem.Status = "Returned";
-                        loanItem.UpdatedAt = DateTime.Now;
-                    }
-                }
-
-                // Update loan status only if confirm == true (we persist changes)
-                if (confirm)
-                {
-                    if (loan.Loanitems.All(li => li.Status == "Returned"))
-                    {
-                        loan.Status = "Completed";
-                        loan.UpdatedAt = DateTime.Now;
-                    }
-                    else
-                    {
-                        var now = DateTime.Now;
-                        // consider both Active and Overdue as non-returned
-                        if (loan.DueDate.Date < now.Date && loan.Loanitems.Any(li => li.Status == "Active" || li.Status == "Overdue"))
-                        {
-                            loan.Status = "Overdue";
-                        }
-                        else
-                        {
-                            loan.Status = "Active";
-                        }
-
-                        loan.UpdatedAt = DateTime.Now;
-                    }
-                }
-
-                // 3) Calcular multa si la devolución está fuera de la fecha límite
-                // Determinamos los días de retraso a partir de la fecha de vencimiento del préstamo.
-                var overdueDays = 0;
-                // Si el ítem estaba marcado como Overdue o la fecha actual supera la fecha de vencimiento,
-                // consideramos que existe retraso. Si el ítem estaba manualmente marcado como Overdue pero
-                // la DueDate no refleja un día pasado, usamos al menos 1 día de retraso para forzar la creación
-                // de la multa y mostrar el recibo (comportamiento requerido por la UI).
-                if (loanItem != null)
-                {
-                    if (prevStatus == "Overdue")
-                    {
-                        overdueDays = (DateTime.Now.Date - loan.DueDate.Date).Days;
-                        if (overdueDays <= 0) overdueDays = 1;
-                    }
-                    else
-                    {
-                        overdueDays = (DateTime.Now.Date - loan.DueDate.Date).Days;
-                    }
-                }
-
-                if (overdueDays > 0 && loanItem != null)
-                {
-                    // Evitar multas duplicadas comprobando si ya existe una multa para este loan+copy
-                    var existingFine = await _loanRepository.GetFineByLoanCopyAsync(loan.Id, copyId);
-
-                    // Intentar leer la tarifa diaria desde configuración (appsettings: "Fine:DailyRate").
-                    // Si no está configurada, usar un valor por defecto documentado.
-                    decimal dailyRate = 10.00m;
-                    try
-                    {
-                        var cfg = _configuration["Fine:DailyRate"];
-                        if (!string.IsNullOrWhiteSpace(cfg))
-                        {
-                            if (decimal.TryParse(cfg, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out var parsed))
-                            {
-                                dailyRate = parsed;
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        // Ignorar errores y usar valor por defecto
-                    }
-
-                    var amount = dailyRate * overdueDays;
-
-                    if (existingFine == null)
-                    {
-                        // Si no confirmamos, devolvemos solo el detalle de la multa (preview) sin persistir
-                        if (!confirm)
-                        {
-                            return new ReturnResultDto
-                            {
-                                HasFine = true,
-                                Message = "Próxima devolución generará una multa.",
-                                CopyId = (int)copyId,
-                                Amount = amount,
-                                OverdueDays = overdueDays,
-                                BorrowerName = loan.Borrower.FirstName + " " + loan.Borrower.LastName,
-                                BookTitle = loanItem.Copy.Book.Title
-                            };
-                        }
-
-                        // confirm == true -> persistir la multa
-                        var fine = new Fine
-                        {
-                            LoanId = loan.Id,
-                            CopyId = copyId,
-                            DailyRate = dailyRate,
-                            OverdueDays = (uint)overdueDays,
-                            Amount = amount,
-                            Status = "Pending",
-                            CreatedAt = DateTime.Now,
-                            UpdatedAt = DateTime.Now
-                        };
-
-                        // Validar la entidad antes de persistir
-                        Backend.Domain.Validators.FineValidator.Validate(fine);
-
-                        await _loanRepository.AddFineAsync(fine);
-
-                        // Guardar la multa y demás cambios
-                        await _loanRepository.SaveChangesAsync();
-
-                        return new ReturnResultDto
-                        {
-                            HasFine = true,
-                            Message = "Devolución registrada. Multa generada.",
-                            CopyId = (int)copyId,
-                            Amount = fine.Amount,
-                            OverdueDays = (int)fine.OverdueDays,
-                            BorrowerName = loan.Borrower.FirstName + " " + loan.Borrower.LastName,
-                            BookTitle = loanItem.Copy.Book.Title
-                        };
-                    }
-                    else
-                    {
-                        // Si ya existe multa, reportarla. No necesitamos crearla de nuevo.
-                        return new ReturnResultDto
-                        {
-                            HasFine = true,
-                            Message = "Multa existente.",
-                            CopyId = (int)copyId,
-                            Amount = existingFine.Amount,
-                            OverdueDays = (int)existingFine.OverdueDays,
-                            BorrowerName = loan.Borrower.FirstName + " " + loan.Borrower.LastName,
-                            BookTitle = loanItem.Copy.Book.Title
-                        };
+                        dailyRate = parsed;
                     }
                 }
             }
+            catch
+            {
+                // Ignorar errores y usar valor por defecto
+            }
 
-            await _loanRepository.SaveChangesAsync();
+            var amount = dailyRate * overdueDays;
+            var hasFine = overdueDays > 0;
 
-            return new ReturnResultDto { HasFine = false, Message = "Devolución registrada correctamente." };
+            // Verificar si ya existe multa para este loan+copy
+            var existingFine = await _loanRepository.GetFineByLoanCopyAsync(loan.Id, copyId);
+
+            if (!confirm)
+            {
+                // Preview mode: solo calcular y devolver información sin persistir
+                if (hasFine)
+                {
+                    return new ReturnResultDto
+                    {
+                        HasFine = true,
+                        Message = existingFine != null ? "Multa existente." : "Próxima devolución generará una multa.",
+                        CopyId = (int)copyId,
+                        Amount = existingFine?.Amount ?? amount,
+                        OverdueDays = existingFine != null ? (int)existingFine.OverdueDays : overdueDays,
+                        BorrowerName = loan.Borrower.FirstName + " " + loan.Borrower.LastName,
+                        BookTitle = loanItem.Copy.Book.Title
+                    };
+                }
+                return new ReturnResultDto { HasFine = false, Message = "Devolución sin multa." };
+            }
+
+            // Confirm mode: persistir todos los cambios en una transacción
+            using var tx = await _loanRepository.BeginTransactionAsync();
+            try
+            {
+                // 1) Actualizar copia a Disponible
+                copy.StatusId = 1; // Available
+                copy.UpdatedAt = returnDate;
+
+                // 2) Actualizar LoanItem
+                loanItem.ReturnedAt = returnDate;
+                loanItem.Status = "Returned";
+                loanItem.UpdatedAt = returnDate;
+
+                // 3) Actualizar estado general del préstamo
+                if (loan.Loanitems.All(li => li.Status == "Returned"))
+                {
+                    loan.Status = "Completed";
+                }
+                else if (loan.DueDate.Date < returnDate.Date && loan.Loanitems.Any(li => li.Status == "Active" || li.Status == "Overdue"))
+                {
+                    loan.Status = "Overdue";
+                }
+                else
+                {
+                    loan.Status = "Active";
+                }
+                loan.UpdatedAt = returnDate;
+
+                // 4) Crear multa si corresponde y no existe
+                if (hasFine && existingFine == null)
+                {
+                    var fine = new Fine
+                    {
+                        LoanId = loan.Id,
+                        CopyId = copyId,
+                        DailyRate = dailyRate,
+                        OverdueDays = (uint)overdueDays,
+                        Amount = amount,
+                        Status = "Pending",
+                        CreatedAt = returnDate,
+                        UpdatedAt = returnDate
+                    };
+
+                    Backend.Domain.Validators.FineValidator.Validate(fine);
+                    await _loanRepository.AddFineAsync(fine);
+                }
+
+                // 5) Guardar todos los cambios
+                await _loanRepository.SaveChangesAsync();
+                await tx.CommitAsync();
+
+                return new ReturnResultDto
+                {
+                    HasFine = hasFine,
+                    Message = hasFine ? "Devolución registrada. Multa generada." : "Devolución registrada correctamente.",
+                    CopyId = (int)copyId,
+                    Amount = hasFine ? (existingFine?.Amount ?? amount) : 0,
+                    OverdueDays = hasFine ? (existingFine != null ? (int)existingFine.OverdueDays : overdueDays) : 0,
+                    BorrowerName = loan.Borrower.FirstName + " " + loan.Borrower.LastName,
+                    BookTitle = loanItem.Copy.Book.Title
+                };
+            }
+            catch
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<ReturnResultDto?> RegisterReturnAsync(uint loanId, uint copyId, bool confirm = true)

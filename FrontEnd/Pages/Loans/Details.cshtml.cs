@@ -62,7 +62,7 @@ namespace FrontEnd.Pages.Loans
         }
 
         // Preview: calcula multa sin persistir (confirm=false)
-        public async Task<IActionResult> OnPostReturnItemAsync([FromForm] int copyId)
+        public async Task<IActionResult> OnPostReturnItemAsync([FromForm] int copyId, [FromQuery] bool confirm = false)
         {
             if (!IsInAnyRole("Admin", "Librarian"))
             {
@@ -110,7 +110,8 @@ namespace FrontEnd.Pages.Loans
             }
         }
 
-        // Confirmar: persistir la devolución (confirm=true)
+        // Confirmar: persistir la devolución (confirm=true) - now handled by OnPostReturnItemAsync with confirm=true
+        // Keeping this for backward compatibility but it delegates to the main handler
         public async Task<IActionResult> OnPostConfirmReturnItemAsync([FromForm] int copyId)
         {
             if (!IsInAnyRole("Admin", "Librarian"))

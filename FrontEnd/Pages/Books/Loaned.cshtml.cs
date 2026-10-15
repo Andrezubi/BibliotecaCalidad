@@ -36,6 +36,5 @@ namespace FrontEnd.Pages.Books
                 return Page();
             }
         }
-
     }
 }
