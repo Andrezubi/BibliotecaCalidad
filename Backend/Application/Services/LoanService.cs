@@ -57,8 +57,7 @@ namespace Backend.Application.Services
 
             // Calcular días de retraso basado en la fecha de vencimiento del préstamo vs fecha actual
             var returnDate = DateTime.Now;
-            var overdueDays = (returnDate.Date - loan.DueDate.Date).Days;
-            if (overdueDays < 0) overdueDays = 0;
+            var overdueDays = CountOverdueBusinessDays(loan.DueDate, returnDate);
 
             // Leer tarifa diaria desde configuración
             decimal dailyRate = 10.00m;
@@ -233,21 +232,23 @@ namespace Backend.Application.Services
                 await _loanRepository.SaveChangesAsync();
 
                 // Crear entidad Loan con Loanitems
+                var now = DateTime.Now;
+
                 var loan = new Loan
                 {
                     BorrowerId = (ushort)borrowerId,
                     LibrarianId = (ushort)librarianId,
-                    LoanDate = DateTime.Now,
-                    DueDate = DateTime.Now.AddDays(loanDays),
+                    LoanDate = now,
+                    DueDate = AddBusinessDays(now, loanDays),
                     Status = "Active",
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
+                    CreatedAt = now,
+                    UpdatedAt = now,
                     Loanitems = reservedCopies.Select(c => new Loanitem
                     {
                         CopyId = c.Id,
                         Status = "Active",
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = DateTime.Now
+                        CreatedAt = now,
+                        UpdatedAt = now
                     }).ToList()
                 };
 
@@ -269,7 +270,71 @@ namespace Backend.Application.Services
 
         public async Task<IEnumerable<LoanListDto>> GetAllLoansAsync()
         {
+            // Actualizar estados de préstamos antes de devolver la lista
+            await UpdateLoanStatusesAsync();
             return await _loanRepository.GetAllLoansAsync();
+        }
+
+        /// <summary>
+        /// Actualiza el estado de todos los préstamos basado en la fecha actual:
+        /// - Active -> Overdue si la fecha de vencimiento pasó y hay ítems pendientes
+        /// - Active/Overdue -> Completed si todos los ítems están devueltos
+        /// - Overdue -> Active si la fecha de vencimiento no pasó y se restauran ítems (caso edge)
+        /// </summary>
+        private async Task UpdateLoanStatusesAsync()
+        {
+            var now = DateTime.Now;
+            var loans = await _loanRepository.GetLoansForStatusUpdateAsync();
+
+            foreach (var loan in loans)
+            {
+                var hasPendingItems = loan.Loanitems.Any(li => li.Status == "Active" || li.Status == "Overdue");
+                var allReturned = loan.Loanitems.All(li => li.Status == "Returned");
+                var duePassed = loan.DueDate.Date < now.Date;
+
+                string newStatus;
+                if (allReturned)
+                {
+                    newStatus = "Completed";
+                }
+                else if (duePassed && hasPendingItems)
+                {
+                    newStatus = "Overdue";
+                }
+                else
+                {
+                    newStatus = "Active";
+                }
+
+                if (loan.Status != newStatus)
+                {
+                    loan.Status = newStatus;
+                    loan.UpdatedAt = now;
+
+                    // Actualizar estados de ítems según el nuevo estado del préstamo
+                    if (newStatus == "Overdue")
+                    {
+                        foreach (var li in loan.Loanitems.Where(x => x.Status == "Active"))
+                        {
+                            li.Status = "Overdue";
+                            li.UpdatedAt = now;
+                        }
+                    }
+                    else if (newStatus == "Active")
+                    {
+                        foreach (var li in loan.Loanitems.Where(x => x.Status == "Overdue"))
+                        {
+                            li.Status = "Active";
+                            li.UpdatedAt = now;
+                        }
+                    }
+                }
+            }
+
+            if (loans.Any(l => l.Status != "Completed" || l.Loanitems.Any(li => li.Status != "Returned")))
+            {
+                await _loanRepository.SaveChangesAsync();
+            }
         }
 
         public async Task<LoanDto?> GetLoanByIdAsync(uint id)
@@ -382,5 +447,39 @@ namespace Backend.Application.Services
                 _ => status
             };
         }
+
+        // Counts weekdays (Mon-Fri) after dueDate, up to and including returnDate.
+        private static int CountOverdueBusinessDays(DateTime dueDate, DateTime returnDate)
+        {
+            var start = dueDate.Date.AddDays(1);   // first day of delay
+            var end = returnDate.Date;
+
+            if (end < start) return 0;
+
+            var count = 0;
+            for (var d = start; d <= end; d = d.AddDays(1))
+            {
+                if (d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
+                    count++;
+            }
+            return count;
+        }
+
+        // Adds N business days (Mon-Fri) to a date, skipping Saturdays and Sundays.
+        private static DateTime AddBusinessDays(DateTime start, int businessDays)
+        {
+            var date = start;
+            var added = 0;
+
+            while (added < businessDays)
+            {
+                date = date.AddDays(1);
+                if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+                    added++;
+            }
+            return date;
+        }
+
+
     }
 }

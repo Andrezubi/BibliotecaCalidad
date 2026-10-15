@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FrontEnd.Pages.Loans
 {
+    [IgnoreAntiforgeryToken]
     public class DetailsModel : AuthorizedPageModel
     {
         private readonly LoanService _loanService;
@@ -66,7 +67,7 @@ namespace FrontEnd.Pages.Loans
         {
             if (!IsInAnyRole("Admin", "Librarian"))
             {
-                return new ObjectResult(new { message = "No tienes permisos para realizar esta acción." })
+                return new JsonResult(new { message = "No tienes permisos para realizar esta acción." })
                 {
                     StatusCode = StatusCodes.Status401Unauthorized
                 };
@@ -77,43 +78,14 @@ namespace FrontEnd.Pages.Loans
                 var result = await _loanService.RegisterReturnWithFineAsync((uint)copyId, confirm);
 
                 if (result == null)
-                {
                     return BadRequest(new { message = "No se pudo procesar la devolución del ejemplar." });
-                }
 
-                // Detectar si la petición es AJAX (fetch/XHR que espera JSON)
-                var isAjax = (Request?.Headers != null) &&
-                             (Request.Headers["X-Requested-With"] == "XMLHttpRequest" ||
-                              (Request.Headers.ContainsKey("Accept") && Request.Headers["Accept"].ToString().Contains("application/json")));
-
-                if (isAjax)
-                {
-                    // Para AJAX devolvemos el resultado del cálculo (cliente mostrará modal y confirmará)
-                    return new JsonResult(result);
-                }
-
-                // Petición tradicional sin JS: si hay multa, devolver la misma página con el resultado
-                if (result.HasFine)
-                {
-                    LastReturnResult = result;
-                    Loan = await _loanService.GetLoanByIdAsync(Id);
-                    return Page();
-                }
-
-                // Si no hay multa, confirmar inmediatamente (persistir)
-                var confirmResult = await _loanService.RegisterReturnWithFineAsync((uint)copyId, true);
-                if (confirmResult == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error al confirmar la devolución." });
-                }
-
-                TempData["Success"] = confirmResult.Message ?? "Devolución registrada correctamente.";
-                return RedirectToPage(new { id = Id });
+                return new JsonResult(result);
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine($"OnPostReturnItemAsync error: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error interno al procesar la devolución." });
+                return StatusCode(500, new { message = ex.Message });
             }
         }
 

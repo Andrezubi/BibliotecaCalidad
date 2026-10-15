@@ -124,8 +124,16 @@
                 });
 
                 if (!previewResponse.ok) {
-                    const txt = await previewResponse.text();
-                    alert('Error: ' + txt);
+                    let errorMsg = 'Error desconocido';
+                    try {
+                        const errorData = await previewResponse.json();
+                        errorMsg = errorData.message || errorData.title || JSON.stringify(errorData);
+                    } catch {
+                        const txt = await previewResponse.text();
+                        errorMsg = txt || `HTTP ${previewResponse.status}`;
+                    }
+                    alert('Error: ' + errorMsg);
+                    console.error('Return preview failed:', errorMsg);
                     return;
                 }
 
@@ -150,8 +158,8 @@
                     await confirmReturnDirect(copyId);
                 }
             } catch (err) {
-                alert('Ocurrió un error inesperado al procesar la devolución.');
-                console.error(err);
+                alert('Ocurrió un error inesperado al procesar la devolución: ' + err.message);
+                console.error('Return error:', err);
             }
         }
 
@@ -170,8 +178,16 @@
                 const response = await fetch(url, { method: 'POST', body: formData });
 
                 if (!response.ok) {
-                    const txt = await response.text();
-                    alert('Error al confirmar la devolución: ' + txt);
+                    let errorMsg = 'Error desconocido';
+                    try {
+                        const errorData = await response.json();
+                        errorMsg = errorData.message || errorData.title || JSON.stringify(errorData);
+                    } catch {
+                        const txt = await response.text();
+                        errorMsg = txt || `HTTP ${response.status}`;
+                    }
+                    alert('Error al confirmar la devolución: ' + errorMsg);
+                    console.error('Return confirm failed:', errorMsg);
                     return;
                 }
 
@@ -184,8 +200,8 @@
                 }
                 location.reload();
             } catch (e) {
-                alert('Error inesperado al confirmar la devolución.');
-                console.error(e);
+                alert('Error inesperado al confirmar la devolución: ' + e.message);
+                console.error('Confirm return error:', e);
             }
         }
 
