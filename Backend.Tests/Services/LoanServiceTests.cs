@@ -859,6 +859,600 @@ namespace Backend.Tests.Services
 
 
 
+        public class ValidateLoanRequestTests
+        {
+            // ---------- Helper ----------
+
+            private static string? InvokeValidateLoanRequest(uint borrowerId, List<uint> bookIds)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "ValidateLoanRequest",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+                Assert.NotNull(method);
+
+                return (string?)method!.Invoke(null, new object[] { borrowerId, bookIds });
+            }
+
+            // ---------- Caso 1: I,1,2,F ----------
+            [Fact]
+            public void Caso1_BorrowerIdCero_RetornaBorrowerIdInvalido()
+            {
+                var result = InvokeValidateLoanRequest(0, new List<uint> { 101 });
+
+                Assert.Equal("BorrowerId inválido.", result);
+            }
+
+            // ---------- Caso 2: I,1,3,4,F ----------
+            [Fact]
+            public void Caso2_SinLibros_RetornaErrorLibrosNoEspecificados()
+            {
+                var result = InvokeValidateLoanRequest(10, new List<uint>());
+
+                Assert.Equal("No se han especificado libros para el préstamo.", result);
+            }
+
+            // ---------- Caso 3: I,1,3,5,6,F ----------
+            [Fact]
+            public void Caso3_MasDeDosLibros_RetornaErrorMaximoLibros()
+            {
+                var result = InvokeValidateLoanRequest(10, new List<uint> { 101, 102, 103 });
+
+                Assert.Equal("No se pueden prestar más de 2 libros a la vez.", result);
+            }
+
+            // ---------- Caso 4: I,1,3,5,7,8,9,F ----------
+            [Fact]
+            public void Caso4_LibrosDuplicados_RetornaErrorDuplicados()
+            {
+                var result = InvokeValidateLoanRequest(10, new List<uint> { 101, 101 });
+
+                Assert.Equal("No se pueden agregar libros duplicados: 101", result);
+            }
+
+            // ---------- Caso 5: I,1,3,5,7,8,10,F ----------
+            [Fact]
+            public void Caso5_SolicitudValida_RetornaNull()
+            {
+                var result = InvokeValidateLoanRequest(10, new List<uint> { 101, 102 });
+
+                Assert.Null(result);
+            }
+        }
+
+
+
+
+
+
+
+        public class GetDailyFineRateTests
+        {
+            // Valor de la constante privada DefaultDailyFineRate en LoanService
+            private const decimal DefaultDailyFineRate = 10.00m;
+
+            // ---------- Helper ----------
+
+            private static decimal InvokeGetDailyFineRate(string? configuredRate)
+            {
+                var repo = new Mock<ILoanRepository>();
+                var config = new Mock<IConfiguration>();
+                config.Setup(c => c["Fine:DailyRate"]).Returns(configuredRate);
+
+                var sut = new LoanService(repo.Object, config.Object);
+
+                var method = typeof(LoanService).GetMethod(
+                    "GetDailyFineRate",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+
+                Assert.NotNull(method);
+
+                return (decimal)method!.Invoke(sut, null)!;
+            }
+
+            // ---------- Caso 1: I,1,2,F ----------
+            [Fact]
+            public void Caso1_ValorConfiguradoValido_RetornaValorParseado()
+            {
+                var result = InvokeGetDailyFineRate("12.50");
+
+                Assert.Equal(12.50m, result);
+            }
+
+            // ---------- Caso 2: I,1,3,F ----------
+            [Fact]
+            public void Caso2_ValorConfiguradoInvalido_RetornaValorPorDefecto()
+            {
+                var result = InvokeGetDailyFineRate("invalid");
+
+                Assert.Equal(DefaultDailyFineRate, result);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public class ReserveCopiesAsyncTests
+        {
+            // Valores de las constantes privadas del servicio
+            private const int AvailableStatus = 1;
+            private const int LoanedStatus = 2;
+
+            private readonly Mock<ILoanRepository> _repo = new();
+            private readonly Mock<IConfiguration> _config = new();
+            private readonly LoanService _sut;
+
+            public ReserveCopiesAsyncTests()
+            {
+                _sut = new LoanService(_repo.Object, _config.Object);
+            }
+
+            // ---------- Helper ----------
+
+            private async Task<(List<Copy> ReservedCopies, List<uint> UnavailableBookIds)>
+                InvokeReserveCopiesAsync(IEnumerable<uint> bookIds)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "ReserveCopiesAsync",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+
+                Assert.NotNull(method);
+
+                var task = (Task<(List<Copy> ReservedCopies, List<uint> UnavailableBookIds)>)
+                    method!.Invoke(_sut, new object[] { bookIds })!;
+
+                return await task;
+            }
+
+            // ---------- Caso 1: I,1,8,F ----------
+            [Fact]
+            public async Task Caso1_SinLibros_RetornaListasVacias()
+            {
+                var result = await InvokeReserveCopiesAsync(new List<uint>());
+
+                Assert.Empty(result.ReservedCopies);
+                Assert.Empty(result.UnavailableBookIds);
+                _repo.Verify(
+                    r => r.GetFirstAvailableCopyByBookIdForUpdateAsync(It.IsAny<uint>()),
+                    Times.Never);
+            }
+
+            // ---------- Caso 2: I,1,2,3,4,5,1,8,F ----------
+            [Fact]
+            public async Task Caso2_CopiaNoDisponible_AgregaLibroANoDisponibles()
+            {
+                _repo.Setup(r => r.GetFirstAvailableCopyByBookIdForUpdateAsync(101))
+                     .ReturnsAsync((Copy?)null);
+
+                var result = await InvokeReserveCopiesAsync(new List<uint> { 101 });
+
+                Assert.Empty(result.ReservedCopies);
+                Assert.Equal(new List<uint> { 101 }, result.UnavailableBookIds);
+                _repo.Verify(r => r.GetFirstAvailableCopyByBookIdForUpdateAsync(101), Times.Once);
+            }
+
+            // ---------- Caso 3: I,1,2,3,6,7,1,8,F ----------
+            [Fact]
+            public async Task Caso3_CopiaDisponible_LaReservaComoPrestada()
+            {
+                var copy = new Copy { Id = 1, StatusId = AvailableStatus };
+                _repo.Setup(r => r.GetFirstAvailableCopyByBookIdForUpdateAsync(101))
+                     .ReturnsAsync(copy);
+
+                var before = DateTime.Now;
+
+                var result = await InvokeReserveCopiesAsync(new List<uint> { 101 });
+
+                var after = DateTime.Now;
+
+                Assert.Empty(result.UnavailableBookIds);
+                Assert.Single(result.ReservedCopies);
+
+                var reserved = result.ReservedCopies.First();
+                Assert.Same(copy, reserved);
+                Assert.Equal(1u, reserved.Id);
+                Assert.Equal(LoanedStatus, (int)reserved.StatusId);
+                Assert.NotNull(reserved.UpdatedAt);
+                Assert.InRange(reserved.UpdatedAt!.Value, before, after);
+            }
+        }
+
+
+
+
+
+
+
+
+
+        public class SynchronizeItemStatusesTests
+        {
+            private const string ActiveStatus = "Active";
+            private const string OverdueStatus = "Overdue";
+            private const string ReturnedStatus = "Returned";
+            private const string CompletedStatus = "Completed";
+
+            private static readonly DateTime UpdatedAt = new DateTime(2026, 10, 19, 10, 0, 0);
+
+            // ---------- Helpers ----------
+
+            private static bool InvokeSynchronizeItemStatuses(Loan loan, string loanStatus, DateTime updatedAt)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "SynchronizeItemStatuses",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+                Assert.NotNull(method);
+
+                return (bool)method!.Invoke(null, new object[] { loan, loanStatus, updatedAt })!;
+            }
+
+            private static Loan BuildLoan(params Loanitem[] items) =>
+                new Loan { Loanitems = new List<Loanitem>(items) };
+
+            // ---------- Caso 1: I,1,3,5,6,7,F ----------
+            [Fact]
+            public void Caso1_EstadoCompleted_RetornaFalse()
+            {
+                // "Completed" => targetItemStatus = null
+                var loan = BuildLoan();
+
+                var result = InvokeSynchronizeItemStatuses(loan, CompletedStatus, UpdatedAt);
+
+                Assert.False(result);
+                Assert.Empty(loan.Loanitems);
+            }
+
+            // ---------- Caso 2: I,1,2,6,8,9,11,12,16,F ----------
+            [Fact]
+            public void Caso2_Overdue_SinItemsActive_RetornaFalse()
+            {
+                // target = Overdue, source = Active; el ítem Returned no coincide
+                var item = new Loanitem { Status = ReturnedStatus };
+                var loan = BuildLoan(item);
+
+                var result = InvokeSynchronizeItemStatuses(loan, OverdueStatus, UpdatedAt);
+
+                Assert.False(result);
+                Assert.Equal(ReturnedStatus, item.Status);
+                Assert.Null(item.UpdatedAt);
+            }
+
+            // ---------- Caso 3: I,1,3,4,6,8,10,11,12,16,F ----------
+            [Fact]
+            public void Caso3_Active_SinItemsOverdue_RetornaFalse()
+            {
+                // target = Active, source = Overdue; el ítem Returned no coincide
+                var item = new Loanitem { Status = ReturnedStatus };
+                var loan = BuildLoan(item);
+
+                var result = InvokeSynchronizeItemStatuses(loan, ActiveStatus, UpdatedAt);
+
+                Assert.False(result);
+                Assert.Equal(ReturnedStatus, item.Status);
+                Assert.Null(item.UpdatedAt);
+            }
+
+            // ---------- Caso 4: I,1,2,6,8,9,11,12,13,14,15,12,16,F ----------
+            [Fact]
+            public void Caso4_Overdue_ItemActivePasaAOverdue_RetornaTrue()
+            {
+                var item = new Loanitem { Status = ActiveStatus };
+                var loan = BuildLoan(item);
+
+                var result = InvokeSynchronizeItemStatuses(loan, OverdueStatus, UpdatedAt);
+
+                Assert.True(result);
+                Assert.Equal(OverdueStatus, item.Status);
+                Assert.Equal(UpdatedAt, item.UpdatedAt);
+            }
+
+            // ---------- Caso 5: I,1,3,4,6,8,10,11,12,13,14,15,12,16,F ----------
+            [Fact]
+            public void Caso5_Active_ItemOverduePasaAActive_RetornaTrue()
+            {
+                var item = new Loanitem { Status = OverdueStatus };
+                var loan = BuildLoan(item);
+
+                var result = InvokeSynchronizeItemStatuses(loan, ActiveStatus, UpdatedAt);
+
+                Assert.True(result);
+                Assert.Equal(ActiveStatus, item.Status);
+                Assert.Equal(UpdatedAt, item.UpdatedAt);
+            }
+
+            // ---------- Caso 6: I,1,2,6,8,9,11,12,13,14,15,12,13,14,15,12,16,F ----------
+            [Fact]
+            public void Caso6_Overdue_DosItemsActivePasanAOverdue_RetornaTrue()
+            {
+                var item1 = new Loanitem { Status = ActiveStatus };
+                var item2 = new Loanitem { Status = ActiveStatus };
+                var loan = BuildLoan(item1, item2);
+
+                var result = InvokeSynchronizeItemStatuses(loan, OverdueStatus, UpdatedAt);
+
+                Assert.True(result);
+                Assert.Equal(OverdueStatus, item1.Status);
+                Assert.Equal(OverdueStatus, item2.Status);
+                Assert.Equal(UpdatedAt, item1.UpdatedAt);
+                Assert.Equal(UpdatedAt, item2.UpdatedAt);
+            }
+        }
+
+
+
+
+
+
+
+        public class SynchronizeItemsForManualUpdateTests
+        {
+            private const string ActiveStatus = "Active";
+            private const string OverdueStatus = "Overdue";
+            private const string ReturnedStatus = "Returned";
+
+            private static readonly DateTime Now = new DateTime(2026, 10, 19, 10, 0, 0);
+
+            // ---------- Helpers ----------
+
+            private static void InvokeSynchronizeItemsForManualUpdate(
+                Loan loan, string requestedStatus, DateTime now)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "SynchronizeItemsForManualUpdate",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+                Assert.NotNull(method);
+
+                method!.Invoke(null, new object[] { loan, requestedStatus, now });
+            }
+
+            private static Loan BuildLoan(DateTime dueDate, params Loanitem[] items) =>
+                new Loan
+                {
+                    DueDate = dueDate,
+                    Loanitems = new List<Loanitem>(items)
+                };
+
+            // ---------- Caso 1: I,1,3,4,F ----------
+            [Fact]
+            public void Caso1_RequestedOverdue_ItemsActivePasanAOverdue()
+            {
+                var activeItem = new Loanitem { Status = ActiveStatus };
+                var overdueItem = new Loanitem { Status = OverdueStatus };
+                var returnedItem = new Loanitem { Status = ReturnedStatus };
+                var loan = BuildLoan(new DateTime(2026, 10, 20), activeItem, overdueItem, returnedItem);
+
+                InvokeSynchronizeItemsForManualUpdate(loan, OverdueStatus, Now);
+
+                // UpdateItemStatuses(loan, Active, Overdue, now)
+                Assert.Equal(OverdueStatus, activeItem.Status);
+                Assert.Equal(Now, activeItem.UpdatedAt);
+
+                Assert.Equal(OverdueStatus, overdueItem.Status);
+                Assert.Null(overdueItem.UpdatedAt);
+
+                Assert.Equal(ReturnedStatus, returnedItem.Status);
+                Assert.Null(returnedItem.UpdatedAt);
+            }
+
+            // ---------- Caso 2: I,1,2,3,4,F ----------
+            [Fact]
+            public void Caso2_RequestedActiveConVencimientoPasado_ItemsActivePasanAOverdue()
+            {
+                // dueDatePassed = true (18/oct < 19/oct)
+                var activeItem = new Loanitem { Status = ActiveStatus };
+                var overdueItem = new Loanitem { Status = OverdueStatus };
+                var returnedItem = new Loanitem { Status = ReturnedStatus };
+                var loan = BuildLoan(new DateTime(2026, 10, 18), activeItem, overdueItem, returnedItem);
+
+                InvokeSynchronizeItemsForManualUpdate(loan, ActiveStatus, Now);
+
+                // UpdateItemStatuses(loan, Active, Overdue, now)
+                Assert.Equal(OverdueStatus, activeItem.Status);
+                Assert.Equal(Now, activeItem.UpdatedAt);
+
+                Assert.Equal(OverdueStatus, overdueItem.Status);
+                Assert.Null(overdueItem.UpdatedAt);
+
+                Assert.Equal(ReturnedStatus, returnedItem.Status);
+                Assert.Null(returnedItem.UpdatedAt);
+            }
+
+            // ---------- Caso 3: I,1,2,5,6,7,F ----------
+            [Fact]
+            public void Caso3_RequestedActiveConVencimientoFuturo_ItemsOverduePasanAActive()
+            {
+                // dueDatePassed = false (20/oct > 19/oct)
+                var overdueItem = new Loanitem { Status = OverdueStatus };
+                var activeItem = new Loanitem { Status = ActiveStatus };
+                var returnedItem = new Loanitem { Status = ReturnedStatus };
+                var loan = BuildLoan(new DateTime(2026, 10, 20), overdueItem, activeItem, returnedItem);
+
+                InvokeSynchronizeItemsForManualUpdate(loan, ActiveStatus, Now);
+
+                // UpdateItemStatuses(loan, Overdue, Active, now)
+                Assert.Equal(ActiveStatus, overdueItem.Status);
+                Assert.Equal(Now, overdueItem.UpdatedAt);
+
+                Assert.Equal(ActiveStatus, activeItem.Status);
+                Assert.Null(activeItem.UpdatedAt);
+
+                Assert.Equal(ReturnedStatus, returnedItem.Status);
+                Assert.Null(returnedItem.UpdatedAt);
+            }
+
+            // ---------- Caso 4: I,1,2,5,F ----------
+            [Fact]
+            public void Caso4_RequestedCompleted_NoModificaNingunItem()
+            {
+                // No es Overdue, el vencimiento no pasó y tampoco es Active: no se llama a UpdateItemStatuses
+                var activeItem = new Loanitem { Status = ActiveStatus };
+                var overdueItem = new Loanitem { Status = OverdueStatus };
+                var returnedItem = new Loanitem { Status = ReturnedStatus };
+                var loan = BuildLoan(new DateTime(2026, 10, 20), activeItem, overdueItem, returnedItem);
+
+                InvokeSynchronizeItemsForManualUpdate(loan, "Completed", Now);
+
+                Assert.Equal(ActiveStatus, activeItem.Status);
+                Assert.Null(activeItem.UpdatedAt);
+
+                Assert.Equal(OverdueStatus, overdueItem.Status);
+                Assert.Null(overdueItem.UpdatedAt);
+
+                Assert.Equal(ReturnedStatus, returnedItem.Status);
+                Assert.Null(returnedItem.UpdatedAt);
+            }
+        }
+
+
+
+        public class MapToDtoTests
+        {
+            // ---------- Helper ----------
+
+            private static LoanDto InvokeMapToDto(Loan loan)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "MapToDto",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+                Assert.NotNull(method);
+
+                return (LoanDto)method!.Invoke(null, new object[] { loan })!;
+            }
+
+            // ---------- Caso 1: I,1,F ----------
+            [Fact]
+            public void Caso1_PrestamoSinItems_MapeaTodasLasPropiedades()
+            {
+                // Arrange
+                var loanDate = new DateTime(2026, 10, 15);
+                var dueDate = new DateTime(2026, 10, 22);
+                var createdAt = new DateTime(2026, 10, 15, 9, 0, 0);
+                var updatedAt = new DateTime(2026, 10, 15, 9, 30, 0);
+
+                var loan = new Loan
+                {
+                    Id = 10,
+                    BorrowerId = 5,
+                    LibrarianId = 3,
+                    Borrower = new User { FirstName = "Ana", LastName = "Lopez" },
+                    Librarian = new User { FirstName = "Luis", LastName = "Perez" },
+                    LoanDate = loanDate,
+                    DueDate = dueDate,
+                    Status = "Active",
+                    CreatedAt = createdAt,
+                    UpdatedAt = updatedAt,
+                    Loanitems = new List<Loanitem>()
+                };
+
+                // Act
+                var dto = InvokeMapToDto(loan);
+
+                // Assert
+                Assert.Equal(10, dto.Id);
+                Assert.Equal(5, dto.BorrowerId);
+                Assert.Equal("Ana Lopez", dto.BorrowerName);
+                Assert.Equal(3, dto.LibrarianId);
+                Assert.Equal("Luis Perez", dto.LibrarianName);
+                Assert.Equal(loanDate, dto.LoanDate);
+                Assert.Equal(dueDate, dto.DueDate);
+                Assert.Equal("Active", dto.Status);
+                Assert.Equal("Activo", dto.StatusDisplayName);   // GetLoanStatusDisplayName("Active")
+                Assert.Equal(createdAt, dto.CreatedAt);
+                Assert.Equal(updatedAt, dto.UpdatedAt);
+                Assert.Empty(dto.Items);
+            }
+        }
+
+
+
+
+
+        public class MapLoanItemToDtoTests
+        {
+            // ---------- Helper ----------
+
+            private static LoanItemDto InvokeMapLoanItemToDto(Loanitem loanItem)
+            {
+                var method = typeof(LoanService).GetMethod(
+                    "MapLoanItemToDto",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+
+                Assert.NotNull(method);
+
+                return (LoanItemDto)method!.Invoke(null, new object[] { loanItem })!;
+            }
+
+            // ---------- Caso 1: I,1,F ----------
+            [Fact]
+            public void Caso1_ItemActivo_MapeaTodasLasPropiedades()
+            {
+                // Arrange
+                var loanItem = new Loanitem
+                {
+                    CopyId = 25,
+                    Status = "Active",
+                    ReturnedAt = null,
+                    Copy = new Copy
+                    {
+                        Id = 25,
+                        InternalCode = "COPY-025",
+                        BookId = 7,
+                        Book = new Book { Title = "Clean Code" }
+                    }
+                };
+
+                // Act
+                var dto = InvokeMapLoanItemToDto(loanItem);
+
+                // Assert
+                Assert.Equal(25, dto.CopyId);
+                Assert.Equal("COPY-025", dto.InternalCode);
+                Assert.Equal(7, dto.BookId);
+                Assert.Equal("Clean Code", dto.BookTitle);
+                Assert.Null(dto.ReturnedAt);
+                Assert.Equal("Active", dto.Status);
+                Assert.Equal("Activo", dto.StatusDisplayName);   // GetLoanItemStatusDisplayName("Active")
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
