@@ -36,16 +36,16 @@
 <div class="card">
 <div class="card-header">Line coverage</div>
 <div class="card-body">
-<div class="large cardpercentagebar cardpercentagebar0">100%</div>
+<div class="large cardpercentagebar cardpercentagebar6">93%</div>
 <div class="table">
 <table>
 <tr>
 <th>Covered lines:</th>
-<td class="limit-width right" title="110">110</td>
+<td class="limit-width right" title="103">103</td>
 </tr>
 <tr>
 <th>Uncovered lines:</th>
-<td class="limit-width right" title="0">0</td>
+<td class="limit-width right" title="7">7</td>
 </tr>
 <tr>
 <th>Coverable lines:</th>
@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <th>Line coverage:</th>
-<td class="limit-width right" title="110 of 110">100%</td>
+<td class="limit-width right" title="103 of 110">93.6%</td>
 </tr>
 </table>
 </div>
@@ -108,8 +108,8 @@
 <thead><tr><th>Method</th><th>Branch coverage <a href="https://en.wikipedia.org/wiki/Code_coverage" target="_blank"><i class="icon-info-circled"></i></a></th><th>Crap Score <a href="https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" target="_blank"><i class="icon-info-circled"></i></a></th><th>Cyclomatic complexity <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity" target="_blank"><i class="icon-info-circled"></i></a></th><th>Line coverage <a href="https://en.wikipedia.org/wiki/Code_coverage" target="_blank"><i class="icon-info-circled"></i></a></th></tr></thead>
 <tbody>
 <tr><td title=".ctor(Backend.Models.LibraryDbcontext)"><a href="#file0_line15" class="navigatetohash">.ctor(...)</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
-<tr><td title="GetFirstAvailableCopyByBookIdForUpdateAsync()"><a href="#file0_line21" class="navigatetohash">GetFirstAvailableCopyByBookIdForUpdateAsync()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
-<tr><td title="BeginTransactionAsync()"><a href="#file0_line29" class="navigatetohash">BeginTransactionAsync()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
+<tr><td title="GetFirstAvailableCopyByBookIdForUpdateAsync()"><a href="#file0_line21" class="navigatetohash">GetFirstAvailableCopyByBookIdForUpdateAsync()</a></td><td>100%</td><td>2</td><td>1</td><td>0%</td></tr>
+<tr><td title="BeginTransactionAsync()"><a href="#file0_line29" class="navigatetohash">BeginTransactionAsync()</a></td><td>100%</td><td>2</td><td>1</td><td>0%</td></tr>
 <tr><td title="AddLoanAsync()"><a href="#file0_line34" class="navigatetohash">AddLoanAsync()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 <tr><td title="GetLoanedBooksAsync()"><a href="#file0_line40" class="navigatetohash">GetLoanedBooksAsync()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 <tr><td title="GetCopyByIdAsync()"><a href="#file0_line58" class="navigatetohash">GetCopyByIdAsync()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
@@ -151,17 +151,17 @@
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line18"></a><code>18</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line19"></a><code>19</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line20"></a><code>20</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;async&nbsp;Task&lt;Copy?&gt;&nbsp;GetFirstAvailableCopyByBookIdForUpdateAsync(uint&nbsp;bookId)</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line21"></a><code>21</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line21"></a><code>21</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line22"></a><code>22</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Usamos&nbsp;SELECT&nbsp;...&nbsp;FOR&nbsp;UPDATE&nbsp;para&nbsp;evitar&nbsp;race&nbsp;conditions&nbsp;cuando&nbsp;se&nbsp;ejecuta&nbsp;dentro&nbsp;de&nbsp;una&nbsp;transacci&#243;n.</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line23"></a><code>23</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Aseguramos&nbsp;el&nbsp;nombre&nbsp;de&nbsp;la&nbsp;tabla&nbsp;con&nbsp;may&#250;scula&nbsp;tal&nbsp;como&nbsp;est&#225;&nbsp;definida&nbsp;en&nbsp;la&nbsp;base&nbsp;de&nbsp;datos.</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line24"></a><code>24</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;sql&nbsp;=&nbsp;&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;`Copy`&nbsp;WHERE&nbsp;`BookId`&nbsp;=&nbsp;{0}&nbsp;AND&nbsp;`StatusId`&nbsp;=&nbsp;1&nbsp;AND&nbsp;`IsActive`&nbsp;=&nbsp;1&nbsp;ORDER&nbsp;BY&nbsp;`Id`&nbsp;LIMIT&nbsp;1</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line25"></a><code>25</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;await&nbsp;_context.Copies.FromSqlRaw(sql,&nbsp;bookId).FirstOrDefaultAsync();</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line26"></a><code>26</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line24"></a><code>24</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;sql&nbsp;=&nbsp;&quot;SELECT&nbsp;*&nbsp;FROM&nbsp;`Copy`&nbsp;WHERE&nbsp;`BookId`&nbsp;=&nbsp;{0}&nbsp;AND&nbsp;`StatusId`&nbsp;=&nbsp;1&nbsp;AND&nbsp;`IsActive`&nbsp;=&nbsp;1&nbsp;ORDER&nbsp;BY&nbsp;`Id`&nbsp;LIMIT&nbsp;1</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line25"></a><code>25</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;await&nbsp;_context.Copies.FromSqlRaw(sql,&nbsp;bookId).FirstOrDefaultAsync();</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line26"></a><code>26</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line27"></a><code>27</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line28"></a><code>28</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;async&nbsp;Task&lt;IDbContextTransaction&gt;&nbsp;BeginTransactionAsync()</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line29"></a><code>29</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line30"></a><code>30</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;await&nbsp;_context.Database.BeginTransactionAsync();</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line31"></a><code>31</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line29"></a><code>29</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line30"></a><code>30</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;await&nbsp;_context.Database.BeginTransactionAsync();</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line31"></a><code>31</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line32"></a><code>32</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line33"></a><code>33</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;async&nbsp;Task&nbsp;AddLoanAsync(Loan&nbsp;loan)</code></td></tr>
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line34"></a><code>34</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
@@ -289,13 +289,13 @@
 </tbody>
 </table>
 </div>
-<div class="footer">Generated by: ReportGenerator 5.5.11.0<br />16/10/2026 - 12:10:30<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="https://reportgenerator.io">reportgenerator.io</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.5.11.0<br />20/10/2026 - 15:36:43<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="https://reportgenerator.io">reportgenerator.io</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
 <a href="#file0_line15" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - .ctor(Backend.Models.LibraryDbcontext)"><i class="icon-cube"></i>.ctor(Backend.Models.LibraryDbcontext)</a><br />
-<a href="#file0_line21" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - GetFirstAvailableCopyByBookIdForUpdateAsync()"><i class="icon-cube"></i>GetFirstAvailableCopyByBookIdForUpdateAsync()</a><br />
-<a href="#file0_line29" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - BeginTransactionAsync()"><i class="icon-cube"></i>BeginTransactionAsync()</a><br />
+<a href="#file0_line21" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - GetFirstAvailableCopyByBookIdForUpdateAsync()"><i class="icon-cube"></i>GetFirstAvailableCopyByBookIdForUpdateAsync()</a><br />
+<a href="#file0_line29" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - BeginTransactionAsync()"><i class="icon-cube"></i>BeginTransactionAsync()</a><br />
 <a href="#file0_line34" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - AddLoanAsync()"><i class="icon-cube"></i>AddLoanAsync()</a><br />
 <a href="#file0_line40" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - GetLoanedBooksAsync()"><i class="icon-cube"></i>GetLoanedBooksAsync()</a><br />
 <a href="#file0_line58" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - GetCopyByIdAsync()"><i class="icon-cube"></i>GetCopyByIdAsync()</a><br />

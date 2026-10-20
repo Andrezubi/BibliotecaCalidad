@@ -291,32 +291,32 @@ var assemblies = [
     "name": "Backend",
     "classes": [
       { "name": "Backend.Application.DTOs.AuthResponse", "rp": "Backend_AuthResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.BookDto", "rp": "Backend_BookDto.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.BookDto", "rp": "Backend_BookDto.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.CreateAuthorDto", "rp": "Backend_CreateAuthorDto.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.CreateBookDto", "rp": "Backend_CreateBookDto.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.CreateBookDto", "rp": "Backend_CreateBookDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.CreateCategoryDto", "rp": "Backend_CreateCategoryDto.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.CreatePublisherDto", "rp": "Backend_CreatePublisherDto.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoanCreateRequest", "rp": "Backend_LoanCreateRequest.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoanDto", "rp": "Backend_LoanDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.LoanItemDto", "rp": "Backend_LoanItemDto.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.LoanItemDto", "rp": "Backend_LoanItemDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoanListDto", "rp": "Backend_LoanListDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoginRequest", "rp": "Backend_LoginRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.RegisterUserRequest", "rp": "Backend_RegisterUserRequest.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.ReturnResultDto", "rp": "Backend_ReturnResultDto.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.UpdateBookDto", "rp": "Backend_UpdateBookDto.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.UpdateBookDto", "rp": "Backend_UpdateBookDto.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.UpdateLoanDto", "rp": "Backend_UpdateLoanDto.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 7, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.UserListDto", "rp": "Backend_UserListDto.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.AuthorService", "rp": "Backend_AuthorService.html", "cl": 0, "ucl": 91, "cal": 91, "tl": 144, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.AuthService", "rp": "Backend_AuthService.html", "cl": 0, "ucl": 47, "cal": 47, "tl": 75, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.Services.BookService", "rp": "Backend_BookService.html", "cl": 0, "ucl": 523, "cal": 523, "tl": 856, "cb": 0, "tb": 130, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.Services.BookService", "rp": "Backend_BookService.html", "cl": 359, "ucl": 159, "cal": 518, "tl": 851, "cb": 78, "tb": 130, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.CategoryService", "rp": "Backend_CategoryService.html", "cl": 0, "ucl": 92, "cal": 92, "tl": 143, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.Services.LoanService", "rp": "Backend_LoanService.html", "cl": 227, "ucl": 181, "cal": 408, "tl": 631, "cb": 65, "tb": 140, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.Services.LoanService", "rp": "Backend_LoanService.html", "cl": 349, "ucl": 59, "cal": 408, "tl": 631, "cb": 103, "tb": 140, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.PublisherService", "rp": "Backend_PublisherService.html", "cl": 0, "ucl": 69, "cal": 69, "tl": 116, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.UserService", "rp": "Backend_UserService.html", "cl": 0, "ucl": 85, "cal": 85, "tl": 123, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.AuthController", "rp": "Backend_AuthController.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.AuthorController", "rp": "Backend_AuthorController.html", "cl": 0, "ucl": 48, "cal": 48, "tl": 95, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Controllers.BookController", "rp": "Backend_BookController.html", "cl": 0, "ucl": 102, "cal": 102, "tl": 196, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Controllers.BookController.AddCopyRequest", "rp": "Backend_AddCopyRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 196, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Controllers.BookController", "rp": "Backend_BookController.html", "cl": 99, "ucl": 4, "cal": 103, "tl": 197, "cb": 16, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Controllers.BookController.AddCopyRequest", "rp": "Backend_AddCopyRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 197, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.CategoryController", "rp": "Backend_CategoryController.html", "cl": 0, "ucl": 53, "cal": 53, "tl": 100, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.LoansController", "rp": "Backend_LoansController.html", "cl": 45, "ucl": 8, "cal": 53, "tl": 104, "cb": 18, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.PublisherController", "rp": "Backend_PublisherController.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 83, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -327,7 +327,7 @@ var assemblies = [
       { "name": "Backend.Domain.Validators.BookAuthorValidator", "rp": "Backend_BookAuthorValidator.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 70, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.BookCategoryValidator", "rp": "Backend_BookCategoryValidator.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 70, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.BookValidationException", "rp": "Backend_BookValidationException.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.BookValidator", "rp": "Backend_BookValidator.html", "cl": 179, "ucl": 87, "cal": 266, "tl": 439, "cb": 52, "tb": 82, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Domain.Validators.BookValidator", "rp": "Backend_BookValidator.html", "cl": 239, "ucl": 27, "cal": 266, "tl": 439, "cb": 69, "tb": 82, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.CategoryValidator", "rp": "Backend_CategoryValidator.html", "cl": 65, "ucl": 8, "cal": 73, "tl": 120, "cb": 23, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.CopyStatusValidator", "rp": "Backend_CopyStatusValidator.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 66, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.CopyValidator", "rp": "Backend_CopyValidator.html", "cl": 53, "ucl": 0, "cal": 53, "tl": 90, "cb": 20, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -342,12 +342,12 @@ var assemblies = [
       { "name": "Backend.Domain.Validators.RenewalValidator", "rp": "Backend_RenewalValidator.html", "cl": 0, "ucl": 71, "cal": 71, "tl": 116, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.ReservationValidator", "rp": "Backend_ReservationValidator.html", "cl": 0, "ucl": 66, "cal": 66, "tl": 109, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.UserValidator", "rp": "Backend_UserValidator.html", "cl": 126, "ucl": 28, "cal": 154, "tl": 250, "cb": 53, "tb": 70, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 57, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.AuthorRepository", "rp": "Backend_AuthorRepository.html", "cl": 0, "ucl": 33, "cal": 33, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.BookRepository", "rp": "Backend_BookRepository.html", "cl": 0, "ucl": 235, "cal": 235, "tl": 368, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.CategoryRepository", "rp": "Backend_CategoryRepository.html", "cl": 0, "ucl": 30, "cal": 30, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Infraestructure.Repositories.LoanRepository", "rp": "Backend_LoanRepository.html", "cl": 110, "ucl": 0, "cal": 110, "tl": 155, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Infraestructure.Repositories.LoanRepository", "rp": "Backend_LoanRepository.html", "cl": 103, "ucl": 7, "cal": 110, "tl": 155, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.PublisherRepository", "rp": "Backend_PublisherRepository.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 45, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.UserRepository", "rp": "Backend_UserRepository.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 61, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infrastructure.Security.JwtService", "rp": "Backend_JwtService.html", "cl": 0, "ucl": 54, "cal": 54, "tl": 79, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -361,7 +361,7 @@ var assemblies = [
       { "name": "Backend.Models.Copystatus", "rp": "Backend_Copystatus.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Models.Fine", "rp": "Backend_Fine.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 33, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Models.Finepayment", "rp": "Backend_Finepayment.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Models.LibraryDbcontext", "rp": "Backend_LibraryDbcontext.html", "cl": 624, "ucl": 3, "cal": 627, "tl": 699, "cb": 36, "tb": 36, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Models.LibraryDbcontext", "rp": "Backend_LibraryDbcontext.html", "cl": 627, "ucl": 0, "cal": 627, "tl": 699, "cb": 36, "tb": 36, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Models.Loan", "rp": "Backend_Loan.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Models.Loanitem", "rp": "Backend_Loanitem.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 33, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Models.Loanrequest", "rp": "Backend_Loanrequest.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 33, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -399,25 +399,7 @@ var riskHotspots = [
       { "value": 12, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "ValidateCoverFile(Microsoft.AspNetCore.Http.IFormFile)", "methodShortName": "ValidateCoverFile(...)", "fileIndex": 0, "line": 609,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "MapToDtoAsync()", "methodShortName": "MapToDtoAsync()", "fileIndex": 0, "line": 767,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Application.Services.CategoryService", "reportPath": "Backend_CategoryService.html", "methodName": "UpdateAsync()", "methodShortName": "UpdateAsync()", "fileIndex": 0, "line": 82,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "SynchronizeItemStatuses(Backend.Models.Loan, string, System.DateTime)", "methodShortName": "SynchronizeItemStatuses(...)", "fileIndex": 0, "line": 440,
     "metrics": [
       { "value": 156, "exceeded": true },
       { "value": 12, "exceeded": false },
@@ -465,43 +447,13 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "UpdateBookEntity(Backend.Models.Book, Backend.Application.DTOs.UpdateBookDto)", "methodShortName": "UpdateBookEntity(...)", "fileIndex": 0, "line": 522,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "DeleteCoverImage(string, string)", "methodShortName": "DeleteCoverImage(...)", "fileIndex": 0, "line": 723,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "AddCopyAsync()", "methodShortName": "AddCopyAsync()", "fileIndex": 0, "line": 317,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "UpdateBookTransactionAsync()", "methodShortName": "UpdateBookTransactionAsync()", "fileIndex": 0, "line": 220,
+    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "UpdateBookEntity(Backend.Models.Book, Backend.Application.DTOs.UpdateBookDto)", "methodShortName": "UpdateBookEntity(...)", "fileIndex": 0, "line": 517,
     "metrics": [
       { "value": 72, "exceeded": true },
       { "value": 8, "exceeded": false },
     ]},
   {
     "assembly": "Backend", "class": "Backend.Application.Services.CategoryService", "reportPath": "Backend_CategoryService.html", "methodName": "CreateAsync()", "methodShortName": "CreateAsync()", "fileIndex": 0, "line": 40,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "GetLoanStatusDisplayName(string)", "methodShortName": "GetLoanStatusDisplayName(...)", "fileIndex": 0, "line": 565,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "GetLoanItemStatusDisplayName(string)", "methodShortName": "GetLoanItemStatusDisplayName(...)", "fileIndex": 0, "line": 577,
     "metrics": [
       { "value": 72, "exceeded": true },
       { "value": 8, "exceeded": false },
@@ -525,37 +477,13 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "CreateBookEntity(Backend.Application.DTOs.CreateBookDto)", "methodShortName": "CreateBookEntity(...)", "fileIndex": 0, "line": 499,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "ValidateUpdateIsbnAsync()", "methodShortName": "ValidateUpdateIsbnAsync()", "fileIndex": 0, "line": 472,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "SynchronizeItemsForManualUpdate(Backend.Models.Loan, string, System.DateTime)", "methodShortName": "SynchronizeItemsForManualUpdate(...)", "fileIndex": 0, "line": 503,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "UpdateLoanStatusesAsync()", "methodShortName": "UpdateLoanStatusesAsync()", "fileIndex": 0, "line": 394,
+    "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "CreateBookEntity(Backend.Application.DTOs.CreateBookDto)", "methodShortName": "CreateBookEntity(...)", "fileIndex": 0, "line": 494,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
     ]},
   {
     "assembly": "Backend", "class": "Backend.Application.Services.PublisherService", "reportPath": "Backend_PublisherService.html", "methodName": "CreateAsync()", "methodShortName": "CreateAsync()", "fileIndex": 0, "line": 33,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Controllers.BookController", "reportPath": "Backend_BookController.html", "methodName": "Update()", "methodShortName": "Update()", "fileIndex": 0, "line": 105,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
