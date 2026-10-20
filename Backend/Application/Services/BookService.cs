@@ -366,12 +366,7 @@ public class BookService : IBookService
     private static List<uint> NormalizeAuthorIds(
         IEnumerable<int>? ids)
     {
-        return ids?
-.Where(id => id > 0)
-            .Select(id => (uint)id)
-            .Distinct()
-            .ToList()
-            ?? new List<uint>();
+        return ids?.Where(id => id > 0).Select(id => (uint)id).Distinct().ToList()?? new List<uint>();
     }
 
     private static List<byte> NormalizeCategoryIds(
@@ -494,16 +489,7 @@ public class BookService : IBookService
     {
         return new Book
         {
-            Title = dto.Title,
-            EditionNumber = (byte)(dto.EditionNumber ?? 1),
-            Isbn = dto.ISBN,
-            PublicationYear = dto.PublicationYear != null ? (ushort)dto.PublicationYear : null,
-            PublisherId = dto.PublisherId,
-            PageCount = dto.PageCount != null ? (ushort)dto.PageCount : null,
-            Description = dto.Description,
-            UserId = dto.UserId != null ? (ushort)dto.UserId : null,
-            IsActive = true,
-            CreatedAt = DateTime.Now
+            Title = dto.Title,EditionNumber = (byte)(dto.EditionNumber ?? 1),Isbn = dto.ISBN,PublicationYear = dto.PublicationYear != null ? (ushort)dto.PublicationYear : null,PublisherId = dto.PublisherId,PageCount = dto.PageCount != null ? (ushort)dto.PageCount : null,Description = dto.Description,UserId = dto.UserId != null ? (ushort)dto.UserId : null,IsActive = true,CreatedAt = DateTime.Now
         };
     }
 
@@ -515,32 +501,23 @@ public class BookService : IBookService
         Book book,
         UpdateBookDto dto)
     {
-        book.Title =
-            dto.Title;
+        book.Title =dto.Title;
 
-        book.EditionNumber =
-            dto.EditionNumber.HasValue ? (byte)dto.EditionNumber.Value : book.EditionNumber;
+        book.EditionNumber =dto.EditionNumber.HasValue ? (byte)dto.EditionNumber.Value : book.EditionNumber;
 
-        book.Isbn =
-            dto.ISBN;
+        book.Isbn =dto.ISBN;
 
-        book.PublicationYear =
-            dto.PublicationYear.HasValue ? (ushort)dto.PublicationYear.Value : book.PublicationYear;
+        book.PublicationYear =dto.PublicationYear.HasValue ? (ushort)dto.PublicationYear.Value : book.PublicationYear;
 
-        book.PublisherId =
-            dto.PublisherId;
+        book.PublisherId =dto.PublisherId;
 
-        book.PageCount =
-            dto.PageCount.HasValue ? (ushort)dto.PageCount.Value : book.PageCount;
+        book.PageCount = dto.PageCount.HasValue ? (ushort)dto.PageCount.Value : book.PageCount;
 
-        book.Description =
-            dto.Description;
+        book.Description = dto.Description;
 
-        book.UserId =
-            dto.UserId.HasValue ? (ushort)dto.UserId.Value : book.UserId;
+        book.UserId =dto.UserId.HasValue ? (ushort)dto.UserId.Value : book.UserId;
 
-        book.UpdatedAt =
-            DateTime.Now;
+        book.UpdatedAt = DateTime.Now;
     }
 
     // ============================================================
@@ -557,15 +534,10 @@ public class BookService : IBookService
             var bookAuthor =
                 new Bookauthor
                 {
-                    BookId = bookId,
-                    AuthorId = authorId,
-                    CreatedAt = DateTime.Now,
-                    UserId = userId != null ? (ushort)userId.Value : null
+                    BookId = bookId,AuthorId = authorId,CreatedAt = DateTime.Now,UserId = userId != null ? (ushort)userId.Value : null
                 };
 
-            await _authorRepository
-                .AddBookAuthorAsync(
-                    bookAuthor);
+            await _authorRepository.AddBookAuthorAsync(bookAuthor);
         }
     }
 
@@ -583,15 +555,10 @@ public class BookService : IBookService
             var bookCategory =
                 new Bookcategory
                 {
-                    BookId = bookId,
-                    CategoryId = categoryId,
-                    CreatedAt = DateTime.Now,
-                    UserId = userId != null ? (ushort)userId.Value : null
+                    BookId = bookId,CategoryId = categoryId,CreatedAt = DateTime.Now,UserId = userId != null ? (ushort)userId.Value : null
                 };
 
-            await _categoryRepository
-                .AddBookCategoryAsync(
-                    bookCategory);
+            await _categoryRepository.AddBookCategoryAsync(bookCategory);
         }
     }
 
