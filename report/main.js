@@ -291,32 +291,32 @@ var assemblies = [
     "name": "Backend",
     "classes": [
       { "name": "Backend.Application.DTOs.AuthResponse", "rp": "Backend_AuthResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.BookDto", "rp": "Backend_BookDto.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.BookDto", "rp": "Backend_BookDto.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.CreateAuthorDto", "rp": "Backend_CreateAuthorDto.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.CreateBookDto", "rp": "Backend_CreateBookDto.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.CreateBookDto", "rp": "Backend_CreateBookDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.CreateCategoryDto", "rp": "Backend_CreateCategoryDto.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.CreatePublisherDto", "rp": "Backend_CreatePublisherDto.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoanCreateRequest", "rp": "Backend_LoanCreateRequest.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoanDto", "rp": "Backend_LoanDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.LoanItemDto", "rp": "Backend_LoanItemDto.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.LoanItemDto", "rp": "Backend_LoanItemDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoanListDto", "rp": "Backend_LoanListDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.LoginRequest", "rp": "Backend_LoginRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.RegisterUserRequest", "rp": "Backend_RegisterUserRequest.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.ReturnResultDto", "rp": "Backend_ReturnResultDto.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.DTOs.UpdateBookDto", "rp": "Backend_UpdateBookDto.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.DTOs.UpdateBookDto", "rp": "Backend_UpdateBookDto.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 34, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.UpdateLoanDto", "rp": "Backend_UpdateLoanDto.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 7, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.DTOs.UserListDto", "rp": "Backend_UserListDto.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.AuthorService", "rp": "Backend_AuthorService.html", "cl": 0, "ucl": 91, "cal": 91, "tl": 144, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.AuthService", "rp": "Backend_AuthService.html", "cl": 0, "ucl": 47, "cal": 47, "tl": 75, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.BookService", "rp": "Backend_BookService.html", "cl": 0, "ucl": 523, "cal": 523, "tl": 856, "cb": 0, "tb": 130, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.CategoryService", "rp": "Backend_CategoryService.html", "cl": 0, "ucl": 92, "cal": 92, "tl": 143, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Application.Services.LoanService", "rp": "Backend_LoanService.html", "cl": 227, "ucl": 181, "cal": 408, "tl": 631, "cb": 65, "tb": 140, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Application.Services.LoanService", "rp": "Backend_LoanService.html", "cl": 349, "ucl": 59, "cal": 408, "tl": 631, "cb": 103, "tb": 140, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.PublisherService", "rp": "Backend_PublisherService.html", "cl": 0, "ucl": 69, "cal": 69, "tl": 116, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Application.Services.UserService", "rp": "Backend_UserService.html", "cl": 0, "ucl": 85, "cal": 85, "tl": 123, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.AuthController", "rp": "Backend_AuthController.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 37, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.AuthorController", "rp": "Backend_AuthorController.html", "cl": 0, "ucl": 48, "cal": 48, "tl": 95, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Controllers.BookController", "rp": "Backend_BookController.html", "cl": 0, "ucl": 102, "cal": 102, "tl": 196, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Controllers.BookController.AddCopyRequest", "rp": "Backend_AddCopyRequest.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 196, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Controllers.BookController", "rp": "Backend_BookController.html", "cl": 99, "ucl": 4, "cal": 103, "tl": 197, "cb": 16, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Controllers.BookController.AddCopyRequest", "rp": "Backend_AddCopyRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 197, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.CategoryController", "rp": "Backend_CategoryController.html", "cl": 0, "ucl": 53, "cal": 53, "tl": 100, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.LoansController", "rp": "Backend_LoansController.html", "cl": 45, "ucl": 8, "cal": 53, "tl": 104, "cb": 18, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Controllers.PublisherController", "rp": "Backend_PublisherController.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 83, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -372,7 +372,229 @@ var assemblies = [
       { "name": "Backend.Models.Reservation", "rp": "Backend_Reservation.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 33, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Models.User", "rp": "Backend_User.html", "cl": 32, "ucl": 0, "cal": 32, "tl": 93, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.WeatherForecast", "rp": "Backend_WeatherForecast.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Microsoft.AspNetCore.OpenApi.Generated", "rp": "Backend_Generated.html", "cl": 0, "ucl": 374, "cal": 374, "tl": 592, "cb": 0, "tb": 206, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Program", "rp": "Backend_Program.html", "cl": 0, "ucl": 77, "cal": 77, "tl": 168, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "System.Runtime.CompilerServices", "rp": "Backend_CompilerServices.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+    ]},
+  {
+    "name": "Backend.Tests",
+    "classes": [
+      { "name": "Backend.Tests.Controllers.BookControllerTests", "rp": "Backend.Tests_BookControllerTests.html", "cl": 290, "ucl": 0, "cal": 290, "tl": 504, "cb": 14, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Repositories.LoanRepositoryMySqlTests", "rp": "Backend.Tests_LoanRepositoryMySqlTests.html", "cl": 46, "ucl": 5, "cal": 51, "tl": 645, "cb": 3, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Repositories.LoanRepositoryTests", "rp": "Backend.Tests_LoanRepositoryTests.html", "cl": 424, "ucl": 0, "cal": 424, "tl": 645, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.AddBusinessDaysTests", "rp": "Backend.Tests_AddBusinessDaysTests.html", "cl": 31, "ucl": 0, "cal": 31, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.CountOverdueBusinessDaysTests", "rp": "Backend.Tests_CountOverdueBusinessDaysTests.html", "cl": 37, "ucl": 0, "cal": 37, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.DetermineLoanStatusTests", "rp": "Backend.Tests_DetermineLoanStatusTests.html", "cl": 50, "ucl": 0, "cal": 50, "tl": 1468, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.GetDailyFineRateTests", "rp": "Backend.Tests_GetDailyFineRateTests.html", "cl": 19, "ucl": 1, "cal": 20, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.LoanServiceUpdateLoanStatusesTests", "rp": "Backend.Tests_LoanServiceUpdateLoanStatusesTests.html", "cl": 69, "ucl": 0, "cal": 69, "tl": 1468, "cb": 7, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.MapLoanItemToDtoTests", "rp": "Backend.Tests_MapLoanItemToDtoTests.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.MapToDtoTests", "rp": "Backend.Tests_MapToDtoTests.html", "cl": 40, "ucl": 0, "cal": 40, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.RegisterLoanTests", "rp": "Backend.Tests_RegisterLoanTests.html", "cl": 73, "ucl": 0, "cal": 73, "tl": 1468, "cb": 16, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.RegisterReturnTests", "rp": "Backend.Tests_RegisterReturnTests.html", "cl": 106, "ucl": 0, "cal": 106, "tl": 1468, "cb": 16, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.ReserveCopiesAsyncTests", "rp": "Backend.Tests_ReserveCopiesAsyncTests.html", "cl": 47, "ucl": 0, "cal": 47, "tl": 1468, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.SynchronizeItemsForManualUpdateTests", "rp": "Backend.Tests_SynchronizeItemsForManualUpdateTests.html", "cl": 65, "ucl": 0, "cal": 65, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.SynchronizeItemStatusesTests", "rp": "Backend.Tests_SynchronizeItemStatusesTests.html", "cl": 58, "ucl": 0, "cal": 58, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.UpdateLoanTests", "rp": "Backend.Tests_UpdateLoanTests.html", "cl": 48, "ucl": 0, "cal": 48, "tl": 1468, "cb": 5, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Services.LoanServiceTests.ValidateLoanRequestTests", "rp": "Backend.Tests_ValidateLoanRequestTests.html", "cl": 27, "ucl": 0, "cal": 27, "tl": 1468, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Validators.AuthorValidatorTests", "rp": "Backend.Tests_AuthorValidatorTests.html", "cl": 54, "ucl": 0, "cal": 54, "tl": 117, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Validators.BookValidatorTests", "rp": "Backend.Tests_BookValidatorTests.html", "cl": 103, "ucl": 0, "cal": 103, "tl": 217, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Validators.CategoryValidatorTests", "rp": "Backend.Tests_CategoryValidatorTests.html", "cl": 45, "ucl": 0, "cal": 45, "tl": 97, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Validators.CopyValidatorTests", "rp": "Backend.Tests_CopyValidatorTests.html", "cl": 55, "ucl": 0, "cal": 55, "tl": 125, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Validators.PublisherValidatorTests", "rp": "Backend.Tests_PublisherValidatorTests.html", "cl": 34, "ucl": 0, "cal": 34, "tl": 78, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Tests.Validators.UserValidatorTests", "rp": "Backend.Tests_UserValidatorTests.html", "cl": 104, "ucl": 0, "cal": 104, "tl": 237, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "LoansControllerTests", "rp": "Backend.Tests_LoansControllerTests.html", "cl": 209, "ucl": 0, "cal": 209, "tl": 344, "cb": 14, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Microsoft.AspNetCore.OpenApi.Generated", "rp": "Backend.Tests_Generated.html", "cl": 0, "ucl": 374, "cal": 374, "tl": 592, "cb": 0, "tb": 206, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "System.Runtime.CompilerServices", "rp": "Backend.Tests_CompilerServices.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+    ]},
+  {
+    "name": "MySqlConnector",
+    "classes": [
+      { "name": "MySqlConnector.Authentication.AuthenticationPlugins", "rp": "MySqlConnector_AuthenticationPlugins.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 44, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryBooleanColumnReader", "rp": "MySqlConnector_BinaryBooleanColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryDateTimeColumnReader", "rp": "MySqlConnector_BinaryDateTimeColumnReader.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 62, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryDoubleColumnReader", "rp": "MySqlConnector_BinaryDoubleColumnReader.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryFloatColumnReader", "rp": "MySqlConnector_BinaryFloatColumnReader.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinarySignedInt16ColumnReader", "rp": "MySqlConnector_BinarySignedInt16ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinarySignedInt32ColumnReader", "rp": "MySqlConnector_BinarySignedInt32ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinarySignedInt64ColumnReader", "rp": "MySqlConnector_BinarySignedInt64ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinarySignedInt8ColumnReader", "rp": "MySqlConnector_BinarySignedInt8ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryTimeColumnReader", "rp": "MySqlConnector_BinaryTimeColumnReader.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 33, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryUnsignedInt16ColumnReader", "rp": "MySqlConnector_BinaryUnsignedInt16ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryUnsignedInt32ColumnReader", "rp": "MySqlConnector_BinaryUnsignedInt32ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryUnsignedInt64ColumnReader", "rp": "MySqlConnector_BinaryUnsignedInt64ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryUnsignedInt8ColumnReader", "rp": "MySqlConnector_BinaryUnsignedInt8ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BinaryYearColumnReader", "rp": "MySqlConnector_BinaryYearColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BitColumnReader", "rp": "MySqlConnector_BitColumnReader.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 37, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.BytesColumnReader", "rp": "MySqlConnector_BytesColumnReader.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.ColumnReader", "rp": "MySqlConnector_ColumnReader.html", "cl": 23, "ucl": 36, "cal": 59, "tl": 125, "cb": 35, "tb": 88, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.DecimalColumnReader", "rp": "MySqlConnector_DecimalColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.GuidBinary16ColumnReader", "rp": "MySqlConnector_GuidBinary16ColumnReader.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.GuidChar32ColumnReader", "rp": "MySqlConnector_GuidChar32ColumnReader.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 15, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.GuidChar36ColumnReader", "rp": "MySqlConnector_GuidChar36ColumnReader.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 15, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.GuidLittleEndianBinary16ColumnReader", "rp": "MySqlConnector_GuidLittleEndianBinary16ColumnReader.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.GuidTimeSwapBinary16ColumnReader", "rp": "MySqlConnector_GuidTimeSwapBinary16ColumnReader.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.NullColumnReader", "rp": "MySqlConnector_NullColumnReader.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.StringColumnReader", "rp": "MySqlConnector_StringColumnReader.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextBooleanColumnReader", "rp": "MySqlConnector_TextBooleanColumnReader.html", "cl": 3, "ucl": 1, "cal": 4, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextDateTimeColumnReader", "rp": "MySqlConnector_TextDateTimeColumnReader.html", "cl": 25, "ucl": 17, "cal": 42, "tl": 95, "cb": 25, "tb": 70, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextDoubleColumnReader", "rp": "MySqlConnector_TextDoubleColumnReader.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 23, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextFloatColumnReader", "rp": "MySqlConnector_TextFloatColumnReader.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 23, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextSignedInt16ColumnReader", "rp": "MySqlConnector_TextSignedInt16ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextSignedInt32ColumnReader", "rp": "MySqlConnector_TextSignedInt32ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextSignedInt64ColumnReader", "rp": "MySqlConnector_TextSignedInt64ColumnReader.html", "cl": 3, "ucl": 1, "cal": 4, "tl": 20, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextSignedInt8ColumnReader", "rp": "MySqlConnector_TextSignedInt8ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextTimeColumnReader", "rp": "MySqlConnector_TextTimeColumnReader.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextUnsignedInt16ColumnReader", "rp": "MySqlConnector_TextUnsignedInt16ColumnReader.html", "cl": 1, "ucl": 3, "cal": 4, "tl": 20, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextUnsignedInt32ColumnReader", "rp": "MySqlConnector_TextUnsignedInt32ColumnReader.html", "cl": 3, "ucl": 1, "cal": 4, "tl": 18, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextUnsignedInt64ColumnReader", "rp": "MySqlConnector_TextUnsignedInt64ColumnReader.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 20, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.ColumnReaders.TextUnsignedInt8ColumnReader", "rp": "MySqlConnector_TextUnsignedInt8ColumnReader.html", "cl": 3, "ucl": 1, "cal": 4, "tl": 20, "cb": 2, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.CachedParameter", "rp": "MySqlConnector_CachedParameter.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 20, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.CachedProcedure", "rp": "MySqlConnector_CachedProcedure.html", "cl": 0, "ucl": 153, "cal": 153, "tl": 268, "cb": 0, "tb": 68, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ColumnTypeMetadata", "rp": "MySqlConnector_ColumnTypeMetadata.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 18, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.CommandExecutor", "rp": "MySqlConnector_CommandExecutor.html", "cl": 19, "ucl": 16, "cal": 35, "tl": 79, "cb": 4, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.CommandListPosition", "rp": "MySqlConnector_CommandListPosition.html", "cl": 13, "ucl": 4, "cal": 17, "tl": 29, "cb": 3, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ConcatenatedCommandPayloadCreator", "rp": "MySqlConnector_ConcatenatedCommandPayloadCreator.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 43, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ConnectionPool", "rp": "MySqlConnector_ConnectionPool.html", "cl": 195, "ucl": 145, "cal": 340, "tl": 755, "cb": 60, "tb": 148, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ConnectionPool.ConnectionStringPool", "rp": "MySqlConnector_ConnectionStringPool.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 736, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ConnectionPool.LeastConnectionsLoadBalancer", "rp": "MySqlConnector_LeastConnectionsLoadBalancer.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 730, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ConnectionSettings", "rp": "MySqlConnector_ConnectionSettings.html", "cl": 67, "ucl": 106, "cal": 173, "tl": 341, "cb": 14, "tb": 64, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.DataReaderValuesEnumerator", "rp": "MySqlConnector_DataReaderValuesEnumerator.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 37, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.DataRowsValuesEnumerator", "rp": "MySqlConnector_DataRowsValuesEnumerator.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 63, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.DbDataReaderValuesEnumerator", "rp": "MySqlConnector_DbDataReaderValuesEnumerator.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.DbTypeMapping", "rp": "MySqlConnector_DbTypeMapping.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 15, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.EnlistedTransactionBase", "rp": "MySqlConnector_EnlistedTransactionBase.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 53, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.FailOverLoadBalancer", "rp": "MySqlConnector_FailOverLoadBalancer.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ICancellableCommandExtensions", "rp": "MySqlConnector_ICancellableCommandExtensions.html", "cl": 16, "ucl": 6, "cal": 22, "tl": 92, "cb": 9, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.IMySqlCommandExtensions", "rp": "MySqlConnector_IMySqlCommandExtensions.html", "cl": 13, "ucl": 9, "cal": 22, "tl": 54, "cb": 6, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.MetricsReporter", "rp": "MySqlConnector_MetricsReporter.html", "cl": 35, "ucl": 3, "cal": 38, "tl": 60, "cb": 4, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.NonPooledConnectionPoolMetadata", "rp": "MySqlConnector_NonPooledConnectionPoolMetadata.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.NormalizedSchema", "rp": "MySqlConnector_NormalizedSchema.html", "cl": 0, "ucl": 25, "cal": 25, "tl": 106, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ParsedStatement", "rp": "MySqlConnector_ParsedStatement.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 31, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ParsedStatements", "rp": "MySqlConnector_ParsedStatements.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.PreparedStatement", "rp": "MySqlConnector_PreparedStatement.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.PreparedStatements", "rp": "MySqlConnector_PreparedStatements.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 12, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.RandomLoadBalancer", "rp": "MySqlConnector_RandomLoadBalancer.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 55, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ResultSet", "rp": "MySqlConnector_ResultSet.html", "cl": 90, "ucl": 98, "cal": 188, "tl": 370, "cb": 46, "tb": 158, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.RoundRobinLoadBalancer", "rp": "MySqlConnector_RoundRobinLoadBalancer.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 80, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.Row", "rp": "MySqlConnector_Row.html", "cl": 52, "ucl": 246, "cal": 298, "tl": 500, "cb": 14, "tb": 141, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.Row.OffsetLength", "rp": "MySqlConnector_OffsetLength.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 500, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.SchemaProvider", "rp": "MySqlConnector_SchemaProvider.html", "cl": 0, "ucl": 1173, "cal": 1173, "tl": 1439, "cb": 0, "tb": 380, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ServerSession", "rp": "MySqlConnector_ServerSession.html", "cl": 363, "ucl": 735, "cal": 1098, "tl": 2285, "cb": 134, "tb": 597, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ServerSession.__ExpectedSessionState6Struct", "rp": "MySqlConnector___ExpectedSessionState6Struct.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 116, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ServerSession.DelimiterSqlParser", "rp": "MySqlConnector_DelimiterSqlParser.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 2132, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ServerVersion", "rp": "MySqlConnector_ServerVersion.html", "cl": 23, "ucl": 3, "cal": 26, "tl": 60, "cb": 16, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.ServerVersions", "rp": "MySqlConnector_ServerVersions.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.SingleCommandPayloadCreator", "rp": "MySqlConnector_SingleCommandPayloadCreator.html", "cl": 25, "ucl": 118, "cal": 143, "tl": 272, "cb": 9, "tb": 133, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.SqlParser", "rp": "MySqlConnector_SqlParser.html", "cl": 74, "ucl": 83, "cal": 157, "tl": 346, "cb": 84, "tb": 180, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.StandardEnlistedTransaction", "rp": "MySqlConnector_StandardEnlistedTransaction.html", "cl": 0, "ucl": 27, "cal": 27, "tl": 48, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.StatementPreparer", "rp": "MySqlConnector_StatementPreparer.html", "cl": 30, "ucl": 43, "cal": 73, "tl": 152, "cb": 12, "tb": 34, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.StatementPreparer.ParameterSqlParser", "rp": "MySqlConnector_ParameterSqlParser.html", "cl": 16, "ucl": 5, "cal": 21, "tl": 93, "cb": 6, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.StatementPreparer.PreparedCommandSqlParser", "rp": "MySqlConnector_PreparedCommandSqlParser.html", "cl": 0, "ucl": 26, "cal": 26, "tl": 146, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.TypeMapper", "rp": "MySqlConnector_TypeMapper.html", "cl": 86, "ucl": 113, "cal": 199, "tl": 350, "cb": 39, "tb": 192, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Core.XaEnlistedTransaction", "rp": "MySqlConnector_XaEnlistedTransaction.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 52, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.ConsoleLoggerProvider", "rp": "MySqlConnector_ConsoleLoggerProvider.html", "cl": 0, "ucl": 53, "cal": 53, "tl": 83, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.ConsoleLoggerProvider.ConsoleLogger", "rp": "MySqlConnector_ConsoleLogger.html", "cl": 0, "ucl": 46, "cal": 46, "tl": 83, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log", "rp": "MySqlConnector_Log.html", "cl": 58, "ucl": 897, "cal": 955, "tl": 2327, "cb": 29, "tb": 359, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log.__ConnectedTlsDetailedPreliminaryStruct", "rp": "MySqlConnector___ConnectedTlsDetailedPreliminaryStruct.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 1269, "cb": 0, "tb": 11, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log.__ConnectingToIpAddressStruct", "rp": "MySqlConnector___ConnectingToIpAddressStruct.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 640, "cb": 0, "tb": 11, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log.__CouldNotLoadCaCertificateFromFileStruct", "rp": "MySqlConnector___CouldNotLoadCaCertificateFromFileStruct.html", "cl": 0, "ucl": 20, "cal": 20, "tl": 970, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log.__FailedToConnectToIpAddressStruct", "rp": "MySqlConnector___FailedToConnectToIpAddressStruct.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 751, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log.__SessionMadeConnectionStruct", "rp": "MySqlConnector___SessionMadeConnectionStruct.html", "cl": 0, "ucl": 47, "cal": 47, "tl": 377, "cb": 0, "tb": 15, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.Log.__SuccessfullyPingedServerStruct", "rp": "MySqlConnector___SuccessfullyPingedServerStruct.html", "cl": 0, "ucl": 17, "cal": 17, "tl": 1628, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.MySqlConnectorLoggingConfiguration", "rp": "MySqlConnector_MySqlConnectorLoggingConfiguration.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.MySqlConnectorLogManager", "rp": "MySqlConnector_MySqlConnectorLogManager.html", "cl": 0, "ucl": 20, "cal": 20, "tl": 63, "cb": 0, "tb": 7, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.MySqlConnectorLogManager.MySqlConnectorLogger", "rp": "MySqlConnector_MySqlConnectorLogger.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 63, "cb": 0, "tb": 7, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.MySqlConnectorLogManager.MySqlConnectorLoggerFactory", "rp": "MySqlConnector_MySqlConnectorLoggerFactory.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 38, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.NoOpLogger", "rp": "MySqlConnector_NoOpLogger.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 25, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Logging.NoOpLoggerProvider", "rp": "MySqlConnector_NoOpLoggerProvider.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlAttribute", "rp": "MySqlConnector_MySqlAttribute.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 41, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlAttributeCollection", "rp": "MySqlConnector_MySqlAttributeCollection.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 96, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBatch", "rp": "MySqlConnector_MySqlBatch.html", "cl": 0, "ucl": 131, "cal": 131, "tl": 412, "cb": 0, "tb": 74, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBatchCommand", "rp": "MySqlConnector_MySqlBatchCommand.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 91, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBatchCommandCollection", "rp": "MySqlConnector_MySqlBatchCommandCollection.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 54, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBulkCopy", "rp": "MySqlConnector_MySqlBulkCopy.html", "cl": 0, "ucl": 289, "cal": 289, "tl": 705, "cb": 0, "tb": 212, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBulkCopyColumnMapping", "rp": "MySqlConnector_MySqlBulkCopyColumnMapping.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 61, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBulkCopyResult", "rp": "MySqlConnector_MySqlBulkCopyResult.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlBulkLoader", "rp": "MySqlConnector_MySqlBulkLoader.html", "cl": 0, "ucl": 102, "cal": 102, "tl": 329, "cb": 0, "tb": 60, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlCommand", "rp": "MySqlConnector_MySqlCommand.html", "cl": 76, "ucl": 105, "cal": 181, "tl": 464, "cb": 34, "tb": 106, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlCommandBuilder", "rp": "MySqlConnector_MySqlCommandBuilder.html", "cl": 0, "ucl": 51, "cal": 51, "tl": 103, "cb": 0, "tb": 34, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnection", "rp": "MySqlConnector_MySqlConnection.html", "cl": 217, "ucl": 347, "cal": 564, "tl": 1298, "cb": 104, "tb": 332, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnectionOpenedContext", "rp": "MySqlConnector_MySqlConnectionOpenedContext.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnectionStringBuilder", "rp": "MySqlConnector_MySqlConnectionStringBuilder.html", "cl": 78, "ucl": 71, "cal": 149, "tl": 889, "cb": 14, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnectionStringOption", "rp": "MySqlConnector_MySqlConnectionStringOption.html", "cl": 201, "ucl": 28, "cal": 229, "tl": 1366, "cb": 4, "tb": 50, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnectionStringReferenceOption\u003CT\u003E", "rp": "MySqlConnector_MySqlConnectionStringReferenceOption_T_.html", "cl": 8, "ucl": 1, "cal": 9, "tl": 1383, "cb": 3, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnectionStringValueOption\u003CT\u003E", "rp": "MySqlConnector_MySqlConnectionStringValueOption_T_.html", "cl": 13, "ucl": 10, "cal": 23, "tl": 1356, "cb": 16, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConnectorFactory", "rp": "MySqlConnector_MySqlConnectorFactory.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 103, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlConversionException", "rp": "MySqlConnector_MySqlConversionException.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 27, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDataAdapter", "rp": "MySqlConnector_MySqlDataAdapter.html", "cl": 0, "ucl": 107, "cal": 107, "tl": 237, "cb": 0, "tb": 44, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDataAdapter.InsertSqlParser", "rp": "MySqlConnector_InsertSqlParser.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 237, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDataReader", "rp": "MySqlConnector_MySqlDataReader.html", "cl": 98, "ucl": 286, "cal": 384, "tl": 701, "cb": 46, "tb": 180, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDataSource", "rp": "MySqlConnector_MySqlDataSource.html", "cl": 0, "ucl": 86, "cal": 86, "tl": 218, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDataSourceBuilder", "rp": "MySqlConnector_MySqlDataSourceBuilder.html", "cl": 0, "ucl": 29, "cal": 29, "tl": 121, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDateTime", "rp": "MySqlConnector_MySqlDateTime.html", "cl": 0, "ucl": 74, "cal": 74, "tl": 203, "cb": 0, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDbColumn", "rp": "MySqlConnector_MySqlDbColumn.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 53, "cb": 0, "tb": 32, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlDecimal", "rp": "MySqlConnector_MySqlDecimal.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 50, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlEndOfStreamException", "rp": "MySqlConnector_MySqlEndOfStreamException.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlError", "rp": "MySqlConnector_MySqlError.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlException", "rp": "MySqlConnector_MySqlException.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 129, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlGeometry", "rp": "MySqlConnector_MySqlGeometry.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 52, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlHelper", "rp": "MySqlConnector_MySqlHelper.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 38, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlInfoMessageEventArgs", "rp": "MySqlConnector_MySqlInfoMessageEventArgs.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlParameter", "rp": "MySqlConnector_MySqlParameter.html", "cl": 55, "ucl": 402, "cal": 457, "tl": 950, "cb": 42, "tb": 442, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlParameterCollection", "rp": "MySqlConnector_MySqlParameterCollection.html", "cl": 23, "ucl": 77, "cal": 100, "tl": 205, "cb": 12, "tb": 50, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlProtocolException", "rp": "MySqlConnector_MySqlProtocolException.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlProvidePasswordContext", "rp": "MySqlConnector_MySqlProvidePasswordContext.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlRowsCopiedEventArgs", "rp": "MySqlConnector_MySqlRowsCopiedEventArgs.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 18, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlRowUpdatedEventArgs", "rp": "MySqlConnector_MySqlRowUpdatedEventArgs.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 268, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlRowUpdatingEventArgs", "rp": "MySqlConnector_MySqlRowUpdatingEventArgs.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 258, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.MySqlTransaction", "rp": "MySqlConnector_MySqlTransaction.html", "cl": 30, "ucl": 53, "cal": 83, "tl": 304, "cb": 7, "tb": 38, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.PayloadData", "rp": "MySqlConnector_PayloadData.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 25, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.AuthenticationMethodSwitchRequestPayload", "rp": "MySqlConnector_AuthenticationMethodSwitchRequestPayload.html", "cl": 9, "ucl": 2, "cal": 11, "tl": 40, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.AuthenticationMoreDataPayload", "rp": "MySqlConnector_AuthenticationMoreDataPayload.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.CachingSha2ServerResponsePayload", "rp": "MySqlConnector_CachingSha2ServerResponsePayload.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.ChangeUserPayload", "rp": "MySqlConnector_ChangeUserPayload.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 23, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.ColumnCountPayload", "rp": "MySqlConnector_ColumnCountPayload.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 27, "cb": 1, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload", "rp": "MySqlConnector_ColumnDefinitionPayload.html", "cl": 26, "ucl": 34, "cal": 60, "tl": 137, "cb": 3, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.EmptyPayload", "rp": "MySqlConnector_EmptyPayload.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.EofPayload", "rp": "MySqlConnector_EofPayload.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 42, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.ErrorPayload", "rp": "MySqlConnector_ErrorPayload.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 45, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.HandshakeResponse41Payload", "rp": "MySqlConnector_HandshakeResponse41Payload.html", "cl": 44, "ucl": 2, "cal": 46, "tl": 81, "cb": 15, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.InitDatabasePayload", "rp": "MySqlConnector_InitDatabasePayload.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.InitialHandshakePayload", "rp": "MySqlConnector_InitialHandshakePayload.html", "cl": 35, "ucl": 2, "cal": 37, "tl": 70, "cb": 9, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.LocalInfilePayload", "rp": "MySqlConnector_LocalInfilePayload.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.OkPayload", "rp": "MySqlConnector_OkPayload.html", "cl": 56, "ucl": 27, "cal": 83, "tl": 193, "cb": 45, "tb": 106, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.PingPayload", "rp": "MySqlConnector_PingPayload.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.QueryPayload", "rp": "MySqlConnector_QueryPayload.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 13, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.QuitPayload", "rp": "MySqlConnector_QuitPayload.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 6, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.ResetConnectionPayload", "rp": "MySqlConnector_ResetConnectionPayload.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 6, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Payloads.StatementPrepareResponsePayload", "rp": "MySqlConnector_StatementPrepareResponsePayload.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.ArraySegmentHolder\u003CT\u003E", "rp": "MySqlConnector_ArraySegmentHolder_T_.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 21, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.AuthenticationUtility", "rp": "MySqlConnector_AuthenticationUtility.html", "cl": 29, "ucl": 5, "cal": 34, "tl": 117, "cb": 7, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.AuthGSSAPI", "rp": "MySqlConnector_AuthGSSAPI.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 235, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.BufferedByteReader", "rp": "MySqlConnector_BufferedByteReader.html", "cl": 17, "ucl": 7, "cal": 24, "tl": 54, "cb": 6, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.ByteArrayReader", "rp": "MySqlConnector_ByteArrayReader.html", "cl": 64, "ucl": 24, "cal": 88, "tl": 180, "cb": 18, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.ByteBufferWriter", "rp": "MySqlConnector_ByteBufferWriter.html", "cl": 45, "ucl": 80, "cal": 125, "tl": 242, "cb": 10, "tb": 50, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.ByteBufferWriterExtensions", "rp": "MySqlConnector_ByteBufferWriterExtensions.html", "cl": 10, "ucl": 11, "cal": 21, "tl": 294, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.CompressedPayloadHandler", "rp": "MySqlConnector_CompressedPayloadHandler.html", "cl": 0, "ucl": 99, "cal": 99, "tl": 269, "cb": 0, "tb": 40, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.CompressedPayloadHandler.CompressedByteHandler", "rp": "MySqlConnector_CompressedByteHandler.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 269, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.NegotiateToMySqlConverterStream", "rp": "MySqlConnector_NegotiateToMySqlConverterStream.html", "cl": 0, "ucl": 82, "cal": 82, "tl": 200, "cb": 0, "tb": 38, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.Packet", "rp": "MySqlConnector_Packet.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.ProtocolUtility", "rp": "MySqlConnector_ProtocolUtility.html", "cl": 28, "ucl": 21, "cal": 49, "tl": 500, "cb": 9, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.SerializationUtility", "rp": "MySqlConnector_SerializationUtility.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 21, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.SocketByteHandler", "rp": "MySqlConnector_SocketByteHandler.html", "cl": 34, "ucl": 14, "cal": 48, "tl": 136, "cb": 13, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.StandardPayloadHandler", "rp": "MySqlConnector_StandardPayloadHandler.html", "cl": 19, "ucl": 0, "cal": 19, "tl": 57, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Protocol.Serialization.StreamByteHandler", "rp": "MySqlConnector_StreamByteHandler.html", "cl": 32, "ucl": 17, "cal": 49, "tl": 107, "cb": 16, "tb": 34, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.ActivitySourceHelper", "rp": "MySqlConnector_ActivitySourceHelper.html", "cl": 8, "ucl": 12, "cal": 20, "tl": 65, "cb": 2, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.ResizableArray\u003CT\u003E", "rp": "MySqlConnector_ResizableArray_T_.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 22, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.ResizableArraySegment\u003CT\u003E", "rp": "MySqlConnector_ResizableArraySegment_T_.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.SocketExtensions", "rp": "MySqlConnector_SocketExtensions.html", "cl": 4, "ucl": 3, "cal": 7, "tl": 72, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.TimerQueue", "rp": "MySqlConnector_TimerQueue.html", "cl": 32, "ucl": 20, "cal": 52, "tl": 128, "cb": 13, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.TimerQueue.Data", "rp": "MySqlConnector_Data.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 128, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.Utility", "rp": "MySqlConnector_Utility.html", "cl": 21, "ucl": 116, "cal": 137, "tl": 665, "cb": 7, "tb": 122, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MySqlConnector.Utilities.ValueTaskExtensions", "rp": "MySqlConnector_ValueTaskExtensions.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "System.Text.RegularExpressions.Generated", "rp": "MySqlConnector_Generated.html", "cl": 0, "ucl": 471, "cal": 471, "tl": 1381, "cb": 0, "tb": 242, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "System.Text.RegularExpressions.Generated.RunnerFactory", "rp": "MySqlConnector_RunnerFactory.html", "cl": 0, "ucl": 0, "cal": 0, "tl": 0, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "System.Text.RegularExpressions.Generated.RunnerFactory.Runner", "rp": "MySqlConnector_Runner.html", "cl": 0, "ucl": 0, "cal": 0, "tl": 0, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -387,10 +609,460 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "AppendSqlString(MySqlConnector.Protocol.Serialization.ByteBufferWriter, MySqlConnector.Core.StatementPreparerOptions)", "methodShortName": "AppendSqlString(...)", "fileIndex": 0, "line": 201,
+    "metrics": [
+      { "value": 35723, "exceeded": true },
+      { "value": 216, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "System.Text.RegularExpressions.Generated", "reportPath": "MySqlConnector_Generated.html", "methodName": "TryMatchAtCurrentPosition(System.ReadOnlySpan\u003Cchar\u003E)", "methodShortName": "TryMatchAtCurrentPosition(...)", "fileIndex": 0, "line": 174,
+    "metrics": [
+      { "value": 18090, "exceeded": true },
+      { "value": 134, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "AppendBinary(MySqlConnector.Protocol.Serialization.ByteBufferWriter, object, MySqlConnector.Core.StatementPreparerOptions)", "methodShortName": "AppendBinary(...)", "fileIndex": 0, "line": 648,
+    "metrics": [
+      { "value": 13110, "exceeded": true },
+      { "value": 114, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkCopy", "reportPath": "MySqlConnector_MySqlBulkCopy.html", "methodName": "WriteValue()", "methodShortName": "WriteValue()", "fileIndex": 0, "line": 446,
+    "metrics": [
+      { "value": 10100, "exceeded": true },
+      { "value": 100, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "TransformAsync(Microsoft.OpenApi.OpenApiOperation, Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext, System.Threading.CancellationToken)", "methodShortName": "TransformAsync(...)", "fileIndex": 0, "line": 345,
+    "metrics": [
+      { "value": 8930, "exceeded": true },
+      { "value": 94, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "TransformAsync(Microsoft.OpenApi.OpenApiOperation, Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext, System.Threading.CancellationToken)", "methodShortName": "TransformAsync(...)", "fileIndex": 0, "line": 345,
+    "metrics": [
+      { "value": 8930, "exceeded": true },
+      { "value": 94, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.TypeMapper", "reportPath": "MySqlConnector_TypeMapper.html", "methodName": "ConvertToMySqlDbType(MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload, bool, MySqlConnector.MySqlGuidFormat)", "methodShortName": "ConvertToMySqlDbType(...)", "fileIndex": 0, "line": 198,
+    "metrics": [
+      { "value": 6480, "exceeded": true },
+      { "value": 80, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "System.Text.RegularExpressions.Generated", "reportPath": "MySqlConnector_Generated.html", "methodName": "TryMatchAtCurrentPosition(System.ReadOnlySpan\u003Cchar\u003E)", "methodShortName": "TryMatchAtCurrentPosition(...)", "fileIndex": 0, "line": 980,
+    "metrics": [
+      { "value": 5256, "exceeded": true },
+      { "value": 72, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.TypeMapper", "reportPath": "MySqlConnector_TypeMapper.html", "methodName": "ConvertToColumnTypeAndFlags(MySqlConnector.MySqlDbType, MySqlConnector.MySqlGuidFormat)", "methodShortName": "ConvertToColumnTypeAndFlags(...)", "fileIndex": 0, "line": 313,
+    "metrics": [
+      { "value": 4160, "exceeded": true },
+      { "value": 64, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SchemaProvider", "reportPath": "MySqlConnector_SchemaProvider.html", "methodName": "GetSchemaAsync()", "methodShortName": "GetSchemaAsync()", "fileIndex": 1, "line": 13,
+    "metrics": [
+      { "value": 3906, "exceeded": true },
+      { "value": 62, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SqlParser", "reportPath": "MySqlConnector_SqlParser.html", "methodName": "Parse(string)", "methodShortName": "Parse(...)", "fileIndex": 0, "line": 12,
+    "metrics": [
+      { "value": 3876, "exceeded": true },
+      { "value": 152, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SchemaProvider", "reportPath": "MySqlConnector_SchemaProvider.html", "methodName": "DoFillDataTypes(System.Data.DataTable)", "methodShortName": "DoFillDataTypes(...)", "fileIndex": 0, "line": 46,
+    "metrics": [
+      { "value": 3660, "exceeded": true },
+      { "value": 60, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SingleCommandPayloadCreator", "reportPath": "MySqlConnector_SingleCommandPayloadCreator.html", "methodName": "WritePreparedStatement(MySqlConnector.Core.IMySqlCommand, MySqlConnector.Core.PreparedStatement, MySqlConnector.Protocol.Serialization.ByteBufferWriter)", "methodShortName": "WritePreparedStatement(...)", "fileIndex": 0, "line": 81,
+    "metrics": [
+      { "value": 2756, "exceeded": true },
+      { "value": 52, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkCopy", "reportPath": "MySqlConnector_MySqlBulkCopy.html", "methodName": "WriteToServerAsync()", "methodShortName": "WriteToServerAsync()", "fileIndex": 0, "line": 235,
+    "metrics": [
+      { "value": 2550, "exceeded": true },
+      { "value": 50, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.Utility", "reportPath": "MySqlConnector_Utility.html", "methodName": "ParseTimeSpan(System.ReadOnlySpan\u003Cbyte\u003E)", "methodShortName": "ParseTimeSpan(...)", "fileIndex": 0, "line": 382,
+    "metrics": [
+      { "value": 2550, "exceeded": true },
+      { "value": 50, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "InitSslAsync()", "methodShortName": "InitSslAsync()", "fileIndex": 1, "line": 1437,
+    "metrics": [
+      { "value": 1826, "exceeded": true },
+      { "value": 68, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.ColumnReader", "reportPath": "MySqlConnector_ColumnReader.html", "methodName": "Create(bool, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload, MySqlConnector.MySqlConnection)", "methodShortName": "Create(...)", "fileIndex": 0, "line": 11,
+    "metrics": [
+      { "value": 1789, "exceeded": true },
+      { "value": 88, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "GetFieldValue\u003CT\u003E(int)", "methodShortName": "GetFieldValue\u003CT\u003E(...)", "fileIndex": 0, "line": 382,
+    "metrics": [
+      { "value": 1514, "exceeded": true },
+      { "value": 50, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "TransformAsync(Microsoft.OpenApi.OpenApiSchema, Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext, System.Threading.CancellationToken)", "methodShortName": "TransformAsync(...)", "fileIndex": 0, "line": 511,
+    "metrics": [
+      { "value": 1190, "exceeded": true },
+      { "value": 34, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "TransformAsync(Microsoft.OpenApi.OpenApiSchema, Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext, System.Threading.CancellationToken)", "methodShortName": "TransformAsync(...)", "fileIndex": 0, "line": 511,
+    "metrics": [
+      { "value": 1190, "exceeded": true },
+      { "value": 34, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkCopy", "reportPath": "MySqlConnector_MySqlBulkCopy.html", "methodName": "SendDataReaderAsync()", "methodShortName": "SendDataReaderAsync()", "fileIndex": 0, "line": 382,
+    "metrics": [
+      { "value": 1190, "exceeded": true },
+      { "value": 34, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkLoader", "reportPath": "MySqlConnector_MySqlBulkLoader.html", "methodName": "CreateSql()", "methodShortName": "CreateSql()", "fileIndex": 0, "line": 236,
+    "metrics": [
+      { "value": 1056, "exceeded": true },
+      { "value": 32, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDbColumn", "reportPath": "MySqlConnector_MySqlDbColumn.html", "methodName": ".ctor(int, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload, bool, MySqlConnector.MySqlDbType)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 11,
+    "metrics": [
+      { "value": 1056, "exceeded": true },
+      { "value": 32, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "GetTypeDocId(System.Type, bool, bool)", "methodShortName": "GetTypeDocId(...)", "fileIndex": 0, "line": 238,
+    "metrics": [
+      { "value": 812, "exceeded": true },
+      { "value": 28, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "GetTypeDocId(System.Type, bool, bool)", "methodShortName": "GetTypeDocId(...)", "fileIndex": 0, "line": 238,
+    "metrics": [
+      { "value": 812, "exceeded": true },
+      { "value": 28, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataAdapter", "reportPath": "MySqlConnector_MySqlDataAdapter.html", "methodName": "TryConvertToCommand(MySqlConnector.MySqlBatch)", "methodShortName": "TryConvertToCommand(...)", "fileIndex": 0, "line": 123,
+    "metrics": [
+      { "value": 812, "exceeded": true },
+      { "value": 28, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Payloads.OkPayload", "reportPath": "MySqlConnector_OkPayload.html", "methodName": "Read(System.ReadOnlySpan\u003Cbyte\u003E, MySqlConnector.Core.IServerCapabilities, bool)", "methodShortName": "Read(...)", "fileIndex": 0, "line": 56,
+    "metrics": [
+      { "value": 757, "exceeded": true },
+      { "value": 96, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.CachedProcedure", "reportPath": "MySqlConnector_CachedProcedure.html", "methodName": "FillAsync()", "methodShortName": "FillAsync()", "fileIndex": 0, "line": 16,
+    "metrics": [
+      { "value": 702, "exceeded": true },
+      { "value": 26, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkLoader", "reportPath": "MySqlConnector_MySqlBulkLoader.html", "methodName": "LoadAsync()", "methodShortName": "LoadAsync()", "fileIndex": 0, "line": 164,
+    "metrics": [
+      { "value": 702, "exceeded": true },
+      { "value": 26, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "SwitchAuthenticationAsync()", "methodShortName": "SwitchAuthenticationAsync()", "fileIndex": 1, "line": 850,
+    "metrics": [
+      { "value": 668, "exceeded": true },
+      { "value": 45, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SingleCommandPayloadCreator", "reportPath": "MySqlConnector_SingleCommandPayloadCreator.html", "methodName": "WriteBinaryParameters(MySqlConnector.Protocol.Serialization.ByteBufferWriter, MySqlConnector.MySqlParameter[], MySqlConnector.Core.IMySqlCommand, bool, int)", "methodShortName": "WriteBinaryParameters(...)", "fileIndex": 0, "line": 137,
+    "metrics": [
+      { "value": 600, "exceeded": true },
+      { "value": 24, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDateTime", "reportPath": "MySqlConnector_MySqlDateTime.html", "methodName": "System.IComparable\u003CMySqlConnector.MySqlDateTime\u003E.CompareTo(MySqlConnector.MySqlDateTime)", "methodShortName": "System.IComparable\u003CMySqlConnector.MySqlDateTime\u003E.CompareTo(...)", "fileIndex": 0, "line": 152,
+    "metrics": [
+      { "value": 600, "exceeded": true },
+      { "value": 24, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.CompressedPayloadHandler", "reportPath": "MySqlConnector_CompressedPayloadHandler.html", "methodName": "ReadBytesAsync()", "methodShortName": "ReadBytesAsync()", "fileIndex": 0, "line": 63,
+    "metrics": [
+      { "value": 600, "exceeded": true },
+      { "value": 24, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.NegotiateToMySqlConverterStream", "reportPath": "MySqlConnector_NegotiateToMySqlConverterStream.html", "methodName": "WriteAsync()", "methodShortName": "WriteAsync()", "fileIndex": 0, "line": 120,
+    "metrics": [
+      { "value": 600, "exceeded": true },
+      { "value": 24, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "ConnectAsync()", "methodShortName": "ConnectAsync()", "fileIndex": 1, "line": 402,
+    "metrics": [
+      { "value": 594, "exceeded": true },
+      { "value": 102, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.TextDateTimeColumnReader", "reportPath": "MySqlConnector_TextDateTimeColumnReader.html", "methodName": "ParseDateTime(System.ReadOnlySpan\u003Cbyte\u003E, bool, bool, System.DateTimeKind)", "methodShortName": "ParseDateTime(...)", "fileIndex": 0, "line": 22,
+    "metrics": [
+      { "value": 586, "exceeded": true },
+      { "value": 70, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ResultSet", "reportPath": "MySqlConnector_ResultSet.html", "methodName": "ReadResultSetHeaderAsync()", "methodShortName": "ReadResultSetHeaderAsync()", "fileIndex": 0, "line": 31,
+    "metrics": [
+      { "value": 548, "exceeded": true },
+      { "value": 68, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SchemaProvider", "reportPath": "MySqlConnector_SchemaProvider.html", "methodName": "FillColumnsAsync()", "methodShortName": "FillColumnsAsync()", "fileIndex": 1, "line": 189,
+    "metrics": [
+      { "value": 506, "exceeded": true },
+      { "value": 22, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SchemaProvider", "reportPath": "MySqlConnector_SchemaProvider.html", "methodName": "FillTablesAsync()", "methodShortName": "FillTablesAsync()", "fileIndex": 1, "line": 674,
+    "metrics": [
+      { "value": 506, "exceeded": true },
+      { "value": 22, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "PrepareAsync()", "methodShortName": "PrepareAsync()", "fileIndex": 1, "line": 145,
+    "metrics": [
+      { "value": 506, "exceeded": true },
+      { "value": 22, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SingleCommandPayloadCreator", "reportPath": "MySqlConnector_SingleCommandPayloadCreator.html", "methodName": "WriteStoredProcedure(MySqlConnector.Core.IMySqlCommand, System.Collections.Generic.IDictionary\u003Cstring, MySqlConnector.Core.CachedProcedure\u003E, MySqlConnector.Protocol.Serialization.ByteBufferWriter)", "methodShortName": "WriteStoredProcedure(...)", "fileIndex": 0, "line": 186,
+    "metrics": [
+      { "value": 462, "exceeded": true },
+      { "value": 21, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.Row", "reportPath": "MySqlConnector_Row.html", "methodName": "SetData(System.ReadOnlyMemory\u003Cbyte\u003E)", "methodShortName": "SetData(...)", "fileIndex": 0, "line": 28,
+    "metrics": [
+      { "value": 446, "exceeded": true },
+      { "value": 33, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "ValidateRemoteCertificate()", "methodShortName": "ValidateRemoteCertificate()", "fileIndex": 1, "line": 1594,
+    "metrics": [
+      { "value": 444, "exceeded": true },
+      { "value": 24, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlCommand", "reportPath": "MySqlConnector_MySqlCommand.html", "methodName": "NeedsPrepare(out System.Exception)", "methodShortName": "NeedsPrepare(...)", "fileIndex": 0, "line": 171,
+    "metrics": [
+      { "value": 420, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "EnlistTransaction(System.Transactions.Transaction)", "methodShortName": "EnlistTransaction(...)", "fileIndex": 0, "line": 323,
+    "metrics": [
+      { "value": 420, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "GetCachedProcedure()", "methodShortName": "GetCachedProcedure()", "fileIndex": 0, "line": 965,
+    "metrics": [
+      { "value": 420, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.Utility", "reportPath": "MySqlConnector_Utility.html", "methodName": "TryParseRedirectionHeader(string, string, out string, out int, out string)", "methodShortName": "TryParseRedirectionHeader(...)", "fileIndex": 0, "line": 341,
+    "metrics": [
+      { "value": 420, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "CreateDocumentationId(System.Reflection.MethodInfo)", "methodShortName": "CreateDocumentationId(...)", "fileIndex": 0, "line": 168,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "CreateDocumentationId(System.Reflection.MethodInfo)", "methodShortName": "CreateDocumentationId(...)", "fileIndex": 0, "line": 168,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.CachedProcedure", "reportPath": "MySqlConnector_CachedProcedure.html", "methodName": "AlignParamsWithDb(MySqlConnector.MySqlParameterCollection)", "methodShortName": "AlignParamsWithDb(...)", "fileIndex": 0, "line": 115,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.Row", "reportPath": "MySqlConnector_Row.html", "methodName": "CheckBinaryColumn(int)", "methodShortName": "CheckBinaryColumn(...)", "fileIndex": 0, "line": 450,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "Cancel(MySqlConnector.Core.ICancellableCommand, int, bool)", "methodShortName": "Cancel(...)", "fileIndex": 0, "line": 897,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlHelper", "reportPath": "MySqlConnector_MySqlHelper.html", "methodName": "EscapeString(string)", "methodShortName": "EscapeString(...)", "fileIndex": 0, "line": 16,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "WriteString()", "methodShortName": "WriteString()", "fileIndex": 0, "line": 564,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "WriteStringChunk()", "methodShortName": "WriteStringChunk()", "fileIndex": 0, "line": 602,
+    "metrics": [
+      { "value": 342, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "OpenAsync()", "methodShortName": "OpenAsync()", "fileIndex": 0, "line": 528,
+    "metrics": [
+      { "value": 327, "exceeded": true },
+      { "value": 34, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "OpenTcpSocketAsync()", "methodShortName": "OpenTcpSocketAsync()", "fileIndex": 1, "line": 1160,
+    "metrics": [
+      { "value": 278, "exceeded": true },
+      { "value": 44, "exceeded": true },
+    ]},
+  {
     "assembly": "Backend", "class": "Backend.Application.Services.UserService", "reportPath": "Backend_UserService.html", "methodName": "RegisterAsync()", "methodShortName": "RegisterAsync()", "fileIndex": 0, "line": 22,
     "metrics": [
       { "value": 272, "exceeded": true },
       { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "GetRealServerDetailsAsync()", "methodShortName": "GetRealServerDetailsAsync()", "fileIndex": 1, "line": 1875,
+    "metrics": [
+      { "value": 272, "exceeded": true },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkCopy", "reportPath": "MySqlConnector_MySqlBulkCopy.html", "methodName": "WriteSubstring()", "methodShortName": "WriteSubstring()", "fileIndex": 0, "line": 649,
+    "metrics": [
+      { "value": 272, "exceeded": true },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "FindExistingEnlistedSession(System.Transactions.Transaction)", "methodShortName": "FindExistingEnlistedSession(...)", "fileIndex": 0, "line": 399,
+    "metrics": [
+      { "value": 272, "exceeded": true },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionSettings", "reportPath": "MySqlConnector_ConnectionSettings.html", "methodName": ".ctor(MySqlConnector.MySqlConnectionStringBuilder)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 12,
+    "metrics": [
+      { "value": 242, "exceeded": true },
+      { "value": 56, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "ActivateResultSet(System.Threading.CancellationToken)", "methodShortName": "ActivateResultSet(...)", "fileIndex": 0, "line": 112,
+    "metrics": [
+      { "value": 214, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.BitColumnReader", "reportPath": "MySqlConnector_BitColumnReader.html", "methodName": "DoReadValue(System.ReadOnlySpan\u003Cbyte\u003E, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload)", "methodShortName": "DoReadValue(...)", "fileIndex": 0, "line": 19,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.NormalizedSchema", "reportPath": "MySqlConnector_NormalizedSchema.html", "methodName": ".ctor(string, string)", "methodShortName": ".ctor(...)", "fileIndex": 1, "line": 28,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.Row", "reportPath": "MySqlConnector_Row.html", "methodName": "GetGuid(int)", "methodShortName": "GetGuid(...)", "fileIndex": 0, "line": 197,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBatch", "reportPath": "MySqlConnector_MySqlBatch.html", "methodName": "IsValid(out System.Exception)", "methodShortName": "IsValid(...)", "fileIndex": 0, "line": 330,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlCommandBuilder", "reportPath": "MySqlConnector_MySqlCommandBuilder.html", "methodName": "DeriveParametersAsync()", "methodShortName": "DeriveParametersAsync()", "fileIndex": 0, "line": 16,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDecimal", "reportPath": "MySqlConnector_MySqlDecimal.html", "methodName": ".ctor(string)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 32,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.ByteBufferWriter", "reportPath": "MySqlConnector_ByteBufferWriter.html", "methodName": "Write(System.ReadOnlySpan\u003Cchar\u003E, bool)", "methodShortName": "Write(...)", "fileIndex": 0, "line": 121,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.ByteBufferWriter", "reportPath": "MySqlConnector_ByteBufferWriter.html", "methodName": "WriteLengthEncodedString(System.Text.StringBuilder)", "methodShortName": "WriteLengthEncodedString(...)", "fileIndex": 0, "line": 159,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.NegotiateToMySqlConverterStream", "reportPath": "MySqlConnector_NegotiateToMySqlConverterStream.html", "methodName": "ReadAsync()", "methodShortName": "ReadAsync()", "fileIndex": 0, "line": 66,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.Utility", "reportPath": "MySqlConnector_Utility.html", "methodName": "LoadRsaParameters(string, System.Security.Cryptography.RSA)", "methodShortName": "LoadRsaParameters(...)", "fileIndex": 0, "line": 109,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "ConnectAndRedirectAsync()", "methodShortName": "ConnectAndRedirectAsync()", "fileIndex": 1, "line": 690,
+    "metrics": [
+      { "value": 189, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log", "reportPath": "MySqlConnector_Log.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 349,
+    "metrics": [
+      { "value": 182, "exceeded": true },
+      { "value": 13, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log.__SessionMadeConnectionStruct", "reportPath": "MySqlConnector___SessionMadeConnectionStruct.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 349,
+    "metrics": [
+      { "value": 182, "exceeded": true },
+      { "value": 13, "exceeded": false },
     ]},
   {
     "assembly": "Backend", "class": "Backend.Application.Services.AuthorService", "reportPath": "Backend_AuthorService.html", "methodName": "UpdateAsync()", "methodShortName": "UpdateAsync()", "fileIndex": 0, "line": 86,
@@ -417,12 +1089,6 @@ var riskHotspots = [
       { "value": 12, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "SynchronizeItemStatuses(Backend.Models.Loan, string, System.DateTime)", "methodShortName": "SynchronizeItemStatuses(...)", "fileIndex": 0, "line": 440,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Domain.Validators.LoanRequestValidator", "reportPath": "Backend_LoanRequestValidator.html", "methodName": "ValidateProcessedAt(System.Nullable\u003CSystem.DateTime\u003E, string)", "methodShortName": "ValidateProcessedAt(...)", "fileIndex": 0, "line": 62,
     "metrics": [
       { "value": 156, "exceeded": true },
@@ -441,10 +1107,256 @@ var riskHotspots = [
       { "value": 12, "exceeded": false },
     ]},
   {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.BinaryDateTimeColumnReader", "reportPath": "MySqlConnector_BinaryDateTimeColumnReader.html", "methodName": "ReadValue(System.ReadOnlySpan\u003Cbyte\u003E, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload)", "methodShortName": "ReadValue(...)", "fileIndex": 0, "line": 19,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.CachedProcedure", "reportPath": "MySqlConnector_CachedProcedure.html", "methodName": "ParseParameters(string)", "methodShortName": "ParseParameters(...)", "fileIndex": 0, "line": 146,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.CachedProcedure", "reportPath": "MySqlConnector_CachedProcedure.html", "methodName": "ParseDataType(string, out bool, out int)", "methodShortName": "ParseDataType(...)", "fileIndex": 0, "line": 196,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "ValidateFingerprint(byte[], System.ReadOnlySpan\u003Cbyte\u003E, string)", "methodShortName": "ValidateFingerprint(...)", "fileIndex": 1, "line": 634,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "VerifyState(MySqlConnector.Core.ServerSession.State, MySqlConnector.Core.ServerSession.State, MySqlConnector.Core.ServerSession.State, MySqlConnector.Core.ServerSession.State, MySqlConnector.Core.ServerSession.State, MySqlConnector.Core.ServerSession.State)", "methodShortName": "VerifyState(...)", "fileIndex": 1, "line": 1979,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "OpenNamedPipeAsync()", "methodShortName": "OpenNamedPipeAsync()", "fileIndex": 1, "line": 1383,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBatch", "reportPath": "MySqlConnector_MySqlBatch.html", "methodName": "NeedsPrepare(out System.Exception)", "methodShortName": "NeedsPrepare(...)", "fileIndex": 0, "line": 348,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "CloneWith(string)", "methodShortName": "CloneWith(...)", "fileIndex": 0, "line": 871,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlException", "reportPath": "MySqlConnector_MySqlException.html", "methodName": "IsErrorTransient(MySqlConnector.MySqlErrorCode)", "methodShortName": "IsErrorTransient(...)", "fileIndex": 0, "line": 123,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "WriteDateTime(MySqlConnector.Protocol.Serialization.ByteBufferWriter, System.DateTime)", "methodShortName": "WriteDateTime(...)", "fileIndex": 0, "line": 903,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.AuthGSSAPI", "reportPath": "MySqlConnector_AuthGSSAPI.html", "methodName": "AuthenticateAsync()", "methodShortName": "AuthenticateAsync()", "fileIndex": 0, "line": 212,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnectionStringValueOption\u003CT\u003E", "reportPath": "MySqlConnector_MySqlConnectionStringValueOption_T_.html", "methodName": "ChangeType(object)", "methodShortName": "ChangeType(...)", "fileIndex": 0, "line": 1313,
+    "metrics": [
+      { "value": 148, "exceeded": true },
+      { "value": 24, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.ProtocolUtility", "reportPath": "MySqlConnector_ProtocolUtility.html", "methodName": "ReadPayloadAsync()", "methodShortName": "ReadPayloadAsync()", "fileIndex": 0, "line": 416,
+    "metrics": [
+      { "value": 147, "exceeded": true },
+      { "value": 28, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "TryResetConnectionAsync()", "methodShortName": "TryResetConnectionAsync()", "fileIndex": 1, "line": 759,
+    "metrics": [
+      { "value": 132, "exceeded": true },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "DoCloseAsync()", "methodShortName": "DoCloseAsync()", "fileIndex": 0, "line": 1204,
+    "metrics": [
+      { "value": 118, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "CreateSessionAsync()", "methodShortName": "CreateSessionAsync()", "fileIndex": 0, "line": 1072,
+    "metrics": [
+      { "value": 114, "exceeded": true },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
     "assembly": "Backend", "class": "Backend.Application.Services.AuthService", "reportPath": "Backend_AuthService.html", "methodName": "LoginAsync()", "methodShortName": "LoginAsync()", "fileIndex": 0, "line": 25,
     "metrics": [
       { "value": 110, "exceeded": true },
       { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "CreateDocumentationId(System.Reflection.PropertyInfo)", "methodShortName": "CreateDocumentationId(...)", "fileIndex": 0, "line": 100,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "CreateDocumentationId(System.Reflection.PropertyInfo)", "methodShortName": "CreateDocumentationId(...)", "fileIndex": 0, "line": 100,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.TextDoubleColumnReader", "reportPath": "MySqlConnector_TextDoubleColumnReader.html", "methodName": "ReadValue(System.ReadOnlySpan\u003Cbyte\u003E, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload)", "methodShortName": "ReadValue(...)", "fileIndex": 0, "line": 14,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.TextFloatColumnReader", "reportPath": "MySqlConnector_TextFloatColumnReader.html", "methodName": "ReadValue(System.ReadOnlySpan\u003Cbyte\u003E, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload)", "methodShortName": "ReadValue(...)", "fileIndex": 0, "line": 14,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ResultSet", "reportPath": "MySqlConnector_ResultSet.html", "methodName": "GetFieldType(int)", "methodShortName": "GetFieldType(...)", "fileIndex": 0, "line": 306,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 91,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "TryConvertFromHexString()", "methodShortName": "TryConvertFromHexString()", "fileIndex": 1, "line": 671,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession.__ExpectedSessionState6Struct", "reportPath": "MySqlConnector___ExpectedSessionState6Struct.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 91,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.StandardEnlistedTransaction", "reportPath": "MySqlConnector_StandardEnlistedTransaction.html", "methodName": "OnStart()", "methodShortName": "OnStart()", "fileIndex": 0, "line": 11,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.ConsoleLoggerProvider", "reportPath": "MySqlConnector_ConsoleLoggerProvider.html", "methodName": "Log(MySqlConnector.Logging.MySqlConnectorLogLevel, string, object[], System.Exception)", "methodShortName": "Log(...)", "fileIndex": 0, "line": 25,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.ConsoleLoggerProvider.ConsoleLogger", "reportPath": "MySqlConnector_ConsoleLogger.html", "methodName": "Log(MySqlConnector.Logging.MySqlConnectorLogLevel, string, object[], System.Exception)", "methodShortName": "Log(...)", "fileIndex": 0, "line": 25,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log", "reportPath": "MySqlConnector_Log.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 726,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log.__FailedToConnectToIpAddressStruct", "reportPath": "MySqlConnector___FailedToConnectToIpAddressStruct.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 726,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "UnenlistTransaction()", "methodShortName": "UnenlistTransaction()", "fileIndex": 0, "line": 364,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "ReadOutParametersAsync()", "methodShortName": "ReadOutParametersAsync()", "fileIndex": 0, "line": 661,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataSource", "reportPath": "MySqlConnector_MySqlDataSource.html", "methodName": ".ctor(string, MySqlConnector.Logging.MySqlConnectorLoggingConfiguration, string, System.Func\u003CSystem.Security.Cryptography.X509Certificates.X509CertificateCollection, System.Threading.Tasks.ValueTask\u003E, System.Net.Security.RemoteCertificateValidationCallback, System.Func\u003CMySqlConnector.MySqlProvidePasswordContext, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask\u003Cstring\u003E\u003E, System.TimeSpan, System.TimeSpan, MySqlConnector.Plugins.ZstandardPlugin, MySqlConnector.MySqlConnectionOpenedCallback)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 26,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlTransaction", "reportPath": "MySqlConnector_MySqlTransaction.html", "methodName": "DoDisposeAsync()", "methodShortName": "DoDisposeAsync()", "fileIndex": 0, "line": 241,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.CompressedPayloadHandler", "reportPath": "MySqlConnector_CompressedPayloadHandler.html", "methodName": "CompressAndWrite()", "methodShortName": "CompressAndWrite()", "fileIndex": 0, "line": 194,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.Utility", "reportPath": "MySqlConnector_Utility.html", "methodName": "TryReadAsnInteger(System.ReadOnlySpan\u003Cbyte\u003E, out System.ReadOnlySpan\u003Cbyte\u003E, out int)", "methodShortName": "TryReadAsnInteger(...)", "fileIndex": 0, "line": 640,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ResultSet", "reportPath": "MySqlConnector_ResultSet.html", "methodName": "ScanRowAsync()", "methodShortName": "ScanRowAsync()", "fileIndex": 0, "line": 235,
+    "metrics": [
+      { "value": 98, "exceeded": true },
+      { "value": 30, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log", "reportPath": "MySqlConnector_Log.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 616,
+    "metrics": [
+      { "value": 90, "exceeded": true },
+      { "value": 9, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log", "reportPath": "MySqlConnector_Log.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 1245,
+    "metrics": [
+      { "value": 90, "exceeded": true },
+      { "value": 9, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log.__ConnectedTlsDetailedPreliminaryStruct", "reportPath": "MySqlConnector___ConnectedTlsDetailedPreliminaryStruct.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 1245,
+    "metrics": [
+      { "value": 90, "exceeded": true },
+      { "value": 9, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.Log.__ConnectingToIpAddressStruct", "reportPath": "MySqlConnector___ConnectingToIpAddressStruct.html", "methodName": "get_Item(int)", "methodShortName": "get_Item(...)", "fileIndex": 0, "line": 616,
+    "metrics": [
+      { "value": 90, "exceeded": true },
+      { "value": 9, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "NextResultAsync()", "methodShortName": "NextResultAsync()", "fileIndex": 0, "line": 55,
+    "metrics": [
+      { "value": 88, "exceeded": true },
+      { "value": 18, "exceeded": true },
     ]},
   {
     "assembly": "Backend", "class": "Backend.Application.Services.AuthorService", "reportPath": "Backend_AuthorService.html", "methodName": "CreateAsync()", "methodShortName": "CreateAsync()", "fileIndex": 0, "line": 39,
@@ -495,18 +1407,6 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "GetLoanStatusDisplayName(string)", "methodShortName": "GetLoanStatusDisplayName(...)", "fileIndex": 0, "line": 565,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "GetLoanItemStatusDisplayName(string)", "methodShortName": "GetLoanItemStatusDisplayName(...)", "fileIndex": 0, "line": 577,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Application.Services.PublisherService", "reportPath": "Backend_PublisherService.html", "methodName": "UpdateAsync()", "methodShortName": "UpdateAsync()", "fileIndex": 0, "line": 67,
     "metrics": [
       { "value": 72, "exceeded": true },
@@ -525,6 +1425,144 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.CachedParameter", "reportPath": "MySqlConnector_CachedParameter.html", "methodName": ".ctor(int, string, string, string, bool, int)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 5,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionPool", "reportPath": "MySqlConnector_ConnectionPool.html", "methodName": "RunTimer()", "methodShortName": "RunTimer()", "fileIndex": 0, "line": 629,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ResultSet", "reportPath": "MySqlConnector_ResultSet.html", "methodName": "GetDataTypeName(int)", "methodShortName": "GetDataTypeName(...)", "fileIndex": 0, "line": 293,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.Row", "reportPath": "MySqlConnector_Row.html", "methodName": "GetInt32(int)", "methodShortName": "GetInt32(...)", "fileIndex": 0, "line": 238,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.Row", "reportPath": "MySqlConnector_Row.html", "methodName": "GetMySqlDecimal(int)", "methodShortName": "GetMySqlDecimal(...)", "fileIndex": 0, "line": 415,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "TryStartCancel(MySqlConnector.Core.ICancellableCommand)", "methodShortName": "TryStartCancel(...)", "fileIndex": 1, "line": 93,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "ThrowIfStatementContainsDelimiter(MySqlConnector.MySqlException, MySqlConnector.Core.IMySqlCommand)", "methodShortName": "ThrowIfStatementContainsDelimiter(...)", "fileIndex": 1, "line": 1134,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "OpenUnixSocketAsync()", "methodShortName": "OpenUnixSocketAsync()", "fileIndex": 1, "line": 1326,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlCommandBuilder", "reportPath": "MySqlConnector_MySqlCommandBuilder.html", "methodName": "UnquoteIdentifier(string)", "methodShortName": "UnquoteIdentifier(...)", "fileIndex": 0, "line": 97,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "WriteTime(MySqlConnector.Protocol.Serialization.ByteBufferWriter, System.TimeSpan)", "methodShortName": "WriteTime(...)", "fileIndex": 0, "line": 928,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameterCollection", "reportPath": "MySqlConnector_MySqlParameterCollection.html", "methodName": "ChangeParameterName(MySqlConnector.MySqlParameter, string, string)", "methodShortName": "ChangeParameterName(...)", "fileIndex": 0, "line": 175,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.TimerQueue", "reportPath": "MySqlConnector_TimerQueue.html", "methodName": "Callback(object)", "methodShortName": "Callback(...)", "fileIndex": 0, "line": 76,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "System.Text.RegularExpressions.Generated", "reportPath": "MySqlConnector_Generated.html", "methodName": "Scan(System.ReadOnlySpan\u003Cchar\u003E)", "methodShortName": "Scan(...)", "fileIndex": 0, "line": 929,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "System.Text.RegularExpressions.Generated", "reportPath": "MySqlConnector_Generated.html", "methodName": "TryFindNextPossibleStartingPosition(System.ReadOnlySpan\u003Cchar\u003E)", "methodShortName": "TryFindNextPossibleStartingPosition(...)", "fileIndex": 0, "line": 946,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "ShouldGetRealServerDetails(MySqlConnector.Core.ConnectionSettings)", "methodShortName": "ShouldGetRealServerDetails(...)", "fileIndex": 1, "line": 1859,
+    "metrics": [
+      { "value": 64, "exceeded": true },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameter", "reportPath": "MySqlConnector_MySqlParameter.html", "methodName": "NormalizeParameterName(string)", "methodShortName": "NormalizeParameterName(...)", "fileIndex": 0, "line": 881,
+    "metrics": [
+      { "value": 62, "exceeded": true },
+      { "value": 26, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SingleCommandPayloadCreator", "reportPath": "MySqlConnector_SingleCommandPayloadCreator.html", "methodName": "WriteCommand(MySqlConnector.Core.IMySqlCommand, MySqlConnector.Protocol.Serialization.ByteBufferWriter, bool, bool, bool)", "methodShortName": "WriteCommand(...)", "fileIndex": 0, "line": 249,
+    "metrics": [
+      { "value": 59, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.MySqlConnectorLogManager", "reportPath": "MySqlConnector_MySqlConnectorLogManager.html", "methodName": "ConvertLogLevel(Microsoft.Extensions.Logging.LogLevel)", "methodShortName": "ConvertLogLevel(...)", "fileIndex": 0, "line": 53,
+    "metrics": [
+      { "value": 56, "exceeded": true },
+      { "value": 7, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.MySqlConnectorLogManager.MySqlConnectorLogger", "reportPath": "MySqlConnector_MySqlConnectorLogger.html", "methodName": "ConvertLogLevel(Microsoft.Extensions.Logging.LogLevel)", "methodShortName": "ConvertLogLevel(...)", "fileIndex": 0, "line": 53,
+    "metrics": [
+      { "value": 56, "exceeded": true },
+      { "value": 7, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "GetStartTransactionPayload(System.Data.IsolationLevel, System.Nullable\u003Cbool\u003E, bool)", "methodShortName": "GetStartTransactionPayload(...)", "fileIndex": 0, "line": 195,
+    "metrics": [
+      { "value": 52, "exceeded": true },
+      { "value": 36, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionPool", "reportPath": "MySqlConnector_ConnectionPool.html", "methodName": "GetSessionAsync()", "methodShortName": "GetSessionAsync()", "fileIndex": 0, "line": 27,
+    "metrics": [
+      { "value": 51, "exceeded": true },
+      { "value": 28, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.IMySqlCommandExtensions", "reportPath": "MySqlConnector_IMySqlCommandExtensions.html", "methodName": "CreateStatementPreparerOptions(MySqlConnector.Core.IMySqlCommand)", "methodShortName": "CreateStatementPreparerOptions(...)", "fileIndex": 0, "line": 30,
+    "metrics": [
+      { "value": 47, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SingleCommandPayloadCreator", "reportPath": "MySqlConnector_SingleCommandPayloadCreator.html", "methodName": "WriteQueryCommand(ref MySqlConnector.Core.CommandListPosition, System.Collections.Generic.IDictionary\u003Cstring, MySqlConnector.Core.CachedProcedure\u003E, MySqlConnector.Protocol.Serialization.ByteBufferWriter, bool)", "methodShortName": "WriteQueryCommand(...)", "fileIndex": 0, "line": 17,
+    "metrics": [
+      { "value": 47, "exceeded": true },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
     "assembly": "Backend", "class": "Backend.Application.Services.BookService", "reportPath": "Backend_BookService.html", "methodName": "CreateBookEntity(Backend.Application.DTOs.CreateBookDto)", "methodShortName": "CreateBookEntity(...)", "fileIndex": 0, "line": 499,
     "metrics": [
       { "value": 42, "exceeded": true },
@@ -537,25 +1575,7 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "SynchronizeItemsForManualUpdate(Backend.Models.Loan, string, System.DateTime)", "methodShortName": "SynchronizeItemsForManualUpdate(...)", "fileIndex": 0, "line": 503,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "UpdateLoanStatusesAsync()", "methodShortName": "UpdateLoanStatusesAsync()", "fileIndex": 0, "line": 394,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Application.Services.PublisherService", "reportPath": "Backend_PublisherService.html", "methodName": "CreateAsync()", "methodShortName": "CreateAsync()", "fileIndex": 0, "line": 33,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Controllers.BookController", "reportPath": "Backend_BookController.html", "methodName": "Update()", "methodShortName": "Update()", "fileIndex": 0, "line": 105,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
@@ -633,10 +1653,178 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "NormalizeDocId(string)", "methodShortName": "NormalizeDocId(...)", "fileIndex": 0, "line": 320,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Backend", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend_Generated.html", "methodName": "UnwrapOpenApiParameter(Microsoft.OpenApi.IOpenApiParameter)", "methodShortName": "UnwrapOpenApiParameter(...)", "fileIndex": 0, "line": 484,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
     "assembly": "Backend", "class": "Program", "reportPath": "Backend_Program.html", "methodName": "\u003CMain\u003E$(string[])", "methodShortName": "\u003CMain\u003E$(...)", "fileIndex": 0, "line": 13,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "NormalizeDocId(string)", "methodShortName": "NormalizeDocId(...)", "fileIndex": 0, "line": 320,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Backend.Tests", "class": "Microsoft.AspNetCore.OpenApi.Generated", "reportPath": "Backend.Tests_Generated.html", "methodName": "UnwrapOpenApiParameter(Microsoft.OpenApi.IOpenApiParameter)", "methodShortName": "UnwrapOpenApiParameter(...)", "fileIndex": 0, "line": 484,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.ColumnReaders.BinaryTimeColumnReader", "reportPath": "MySqlConnector_BinaryTimeColumnReader.html", "methodName": "ReadValue(System.ReadOnlySpan\u003Cbyte\u003E, MySqlConnector.Protocol.Payloads.ColumnDefinitionPayload)", "methodShortName": "ReadValue(...)", "fileIndex": 0, "line": 12,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConcatenatedCommandPayloadCreator", "reportPath": "MySqlConnector_ConcatenatedCommandPayloadCreator.html", "methodName": "WriteQueryCommand(ref MySqlConnector.Core.CommandListPosition, System.Collections.Generic.IDictionary\u003Cstring, MySqlConnector.Core.CachedProcedure\u003E, MySqlConnector.Protocol.Serialization.ByteBufferWriter, bool)", "methodShortName": "WriteQueryCommand(...)", "fileIndex": 0, "line": 13,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionPool", "reportPath": "MySqlConnector_ConnectionPool.html", "methodName": "CreateMinimumPooledSessions()", "methodShortName": "CreateMinimumPooledSessions()", "fileIndex": 0, "line": 391,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.MetricsReporter", "reportPath": "MySqlConnector_MetricsReporter.html", "methodName": "AddTimeout(MySqlConnector.Core.ConnectionPool, MySqlConnector.Core.ConnectionSettings)", "methodShortName": "AddTimeout(...)", "fileIndex": 0, "line": 12,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ResultSet", "reportPath": "MySqlConnector_ResultSet.html", "methodName": "GetName(int)", "methodShortName": "GetName(...)", "fileIndex": 0, "line": 284,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ResultSet", "reportPath": "MySqlConnector_ResultSet.html", "methodName": "GetOrdinal(string)", "methodShortName": "GetOrdinal(...)", "fileIndex": 0, "line": 335,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.Row", "reportPath": "MySqlConnector_Row.html", "methodName": "GetFloat(int)", "methodShortName": "GetFloat(...)", "fileIndex": 0, "line": 386,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SchemaProvider", "reportPath": "MySqlConnector_SchemaProvider.html", "methodName": "FillDataTableAsync()", "methodShortName": "FillDataTableAsync()", "fileIndex": 0, "line": 404,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerSession", "reportPath": "MySqlConnector_ServerSession.html", "methodName": "GetRsaPublicKeyAsync()", "methodShortName": "GetRsaPublicKeyAsync()", "fileIndex": 1, "line": 986,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Logging.ConsoleLoggerProvider", "reportPath": "MySqlConnector_ConsoleLoggerProvider.html", "methodName": ".ctor(MySqlConnector.Logging.MySqlConnectorLogLevel, bool)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 8,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBatch", "reportPath": "MySqlConnector_MySqlBatch.html", "methodName": "ExecuteReaderAsync(System.Data.CommandBehavior, MySqlConnector.Protocol.Serialization.IOBehavior, System.Threading.CancellationToken)", "methodShortName": "ExecuteReaderAsync(...)", "fileIndex": 0, "line": 156,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBatch", "reportPath": "MySqlConnector_MySqlBatch.html", "methodName": "MySqlConnector.Core.ICancellableCommand.SetTimeout(int)", "methodShortName": "MySqlConnector.Core.ICancellableCommand.SetTimeout(...)", "fileIndex": 0, "line": 274,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBatch", "reportPath": "MySqlConnector_MySqlBatch.html", "methodName": "GetExceptionForInvalidCommands()", "methodShortName": "GetExceptionForInvalidCommands()", "fileIndex": 0, "line": 366,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBatch", "reportPath": "MySqlConnector_MySqlBatch.html", "methodName": "DoPrepareAsync()", "methodShortName": "DoPrepareAsync()", "fileIndex": 0, "line": 386,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlBulkCopy", "reportPath": "MySqlConnector_MySqlBulkCopy.html", "methodName": "AddColumnMapping()", "methodShortName": "AddColumnMapping()", "fileIndex": 0, "line": 356,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "CloseDatabaseAsync()", "methodShortName": "CloseDatabaseAsync()", "fileIndex": 0, "line": 1273,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataAdapter", "reportPath": "MySqlConnector_MySqlDataAdapter.html", "methodName": "AddToBatch(System.Data.IDbCommand)", "methodShortName": "AddToBatch(...)", "fileIndex": 0, "line": 79,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "GetColumnSchema()", "methodShortName": "GetColumnSchema()", "fileIndex": 0, "line": 352,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "BuildSchemaTable()", "methodShortName": "BuildSchemaTable()", "fileIndex": 0, "line": 513,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlParameterCollection", "reportPath": "MySqlConnector_MySqlParameterCollection.html", "methodName": "RemoveAt(int)", "methodShortName": "RemoveAt(...)", "fileIndex": 0, "line": 121,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.Utility", "reportPath": "MySqlConnector_Utility.html", "methodName": "TrimZeroByte(byte[])", "methodShortName": "TrimZeroByte(...)", "fileIndex": 0, "line": 458,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Utilities.Utility", "reportPath": "MySqlConnector_Utility.html", "methodName": "TryReadAsnLength(System.ReadOnlySpan\u003Cbyte\u003E, out int, out int)", "methodShortName": "TryReadAsnLength(...)", "fileIndex": 0, "line": 607,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Protocol.Serialization.StreamByteHandler", "reportPath": "MySqlConnector_StreamByteHandler.html", "methodName": "DoReadBytesSync()", "methodShortName": "DoReadBytesSync()", "fileIndex": 0, "line": 29,
+    "metrics": [
+      { "value": 39, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "ScanResultSetAsync()", "methodShortName": "ScanResultSetAsync()", "fileIndex": 0, "line": 142,
+    "metrics": [
+      { "value": 37, "exceeded": true },
+      { "value": 10, "exceeded": false },
     ]},
   {
     "assembly": "Backend", "class": "Backend.Models.LibraryDbcontext", "reportPath": "Backend_LibraryDbcontext.html", "methodName": "OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)", "methodShortName": "OnModelCreating(...)", "fileIndex": 0, "line": 56,
@@ -645,15 +1833,81 @@ var riskHotspots = [
       { "value": 36, "exceeded": true },
     ]},
   {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.CommandExecutor", "reportPath": "MySqlConnector_CommandExecutor.html", "methodName": "ExecuteReaderAsync()", "methodShortName": "ExecuteReaderAsync()", "fileIndex": 0, "line": 15,
+    "metrics": [
+      { "value": 33, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.TypeMapper", "reportPath": "MySqlConnector_TypeMapper.html", "methodName": ".ctor()", "methodShortName": ".ctor()", "fileIndex": 0, "line": 14,
+    "metrics": [
+      { "value": 32, "exceeded": true },
+      { "value": 32, "exceeded": true },
+    ]},
+  {
     "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "BuildReturnPreview(uint, Backend.Models.Loan, Backend.Models.Loanitem, bool, Backend.Models.Fine, decimal, int)", "methodShortName": "BuildReturnPreview(...)", "fileIndex": 0, "line": 112,
     "metrics": [
       { "value": 31, "exceeded": true },
       { "value": 8, "exceeded": false },
     ]},
   {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionPool", "reportPath": "MySqlConnector_ConnectionPool.html", "methodName": "GetPool(string, MySqlConnector.Logging.MySqlConnectorLoggingConfiguration, bool)", "methodShortName": "GetPool(...)", "fileIndex": 0, "line": 452,
+    "metrics": [
+      { "value": 27, "exceeded": false },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.SqlParser", "reportPath": "MySqlConnector_SqlParser.html", "methodName": "IsVariableName(char)", "methodShortName": "IsVariableName(...)", "fileIndex": 0, "line": 345,
+    "metrics": [
+      { "value": 20, "exceeded": false },
+      { "value": 20, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionPool", "reportPath": "MySqlConnector_ConnectionPool.html", "methodName": ".ctor(MySqlConnector.Logging.MySqlConnectorLoggingConfiguration, MySqlConnector.Core.ConnectionSettings)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 528,
+    "metrics": [
+      { "value": 18, "exceeded": false },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ServerVersion", "reportPath": "MySqlConnector_ServerVersion.html", "methodName": ".ctor(System.ReadOnlySpan\u003Cbyte\u003E)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 9,
+    "metrics": [
+      { "value": 19, "exceeded": false },
+      { "value": 18, "exceeded": true },
+    ]},
+  {
     "assembly": "Backend", "class": "Backend.Application.Services.LoanService", "reportPath": "Backend_LoanService.html", "methodName": "ConfirmReturnAsync()", "methodShortName": "ConfirmReturnAsync()", "fileIndex": 0, "line": 143,
     "metrics": [
       { "value": 25, "exceeded": false },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ConnectionPool", "reportPath": "MySqlConnector_ConnectionPool.html", "methodName": "CleanPoolAsync()", "methodShortName": "CleanPoolAsync()", "fileIndex": 0, "line": 311,
+    "metrics": [
+      { "value": 27, "exceeded": false },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.Core.ICancellableCommandExtensions", "reportPath": "MySqlConnector_ICancellableCommandExtensions.html", "methodName": "ResetCommandTimeout(MySqlConnector.Core.ICancellableCommand)", "methodShortName": "ResetCommandTimeout(...)", "fileIndex": 0, "line": 42,
+    "metrics": [
+      { "value": 23, "exceeded": false },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "BeginTransactionAsync()", "methodShortName": "BeginTransactionAsync()", "fileIndex": 0, "line": 147,
+    "metrics": [
+      { "value": 30, "exceeded": false },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlConnection", "reportPath": "MySqlConnector_MySqlConnection.html", "methodName": "CloseAsync()", "methodShortName": "CloseAsync()", "fileIndex": 0, "line": 1180,
+    "metrics": [
+      { "value": 16, "exceeded": false },
+      { "value": 16, "exceeded": true },
+    ]},
+  {
+    "assembly": "MySqlConnector", "class": "MySqlConnector.MySqlDataReader", "reportPath": "MySqlConnector_MySqlDataReader.html", "methodName": "InitAsync()", "methodShortName": "InitAsync()", "fileIndex": 0, "line": 466,
+    "metrics": [
+      { "value": 26, "exceeded": false },
       { "value": 16, "exceeded": true },
     ]},
 ];
