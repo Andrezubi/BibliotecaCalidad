@@ -367,7 +367,7 @@ public class BookService : IBookService
         IEnumerable<int>? ids)
     {
         return ids?
-            .Where(id => id > 0)
+.Where(id => id > 0)
             .Select(id => (uint)id)
             .Distinct()
             .ToList()
@@ -377,12 +377,7 @@ public class BookService : IBookService
     private static List<byte> NormalizeCategoryIds(
         IEnumerable<int>? ids)
     {
-        return ids?
-            .Where(id => id > 0)
-            .Select(id => (byte)id)
-            .Distinct()
-            .ToList()
-            ?? new List<byte>();
+        return ids?.Where(id => id > 0).Select(id => (byte)id).Distinct().ToList()?? new List<byte>();
     }
 
     // ============================================================
