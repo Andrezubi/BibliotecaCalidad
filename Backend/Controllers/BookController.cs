@@ -70,6 +70,7 @@ public class BookController : ControllerBase
                 foreach (var message in error.Value)
                 {
                     ModelState.AddModelError(
+                 
                         error.Key,
                         message);
                 }
