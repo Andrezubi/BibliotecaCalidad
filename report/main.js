@@ -342,10 +342,10 @@ var assemblies = [
       { "name": "Backend.Domain.Validators.RenewalValidator", "rp": "Backend_RenewalValidator.html", "cl": 0, "ucl": 71, "cal": 71, "tl": 116, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.ReservationValidator", "rp": "Backend_ReservationValidator.html", "cl": 0, "ucl": 66, "cal": 66, "tl": 109, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.UserValidator", "rp": "Backend_UserValidator.html", "cl": 126, "ucl": 28, "cal": 154, "tl": 250, "cb": 53, "tb": 70, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 57, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 57, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 4, "ucl": 19, "cal": 23, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.AuthorRepository", "rp": "Backend_AuthorRepository.html", "cl": 0, "ucl": 33, "cal": 33, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Infraestructure.Repositories.BookRepository", "rp": "Backend_BookRepository.html", "cl": 0, "ucl": 235, "cal": 235, "tl": 368, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Infraestructure.Repositories.BookRepository", "rp": "Backend_BookRepository.html", "cl": 235, "ucl": 0, "cal": 235, "tl": 368, "cb": 28, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.CategoryRepository", "rp": "Backend_CategoryRepository.html", "cl": 0, "ucl": 30, "cal": 30, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.LoanRepository", "rp": "Backend_LoanRepository.html", "cl": 110, "ucl": 0, "cal": 110, "tl": 155, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.PublisherRepository", "rp": "Backend_PublisherRepository.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 45, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -394,18 +394,6 @@ var riskHotspots = [
     ]},
   {
     "assembly": "Backend", "class": "Backend.Domain.Validators.LoanRequestValidator", "reportPath": "Backend_LoanRequestValidator.html", "methodName": "ValidateProcessedAt(System.Nullable\u003CSystem.DateTime\u003E, string)", "methodShortName": "ValidateProcessedAt(...)", "fileIndex": 0, "line": 62,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Infraestructure.Repositories.BookRepository", "reportPath": "Backend_BookRepository.html", "methodName": "UpdateAuthorsAsync()", "methodShortName": "UpdateAuthorsAsync()", "fileIndex": 0, "line": 251,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Infraestructure.Repositories.BookRepository", "reportPath": "Backend_BookRepository.html", "methodName": "UpdateCategoriesAsync()", "methodShortName": "UpdateCategoriesAsync()", "fileIndex": 0, "line": 314,
     "metrics": [
       { "value": 156, "exceeded": true },
       { "value": 12, "exceeded": false },
