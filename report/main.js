@@ -324,26 +324,18 @@ var assemblies = [
       { "name": "Backend.Controllers.WeatherForecastController", "rp": "Backend_WeatherForecastController.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 26, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Common.LoanedBook", "rp": "Backend_LoanedBook.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.AuthorValidator", "rp": "Backend_AuthorValidator.html", "cl": 79, "ucl": 16, "cal": 95, "tl": 155, "cb": 29, "tb": 40, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.BookAuthorValidator", "rp": "Backend_BookAuthorValidator.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 70, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.BookCategoryValidator", "rp": "Backend_BookCategoryValidator.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 70, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.BookValidationException", "rp": "Backend_BookValidationException.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.BookValidator", "rp": "Backend_BookValidator.html", "cl": 239, "ucl": 27, "cal": 266, "tl": 439, "cb": 69, "tb": 82, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.CategoryValidator", "rp": "Backend_CategoryValidator.html", "cl": 65, "ucl": 8, "cal": 73, "tl": 120, "cb": 23, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.CopyStatusValidator", "rp": "Backend_CopyStatusValidator.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 66, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.CopyValidator", "rp": "Backend_CopyValidator.html", "cl": 53, "ucl": 0, "cal": 53, "tl": 90, "cb": 20, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.FinePaymentValidator", "rp": "Backend_FinePaymentValidator.html", "cl": 0, "ucl": 65, "cal": 65, "tl": 107, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.FineValidator", "rp": "Backend_FineValidator.html", "cl": 0, "ucl": 66, "cal": 66, "tl": 110, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.LoanItemValidator", "rp": "Backend_LoanItemValidator.html", "cl": 0, "ucl": 60, "cal": 60, "tl": 100, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.LoanRequestItemValidator", "rp": "Backend_LoanRequestItemValidator.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 70, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.LoanRequestValidator", "rp": "Backend_LoanRequestValidator.html", "cl": 0, "ucl": 69, "cal": 69, "tl": 114, "cb": 0, "tb": 40, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.LoanValidator", "rp": "Backend_LoanValidator.html", "cl": 0, "ucl": 69, "cal": 69, "tl": 114, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.NotificationValidator", "rp": "Backend_NotificationValidator.html", "cl": 0, "ucl": 62, "cal": 62, "tl": 103, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.PublisherValidator", "rp": "Backend_PublisherValidator.html", "cl": 53, "ucl": 4, "cal": 57, "tl": 95, "cb": 21, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.RenewalValidator", "rp": "Backend_RenewalValidator.html", "cl": 0, "ucl": 71, "cal": 71, "tl": 116, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Domain.Validators.ReservationValidator", "rp": "Backend_ReservationValidator.html", "cl": 0, "ucl": 66, "cal": 66, "tl": 109, "cb": 0, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Domain.Validators.UserValidator", "rp": "Backend_UserValidator.html", "cl": 126, "ucl": 28, "cal": 154, "tl": 250, "cb": 53, "tb": 70, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 57, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 4, "ucl": 19, "cal": 23, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Backend.Infraestructure.Persistence.BaseRepository\u003CT, TKey\u003E", "rp": "Backend_BaseRepository_T__TKey_.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 57, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.AuthorRepository", "rp": "Backend_AuthorRepository.html", "cl": 0, "ucl": 33, "cal": 33, "tl": 62, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.BookRepository", "rp": "Backend_BookRepository.html", "cl": 235, "ucl": 0, "cal": 235, "tl": 368, "cb": 28, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Backend.Infraestructure.Repositories.CategoryRepository", "rp": "Backend_CategoryRepository.html", "cl": 0, "ucl": 30, "cal": 30, "tl": 57, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -393,12 +385,6 @@ var riskHotspots = [
       { "value": 12, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.LoanRequestValidator", "reportPath": "Backend_LoanRequestValidator.html", "methodName": "ValidateProcessedAt(System.Nullable\u003CSystem.DateTime\u003E, string)", "methodShortName": "ValidateProcessedAt(...)", "fileIndex": 0, "line": 62,
-    "metrics": [
-      { "value": 156, "exceeded": true },
-      { "value": 12, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Application.Services.AuthService", "reportPath": "Backend_AuthService.html", "methodName": "LoginAsync()", "methodShortName": "LoginAsync()", "fileIndex": 0, "line": 25,
     "metrics": [
       { "value": 110, "exceeded": true },
@@ -423,31 +409,7 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.LoanRequestValidator", "reportPath": "Backend_LoanRequestValidator.html", "methodName": "ValidateProcessedBy(System.Nullable\u003Cushort\u003E, string)", "methodShortName": "ValidateProcessedBy(...)", "fileIndex": 0, "line": 75,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Application.Services.PublisherService", "reportPath": "Backend_PublisherService.html", "methodName": "CreateAsync()", "methodShortName": "CreateAsync()", "fileIndex": 0, "line": 33,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.BookAuthorValidator", "reportPath": "Backend_BookAuthorValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 59,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.BookCategoryValidator", "reportPath": "Backend_BookCategoryValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 59,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.CopyStatusValidator", "reportPath": "Backend_CopyStatusValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 55,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
@@ -471,37 +433,7 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.LoanRequestItemValidator", "reportPath": "Backend_LoanRequestItemValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 59,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.LoanRequestValidator", "reportPath": "Backend_LoanRequestValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 103,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
     "assembly": "Backend", "class": "Backend.Domain.Validators.LoanValidator", "reportPath": "Backend_LoanValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 103,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.NotificationValidator", "reportPath": "Backend_NotificationValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 92,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.RenewalValidator", "reportPath": "Backend_RenewalValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 105,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Backend", "class": "Backend.Domain.Validators.ReservationValidator", "reportPath": "Backend_ReservationValidator.html", "methodName": "ThrowIfHasErrors(System.Collections.Generic.Dictionary\u003Cstring, System.Collections.Generic.List\u003Cstring\u003E\u003E)", "methodShortName": "ThrowIfHasErrors(...)", "fileIndex": 0, "line": 98,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
