@@ -14,19 +14,24 @@ namespace FrontEnd.Pages.Loans
     {
         private readonly LoanService _loanService;
         private readonly LoanIdProtector _idProtector;
+        private readonly FinePaymentIdProtector _paymentIdProtector;
 
         public DetailsModel(
             LoanService loanService,
-            LoanIdProtector idProtector)
+            LoanIdProtector idProtector,
+            FinePaymentIdProtector paymentIdProtector)
         {
             _loanService = loanService;
             _idProtector = idProtector;
+            _paymentIdProtector = paymentIdProtector;
         }
 
         // Resultado de la última devolución cuando existe multa.
         public FineReceiptDto? LastReturnResult { get; set; }
 
         public LoanDto? Loan { get; set; }
+        public LoanFineDetailDto? FineDetails { get; set; }
+        public string? FineError { get; set; }
 
         public string? ErrorMessage { get; set; }
 
@@ -69,6 +74,16 @@ namespace FrontEnd.Pages.Loans
                 // Cargar los valores iniciales del modal.
                 EditDueDate = Loan.DueDate;
                 EditStatus = Loan.Status;
+
+                try
+                {
+                    FineDetails = await _loanService.GetLoanFinesAsync(loanId);
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"Error al cargar multas: {ex.Message}");
+                    FineError = "No se pudieron cargar las multas del préstamo.";
+                }
 
                 return Page();
             }
@@ -185,6 +200,43 @@ namespace FrontEnd.Pages.Loans
             [FromForm] int copyId)
         {
             return await OnPostReturnItemAsync(copyId, true);
+        }
+
+        // =====================================================
+        // POST - COBRAR SALDO COMPLETO DE UNA MULTA REGISTRADA
+        // =====================================================
+        public async Task<IActionResult> OnPostPayFineAsync([FromForm] int fineId)
+        {
+            if (!IsInAnyRole("Admin", "Librarian"))
+                return RedirectToPage("/AccessDenied");
+
+            if (!_idProtector.TryUnprotect(Id, out var loanId))
+                return NotFound();
+
+            try
+            {
+                // No permitir que se cobre desde este préstamo una multa ajena.
+                var details = await _loanService.GetLoanFinesAsync(loanId);
+                if (details == null || !details.Fines.Any(f =>
+                    f.FineId == fineId && f.FineId > 0 && f.PendingAmount > 0))
+                {
+                    TempData["Error"] = "La multa no pertenece al préstamo o ya fue pagada.";
+                }
+                else
+                {
+                    var receipt = await _loanService.PayFineAsync(fineId);
+                    TempData["Success"] = $"Pago registrado: Bs {receipt.Amount:0.00}. Recibo {receipt.ReceiptNumber}.";
+                    TempData["PaymentReceiptToken"] = _paymentIdProtector.Protect(receipt.PaymentId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error al cobrar multa: {ex.Message}");
+                TempData["Error"] = ex is InvalidOperationException
+                    ? ex.Message : "No se pudo registrar el pago. Intenta nuevamente.";
+            }
+
+            return RedirectToPage(new { id = Id });
         }
 
         // =====================================================

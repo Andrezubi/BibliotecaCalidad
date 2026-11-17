@@ -61,6 +61,7 @@ builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<FineManagementService>();
 
 // ======================================================
 // USER

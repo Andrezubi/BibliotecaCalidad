@@ -1,30 +1,27 @@
 @page "{id}"
 @model FrontEnd.Pages.Loans.DetailsModel
+@inject FrontEnd.Services.FinePaymentIdProtector PaymentIdProtector
 
 @{
     ViewData["Title"] = "Detalle de Préstamo";
 }
 
-<!-- Modal Comprobante / Recibo de Multa -->
+<!-- Vista previa de multa ANTES de confirmar la devolución: NO es un recibo de pago. -->
 <div class="modal fade" id="reciboModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title">
-                    <i class="bi bi-receipt me-2"></i>Recibo de Multa
+                    <i class="bi bi-exclamation-circle me-2"></i>Vista previa de multa
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="location.reload()"></button>
             </div>
             <div class="modal-body p-4" id="areaImpresion">
                 <div class="text-center mb-3">
                     <h4 class="fw-bold mb-0">Sistema de Biblioteca</h4>
-                    <small class="text-muted">Comprobante de Devolución con Sanción</small>
+                    <small class="text-muted">Estimación antes de confirmar la devolución</small>
                 </div>
                 <hr />
-                <div class="row mb-2">
-                    <span class="col-6 text-muted">N° Recibo:</span>
-                    <strong class="col-6 text-end text-primary" id="reciboNumero">-</strong>
-                </div>
                 <div class="row mb-2">
                     <span class="col-6 text-muted">Lector:</span>
                     <span class="col-6 text-end fw-semibold" id="reciboLector">-</span>
@@ -38,11 +35,11 @@
                     <span class="col-6 text-end text-danger fw-bold" id="reciboDias">-</span>
                 </div>
                 <div class="row pt-2 border-top">
-                    <span class="col-6 fs-5 fw-bold">Total Multa:</span>
+                    <span class="col-6 fs-5 fw-bold">Multa estimada:</span>
                     <span class="col-6 fs-5 fw-bold text-end text-danger" id="reciboMonto">-</span>
                 </div>
                 <div class="text-center mt-3 text-muted">
-                    <small id="reciboFecha"></small>
+                    <small>Esta vista previa no representa un pago. El recibo PDF solo se emite después del cobro.</small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -50,51 +47,10 @@
                 <button type="button" class="btn btn-success" id="confirmReturnBtn" style="display:none;" onclick="confirmReturn()">
                     <i class="bi bi-check2-circle me-1"></i> Confirmar Devolución
                 </button>
-                <button type="button" class="btn btn-primary" onclick="window.print()">
-                    <i class="bi bi-printer me-1"></i> Imprimir Recibo
-                </button>
             </div>
         </div>
     </div>
 
-@* Mostrar modal tanto si TempData contiene el JSON (legacy) como si PageModel.LastReturnResult fue poblado *@
-@if (TempData["ReturnResult"] != null || Model.LastReturnResult != null)
-{
-    <script>
-        (function() {
-            try {
-                var data = null;
-                if (@(Model.LastReturnResult != null ? "true" : "false")) {
-                    data = {
-                        receiptNumber: '@(Model.LastReturnResult?.ReceiptNumber ?? "-")',
-                        borrowerName: '@(Model.LastReturnResult?.BorrowerName ?? "-")',
-                        bookTitle: '@(Model.LastReturnResult?.BookTitle ?? "-")',
-                        overdueDays: @(Model.LastReturnResult?.OverdueDays ?? 0),
-                        amount: @(Model.LastReturnResult?.Amount ?? 0),
-                        paidAt: '@(Model.LastReturnResult?.PaidAt?.ToString("o") ?? string.Empty)'
-                    };
-                    // Mostrar y configurar el botón confirmar cuando el preview viene del servidor
-                    var confirmBtn = document.getElementById('confirmReturnBtn');
-                    if (confirmBtn) {
-                        confirmBtn.style.display = 'inline-block';
-                        confirmBtn.dataset.copyId = @(Model.LastReturnResult?.CopyId ?? 0);
-                    }
-                } else {
-                    data = @Html.Raw(TempData["ReturnResult"]);
-                }
-
-                document.getElementById('reciboNumero').innerText = data.receiptNumber ?? '-';
-                document.getElementById('reciboLector').innerText = data.borrowerName ?? '-';
-                document.getElementById('reciboLibro').innerText = data.bookTitle ?? '-';
-                document.getElementById('reciboDias').innerText = data.overdueDays ?? '-';
-                document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(data.amount).toFixed(2);
-                document.getElementById('reciboFecha').innerText = data.paidAt ? new Date(data.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
-                var modal = new bootstrap.Modal(document.getElementById('reciboModal'));
-                modal.show();
-            } catch (e) { console.error('Error parsing ReturnResult', e); }
-        })();
-    </script>
-}
 </div>
 
 @section Scripts {
@@ -102,7 +58,7 @@
 
     <script>
         // Called from the return button next to each loan item
-        window.returnCopy = async function (copyId, titulo) {
+        window.returnCopy = async function(copyId, titulo) {
             console.log('returnCopy called', copyId, titulo);
             if (!confirm('¿Confirmar la devolución del libro "' + titulo + '"?')) {
                 return;
@@ -141,12 +97,10 @@
 
                 if (previewData.hasFine) {
                     // Show fine modal with confirm button
-                    document.getElementById('reciboNumero').innerText = previewData.receiptNumber ?? '-';
                     document.getElementById('reciboLector').innerText = previewData.borrowerName ?? '-';
                     document.getElementById('reciboLibro').innerText = previewData.bookTitle ?? '-';
                     document.getElementById('reciboDias').innerText = previewData.overdueDays ?? '-';
                     document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(previewData.amount).toFixed(2);
-                    document.getElementById('reciboFecha').innerText = previewData.paidAt ? new Date(previewData.paidAt).toLocaleString('es-BO') : new Date().toLocaleString('es-BO');
 
                     const confirmBtn = document.getElementById('confirmReturnBtn');
                     confirmBtn.style.display = 'inline-block';
@@ -227,7 +181,7 @@
             <div>
                 <h2 class="page-title mb-0">
                     <i class="bi bi-journal-text me-2"></i>
-                    Detalle de Préstamo @Model.Loan?.Id
+                    Detalle de Préstamo
                 </h2>
                 <p class="text-muted mb-0">
                     Información completa del préstamo y sus ítems
@@ -255,6 +209,13 @@
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle me-2"></i>
                 @TempData["Success"]
+                @if (TempData["PaymentReceiptToken"] is string receiptToken)
+                {
+                    <a asp-page="/Loans/Index" asp-page-handler="Receipt"
+                       asp-route-receipt="@receiptToken" class="btn btn-sm btn-outline-success ms-2">
+                        <i class="bi bi-file-earmark-pdf me-1"></i>Descargar recibo PDF
+                    </a>
+                }
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         }
@@ -288,14 +249,11 @@
                 <div class="col-md-6">
                     <h5 class="border-bottom pb-2">Información del Préstamo</h5>
                     <dl class="row">
-                        <dt class="col-sm-3">ID</dt>
-                        <dd class="col-sm-9"><code>@Model.Loan.Id</code></dd>
-
                         <dt class="col-sm-3">Lector</dt>
-                        <dd class="col-sm-9">@Model.Loan.BorrowerName (ID: @Model.Loan.BorrowerId)</dd>
+                        <dd class="col-sm-9">@Model.Loan.BorrowerName</dd>
 
                         <dt class="col-sm-3">Bibliotecario</dt>
-                        <dd class="col-sm-9">@Model.Loan.LibrarianName (ID: @Model.Loan.LibrarianId)</dd>
+                        <dd class="col-sm-9">@Model.Loan.LibrarianName</dd>
 
                         <dt class="col-sm-3">Fecha de préstamo</dt>
                         <dd class="col-sm-9">@Model.Loan.LoanDate.ToString("dd/MM/yyyy HH:mm")</dd>
@@ -379,8 +337,8 @@
                                 <th>Copia</th>
                                 <th>Libro</th>
                                 <th>Estado</th>
-                        <th class="text-center">Fecha devolución</th>
-                        <th class="text-center">Acciones</th>
+                                <th class="text-center">Fecha devolución</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -389,13 +347,11 @@
                                 <tr>
                                     <td>
                                         <code>@item.InternalCode</code>
-                                        <br />
-                                        <small class="text-muted">ID: @item.CopyId</small>
+
                                     </td>
                                     <td>
                                         <strong>@item.BookTitle</strong>
-                                        <br />
-                                        <small class="text-muted">ID: @item.BookId</small>
+
                                     </td>
                                     <td>
                                         @{
@@ -418,7 +374,7 @@
                                     <td class="text-center">
                                         @if (item.Status == "Active" || item.Status == "Overdue")
                                         {
-                                            <button type="button" class="btn btn-success btn-sm" onclick="returnCopy(@item.CopyId, '@item.BookTitle.Replace("'", "\\'")')">
+                                            <button type="button" class="btn btn-success btn-sm" data-title="@item.BookTitle" onclick="returnCopy(@item.CopyId, this.dataset.title)">
                                                 <i class="bi bi-arrow-return-left me-1"></i> Devolver
                                             </button>
                                         }
@@ -433,6 +389,119 @@
                     </table>
                 </div>
             }
+
+            <!-- Multas reales registradas y estimaciones (sin cobro). -->
+            <section id="multas" class="mt-4 pt-3 border-top">
+                <h5 class="mb-3"><i class="bi bi-cash-coin me-2"></i>Multas del préstamo</h5>
+                @if (!string.IsNullOrEmpty(Model.FineError))
+                {
+                    <div class="alert alert-warning">@Model.FineError</div>
+                }
+                else if (Model.FineDetails == null || Model.FineDetails.Fines.Count == 0)
+                {
+                    <div class="alert alert-info">Este préstamo no tiene multas registradas ni estimadas.</div>
+                }
+                else
+                {
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <div class="border rounded p-3">
+                                <small class="text-muted">Pendiente de pago</small>
+                                <div class="fs-5 fw-bold text-danger">Bs @Model.FineDetails.TotalPending.ToString("0.00")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3">
+                                <small class="text-muted">Pagado</small>
+                                <div class="fs-5 fw-bold text-success">Bs @Model.FineDetails.TotalPaid.ToString("0.00")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border rounded p-3">
+                                <small class="text-muted">Estimado, aún no registrado</small>
+                                <div class="fs-5 fw-bold text-warning">Bs @Model.FineDetails.TotalEstimated.ToString("0.00")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Libro</th>
+                                    <th>Días hábiles</th>
+                                    <th>Tarifa diaria</th>
+                                    <th>Multa</th>
+                                    <th>Saldo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var fine in Model.FineDetails.Fines)
+                                {
+                                    <tr>
+                                        <td><strong>@fine.BookTitle</strong></td>
+                                        <td>@fine.OverdueDays</td>
+                                        <td>Bs @fine.DailyRate.ToString("0.00")</td>
+                                        <td>Bs @fine.Amount.ToString("0.00")</td>
+                                        <td>Bs @fine.PendingAmount.ToString("0.00")</td>
+                                        <td>
+                                            @if (fine.Status == "Estimated")
+                                            {
+                                                <span class="badge bg-warning text-dark">Estimación</span>
+                                            }
+                                            else if (fine.Status == "Waived")
+                                            {
+
+                                                <span class="badge bg-secondary">Condonada</span>
+                                            }
+                                            else if (fine.PendingAmount > 0)
+                                            {
+
+                                                <span class="badge bg-danger">Pendiente</span>
+                                            }
+                                            else
+                                            {
+
+                                                <span class="badge bg-success">Pagada</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (fine.FineId > 0 && fine.PendingAmount > 0)
+                                            {
+                                                <form method="post" asp-page-handler="PayFine"
+                                                      asp-route-id="@Model.Id" class="d-inline"
+                                                      onsubmit="return confirm('¿Confirmar el cobro de esta multa?');">
+                                                    <input type="hidden" name="fineId" value="@fine.FineId" />
+                                                    <button type="submit" class="btn btn-warning btn-sm">
+                                                        <i class="bi bi-cash-coin me-1"></i>Pagar multa
+                                                    </button>
+                                                </form>
+                                            }
+                                            @foreach (var payment in fine.Payments)
+                                            {
+                                                <a asp-page="/Loans/Index" asp-page-handler="Receipt"
+                                                   asp-route-receipt="@PaymentIdProtector.Protect(payment.PaymentId)"
+                                                   class="btn btn-outline-success btn-sm my-1"
+                                                   title="@($"Recibo {payment.ReceiptNumber} - {payment.PaidAt:dd/MM/yyyy}")">
+                                                    <i class="bi bi-file-earmark-pdf me-1"></i>Recibo PDF
+                                                </a>
+                                            }
+                                            @if (fine.Status == "Estimated")
+                                            {
+                                                <small class="text-muted d-block">Se registra al devolver el libro.</small>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <small class="text-muted">
+                        Los importes estimados no son deudas cobrables. El PDF se habilita solo después de registrar el pago.
+                    </small>
+                }
+            </section>
         }
     </div>
 </div>
@@ -446,7 +515,7 @@
                 <form method="post" asp-page-handler="UpdateLoan">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalEditarPrestamoLabel">
-                            <i class="bi bi-calendar-event me-2"></i>Modificar Préstamo #@Model.Loan.Id
+                            <i class="bi bi-calendar-event me-2"></i>Modificar Préstamo
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>

@@ -267,6 +267,60 @@ namespace FrontEnd.Services
             return await _httpClient.GetFromJsonAsync<LoanDto>(url);
         }
 
+        // Gestión de multas: el backend valida el token JWT y obtiene el importe real.
+        public async Task<List<LoanFineSummaryDto>> GetFineSummariesAsync()
+        {
+            AddAuthorizationHeader();
+            var backendUrl = _configuration["BackendUrl"]
+                ?? throw new InvalidOperationException("BackendUrl no configurada.");
+            return await _httpClient.GetFromJsonAsync<List<LoanFineSummaryDto>>(
+                $"{backendUrl}/api/fines/loans") ?? new();
+        }
+
+        public async Task<LoanFineDetailDto?> GetLoanFinesAsync(int loanId)
+        {
+            AddAuthorizationHeader();
+            var backendUrl = _configuration["BackendUrl"]
+                ?? throw new InvalidOperationException("BackendUrl no configurada.");
+            return await _httpClient.GetFromJsonAsync<LoanFineDetailDto>(
+                $"{backendUrl}/api/fines/loans/{loanId}");
+        }
+
+        public async Task<FinePaymentReceiptDto> PayFineAsync(int fineId)
+        {
+            AddAuthorizationHeader();
+            var backendUrl = _configuration["BackendUrl"]
+                ?? throw new InvalidOperationException("BackendUrl no configurada.");
+            using var response = await _httpClient.PostAsync(
+                $"{backendUrl}/api/fines/{fineId}/pay", null);
+            if (!response.IsSuccessStatusCode)
+            {
+                var raw = await response.Content.ReadAsStringAsync();
+                string message = "No se pudo registrar el pago.";
+                try
+                {
+                    using var json = JsonDocument.Parse(raw);
+                    if (json.RootElement.TryGetProperty("message", out var field))
+                        message = field.GetString() ?? message;
+                }
+                catch (JsonException) { }
+                throw new InvalidOperationException(message);
+            }
+            return await response.Content.ReadFromJsonAsync<FinePaymentReceiptDto>()
+                ?? throw new InvalidOperationException("El servidor no devolvió el recibo.");
+        }
+
+        public async Task<byte[]> GetFineReceiptPdfAsync(int paymentId)
+        {
+            AddAuthorizationHeader();
+            var backendUrl = _configuration["BackendUrl"]
+                ?? throw new InvalidOperationException("BackendUrl no configurada.");
+            using var response = await _httpClient.GetAsync(
+                $"{backendUrl}/api/fines/payments/{paymentId}/receipt");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
         // Actualizar un préstamo.
         public async Task<bool> UpdateLoanAsync(
             int id,

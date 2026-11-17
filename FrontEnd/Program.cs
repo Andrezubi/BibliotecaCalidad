@@ -12,6 +12,7 @@ builder.Services.AddDataProtection()
     .SetApplicationName("BibliotecaCalidad");
 
 builder.Services.AddSingleton<LoanIdProtector>();
+builder.Services.AddSingleton<FinePaymentIdProtector>();
 
 // ======================================================
 // SESSION

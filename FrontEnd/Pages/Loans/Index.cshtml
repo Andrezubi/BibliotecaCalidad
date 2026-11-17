@@ -1,6 +1,7 @@
 @page
 @model FrontEnd.Pages.Loans.IndexModel
 @inject FrontEnd.Services.LoanIdProtector LoanIdProtector
+@inject FrontEnd.Services.FinePaymentIdProtector PaymentIdProtector
 
 @{
     ViewData["Title"] = "Préstamos";
@@ -41,7 +42,11 @@
                 @Model.ErrorMessage
             </div>
         }
-        else if (Model.Loans.Count == 0)
+        @if (!string.IsNullOrEmpty(Model.FineError))
+        {
+            <div class="alert alert-warning">@Model.FineError</div>
+        }
+        @if (Model.ErrorMessage == null && Model.Loans.Count == 0)
         {
             <div class="text-center py-5">
 
@@ -57,7 +62,7 @@
 
             </div>
         }
-        else
+        else if (Model.ErrorMessage == null)
         {
             <div class="table-responsive">
 
@@ -85,6 +90,7 @@
                             <th class="text-center">
                                 Devueltos
                             </th>
+                            <th class="text-center">Multa</th>
 
                             <th class="text-center"
                                 style="min-width: 100px;">
@@ -146,17 +152,62 @@
                                 </td>
 
                                 <td class="text-center">
+                                    @if (Model.FineSummaries.TryGetValue(loan.Id, out var fineSummary))
+                                    {
+                                        if (fineSummary.PendingAmount > 0)
+                                        {
+                                            <span class="badge bg-danger">Bs @fineSummary.PendingAmount.ToString("0.00") pendiente</span>
+                                        }
+                                        else if (fineSummary.PaidAmount > 0)
+                                        {
+                                            <span class="badge bg-success">Pagada</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Sin deuda</span>
+                                        }
+                                    }
+                                    else if (loan.Status == "Overdue")
+                                    {
+                                        <span class="badge bg-warning text-dark">Por calcular</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin multa</span>
+                                    }
+                                </td>
 
-                                    <a asp-page="Details"
-                                       asp-route-id="@LoanIdProtector.Protect(loan.Id)"
-                                       class="btn btn-outline-primary btn-sm"
-                                       title="Ver detalles"
-                                       aria-label="Ver detalles del préstamo">
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                        <a asp-page="Details"
+                                           asp-route-id="@LoanIdProtector.Protect(loan.Id)"
+                                           class="btn btn-outline-primary btn-sm"
+                                           title="Ver detalles"
+                                           aria-label="Ver detalles del préstamo">
 
-                                        <i class="bi bi-eye"></i>
+                                            <i class="bi bi-eye"></i>
 
-                                    </a>
-
+                                        </a>
+                                        @if (Model.FineSummaries.TryGetValue(loan.Id, out var summary) && summary.PendingAmount > 0)
+                                        {
+                                            <a asp-page="Details"
+                                               asp-route-id="@LoanIdProtector.Protect(loan.Id)"
+                                               asp-fragment="multas"
+                                               class="btn btn-warning btn-sm"
+                                               title="Pagar multa">
+                                                <i class="bi bi-cash-coin me-1"></i>Pagar multa
+                                            </a>
+                                        }
+                                        @if (Model.FineSummaries.TryGetValue(loan.Id, out var paidSummary) && paidSummary.LastPaymentId.HasValue)
+                                        {
+                                            <a asp-page-handler="Receipt"
+                                               asp-route-receipt="@PaymentIdProtector.Protect(paidSummary.LastPaymentId.Value)"
+                                               class="btn btn-outline-success btn-sm"
+                                               title="Descargar último recibo PDF">
+                                                <i class="bi bi-file-earmark-pdf me-1"></i>Recibo
+                                            </a>
+                                        }
+                                    </div>
                                 </td>
 
                             </tr>
