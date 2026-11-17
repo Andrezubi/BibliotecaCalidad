@@ -6,6 +6,52 @@
     ViewData["Title"] = "Detalle de Préstamo";
 }
 
+<style>
+    /* Confirmaciones y notificaciones integradas con el tema oscuro. */
+    .loan-confirm-modal .modal-content {
+        background: #1d2026;
+        color: #f8f9fa;
+        border: 1px solid #454854;
+        border-radius: 1rem;
+        box-shadow: 0 18px 60px rgba(0, 0, 0, .4);
+    }
+
+    .loan-confirm-modal .modal-header,
+    .loan-confirm-modal .modal-footer {
+        border-color: #3c4049;
+    }
+
+    .loan-confirm-modal .text-muted {
+        color: #b7bdc8 !important;
+    }
+
+    .loan-toast {
+        background: #1d2026;
+        color: #f8f9fa;
+        border: 1px solid #454854;
+        border-left: 4px solid #6f63ff;
+        border-radius: .75rem;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, .32);
+        max-width: min(420px, calc(100vw - 2rem));
+    }
+
+    .loan-toast-success {
+        border-left-color: #25b778;
+    }
+
+    .loan-toast-danger {
+        border-left-color: #f06b74;
+    }
+
+    .loan-toast .btn-close {
+        filter: invert(1) grayscale(100%);
+    }
+
+    .loan-toast .toast-body {
+        overflow-wrap: anywhere;
+    }
+</style>
+
 <!-- Vista previa de multa ANTES de confirmar la devolución: NO es un recibo de pago. -->
 <div class="modal fade" id="reciboModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
@@ -53,123 +99,283 @@
 
 </div>
 
+
+<!-- Confirmación de devolución: sustituye el diálogo nativo del navegador. -->
+<div class="modal fade loan-confirm-modal" id="modalConfirmarDevolucion" tabindex="-1"
+     aria-labelledby="tituloConfirmarDevolucion" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloConfirmarDevolucion">
+                    <i class="bi bi-arrow-return-left me-2 text-success"></i>Confirmar devolución
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">¿Deseas registrar la devolución de este libro?</p>
+                <p class="fw-semibold mb-2" id="libroADevolver"></p>
+                <small class="text-muted">Antes de guardar, el sistema comprobará si corresponde una multa.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="aceptarDevolucionBtn">
+                    <i class="bi bi-check2-circle me-1"></i>Continuar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmación de cobro: el formulario POST solo se envía al confirmar. -->
+<div class="modal fade loan-confirm-modal" id="modalConfirmarPago" tabindex="-1"
+     aria-labelledby="tituloConfirmarPago" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="PayFine" asp-route-id="@Model.Id" id="formConfirmarPago">
+                <input type="hidden" name="fineId" id="multaACobrarId" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloConfirmarPago">
+                        <i class="bi bi-cash-coin me-2 text-warning"></i>Confirmar pago de multa
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-2">¿Confirmas que recibiste el pago de esta multa?</p>
+                    <div class="border rounded p-3">
+                        <div class="small text-muted">Libro</div>
+                        <div class="fw-semibold mb-3" id="libroMultaPago">-</div>
+                        <div class="small text-muted">Importe a cobrar</div>
+                        <div class="fs-4 fw-bold text-warning" id="importeMultaPago">-</div>
+                    </div>
+                    <small class="text-muted d-block mt-3">
+                        Al confirmar, se guardará el pago y podrás descargar su recibo PDF.
+                    </small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" id="aceptarPagoBtn">
+                        <i class="bi bi-check2-circle me-1"></i>Confirmar pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Notificaciones dentro de la aplicación, sin ventanas "localhost dice". -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="toast loan-toast loan-toast-success loan-auto-toast mb-2" role="status"
+             aria-live="polite" data-bs-delay="8000">
+            <div class="d-flex align-items-start">
+                <div class="toast-body flex-grow-1">
+                    <strong class="d-block mb-1"><i class="bi bi-check-circle me-1"></i>Operación realizada</strong>
+                    @successMessage
+                    @if (TempData["PaymentReceiptToken"] is string receiptToken)
+                    {
+                        <div class="mt-2">
+                            <a asp-page="/Loans/Index" asp-page-handler="Receipt"
+                               asp-route-receipt="@receiptToken" class="btn btn-sm btn-outline-light">
+                                <i class="bi bi-file-earmark-pdf me-1"></i>Descargar recibo PDF
+                            </a>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    }
+    @if (TempData["Error"] is string serverErrorMessage)
+    {
+        <div class="toast loan-toast loan-toast-danger loan-auto-toast mb-2" role="alert"
+             aria-live="assertive" data-bs-autohide="false">
+            <div class="d-flex align-items-start">
+                <div class="toast-body flex-grow-1">
+                    <strong class="d-block mb-1"><i class="bi bi-exclamation-triangle me-1"></i>No se pudo completar</strong>
+                    @serverErrorMessage
+                </div>
+                <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    }
+    <div class="toast loan-toast" id="loanClientToast" role="status" aria-live="polite"
+         data-bs-delay="6500">
+        <div class="d-flex align-items-start">
+            <div class="toast-body flex-grow-1">
+                <strong class="d-block mb-1" id="loanToastTitle">Notificación</strong>
+                <span id="loanToastMessage"></span>
+            </div>
+            <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        // Called from the return button next to each loan item
-        window.returnCopy = async function(copyId, titulo) {
-            console.log('returnCopy called', copyId, titulo);
-            if (!confirm('¿Confirmar la devolución del libro "' + titulo + '"?')) {
-                return;
+        (() => {
+            const returnDialogElement = document.getElementById('modalConfirmarDevolucion');
+            const returnDialog = bootstrap.Modal.getOrCreateInstance(returnDialogElement);
+            const previewDialog = bootstrap.Modal.getOrCreateInstance(document.getElementById('reciboModal'));
+            const payDialog = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalConfirmarPago'));
+            const returnButton = document.getElementById('aceptarDevolucionBtn');
+            const previewConfirmButton = document.getElementById('confirmReturnBtn');
+            const clientToastElement = document.getElementById('loanClientToast');
+            const clientToast = bootstrap.Toast.getOrCreateInstance(clientToastElement);
+            const flashKey = 'biblioteca:prestamo:devolucion';
+            let pendingCopyId = null;
+            let isReturning = false;
+
+            function showNotice(message, kind = 'success') {
+                clientToastElement.classList.remove('loan-toast-success', 'loan-toast-danger');
+                clientToastElement.classList.add(kind === 'danger' ? 'loan-toast-danger' : 'loan-toast-success');
+                clientToastElement.setAttribute('role', kind === 'danger' ? 'alert' : 'status');
+                document.getElementById('loanToastTitle').textContent =
+                    kind === 'danger' ? 'No se pudo completar' : 'Operación realizada';
+                document.getElementById('loanToastMessage').textContent = message;
+                clientToast.show();
             }
 
+            // Mostrar notificaciones generadas tras un POST normal (pago/modificación).
+            document.querySelectorAll('.loan-auto-toast').forEach(element => {
+                bootstrap.Toast.getOrCreateInstance(element).show();
+            });
+
+            // Conservar el mensaje de devolución después de actualizar la lista de ítems.
             try {
-                const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
-                const token = tokenEl ? tokenEl.value : '';
-
-                // Step 1: Preview - check if there will be a fine (confirm=false)
-                const previewUrl = window.location.pathname + '?handler=ReturnItem&confirm=false';
-                const formData = new FormData();
-                formData.append('copyId', copyId);
-                if (token) formData.append('__RequestVerificationToken', token);
-
-                const previewResponse = await fetch(previewUrl, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!previewResponse.ok) {
-                    let errorMsg = 'Error desconocido';
-                    try {
-                        const errorData = await previewResponse.json();
-                        errorMsg = errorData.message || errorData.title || JSON.stringify(errorData);
-                    } catch {
-                        const txt = await previewResponse.text();
-                        errorMsg = txt || `HTTP ${previewResponse.status}`;
-                    }
-                    alert('Error: ' + errorMsg);
-                    console.error('Return preview failed:', errorMsg);
-                    return;
+                const flash = JSON.parse(sessionStorage.getItem(flashKey) || 'null');
+                if (flash && flash.path === window.location.pathname) {
+                    sessionStorage.removeItem(flashKey);
+                    showNotice(flash.message);
                 }
-
-                const previewData = await previewResponse.json();
-
-                if (previewData.hasFine) {
-                    // Show fine modal with confirm button
-                    document.getElementById('reciboLector').innerText = previewData.borrowerName ?? '-';
-                    document.getElementById('reciboLibro').innerText = previewData.bookTitle ?? '-';
-                    document.getElementById('reciboDias').innerText = previewData.overdueDays ?? '-';
-                    document.getElementById('reciboMonto').innerText = 'Bs. ' + Number(previewData.amount).toFixed(2);
-
-                    const confirmBtn = document.getElementById('confirmReturnBtn');
-                    confirmBtn.style.display = 'inline-block';
-                    confirmBtn.dataset.copyId = copyId;
-                    const modal = new bootstrap.Modal(document.getElementById('reciboModal'));
-                    modal.show();
-                } else {
-                    // No fine - confirm directly (persist)
-                    await confirmReturnDirect(copyId);
-                }
-            } catch (err) {
-                alert('Ocurrió un error inesperado al procesar la devolución: ' + err.message);
-                console.error('Return error:', err);
+            } catch (error) {
+                console.debug('No se pudo recuperar la notificación temporal.', error);
             }
-        }
 
-        // Direct confirmation without fine (or after user clicks confirm in modal)
-        async function confirmReturnDirect(copyId) {
-            try {
-                const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
-                const token = tokenEl ? tokenEl.value : '';
+            function showSuccessAndRefresh(message) {
+                try {
+                    sessionStorage.setItem(flashKey, JSON.stringify({
+                        path: window.location.pathname,
+                        message: message
+                    }));
+                    window.location.reload();
+                } catch {
+                    // Fallback si el navegador bloquea sessionStorage.
+                    showNotice(message);
+                    setTimeout(() => window.location.reload(), 2000);
+                }
+            }
 
+            async function responseError(response) {
+                try {
+                    const payload = await response.json();
+                    return payload.message || payload.title || `Error HTTP ${response.status}`;
+                } catch {
+                    return `Error HTTP ${response.status}. Intenta nuevamente.`;
+                }
+            }
+
+            async function sendReturn(copyId, confirm) {
                 const formData = new FormData();
-                formData.append('copyId', copyId);
-                if (token) formData.append('__RequestVerificationToken', token);
+                formData.append('copyId', String(copyId));
+                const token = document.querySelector('input[name="__RequestVerificationToken"]');
+                if (token) formData.append('__RequestVerificationToken', token.value);
 
-                const url = window.location.pathname + '?handler=ReturnItem&confirm=true';
-
+                const url = window.location.pathname + '?handler=ReturnItem&confirm=' + String(confirm);
                 const response = await fetch(url, { method: 'POST', body: formData });
+                if (!response.ok) throw new Error(await responseError(response));
+                return await response.json();
+            }
 
-                if (!response.ok) {
-                    let errorMsg = 'Error desconocido';
-                    try {
-                        const errorData = await response.json();
-                        errorMsg = errorData.message || errorData.title || JSON.stringify(errorData);
-                    } catch {
-                        const txt = await response.text();
-                        errorMsg = txt || `HTTP ${response.status}`;
+            // Botón Devolver: primero pide confirmación dentro de la aplicación.
+            window.returnCopy = (copyId, title) => {
+                if (isReturning) return;
+                pendingCopyId = copyId;
+                document.getElementById('libroADevolver').textContent = title || 'Libro seleccionado';
+                returnDialog.show();
+            };
+
+            returnButton.addEventListener('click', () => {
+                if (pendingCopyId == null || isReturning) return;
+                const copyId = pendingCopyId;
+                pendingCopyId = null;
+                // Esperar a que cierre el primer modal antes de mostrar la vista previa.
+                returnDialogElement.addEventListener('hidden.bs.modal', () => previewReturn(copyId), { once: true });
+                returnDialog.hide();
+            });
+
+            async function previewReturn(copyId) {
+                if (isReturning) return;
+                isReturning = true;
+                try {
+                    const preview = await sendReturn(copyId, false);
+                    if (preview.hasFine) {
+                        document.getElementById('reciboLector').textContent = preview.borrowerName || '-';
+                        document.getElementById('reciboLibro').textContent = preview.bookTitle || '-';
+                        document.getElementById('reciboDias').textContent = preview.overdueDays ?? '-';
+                        document.getElementById('reciboMonto').textContent =
+                            'Bs ' + Number(preview.amount || 0).toFixed(2);
+                        previewConfirmButton.dataset.copyId = String(copyId);
+                        previewConfirmButton.style.display = 'inline-block';
+                        previewDialog.show();
+                    } else if (preview.message === 'Devolución sin multa.') {
+                        await confirmReturnDirect(copyId);
+                    } else {
+                        showNotice(preview.message || 'No se pudo verificar la devolución.', 'danger');
                     }
-                    alert('Error al confirmar la devolución: ' + errorMsg);
-                    console.error('Return confirm failed:', errorMsg);
-                    return;
+                } catch (error) {
+                    console.error('Error al consultar devolución:', error);
+                    showNotice(error.message || 'No se pudo consultar la devolución.', 'danger');
+                } finally {
+                    isReturning = false;
                 }
+            }
 
-                const data = await response.json();
-                if (data.hasFine) {
-                    // This shouldn't happen in direct confirm, but handle it
-                    alert('Multa registrada y devolución confirmada.');
-                } else {
-                    alert(data.message || 'Devolución confirmada.');
+            async function confirmReturnDirect(copyId) {
+                if (previewConfirmButton.disabled) return;
+                previewConfirmButton.disabled = true;
+                try {
+                    const result = await sendReturn(copyId, true);
+                    if (!result.message || !result.message.startsWith('Devolución registrada')) {
+                        showNotice(result.message || 'No se pudo registrar la devolución.', 'danger');
+                        return;
+                    }
+                    const message = result.hasFine
+                        ? 'Multa registrada y devolución confirmada.'
+                        : 'Devolución registrada correctamente.';
+                    showSuccessAndRefresh(message);
+                } catch (error) {
+                    console.error('Error al confirmar devolución:', error);
+                    showNotice(error.message || 'No se pudo confirmar la devolución.', 'danger');
+                } finally {
+                    previewConfirmButton.disabled = false;
                 }
-                location.reload();
-            } catch (e) {
-                alert('Error inesperado al confirmar la devolución: ' + e.message);
-                console.error('Confirm return error:', e);
             }
-        }
 
-        // Called from modal to confirm and persist the return when a fine exists
-        async function confirmReturn() {
-            try {
-                const btn = document.getElementById('confirmReturnBtn');
-                const copyId = btn.dataset.copyId;
-                await confirmReturnDirect(copyId);
-            } catch (e) {
-                alert('Error inesperado al confirmar la devolución.');
-                console.error(e);
-            }
-        }
+            // El botón del modal de multa reutiliza la misma confirmación persistente.
+            window.confirmReturn = () => {
+                const copyId = Number(previewConfirmButton.dataset.copyId);
+                if (copyId > 0) confirmReturnDirect(copyId);
+            };
+
+            // Preparar confirmación de pago sin diálogos nativos del navegador.
+            document.querySelectorAll('.js-pay-fine').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.getElementById('multaACobrarId').value = button.dataset.fineId;
+                    document.getElementById('libroMultaPago').textContent = button.dataset.bookTitle || '-';
+                    document.getElementById('importeMultaPago').textContent = 'Bs ' + (button.dataset.amount || '-');
+                    payDialog.show();
+                });
+            });
+
+            document.getElementById('formConfirmarPago').addEventListener('submit', () => {
+                const button = document.getElementById('aceptarPagoBtn');
+                button.disabled = true;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Registrando...';
+            });
+        })();
     </script>
 }
 
@@ -203,31 +409,6 @@
                 </a>
             </div>
         </div>
-
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
-                @TempData["Success"]
-                @if (TempData["PaymentReceiptToken"] is string receiptToken)
-                {
-                    <a asp-page="/Loans/Index" asp-page-handler="Receipt"
-                       asp-route-receipt="@receiptToken" class="btn btn-sm btn-outline-success ms-2">
-                        <i class="bi bi-file-earmark-pdf me-1"></i>Descargar recibo PDF
-                    </a>
-                }
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                @TempData["Error"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
@@ -469,14 +650,12 @@
                                         <td>
                                             @if (fine.FineId > 0 && fine.PendingAmount > 0)
                                             {
-                                                <form method="post" asp-page-handler="PayFine"
-                                                      asp-route-id="@Model.Id" class="d-inline"
-                                                      onsubmit="return confirm('¿Confirmar el cobro de esta multa?');">
-                                                    <input type="hidden" name="fineId" value="@fine.FineId" />
-                                                    <button type="submit" class="btn btn-warning btn-sm">
-                                                        <i class="bi bi-cash-coin me-1"></i>Pagar multa
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-warning btn-sm js-pay-fine"
+                                                        data-fine-id="@fine.FineId"
+                                                        data-book-title="@fine.BookTitle"
+                                                        data-amount="@fine.PendingAmount.ToString("0.00")">
+                                                    <i class="bi bi-cash-coin me-1"></i>Pagar multa
+                                                </button>
                                             }
                                             @foreach (var payment in fine.Payments)
                                             {
