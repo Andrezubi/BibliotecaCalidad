@@ -1,6 +1,6 @@
 @page
 @model FrontEnd.Pages.Loans.IndexModel
-
+@inject FrontEnd.Services.LoanIdProtector LoanIdProtector
 @{
     ViewData["Title"] = "Préstamos";
 }
@@ -136,7 +136,10 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <a asp-page="Details" asp-route-id="@loan.Id" class="btn btn-outline-primary btn-sm" title="Ver detalles">
+                                    <a asp-page="Details"
+                                       asp-route-id="@LoanIdProtector.Protect(loan.Id)"
+                                       class="btn btn-outline-primary btn-sm"
+                                       title="Ver detalles">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </td>

@@ -1,4 +1,5 @@
 using FrontEnd.Services;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // ======================================================
 
 builder.Services.AddRazorPages();
+builder.Services.AddDataProtection()
+    .SetApplicationName("BibliotecaCalidad");
+
+builder.Services.AddSingleton<LoanIdProtector>();
 
 // ======================================================
 // SESSION

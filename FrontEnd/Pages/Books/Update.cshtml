@@ -1,6 +1,6 @@
 ﻿@page "{id:int}"
 @model FrontEnd.Pages.Books.UpdateModel
-
+@inject FrontEnd.Services.LoanIdProtector LoanIdProtector
 @{
     ViewData["Title"] = "Editar Libro";
 }
