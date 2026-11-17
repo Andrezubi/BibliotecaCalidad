@@ -1,80 +1,487 @@
 @page
 @model FrontEnd.Pages.Loans.CreateModel
+
 @{
     ViewData["Title"] = "Crear Préstamo";
 }
 
-<h1>Crear Préstamo</h1>
+<div class="container content-wrapper">
+    <div class="card-custom">
 
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">@Model.ErrorMessage</div>
-}
+        <h2 class="page-title mb-2">
+            <i class="bi bi-journal-plus me-2"></i>
+            Crear Préstamo
+        </h2>
 
-<form method="post">
-    <div class="mb-3">
-        <label for="borrower" class="form-label">Lector</label>
-        <select asp-for="SelectedBorrowerId" class="form-select" id="borrower">
-            <option value="0">-- Seleccione --</option>
-            @foreach (var b in Model.Borrowers)
-            {
-                <option value="@b.Id">@b.FirstName @b.LastName (@b.Username)</option>
-            }
-        </select>
-    </div>
+        <p class="text-muted mb-4">
+            Seleccione un lector y un máximo de dos libros.
+        </p>
 
-    <div class="mb-3">
-        <label class="form-label">Libros (máximo 2)</label>
-        <div>
-            @foreach (var book in Model.Books)
-            {
-                <div class="form-check">
-                    <input class="form-check-input book-checkbox" type="checkbox" name="SelectedBookIds" value="@book.Id" id="book_@book.Id" data-title="@book.Title" />
-                    <label class="form-check-label" for="book_@book.Id">
-                        @book.Title <span class="text-muted small">(Disponibles: @book.AvailableCopies)</span>
-                    </label>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @Model.ErrorMessage
+            </div>
+        }
+
+        <form method="post">
+
+            <!-- ============================= -->
+            <!-- BUSCADOR Y LISTA DE LECTORES -->
+            <!-- ============================= -->
+
+            <div class="mb-4">
+
+                <label for="readerSearch"
+                       class="form-label fw-semibold">
+                    Buscar lector
+                </label>
+
+                <div class="input-group mb-3">
+
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input type="search"
+                           id="readerSearch"
+                           class="form-control"
+                           placeholder="Buscar por nombre, apellido o usuario..."
+                           autocomplete="off" />
+
                 </div>
-            }
-        </div>
-        <div id="bookLimitError" class="text-danger small mt-2" style="display:none;">Solo puede seleccionar un máximo de 2 libros.</div>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Crear préstamo</button>
-    <a asp-page="/Loans/Index" class="btn btn-secondary">Cancelar</a>
-</form>
+                <div class="d-flex justify-content-between
+                    align-items-center mb-2">
+
+                    <label class="form-label fw-semibold mb-0">
+                        Seleccionar lector
+                    </label>
+
+                    <span class="badge bg-secondary"
+                          id="readerCount">
+                    </span>
+
+                </div>
+
+                <div id="readersContainer"
+                     class="border rounded p-3"
+                     style="max-height:280px; overflow-y:auto;">
+
+                    @foreach (var reader in Model.Borrowers)
+                    {
+                        <div class="form-check mb-2 reader-option"
+                             data-search="@($"{reader.FirstName} {reader.LastName} {reader.Username}")">
+
+                            <input class="form-check-input reader-radio"
+                                   type="radio"
+                                   name="SelectedBorrowerId"
+                                   value="@reader.Id"
+                                   id="reader_@reader.Id"
+                                   checked="@(Model.SelectedBorrowerId == reader.Id)"
+                                   data-name="@($"{reader.FirstName} {reader.LastName}")" />
+
+                            <label class="form-check-label"
+                                   for="reader_@reader.Id">
+
+                                <span class="fw-semibold">
+                                    @reader.FirstName @reader.LastName
+                                </span>
+
+                                <span class="text-muted small">
+                                    (@reader.Username)
+                                </span>
+
+                            </label>
+
+                        </div>
+                    }
+
+                </div>
+
+                <div id="readerSearchEmpty"
+                     class="text-muted small mt-2"
+                     style="display:none;">
+                    No se encontraron lectores.
+                </div>
+
+                <div class="mt-2">
+                    <small class="text-muted">
+                        Lector seleccionado:
+                    </small>
+
+                    <span id="selectedReaderSummary"
+                          class="fw-semibold">
+                        Ninguno
+                    </span>
+                </div>
+
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- ============================= -->
+            <!-- BUSCADOR Y LISTA DE LIBROS -->
+            <!-- ============================= -->
+
+            <div class="mb-4">
+
+                <div class="d-flex justify-content-between
+                    align-items-center mb-2">
+
+                    <label for="bookSearch"
+                           class="form-label fw-semibold mb-0">
+                        Libros disponibles
+                    </label>
+
+                    <span class="badge bg-primary"
+                          id="selectedBooksCount">
+                        0 / 2 seleccionados
+                    </span>
+
+                </div>
+
+                <div class="input-group mb-3">
+
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input type="search"
+                           id="bookSearch"
+                           class="form-control"
+                           placeholder="Buscar por título, ISBN o editorial..."
+                           autocomplete="off" />
+
+                </div>
+
+                <div id="booksContainer"
+                     class="border rounded p-3"
+                     style="max-height:320px; overflow-y:auto;">
+
+                    @foreach (var book in Model.Books)
+                    {
+                        <div class="form-check mb-2 book-option"
+                             data-search="@($"{book.Title} {book.ISBN} {book.Publisher}")">
+
+                            <input class="form-check-input book-checkbox"
+                                   type="checkbox"
+                                   name="SelectedBookIds"
+                                   value="@book.Id"
+                                   id="book_@book.Id"
+                                   data-title="@book.Title"
+                                   checked="@(Model.SelectedBookIds.Contains(book.Id))" />
+
+                            <label class="form-check-label"
+                                   for="book_@book.Id">
+
+                                <span class="fw-semibold">
+                                    @book.Title
+                                </span>
+
+                                <span class="text-muted small">
+                                    (Disponibles: @book.AvailableCopies)
+                                </span>
+
+                            </label>
+
+                        </div>
+                    }
+
+                </div>
+
+                <div id="bookSearchEmpty"
+                     class="text-muted small mt-2"
+                     style="display:none;">
+                    No se encontraron libros.
+                </div>
+
+                <div id="bookLimitError"
+                     class="text-warning small mt-2"
+                     style="display:none;">
+
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Se alcanzó el máximo de 2 libros.
+
+                </div>
+
+                <div class="mt-3">
+
+                    <small class="text-muted fw-semibold">
+                        Libros seleccionados:
+                    </small>
+
+                    <div id="selectedBooksSummary"
+                         class="small mt-1">
+                        Ninguno
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- BOTONES -->
+            <!-- ============================= -->
+
+            <div class="d-flex gap-2 mt-4">
+
+                <button type="submit"
+                        id="submitLoanBtn"
+                        class="btn btn-primary">
+
+                    <i class="bi bi-check-circle me-1"></i>
+                    Crear préstamo
+
+                </button>
+
+                <a asp-page="/Loans/Index"
+                   class="btn btn-secondary">
+
+                    <i class="bi bi-x-circle me-1"></i>
+                    Cancelar
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
 
 @section Scripts {
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var checkboxes = document.querySelectorAll('.book-checkbox');
-            var errorDiv = document.getElementById('bookLimitError');
-            var submitBtn = document.querySelector('button[type="submit"]');
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ============================================
+            // NORMALIZAR TEXTO
+            // ============================================
+
+            function normalizeText(text) {
+                return String(text)
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase()
+                    .trim();
+            }
+
+            // ============================================
+            // BUSCADOR DE LECTORES
+            // ============================================
+
+            const readerSearch =
+                document.getElementById('readerSearch');
+
+            const readerOptions =
+                document.querySelectorAll('.reader-option');
+
+            const readerRadios =
+                document.querySelectorAll('.reader-radio');
+
+            const readerSearchEmpty =
+                document.getElementById('readerSearchEmpty');
+
+            const selectedReaderSummary =
+                document.getElementById('selectedReaderSummary');
+
+            const readerCount =
+                document.getElementById('readerCount');
+
+            function filterReaders() {
+
+                const search =
+                    normalizeText(readerSearch.value);
+
+                let visibleCount = 0;
+
+                readerOptions.forEach(function(option) {
+
+                    const text =
+                        normalizeText(option.dataset.search || '');
+
+                    const matches = text.includes(search);
+
+                    option.style.display =
+                        matches ? '' : 'none';
+
+                    if (matches) {
+                        visibleCount++;
+                    }
+
+                });
+
+                readerCount.textContent =
+                    visibleCount + ' lectores';
+
+                readerSearchEmpty.style.display =
+                    visibleCount === 0
+                        ? 'block'
+                        : 'none';
+            }
+
+            function updateSelectedReader() {
+
+                const selected =
+                    document.querySelector('.reader-radio:checked');
+
+                if (selected) {
+
+                    selectedReaderSummary.textContent =
+                        selected.dataset.name;
+
+                } else {
+
+                    selectedReaderSummary.textContent =
+                        'Ninguno';
+
+                }
+            }
+
+            readerSearch.addEventListener(
+                'input',
+                filterReaders
+            );
+
+            readerRadios.forEach(function(radio) {
+
+                radio.addEventListener(
+                    'change',
+                    updateSelectedReader
+                );
+
+            });
+
+            // ============================================
+            // BUSCADOR DE LIBROS
+            // ============================================
+
+            const bookSearch =
+                document.getElementById('bookSearch');
+
+            const bookOptions =
+                document.querySelectorAll('.book-option');
+
+            const bookSearchEmpty =
+                document.getElementById('bookSearchEmpty');
+
+            function filterBooks() {
+
+                const search =
+                    normalizeText(bookSearch.value);
+
+                let visibleCount = 0;
+
+                bookOptions.forEach(function(option) {
+
+                    const text =
+                        normalizeText(option.dataset.search || '');
+
+                    const matches = text.includes(search);
+
+                    option.style.display =
+                        matches ? '' : 'none';
+
+                    if (matches) {
+                        visibleCount++;
+                    }
+
+                });
+
+                bookSearchEmpty.style.display =
+                    visibleCount === 0
+                        ? 'block'
+                        : 'none';
+            }
+
+            bookSearch.addEventListener(
+                'input',
+                filterBooks
+            );
+
+            // ============================================
+            // CONTROL DE MÁXIMO 2 LIBROS
+            // ============================================
+
+            const checkboxes =
+                document.querySelectorAll('.book-checkbox');
+
+            const selectedBooksCount =
+                document.getElementById('selectedBooksCount');
+
+            const selectedBooksSummary =
+                document.getElementById('selectedBooksSummary');
+
+            const bookLimitError =
+                document.getElementById('bookLimitError');
 
             function updateCheckboxes() {
-                var checkedCount = document.querySelectorAll('.book-checkbox:checked').length;
-                
-                if (checkedCount > 2) {
-                    checkboxes.forEach(function(cb) {
-                        if (!cb.checked) {
-                            cb.disabled = true;
-                        }
-                    });
-                    errorDiv.style.display = 'block';
-                    submitBtn.disabled = true;
+
+                const selected =
+                    Array.from(checkboxes)
+                        .filter(cb => cb.checked);
+
+                const count = selected.length;
+
+                selectedBooksCount.textContent =
+                    count + ' / 2 seleccionados';
+
+                checkboxes.forEach(function(cb) {
+
+                    cb.disabled =
+                        count >= 2 && !cb.checked;
+
+                });
+
+                bookLimitError.style.display =
+                    count >= 2 ? 'block' : 'none';
+
+                if (count === 0) {
+
+                    selectedBooksSummary.textContent =
+                        'Ninguno';
+
                 } else {
-                    checkboxes.forEach(function(cb) {
-                        cb.disabled = false;
-                    });
-                    errorDiv.style.display = 'none';
-                    submitBtn.disabled = false;
+
+                    const titles = selected.map(cb =>
+                        cb.dataset.title
+                    );
+
+                    selectedBooksSummary.textContent =
+                        titles.join(' | ');
+
                 }
             }
 
             checkboxes.forEach(function(cb) {
-                cb.addEventListener('change', updateCheckboxes);
+
+                cb.addEventListener('change', function() {
+
+                    const count =
+                        document.querySelectorAll(
+                            '.book-checkbox:checked'
+                        ).length;
+
+                    if (count > 2) {
+                        cb.checked = false;
+                    }
+
+                    updateCheckboxes();
+                });
+
             });
 
+            // ============================================
+            // INICIALIZAR
+            // ============================================
+
+            filterReaders();
+            updateSelectedReader();
+            filterBooks();
             updateCheckboxes();
+
         });
     </script>
+
 }
