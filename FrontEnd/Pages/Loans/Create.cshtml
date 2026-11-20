@@ -14,7 +14,7 @@
         </h2>
 
         <p class="text-muted mb-4">
-            Seleccione un lector y un máximo de dos libros.
+            Seleccione un lector y los libros que desea evaluar. El sistema verificará las reglas al registrar el préstamo.
         </p>
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
@@ -63,6 +63,10 @@
                     </span>
 
                 </div>
+
+                <p class="text-muted small mb-2">
+                    Se muestran todos los lectores activos, incluso si ya tienen préstamos o multas pendientes.
+                </p>
 
                 <div id="readersContainer"
                      class="border rounded p-3"
@@ -131,12 +135,12 @@
 
                     <label for="bookSearch"
                            class="form-label fw-semibold mb-0">
-                        Libros disponibles
+                        Catálogo de libros
                     </label>
 
                     <span class="badge bg-primary"
                           id="selectedBooksCount">
-                        0 / 2 seleccionados
+                        0 libros seleccionados
                     </span>
 
                 </div>
@@ -154,6 +158,10 @@
                            autocomplete="off" />
 
                 </div>
+
+                <p class="text-muted small mb-2">
+                    Se muestran todos los libros activos, incluso sin copias disponibles. Puede seleccionar más de dos para comprobar las validaciones del sistema.
+                </p>
 
                 <div id="booksContainer"
                      class="border rounded p-3"
@@ -179,9 +187,18 @@
                                     @book.Title
                                 </span>
 
-                                <span class="text-muted small">
-                                    (Disponibles: @book.AvailableCopies)
-                                </span>
+                                @if (book.AvailableCopies == 0)
+                                {
+                                    <span class="badge bg-warning text-dark ms-1">
+                                        Sin copias disponibles
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">
+                                        (Disponibles: @book.AvailableCopies)
+                                    </span>
+                                }
 
                             </label>
 
@@ -201,7 +218,7 @@
                      style="display:none;">
 
                     <i class="bi bi-exclamation-triangle me-1"></i>
-                    Se alcanzó el máximo de 2 libros.
+                    Ha seleccionado más de 2 libros. Puede continuar para probar la validación, pero el sistema no debe registrar ese préstamo.
 
                 </div>
 
@@ -253,7 +270,7 @@
 @section Scripts {
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
             // ============================================
             // NORMALIZAR TEXTO
@@ -296,7 +313,7 @@
 
                 let visibleCount = 0;
 
-                readerOptions.forEach(function(option) {
+                readerOptions.forEach(function (option) {
 
                     const text =
                         normalizeText(option.dataset.search || '');
@@ -344,7 +361,7 @@
                 filterReaders
             );
 
-            readerRadios.forEach(function(radio) {
+            readerRadios.forEach(function (radio) {
 
                 radio.addEventListener(
                     'change',
@@ -373,7 +390,7 @@
 
                 let visibleCount = 0;
 
-                bookOptions.forEach(function(option) {
+                bookOptions.forEach(function (option) {
 
                     const text =
                         normalizeText(option.dataset.search || '');
@@ -401,7 +418,7 @@
             );
 
             // ============================================
-            // CONTROL DE MÁXIMO 2 LIBROS
+            // SELECCIÓN LIBRE PARA PROBAR LAS REGLAS DEL BACKEND
             // ============================================
 
             const checkboxes =
@@ -425,17 +442,11 @@
                 const count = selected.length;
 
                 selectedBooksCount.textContent =
-                    count + ' / 2 seleccionados';
+                    count + (count === 1 ? ' libro seleccionado' : ' libros seleccionados');
 
-                checkboxes.forEach(function(cb) {
-
-                    cb.disabled =
-                        count >= 2 && !cb.checked;
-
-                });
-
+                // No deshabilitamos el tercer libro: el backend validará el límite.
                 bookLimitError.style.display =
-                    count >= 2 ? 'block' : 'none';
+                    count > 2 ? 'block' : 'none';
 
                 if (count === 0) {
 
@@ -454,21 +465,9 @@
                 }
             }
 
-            checkboxes.forEach(function(cb) {
+            checkboxes.forEach(function (cb) {
 
-                cb.addEventListener('change', function() {
-
-                    const count =
-                        document.querySelectorAll(
-                            '.book-checkbox:checked'
-                        ).length;
-
-                    if (count > 2) {
-                        cb.checked = false;
-                    }
-
-                    updateCheckboxes();
-                });
+                cb.addEventListener('change', updateCheckboxes);
 
             });
 

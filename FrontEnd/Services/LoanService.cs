@@ -194,6 +194,21 @@ namespace FrontEnd.Services
             {
                 var error = await response.Content.ReadAsStringAsync();
 
+                // Mostrar el mensaje de negocio en lugar del JSON completo.
+                try
+                {
+                    using var errorDoc = JsonDocument.Parse(error);
+                    if (errorDoc.RootElement.TryGetProperty("message", out var errorMessage)
+                        && errorMessage.ValueKind == JsonValueKind.String)
+                    {
+                        error = errorMessage.GetString() ?? error;
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Si el servidor no devuelve JSON, mostrar el texto original.
+                }
+
                 return (false, error, null);
             }
 

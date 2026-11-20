@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/BibliotecaCalidad.E2E/">
+    <File Path="BibliotecaCalidad.E2E/UnitTest1.cs" />
+    <File Path="PrestamosTests.cs" />
+  </Folder>
   <Project Path="Backend.Tests/Backend.Tests.csproj" />
   <Project Path="Backend/Backend.csproj" />
   <Project Path="FrontEnd/FrontEnd.csproj" />
