@@ -89,12 +89,52 @@ public class LoanRepository : ILoanRepository
             .FirstOrDefaultAsync(f => f.LoanId == loanId && f.CopyId == copyId);
     }
 
+    // Un lector con ejemplares aún no devueltos no puede registrar otro préstamo.
+    public async Task<bool> HasPendingLoanAsync(ushort borrowerId)
+    {
+        return await _context.Loans
+            .AsNoTracking()
+            .AnyAsync(loan =>
+                loan.BorrowerId == borrowerId &&
+                loan.Loanitems.Any(item =>
+                    item.ReturnedAt == null &&
+                    (item.Status == "Active" || item.Status == "Overdue")));
+    }
+
+    // Evalúa disponibilidad aun cuando la cantidad de libros es inválida.
+    // Consulta cada BookId como parámetro escalar para evitar problemas de
+    // evaluación/traducción de arrays con el proveedor MySQL de EF Core.
+    public async Task<IReadOnlyList<uint>> GetUnavailableBookIdsAsync(
+        IEnumerable<uint> bookIds)
+    {
+        var unavailableBookIds = new List<uint>();
+
+        foreach (var bookId in bookIds.Distinct())
+        {
+            var hasAvailableCopy = await _context.Copies
+                .AsNoTracking()
+                .AnyAsync(copy =>
+                    copy.BookId == bookId &&
+                    copy.StatusId == 1 &&
+                    copy.IsActive == true &&
+                    copy.Book.IsActive == true);
+
+            if (!hasAvailableCopy)
+            {
+                unavailableBookIds.Add(bookId);
+            }
+        }
+
+        return unavailableBookIds;
+    }
+
     public async Task<Copy?> GetFirstAvailableCopyByBookIdAsync(uint bookId)
     {
         return await _context.Copies
             .Where(c =>
                 c.BookId == bookId &&
                 c.StatusId == 1 && // Available
+                c.IsActive == true &&
                 c.Book.IsActive == true)
             .OrderBy(c => c.Id)
             .FirstOrDefaultAsync();

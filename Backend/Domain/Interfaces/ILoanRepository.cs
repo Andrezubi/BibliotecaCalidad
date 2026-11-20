@@ -13,6 +13,10 @@ public interface ILoanRepository
     Task<Loan?> GetActiveLoanByCopyIdAsync(uint copyId);
     Task<Copy?> GetFirstAvailableCopyByBookIdAsync(uint bookId);
 
+    // Reglas de negocio para el registro de préstamos.
+    Task<bool> HasPendingLoanAsync(ushort borrowerId);
+    Task<IReadOnlyList<uint>> GetUnavailableBookIdsAsync(IEnumerable<uint> bookIds);
+
     // Devuelve la primera copia disponible pero dentro de una transacción con FOR UPDATE
     Task<Copy?> GetFirstAvailableCopyByBookIdForUpdateAsync(uint bookId);
 

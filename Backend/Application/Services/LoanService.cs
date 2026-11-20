@@ -263,11 +263,29 @@ namespace Backend.Application.Services
             int loanDays = 14)
         {
             var bookIdList = bookIds?.ToList() ?? new List<uint>();
-            var validationError = ValidateLoanRequest(borrowerId, bookIdList);
+            var validationErrors = ValidateLoanRequest(borrowerId, bookIdList);
 
-            if (validationError != null)
+            // Comprobar todas las condiciones de la tabla de decisión,
+            // sin detenerse después del primer error.
+            if (borrowerId > 0 && borrowerId <= ushort.MaxValue &&
+                await _loanRepository.HasPendingLoanAsync((ushort)borrowerId))
             {
-                return (false, validationError, null);
+                validationErrors.Add(
+                    "El lector tiene un préstamo pendiente o vencido.");
+            }
+
+            var unavailableBookIds =
+                await _loanRepository.GetUnavailableBookIdsAsync(bookIdList);
+
+            if (unavailableBookIds.Count > 0)
+            {
+                validationErrors.Add(
+                    $"No hay copias disponibles para: {string.Join(',', unavailableBookIds)}");
+            }
+
+            if (validationErrors.Count > 0)
+            {
+                return (false, string.Join(" | ", validationErrors), null);
             }
 
             var transaction = await _loanRepository.BeginTransactionAsync();
@@ -303,21 +321,24 @@ namespace Backend.Application.Services
             }
         }
 
-        private static string? ValidateLoanRequest(uint borrowerId, IReadOnlyCollection<uint> bookIds)
+        private static List<string> ValidateLoanRequest(
+            uint borrowerId, IReadOnlyCollection<uint> bookIds)
         {
-            if (borrowerId == 0)
+            var errors = new List<string>();
+
+            if (borrowerId == 0 || borrowerId > ushort.MaxValue)
             {
-                return "BorrowerId inválido.";
+                errors.Add("BorrowerId inválido: seleccione un lector válido.");
             }
 
             if (bookIds.Count == 0)
             {
-                return "No se han especificado libros para el préstamo.";
+                errors.Add("No se han especificado libros para el préstamo.");
             }
 
             if (bookIds.Count > MaxBooksPerLoan)
             {
-                return "No se pueden prestar más de 2 libros a la vez.";
+                errors.Add("No se pueden prestar más de 2 libros a la vez.");
             }
 
             var duplicateBookIds = bookIds
@@ -328,10 +349,11 @@ namespace Backend.Application.Services
 
             if (duplicateBookIds.Count > 0)
             {
-                return $"No se pueden agregar libros duplicados: {string.Join(',', duplicateBookIds)}";
+                errors.Add(
+                    $"No se pueden agregar libros duplicados: {string.Join(',', duplicateBookIds)}");
             }
 
-            return null;
+            return errors;
         }
 
         private async Task<(List<Copy> ReservedCopies, List<uint> UnavailableBookIds)>

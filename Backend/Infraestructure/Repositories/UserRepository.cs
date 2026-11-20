@@ -52,9 +52,10 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<User>> GetReadersAsync()
     {
         return await _context.Users
+            // Mostrar todos los lectores activos, aunque ya tengan préstamos.
+            // Las multas pendientes tampoco restringen el listado.
             .Where(u => u.Role == "User" && (u.IsActive ?? false)
-                && u.IsLibraryComputerUser == false
-                && !u.LoanBorrowers.Any(l => l.Status == "Active"))
+                && u.IsLibraryComputerUser == false)
             .OrderBy(u => u.FirstName)
             .ToListAsync();
     }
