@@ -1,6 +1,8 @@
-﻿using Backend.Application.DTOs;
+﻿
+using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
 using Backend.Domain.Interfaces;
+using Backend.Domain.Validators;
 using Backend.Models;
 
 namespace Backend.Application.Services;
@@ -9,8 +11,7 @@ public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
 
-    public AuthorService(
-        IAuthorRepository authorRepository)
+    public AuthorService(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
     }
@@ -22,11 +23,9 @@ public class AuthorService : IAuthorService
 
     public async Task<Author?> GetByIdAsync(uint id)
     {
-        var author =
-            await _authorRepository.GetByIdAsync(id);
+        var author = await _authorRepository.GetByIdAsync(id);
 
-        if (author == null ||
-            author.IsActive != true)
+        if (author == null || author.IsActive != true)
         {
             return null;
         }
@@ -34,31 +33,26 @@ public class AuthorService : IAuthorService
         return author;
     }
 
-    public async Task<Author> CreateAsync(
-        CreateAuthorDto dto)
+    public async Task<Author> CreateAsync(CreateAuthorDto dto)
     {
-        var firstName =
-            dto.FirstName.Trim();
+        ArgumentNullException.ThrowIfNull(dto);
 
-        var lastName =
-            dto.LastName.Trim();
+        // Normalizar los datos recibidos.
+        var firstName = dto.FirstName?.Trim() ?? string.Empty;
+        var lastName = dto.LastName?.Trim() ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(firstName))
+        // Validar nombre y apellido antes de guardar.
+        AuthorValidator.Validate(new Author
         {
-            throw new ArgumentException(
-                "El nombre del autor es obligatorio.");
-        }
+            FirstName = firstName,
+            LastName = lastName
+        });
 
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            throw new ArgumentException(
-                "El apellido del autor es obligatorio.");
-        }
-
-        var exists =
-            await _authorRepository.ExistsAsync(
-                firstName,
-                lastName);
+        // Verificar que no exista un autor activo duplicado.
+        var exists = await _authorRepository.ExistsAsync(
+            firstName,
+            lastName
+        );
 
         if (exists)
         {
@@ -66,11 +60,14 @@ public class AuthorService : IAuthorService
                 "Ya existe un autor activo con ese nombre.");
         }
 
+        // Crear el autor.
         var author = new Author
         {
             FirstName = firstName,
             LastName = lastName,
-            UserId = dto.UserId != null ? (ushort)dto.UserId.Value : null,
+            UserId = dto.UserId != null
+                ? (ushort)dto.UserId.Value
+                : null,
             IsActive = true,
             CreatedAt = DateTime.Now
         };
@@ -84,29 +81,34 @@ public class AuthorService : IAuthorService
         uint id,
         CreateAuthorDto dto)
     {
-        var author =
-            await _authorRepository
-                .GetByIdAsync(id);
+        ArgumentNullException.ThrowIfNull(dto);
 
-        if (author == null ||
-            author.IsActive != true)
+        var author = await _authorRepository.GetByIdAsync(id);
+
+        if (author == null || author.IsActive != true)
         {
             return null;
         }
 
-        var firstName =
-            dto.FirstName.Trim();
+        var firstName = dto.FirstName?.Trim() ?? string.Empty;
+        var lastName = dto.LastName?.Trim() ?? string.Empty;
 
-        var lastName =
-            dto.LastName.Trim();
+        // Aplicar las mismas validaciones al actualizar.
+        AuthorValidator.Validate(new Author
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            SecondLastName = author.SecondLastName
+        });
 
+        // Comprobar duplicados si cambió el nombre o apellido.
         if (author.FirstName != firstName ||
             author.LastName != lastName)
         {
-            var exists =
-                await _authorRepository.ExistsAsync(
-                    firstName,
-                    lastName);
+            var exists = await _authorRepository.ExistsAsync(
+                firstName,
+                lastName
+            );
 
             if (exists)
             {
@@ -115,9 +117,12 @@ public class AuthorService : IAuthorService
             }
         }
 
+        // Actualizar los datos.
         author.FirstName = firstName;
         author.LastName = lastName;
-        author.UserId = dto.UserId != null ? (ushort)dto.UserId.Value : null;
+        author.UserId = dto.UserId != null
+            ? (ushort)dto.UserId.Value
+            : null;
         author.UpdatedAt = DateTime.Now;
 
         await _authorRepository.UpdateAsync(author);
@@ -127,12 +132,9 @@ public class AuthorService : IAuthorService
 
     public async Task<bool> DeleteAsync(uint id)
     {
-        var author =
-            await _authorRepository
-                .GetByIdAsync(id);
+        var author = await _authorRepository.GetByIdAsync(id);
 
-        if (author == null ||
-            author.IsActive != true)
+        if (author == null || author.IsActive != true)
         {
             return false;
         }

@@ -1,5 +1,7 @@
-﻿using Backend.Application.DTOs;
+﻿
+using Backend.Application.DTOs;
 using Backend.Application.Interfaces;
+using Backend.Domain.Validators;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +32,9 @@ namespace Backend.Controllers
             var author = await _authorService.GetByIdAsync((uint)id);
 
             if (author == null)
+            {
                 return NotFound();
+            }
 
             return Ok(author);
         }
@@ -46,7 +50,22 @@ namespace Backend.Controllers
                 return CreatedAtAction(
                     nameof(GetById),
                     new { id = author.Id },
-                    author);
+                    author
+                );
+            }
+            catch (BookValidationException ex)
+            {
+                return BadRequest(new
+                {
+                    errors = ex.Errors
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -64,13 +83,31 @@ namespace Backend.Controllers
         {
             try
             {
-                var author =
-                    await _authorService.UpdateAsync((uint)id, dto);
+                var author = await _authorService.UpdateAsync(
+                    (uint)id,
+                    dto
+                );
 
                 if (author == null)
+                {
                     return NotFound();
+                }
 
                 return Ok(author);
+            }
+            catch (BookValidationException ex)
+            {
+                return BadRequest(new
+                {
+                    errors = ex.Errors
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -87,7 +124,9 @@ namespace Backend.Controllers
             var deleted = await _authorService.DeleteAsync((uint)id);
 
             if (!deleted)
+            {
                 return NotFound();
+            }
 
             return NoContent();
         }
